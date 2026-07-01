@@ -1,21 +1,22 @@
 {
   "expo": {
-    "name": "FXトレード日記",
+    "name": "FXトレードログ",
     "slug": "fx-trade-journal",
-    "version": "1.0.0",
-    "orientation": "portrait",
+    "version": "1.1.1",
+    "orientation": "default",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": false,
+      "supportsTablet": true,
       "bundleIdentifier": "com.fxtradejournal.app",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleLocalizations": ["ja", "en"],
+        "CFBundleDevelopmentRegion": "ja"
       }
     },
     "android": {
       "package": "com.fxtradejournal.app",
-      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -27,8 +28,7 @@
         "android.permission.RECEIVE_BOOT_COMPLETED",
         "android.permission.VIBRATE",
         "android.permission.READ_MEDIA_IMAGES",
-        "com.android.vending.BILLING",
-        "android.permission.RECORD_AUDIO"
+        "com.android.vending.BILLING"
       ]
     },
     "web": {
@@ -52,8 +52,19 @@
         }
       ],
       "expo-sqlite",
-      "expo-document-picker"
+      "expo-document-picker",
+      "expo-font",
+      "expo-updates"
     ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/8a7d7dbf-6b86-4ed9-bf69-54d253c4251d",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
     "extra": {
       "router": {},
       "eas": {
