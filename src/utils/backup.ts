@@ -10,9 +10,11 @@ import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { getAllTrades, getCurrencyPairs } from '../db/queries';
 import { getDatabase } from '../db/database';
+import { resolveImageUri } from './imageStorage';
 import type { Trade, CurrencyPair } from '../types';
 
 const SCHEMA_VERSION = 14; // migrationsの数と一致させる
+const MAX_IMAGE_BASE64_TOTAL_BYTES = 200 * 1024 * 1024; // インポート時のメモリDoS防止（合計200MBまで）
 
 interface BackupTrade extends Trade {
   imageBase64: Record<string, string>; // uri -> base64
@@ -43,9 +45,10 @@ export async function exportBackup(): Promise<void> {
     const imageBase64: Record<string, string> = {};
     for (const uri of trade.imageUris) {
       try {
-        const info = await getInfoAsync(uri);
+        const resolved = resolveImageUri(uri);
+        const info = await getInfoAsync(resolved);
         if (info.exists) {
-          imageBase64[uri] = await readAsStringAsync(uri, { encoding: 'base64' });
+          imageBase64[uri] = await readAsStringAsync(resolved, { encoding: 'base64' });
         }
       } catch {
         // 画像が読めない場合はスキップ
@@ -91,6 +94,7 @@ export async function importBackup(): Promise<number> {
   // バリデーション
   if (!data.version || !Array.isArray(data.trades)) throw new Error('invalid_format');
   if (data.trades.length > 50000) throw new Error('file_too_large');
+  let imageBytesTotal = 0;
   for (const trade of data.trades) {
     if (
       typeof trade.id !== 'string' || trade.id.length === 0 || trade.id.length > 128 ||
@@ -100,11 +104,30 @@ export async function importBackup(): Promise<number> {
       !['win', 'loss', 'even'].includes(trade.result) ||
       typeof trade.lotSize !== 'number'
     ) throw new Error('invalid_format');
+    for (const b64 of Object.values(trade.imageBase64 ?? {})) {
+      imageBytesTotal += typeof b64 === 'string' ? b64.length : 0;
+      if (imageBytesTotal > MAX_IMAGE_BASE64_TOTAL_BYTES) throw new Error('file_too_large');
+    }
   }
 
   const db = await getDatabase();
 
-  // 画像を先に書き戻す（URIのマッピングを作る）
+  // インポートで既存データを全置換する前に、直前の状態をキャッシュへ退避しておく（万一の復旧用）
+  try {
+    const [prevTrades, prevPairs] = await Promise.all([getAllTrades(), getCurrencyPairs()]);
+    if (prevTrades.length > 0 && cacheDirectory) {
+      const snapshotPath = `${cacheDirectory}fx-pre-import-snapshot.json`;
+      await writeAsStringAsync(
+        snapshotPath,
+        JSON.stringify({ exportedAt: new Date().toISOString(), trades: prevTrades, pairs: prevPairs }),
+        { encoding: 'utf8' }
+      );
+    }
+  } catch {
+    // 退避に失敗してもインポート自体は続行する
+  }
+
+  // 画像を先に書き戻す（URIのマッピングを作る。DBには相対パスのみ保存する）
   const uriMap: Record<string, string> = {};
   const chartsDir = `${documentDirectory}charts/`;
 
@@ -120,9 +143,9 @@ export async function importBackup(): Promise<number> {
         const rawExt = oldUri.split('.').pop()?.split('?')[0]?.toLowerCase() ?? 'jpg';
         const safeExt = /^[a-z]{2,5}$/.test(rawExt) ? rawExt : 'jpg';
         const safeId = String(trade.id).replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 64);
-        const newUri = `${chartsDir}${safeId}_${Object.keys(uriMap).length}.${safeExt}`;
-        await writeAsStringAsync(newUri, base64, { encoding: 'base64' });
-        uriMap[oldUri] = newUri;
+        const relPath = `charts/${safeId}_${Object.keys(uriMap).length}.${safeExt}`;
+        await writeAsStringAsync(`${documentDirectory}${relPath}`, base64, { encoding: 'base64' });
+        uriMap[oldUri] = relPath;
       } catch {
         // 書き戻し失敗は無視（画像なしで復元）
       }
@@ -143,8 +166,10 @@ export async function importBackup(): Promise<number> {
     }
 
     for (const trade of data.trades) {
-      // URIを新しいパスに置換
-      const newImageUris = (trade.imageUris ?? []).map(u => uriMap[u] ?? u);
+      // URIを新しいパスに置換。マッピングにない値は相対パス形式でなければ破棄する（任意ローカルURI注入の防止）
+      const newImageUris = (trade.imageUris ?? [])
+        .map(u => uriMap[u] ?? (typeof u === 'string' && !u.includes('://') ? u : null))
+        .filter((u): u is string => u !== null);
       await db.runAsync(
         `INSERT OR REPLACE INTO trades
           (id, date, pair, direction, entry_rate, exit_rate, stop_loss, take_profit, planned_r_r,

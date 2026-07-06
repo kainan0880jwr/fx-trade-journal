@@ -1,0 +1,287 @@
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  View, Text, ScrollView, TouchableOpacity, StyleSheet
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTradeStore } from '../../src/store/tradeStore';
+import MonthSelector from '../../src/components/MonthSelector';
+import { useTheme } from '../../src/theme/useTheme';
+import { useIsTablet } from '../../src/hooks/useIsTablet';
+import type { ThemeColors } from '../../src/theme/colors';
+import { t } from '../../src/i18n';
+import {
+  METRICS, CalMetric, buildDayMap, getDayValue, getDayBg, getDayValueColor,
+  calcMonthPF, formatPF,
+} from '../../src/utils/calendarMetrics';
+
+const Calendar = require('react-native-calendars').Calendar;
+
+export default function CalendarScreen() {
+  const C = useTheme();
+  const isTablet = useIsTablet();
+  const s = useMemo(() => makeStyles(C, isTablet), [C, isTablet]);
+  const { trades, currentMonth, setCurrentMonth, loadTradesByMonth } = useTradeStore();
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const [metric, setMetric] = useState<CalMetric>('pips');
+
+  useEffect(() => { loadTradesByMonth(currentMonth); }, [currentMonth]);
+
+  const dayMap = useMemo(() => buildDayMap(trades), [trades]);
+
+  const totalPips = useMemo(() =>
+    Math.round(trades.reduce((sum, tr) => sum + (tr.pips ?? 0), 0) * 10) / 10, [trades]);
+  const totalPL = useMemo(() =>
+    Math.round(trades.reduce((sum, tr) => sum + (tr.profitLoss ?? 0), 0)), [trades]);
+  const wins = trades.filter(tr => tr.result === 'win').length;
+  const losses = trades.filter(tr => tr.result === 'loss').length;
+  const winRate = trades.length > 0 ? Math.round(wins / trades.length * 100) : 0;
+  const hasPL = trades.some(tr => tr.profitLoss != null);
+  const profitFactor = useMemo(() => calcMonthPF(trades), [trades]);
+
+  const dayTrades = selectedDay
+    ? trades.filter(tr => tr.date.slice(0, 10) === selectedDay)
+    : [];
+
+  return (
+    <SafeAreaView style={s.container} edges={['bottom']}>
+      <MonthSelector
+        month={currentMonth}
+        onChange={m => { setCurrentMonth(m); setSelectedDay(null); }}
+      />
+
+      <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
+
+        <View style={s.summaryGrid}>
+          <SCard label={t('cal_trades')} value={`${trades.length}${t('count_unit')}`} />
+          <SCard label={t('cal_wl')} value={`${wins}${t('win_short')} ${losses}${t('loss_short')}`} />
+          <SCard
+            label={t('win_rate')}
+            value={`${winRate}%`}
+            color={trades.length === 0 ? C.text : winRate >= 50 ? C.win : C.loss}
+          />
+          <SCard
+            label={t('cal_profit_factor')}
+            value={formatPF(profitFactor)}
+            color={profitFactor === 0 ? C.text2 : profitFactor >= 1 ? C.win : C.loss}
+          />
+          <SCard
+            label={t('total_pips')}
+            value={totalPips === 0 && trades.length === 0 ? '-' : `${totalPips >= 0 ? '+' : ''}${totalPips}`}
+            color={totalPips >= 0 ? C.win : C.loss}
+          />
+          {hasPL && (
+            <SCard
+              label={t('cal_total_pl')}
+              value={`${totalPL >= 0 ? '+' : ''}${totalPL.toLocaleString()}¥`}
+              color={totalPL >= 0 ? C.win : C.loss}
+            />
+          )}
+        </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={s.metricBar}
+          contentContainerStyle={s.metricBarContent}
+        >
+          {METRICS.map(m => (
+            <TouchableOpacity
+              key={m.key}
+              onPress={() => setMetric(m.key)}
+              style={[
+                s.metricChip,
+                metric === m.key && { backgroundColor: C.primary, borderColor: C.primary },
+              ]}
+              activeOpacity={0.7}
+            >
+              <Text style={[s.metricChipLabel, { color: metric === m.key ? '#fff' : C.text2 }]}>
+                {t(m.labelKey as any)}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <View style={s.calWrap}>
+          <Calendar
+            current={currentMonth + '-01'}
+            hideArrows={true}
+            renderHeader={() => null}
+            hideExtraDays={false}
+            dayComponent={({ date, state }: { date: any; state: string }) => {
+              if (!date) return null;
+              const ds = dayMap[date.dateString];
+              const isSelected = selectedDay === date.dateString;
+              const isDisabled = state === 'disabled';
+
+              let bg = 'transparent';
+              if (ds) bg = getDayBg(ds, metric, C);
+              if (isSelected) bg = C.primary + '45';
+
+              return (
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => setSelectedDay(isSelected ? null : date.dateString)}
+                  style={[
+                    s.dayCell,
+                    { backgroundColor: bg, borderColor: isSelected ? C.primary : 'transparent' },
+                  ]}
+                >
+                  <Text style={[s.dayNum, { color: isDisabled ? C.text3 : C.text }]}>
+                    {date.day}
+                  </Text>
+                  {ds ? (
+                    <Text
+                      style={[s.dayValue, { color: getDayValueColor(ds, metric, C) }]}
+                      numberOfLines={1}
+                      adjustsFontSizeToFit
+                    >
+                      {getDayValue(ds, metric)}
+                    </Text>
+                  ) : null}
+                </TouchableOpacity>
+              );
+            }}
+            theme={{
+              calendarBackground: C.card,
+              backgroundColor: C.card,
+              textSectionTitleColor: C.text2,
+              dayTextColor: C.text,
+              todayTextColor: C.primary,
+              monthTextColor: C.text,
+              textDayHeaderFontSize: 11,
+              textDayFontSize: 13,
+            }}
+          />
+        </View>
+
+        <View style={s.legend}>
+          <View style={s.legendItem}>
+            <View style={[s.legendDot, { backgroundColor: C.win + '50', borderColor: C.win }]} />
+            <Text style={s.legendLabel}>{t('cal_plus_day')}</Text>
+          </View>
+          <View style={s.legendItem}>
+            <View style={[s.legendDot, { backgroundColor: C.loss + '50', borderColor: C.loss }]} />
+            <Text style={s.legendLabel}>{t('cal_minus_day')}</Text>
+          </View>
+          <View style={s.legendItem}>
+            <View style={[s.legendDot, { backgroundColor: C.border + '80', borderColor: C.border }]} />
+            <Text style={s.legendLabel}>{t('cal_zero_day')}</Text>
+          </View>
+        </View>
+
+        {selectedDay && (
+          <View style={s.dayDetail}>
+            <Text style={s.detailTitle}>{selectedDay.replace(/-/g, '/')}</Text>
+
+            {dayTrades.length === 0 ? (
+              <Text style={s.detailEmpty}>{t('cal_no_trades')}</Text>
+            ) : (
+              <>
+                {dayTrades.map(tr => (
+                  <View key={tr.id} style={s.tradeRow}>
+                    <View style={[s.dirDot, { backgroundColor: tr.direction === 'buy' ? C.buy : C.sell }]} />
+                    <Text style={s.tradePair}>{tr.pair}</Text>
+                    <Text style={[s.tradePips, { color: (tr.pips ?? 0) >= 0 ? C.win : C.loss }]}>
+                      {tr.pips != null ? `${tr.pips > 0 ? '+' : ''}${tr.pips} pips` : '-'}
+                    </Text>
+                    {tr.profitLoss != null && (
+                      <Text style={[s.tradePL, { color: tr.profitLoss >= 0 ? C.win : C.loss }]}>
+                        {tr.profitLoss >= 0 ? '+' : ''}{Math.round(tr.profitLoss).toLocaleString()}円
+                      </Text>
+                    )}
+                  </View>
+                ))}
+
+                {(() => {
+                  const ds = dayMap[selectedDay];
+                  if (!ds) return null;
+                  return (
+                    <View style={s.daySum}>
+                      <Text style={s.daySumLabel}>{t('cal_daily_total')}</Text>
+                      <Text style={[s.daySumPips, { color: ds.pips >= 0 ? C.win : C.loss }]}>
+                        {ds.pips > 0 ? '+' : ''}{ds.pips} pips
+                      </Text>
+                      {ds.pl !== 0 && (
+                        <Text style={[s.daySumPL, { color: ds.pl >= 0 ? C.win : C.loss }]}>
+                          {ds.pl >= 0 ? '+' : ''}{Math.round(ds.pl).toLocaleString()}¥
+                        </Text>
+                      )}
+                    </View>
+                  );
+                })()}
+              </>
+            )}
+          </View>
+        )}
+
+        <View style={{ height: 32 }} />
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+function SCard({ label, value, color }: { label: string; value: string; color?: string }) {
+  const C = useTheme();
+  const isTablet = useIsTablet();
+  return (
+    <View style={{
+      flex: 1, minWidth: isTablet ? '30%' : '46%',
+      backgroundColor: C.card, borderRadius: 12,
+      padding: isTablet ? 16 : 12, borderWidth: 1, borderColor: C.border,
+    }}>
+      <Text style={{ fontSize: isTablet ? 12 : 10, color: C.text2, marginBottom: 4 }} numberOfLines={1}>{label}</Text>
+      <Text style={[{ fontSize: isTablet ? 20 : 17, fontWeight: '800', color: C.text }, color ? { color } : {}]} numberOfLines={1}>{value}</Text>
+    </View>
+  );
+}
+
+function makeStyles(C: ThemeColors, isTablet = false) {
+  const ph = isTablet ? 20 : 12;
+  return StyleSheet.create({
+    container: { flex: 1, backgroundColor: C.bg },
+    scroll: { padding: ph },
+    summaryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 12 },
+    metricBar: { marginBottom: 10 },
+    metricBarContent: { gap: 6, paddingHorizontal: 2 },
+    metricChip: {
+      paddingHorizontal: 14, paddingVertical: 6,
+      borderRadius: 20, borderWidth: 1, borderColor: C.border,
+      backgroundColor: C.card,
+    },
+    metricChipLabel: { fontSize: isTablet ? 13 : 12, fontWeight: '600' },
+    calWrap: {
+      borderRadius: 16, overflow: 'hidden',
+      borderWidth: 1, borderColor: C.border, marginBottom: 10,
+    },
+    dayCell: {
+      width: isTablet ? 62 : 46, height: isTablet ? 72 : 56, borderRadius: 8,
+      alignItems: 'center', justifyContent: 'flex-start',
+      paddingTop: 4, borderWidth: 1.5, margin: 1,
+    },
+    dayNum: { fontSize: isTablet ? 14 : 12, fontWeight: '700', lineHeight: isTablet ? 20 : 16 },
+    dayValue: { fontSize: isTablet ? 11 : 9, fontWeight: '800', lineHeight: isTablet ? 15 : 13, width: '100%', textAlign: 'center', paddingHorizontal: 2 },
+    legend: { flexDirection: 'row', gap: 14, justifyContent: 'center', marginBottom: 12, paddingVertical: 4 },
+    legendItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+    legendDot: { width: 12, height: 12, borderRadius: 3, borderWidth: 1 },
+    legendLabel: { fontSize: isTablet ? 13 : 11, color: C.text2 },
+    dayDetail: {
+      backgroundColor: C.card, borderRadius: 14, padding: isTablet ? 18 : 14,
+      borderWidth: 1, borderColor: C.border,
+    },
+    detailTitle: { fontSize: isTablet ? 16 : 14, fontWeight: '700', color: C.text2, marginBottom: 10 },
+    detailEmpty: { fontSize: isTablet ? 15 : 13, color: C.text3, textAlign: 'center', paddingVertical: 8 },
+    tradeRow: {
+      flexDirection: 'row', alignItems: 'center', gap: 8,
+      paddingVertical: isTablet ? 14 : 10,
+      borderBottomWidth: 1, borderBottomColor: C.border,
+    },
+    dirDot: { width: 8, height: 8, borderRadius: 4 },
+    tradePair: { flex: 1, fontSize: isTablet ? 16 : 14, fontWeight: '700', color: C.text },
+    tradePips: { fontSize: isTablet ? 15 : 13, fontWeight: '700', minWidth: 72, textAlign: 'right' },
+    tradePL: { fontSize: isTablet ? 14 : 12, color: C.text2, minWidth: 80, textAlign: 'right' },
+    daySum: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingTop: 10, justifyContent: 'flex-end' },
+    daySumLabel: { fontSize: isTablet ? 14 : 12, color: C.text2 },
+    daySumPips: { fontSize: isTablet ? 18 : 15, fontWeight: '800' },
+    daySumPL: { fontSize: isTablet ? 15 : 13, fontWeight: '600' },
+  });
+}

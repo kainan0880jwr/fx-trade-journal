@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
   StyleSheet, Alert, Platform, KeyboardAvoidingView, Image
 } from 'react-native';
 import DateTimePicker, { type DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,6 +17,7 @@ import { calcPips } from '../../src/utils/pipsCalc';
 import { calcProfitLoss, determineResult } from '../../src/utils/profitCalc';
 import { generateId } from '../../src/utils/statsCalc';
 import { updateRecordStreak } from '../../src/db/queries';
+import { useReviewPrompt } from '../../src/hooks/useReviewPrompt';
 import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
@@ -47,10 +48,12 @@ function calcPlannedRR(dir: Direction, entry: number, sl: number | null, tp: num
 export default function NewTradeScreen() {
   const C = useTheme();
   const styles = makeStyles(C);
+  const navigation = useNavigation();
   const { addTrade } = useTradeStore();
   const { pairs, settings, entryTags, tradeRules } = useSettingsStore();
   const isPremium = usePurchaseStore(s => s.isPremium);
   const imageLimit = isPremium ? 3 : 1;
+  const promptReviewIfNeeded = useReviewPrompt();
 
   const [mode, setMode] = useState<InputMode>('quick');
   const [saving, setSaving] = useState(false);
@@ -129,6 +132,36 @@ export default function NewTradeScreen() {
   const plannedRR = canCalc ? calcPlannedRR(direction, entry, sl, tp) : null;
   const pipsColor = pips == null ? C.text2 : pips > 0 ? C.win : pips < 0 ? C.loss : C.even;
 
+  // ──────────────────────────────────────────────
+  // 未保存破棄ガード
+  // クイック: pips入力 or 結果選択済み
+  // フル: レート・メモ・画像のいずれか入力済み
+  // ──────────────────────────────────────────────
+  const isDirty = useMemo(() => {
+    if (mode === 'quick') return quickPips !== '' || quickResult !== null;
+    return entryRate !== '' || exitRate !== '' || reflection !== '' || imageUris.length > 0;
+  }, [mode, quickPips, quickResult, entryRate, exitRate, reflection, imageUris]);
+
+  useEffect(() => {
+    const unsub = navigation.addListener('beforeRemove', (e: any) => {
+      if (!isDirty || saving) return; // 未入力 or 保存中は通す
+      e.preventDefault();
+      Alert.alert(
+        t('discard_title'),
+        t('discard_message'),
+        [
+          { text: t('discard_cancel'), style: 'cancel' },
+          {
+            text: t('discard_confirm'),
+            style: 'destructive',
+            onPress: () => navigation.dispatch(e.data.action),
+          },
+        ]
+      );
+    });
+    return unsub;
+  }, [navigation, isDirty, saving]);
+
   const toggleTag = (tag: string) => {
     setSelectedTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
   };
@@ -154,6 +187,8 @@ export default function NewTradeScreen() {
         ? t('form_quick_saved_first')
         : `${streak}${t('form_quick_saved_streak')}`;
       Alert.alert('', msg, [{ text: 'OK', onPress: () => router.back() }]);
+      // 保存後にレビュー促進チェック（10件・30件・100件マイルストーン）
+      await promptReviewIfNeeded();
     } catch {
       Alert.alert(t('save_error'), t('save_error_msg'));
     }
@@ -207,7 +242,7 @@ export default function NewTradeScreen() {
       try {
         persistedUris = await saveTradeImages(imageUris, tradeId);
       } catch {
-        Alert.alert('画像保存エラー', '画像の保存に失敗しました。トレードはそのまま保存します。');
+        Alert.alert(t('image_save_error'), t('image_save_error_msg'));
       }
       const trade: Trade = {
         id: tradeId,
@@ -631,7 +666,7 @@ export default function NewTradeScreen() {
               {!isPremium && (
                 <TouchableOpacity style={styles.premiumHint} onPress={() => router.push('/paywall')}>
                   <Ionicons name="star" size={14} color={C.yellow} />
-                  <Text style={styles.premiumHintText}>プレミアムでMTFメモ・メンタル・ルールが使えます</Text>
+                  <Text style={styles.premiumHintText}>{t('form_premium_hint')}</Text>
                   <Ionicons name="chevron-forward" size={14} color={C.primary} />
                 </TouchableOpacity>
               )}

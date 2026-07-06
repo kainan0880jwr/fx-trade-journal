@@ -1,0 +1,48 @@
+===== 日本語（App Store Connect に貼り付け） =====
+
+【ver 1.2.0 アップデート内容】
+
+■ MT4 / MT5 取引履歴インポート（新機能）
+設定画面から MT4・MT5 の取引履歴 CSV を直接読み込めるようになりました。
+過去の取引データを一括でアプリに取り込み、分析をすぐに始められます。
+
+■ 成績カードのシェア機能を強化
+月次成績を「カードとしてシェア」できるようになりました。
+デザインされた HTML カードをファイルとして出力・シェアできます。
+
+■ 画面デザインの改善
+・プレミアム機能画面：コンテンツのプレビューがぼかし表示されるようになり、
+  どんな機能が使えるか一目で確認できます
+・タブバーをすっきり 4 タブに整理（ブックマークは記録タブ内のボタンから開けます）
+・月次タブのラベルを「月次」に統一
+
+■ その他の改善
+・設定画面のバージョン番号を app.json から自動取得するように修正
+・テーマ選択肢の表示テキストを多言語対応
+
+フィードバックは設定画面「お問い合わせ」からお送りください。
+
+
+===== English =====
+
+[ver 1.2.0 Update]
+
+■ MT4 / MT5 Trade History Import (New)
+You can now import your MT4 / MT5 trade history CSV directly from the Settings screen.
+Bring in past trades in bulk and start analyzing right away.
+
+■ Enhanced Stats Card Sharing
+Share your monthly performance as a designed card.
+A styled HTML card can now be exported and shared to any app.
+
+■ UI Improvements
+· Premium feature screens now show a blurred content preview so you can
+  see exactly what you'll unlock before subscribing
+· Tab bar streamlined to 4 tabs (Bookmarks accessible via button in Journal tab)
+· Monthly tab label unified to "Monthly"
+
+■ Other Fixes
+· Version number in Settings now reads dynamically from app.json
+· Theme option labels localized for both Japanese and English
+
+Send feedback via Settings → Contact Us.

@@ -13,6 +13,7 @@ expo-env.d.ts
 .kotlin/
 *.orig.*
 *.jks
+*.keystore
 *.p8
 *.p12
 *.key
@@ -29,6 +30,8 @@ yarn-error.*
 # macOS
 .DS_Store
 *.pem
+# ただしEAS Updateのコード署名用公開証明書はコミットする（秘密鍵ではない）
+!certs/certificate.pem
 
 # local env files
 .env

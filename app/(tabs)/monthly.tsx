@@ -6,6 +6,7 @@ import { PieChart, LineChart } from 'react-native-chart-kit';
 import { useTradeStore } from '../../src/store/tradeStore';
 import MonthSelector from '../../src/components/MonthSelector';
 import { calcStats, calcDailyCumulativePips, calcRatingDistribution, calcMonthlyBreakdown } from '../../src/utils/statsCalc';
+import { getRecordStreak } from '../../src/db/queries';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { generateInsights, type Insight } from '../../src/utils/insights';
 import PremiumGate from '../../src/components/PremiumGate';
@@ -38,7 +39,12 @@ export default function MonthlyScreen() {
   const [period, setPeriod] = useState<Period>('monthly');
   const [activeTab, setActiveTab] = useState<SubTab>(t('monthly_wl'));
   const [shareVisible, setShareVisible] = useState(false);
+  const [recordStreak, setRecordStreak] = useState(0);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    getRecordStreak().then(setRecordStreak).catch(() => setRecordStreak(0));
+  }, []);
 
   useEffect(() => {
     if (period === 'yearly') { navigation.setOptions({ headerRight: undefined }); return; }
@@ -110,6 +116,8 @@ export default function MonthlyScreen() {
         onClose={() => setShareVisible(false)}
         stats={stats}
         yearMonth={currentMonth}
+        streak={recordStreak}
+        isPremium={isPremium}
       />
 
       {(settings.monthlyPipsGoal > 0 || settings.monthlyWinRateGoal > 0) && (
