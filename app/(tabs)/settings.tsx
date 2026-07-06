@@ -200,10 +200,8 @@ export default function SettingsScreen() {
       Alert.alert(t('app_lock_unavailable_title'), t('app_lock_unavailable_msg'));
       return;
     }
-    const result = await LocalAuthentication.authenticateAsync({ promptMessage: t('app_lock_prompt') });
-    if (result.success) {
-      await updateAppLockEnabled(true);
-    }
+    // 実際の本人確認はAppLockGate側が有効化を検知して行う（ここで重ねて呼ぶとFace IDシートが競合してフリーズする）
+    await updateAppLockEnabled(true);
   };
 
   const handleMT4Import = async () => {

@@ -17,8 +17,13 @@ export default function AppLockGate({ children }: Props) {
   const appLockEnabled = useSettingsStore((st) => st.settings.appLockEnabled);
   const [unlocked, setUnlocked] = useState(!appLockEnabled);
   const appState = useRef<AppStateStatus>(AppState.currentState);
+  // Face ID等のシステム認証UI自体がアプリを一瞬 'inactive' にするため、
+  // 認証中はその遷移をバックグラウンド復帰と誤検知して再認証ループに陥らないようにするフラグ
+  const isAuthenticatingRef = useRef(false);
 
   const tryAuthenticate = async () => {
+    if (isAuthenticatingRef.current) return;
+    isAuthenticatingRef.current = true;
     try {
       const hasHardware = await LocalAuthentication.hasHardwareAsync();
       const isEnrolled = await LocalAuthentication.isEnrolledAsync();
@@ -34,6 +39,8 @@ export default function AppLockGate({ children }: Props) {
       if (result.success) setUnlocked(true);
     } catch {
       // 認証自体が失敗した場合はロックしたまま留める
+    } finally {
+      isAuthenticatingRef.current = false;
     }
   };
 
@@ -49,7 +56,9 @@ export default function AppLockGate({ children }: Props) {
 
   useEffect(() => {
     const sub = AppState.addEventListener('change', (next) => {
-      if (appLockEnabled && /inactive|background/.test(appState.current) && next === 'active') {
+      // 'background' からの復帰のみを対象にする。'inactive' は認証シート表示時にも
+      // 一時的に経由するため、これを含めると認証→再検知→再認証の無限ループになる。
+      if (appLockEnabled && appState.current === 'background' && next === 'active') {
         setUnlocked(false);
         tryAuthenticate();
       }
