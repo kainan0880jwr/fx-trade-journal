@@ -14,6 +14,7 @@ import { usePurchaseStore } from '../src/store/purchaseStore';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t } from '../src/i18n';
+import { monthlyEquivalent, annualDiscountPct } from '../src/utils/paywallCalc';
 
 // 機能リスト（5項目に圧縮・i18n化）
 const FEATURES = () => [
@@ -23,22 +24,6 @@ const FEATURES = () => [
   { icon: 'pulse-outline' as const,     labelKey: 'paywall_feature_mental' as const },
   { icon: 'star-outline' as const,      labelKey: 'paywall_feature_extras' as const },
 ];
-
-/** 年額プランの月割り価格文字列（通貨・ロケールはSDKが解決するため¥固定にしない）*/
-function monthlyEquivalent(pkg: PurchasesPackage): string | null {
-  const str = pkg.product.pricePerMonthString;
-  return str ? `${str}${t('paywall_per_month')}` : null;
-}
-
-/** 年額プランが月額プラン比で何%お得かを算出（両プランが揃っている場合のみ）*/
-function annualDiscountPct(yearly: PurchasesPackage, monthly: PurchasesPackage | undefined): number | null {
-  if (!monthly) return null;
-  const yearlyPerMonth = yearly.product.pricePerMonth;
-  const monthlyPrice = monthly.product.price;
-  if (!yearlyPerMonth || !monthlyPrice) return null;
-  const pct = Math.round((1 - yearlyPerMonth / monthlyPrice) * 100);
-  return pct > 0 ? pct : null;
-}
 
 export default function PaywallScreen() {
   const C = useTheme();
