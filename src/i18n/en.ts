@@ -375,7 +375,7 @@ export const en: LangStrings = {
   calc_empty: 'Enter values to calculate',
 
   // Premium / Purchases
-  premium_badge: 'PRO',
+  premium_badge: 'PREMIUM',
   premium_title: 'FX Trade Log Premium',
   premium_desc: 'Level up your trading with advanced analytics',
   premium_monthly: 'Monthly',
@@ -419,13 +419,13 @@ export const en: LangStrings = {
   a11y_open_calendar: 'Open calendar',
 
   // Paywall features (compact list)
-  paywall_feature_analytics: 'All analysis tabs (time, R:R, equity, mental, etc.)',
+  paywall_feature_analytics: 'All analysis tabs (time, R:R, equity, etc.)',
   paywall_feature_insights: 'Monthly insights, weekly stats & yearly report',
   paywall_feature_images: 'Attach up to 3 chart images per trade',
   paywall_feature_mental: 'Mental state, multi-TF notes & rule checks',
-  paywall_feature_extras: 'Bookmarks, badges, lot calculator & no ads',
+  paywall_feature_extras: 'Bookmarks, badges, lot calculator & watermark-free sharing',
   paywall_per_month: '/mo',
-  paywall_legal: 'Payment charged to your App Store / Google Play account. Subscription auto-renews unless cancelled 24 hours before the end of each period.',
+  paywall_legal: 'Payment charged to your {store} account. Subscription auto-renews unless cancelled 24 hours before the end of each period.',
 
   // Form (dehard-coded)
   form_premium_hint: 'Unlock MTF notes, mental tracking & rule checks with Premium',
@@ -443,6 +443,7 @@ export const en: LangStrings = {
   restore_fail_title: 'Not Found',
   restore_fail_msg: 'No purchase history found.',
   paywall_no_packages: 'Could not load plans. Please try again.',
+  paywall_retry: 'Retry',
 
   // Settings (theme)
   settings_theme: 'Theme',

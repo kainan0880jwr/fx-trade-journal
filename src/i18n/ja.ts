@@ -373,7 +373,7 @@ export const ja = {
   calc_empty: '値を入力すると計算します',
 
   // プレミアム・課金
-  premium_badge: 'PRO',
+  premium_badge: 'PREMIUM',
   premium_title: 'FXトレードログ プレミアム',
   premium_desc: '本格分析で勝ちトレードを増やす',
   premium_monthly: '月払い',
@@ -417,13 +417,13 @@ export const ja = {
   a11y_open_calendar: 'カレンダーを開く',
 
   // ペイウォール機能リスト（圧縮版）
-  paywall_feature_analytics: '全分析タブ（時間帯・RR・エクイティ・メンタル等）',
+  paywall_feature_analytics: '全分析タブ（時間帯・RR・エクイティ等）',
   paywall_feature_insights: '月次インサイト・週次集計・年間レポート',
   paywall_feature_images: 'チャート画像3枚添付',
   paywall_feature_mental: 'メンタル・MTFメモ・ルール遵守チェック',
-  paywall_feature_extras: 'ブックマーク・バッジ・ロット計算機・広告なし',
+  paywall_feature_extras: 'ブックマーク・バッジ・ロット計算機・シェア画像の透かし除去',
   paywall_per_month: '/月',
-  paywall_legal: '購入はApp Store / Google Playアカウントに課金されます。\nサブスクリプションは期間終了の24時間前までに解約しない限り自動更新されます。',
+  paywall_legal: '購入は{store}アカウントに課金されます。\nサブスクリプションは期間終了の24時間前までに解約しない限り自動更新されます。',
 
   // フォーム（ハードコード解消）
   form_premium_hint: 'プレミアムでMTFメモ・メンタル・ルールが使えます',
@@ -440,7 +440,8 @@ export const ja = {
   restore_success_msg: 'プレミアムプランを復元しました。',
   restore_fail_title: '復元できませんでした',
   restore_fail_msg: '購入履歴が見つかりません。',
-  paywall_no_packages: '現在プランを読み込めませんでした',
+  paywall_no_packages: '現在プランを読み込めませんでした。通信状態をご確認のうえ、もう一度お試しください。',
+  paywall_retry: '再試行',
 
   // 設定画面（テーマ）
   settings_theme: 'テーマ',

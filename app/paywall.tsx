@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  ScrollView, ActivityIndicator, Alert, Linking,
+  ScrollView, ActivityIndicator, Alert, Linking, Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -43,8 +43,8 @@ export default function PaywallScreen() {
   const [loading, setLoading] = useState(false);
   const [loadingPkgs, setLoadingPkgs] = useState(true);
 
-  useEffect(() => {
-    if (isPremium) { router.back(); return; }
+  const loadOfferings = () => {
+    setLoadingPkgs(true);
     getOfferings().then((offerings) => {
       const pkgs = offerings?.current?.availablePackages ?? [];
       setPackages(pkgs);
@@ -52,6 +52,12 @@ export default function PaywallScreen() {
       setSelected(yearly ?? pkgs[0] ?? null);
       setLoadingPkgs(false);
     });
+  };
+
+  useEffect(() => {
+    if (isPremium) { router.back(); return; }
+    loadOfferings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPremium]);
 
   const handlePurchase = async () => {
@@ -117,7 +123,12 @@ export default function PaywallScreen() {
         {loadingPkgs ? (
           <ActivityIndicator color={C.primary} style={{ marginVertical: 24 }} />
         ) : packages.length === 0 ? (
-          <Text style={s.noPkgs}>{t('paywall_no_packages')}</Text>
+          <View style={{ alignItems: 'center' }}>
+            <Text style={s.noPkgs}>{t('paywall_no_packages')}</Text>
+            <TouchableOpacity onPress={loadOfferings} style={s.retryBtn} accessibilityRole="button">
+              <Text style={s.retryBtnText}>{t('paywall_retry')}</Text>
+            </TouchableOpacity>
+          </View>
         ) : (
           <View style={s.planWrap}>
             {packages.map((pkg) => {
@@ -164,28 +175,30 @@ export default function PaywallScreen() {
           </View>
         )}
 
-        {/* ── CTAボタン（ファーストビュー内）── */}
-        <TouchableOpacity
-          style={[s.ctaBtnWrap, (!selected || loading) && s.ctaBtnDisabled]}
-          onPress={handlePurchase}
-          disabled={!selected || loading}
-          activeOpacity={0.85}
-          accessibilityRole="button"
-        >
-          <LinearGradient
-            colors={[C.primaryLight, C.primary, C.primaryDark]}
-            start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-            style={s.ctaBtn}
+        {/* ── CTAボタン（ファーストビュー内）── プラン取得に失敗した場合は誤操作防止のため非表示 */}
+        {packages.length > 0 && (
+          <TouchableOpacity
+            style={[s.ctaBtnWrap, (!selected || loading) && s.ctaBtnDisabled]}
+            onPress={handlePurchase}
+            disabled={!selected || loading}
+            activeOpacity={0.85}
+            accessibilityRole="button"
           >
-            {loading ? (
-              <ActivityIndicator color="#FFF" />
-            ) : (
-              <Text style={s.ctaBtnText}>
-                {selected?.product.introPrice ? t('premium_trial') : t('premium_cta')}
-              </Text>
-            )}
-          </LinearGradient>
-        </TouchableOpacity>
+            <LinearGradient
+              colors={[C.primaryLight, C.primary, C.primaryDark]}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+              style={s.ctaBtn}
+            >
+              {loading ? (
+                <ActivityIndicator color="#FFF" />
+              ) : (
+                <Text style={s.ctaBtnText}>
+                  {selected?.product.introPrice ? t('premium_trial') : t('premium_cta')}
+                </Text>
+              )}
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity
           style={s.restoreBtn}
@@ -210,7 +223,9 @@ export default function PaywallScreen() {
         </View>
 
         {/* 法的情報（i18n化） */}
-        <Text style={s.legal}>{t('paywall_legal')}</Text>
+        <Text style={s.legal}>
+          {t('paywall_legal').replace('{store}', Platform.OS === 'ios' ? 'App Store' : 'Google Play')}
+        </Text>
         <View style={s.legalLinks}>
           <TouchableOpacity
             onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/privacy-policy.html')}
@@ -306,7 +321,12 @@ function makeStyles(C: ThemeColors) {
     },
     featureLabel: { flex: 1, fontSize: 13, color: C.text, fontWeight: '500' },
 
-    noPkgs: { fontSize: 13, color: C.text3, textAlign: 'center', marginVertical: 24 },
+    noPkgs: { fontSize: 13, color: C.text3, textAlign: 'center', marginTop: 24, marginBottom: 12, paddingHorizontal: 24 },
+    retryBtn: {
+      borderWidth: 1, borderColor: C.primary, borderRadius: 12,
+      paddingHorizontal: 20, paddingVertical: 8, marginBottom: 12,
+    },
+    retryBtnText: { color: C.primary, fontSize: 13, fontWeight: '700' },
 
     legal: {
       fontSize: 11, color: C.text3, textAlign: 'center',
