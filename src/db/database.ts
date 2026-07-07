@@ -23,9 +23,14 @@ export function getDatabase(): Promise<SQLite.SQLiteDatabase> {
 }
 
 // 平文SQLite→SQLCipher暗号化DBへの移行。
-// 既に移行済みなら暗号化DBを開くのみ。旧DBが存在する場合はネイティブのbackup APIで
-// 暗号化DBへ全ページをコピーし、件数検証に成功した場合のみ移行完了とする。
+// 既に移行済みなら暗号化DBを開くのみ。旧DBが存在する場合はSQLCipher公式の
+// sqlcipher_export()（ATTACH ... KEY → sqlcipher_export → DETACH）で暗号化DBへ
+// 全データをエクスポートし、件数検証に成功した場合のみ移行完了とする。
 // 旧DBファイルは削除せずそのまま残し、万一の際に手動復旧できるようにする。
+//
+// 注: ネイティブの backupDatabaseAsync（sqlite3_backup、ページ単位の生コピー）は
+// 暗号化状態が異なるDB間の移行には使えない。SQLCipherは平文ページと暗号化ページで
+// フォーマットが異なるため、ページを生コピーすると宛先DBが読み取り不能になる。
 async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
   const key = await getOrCreateEncryptionKey();
   const migrated = await SecureStore.getItemAsync(MIGRATION_FLAG_KEY);
@@ -53,24 +58,28 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
     plainDb = null;
   }
 
+  if (!plainDb) {
+    // 移行対象データがない場合は新規に空の暗号化DBを作るだけでよい
+    const encDb = await SQLite.openDatabaseAsync(NEW_DB_NAME);
+    await encDb.execAsync(`PRAGMA key = '${key}';`);
+    await SecureStore.setItemAsync(MIGRATION_FLAG_KEY, 'v1');
+    return encDb;
+  }
+
+  // 暗号化DBファイルを先に別コネクションで開くと同一ファイルへの二重ロックが起きうるため、
+  // 平文DB側のコネクションからATTACH/sqlcipher_exportで新DBファイルを完成させてから開き直す。
+  const origCount = await plainDb.getFirstAsync<{ c: number }>('SELECT COUNT(*) as c FROM trades');
+  const newDbPath = `${SQLite.defaultDatabaseDirectory.replace(/\/+$/, '')}/${NEW_DB_NAME}`;
+  await plainDb.execAsync(`ATTACH DATABASE '${newDbPath}' AS encrypted KEY '${key}';`);
+  await plainDb.execAsync(`SELECT sqlcipher_export('encrypted');`);
+  await plainDb.execAsync('DETACH DATABASE encrypted;');
+  await plainDb.closeAsync();
+
   const encDb = await SQLite.openDatabaseAsync(NEW_DB_NAME);
   await encDb.execAsync(`PRAGMA key = '${key}';`);
-
-  if (plainDb) {
-    await SQLite.backupDatabaseAsync({
-      sourceDatabase: plainDb,
-      sourceDatabaseName: 'main',
-      destDatabase: encDb,
-      destDatabaseName: 'main',
-    });
-    const [origCount, newCount] = await Promise.all([
-      plainDb.getFirstAsync<{ c: number }>('SELECT COUNT(*) as c FROM trades'),
-      encDb.getFirstAsync<{ c: number }>('SELECT COUNT(*) as c FROM trades'),
-    ]);
-    if ((origCount?.c ?? 0) !== (newCount?.c ?? 0)) {
-      throw new Error('db_migration_verify_failed');
-    }
-    await plainDb.closeAsync();
+  const newCount = await encDb.getFirstAsync<{ c: number }>('SELECT COUNT(*) as c FROM trades');
+  if ((origCount?.c ?? 0) !== (newCount?.c ?? 0)) {
+    throw new Error('db_migration_verify_failed');
   }
 
   await SecureStore.setItemAsync(MIGRATION_FLAG_KEY, 'v1');

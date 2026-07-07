@@ -24,9 +24,13 @@ export const en: LangStrings = {
   not_found: 'Not found',
   save_error: 'Save Error',
   save_error_msg: 'Failed to save trade. Please try again.',
+  settings_save_error_msg: 'Failed to save settings. Please try again.',
   saved: 'Saved',
   input_error: 'Input Error',
   delete_confirm: 'Confirm Delete',
+  db_init_error_title: 'Failed to initialize the database',
+  db_init_error_msg: 'Please restart the app, or try again using the button below.',
+  retry: 'Retry',
   error: 'Error',
 
   // Trade result
@@ -275,7 +279,7 @@ export const en: LangStrings = {
   settings_reminder: 'Reminder Notification',
   settings_daily_reminder: 'Daily Reminder',
   settings_weekly_summary: 'Weekly Summary Notification',
-  settings_weekly_summary_sub: 'Sends a recap of last week every Monday at 8:00 AM',
+  settings_weekly_summary_sub: 'Sends a recap of last week every Monday at your chosen time',
   settings_notif_time: 'Notification Time',
   settings_notif_install: 'expo-notifications is required to enable notifications.\nRun in terminal:\n\nnpx expo install expo-notifications',
   settings_notif_permission: 'Permission Required',
@@ -335,6 +339,7 @@ export const en: LangStrings = {
   settings_rule_exists: 'Rule already exists',
   settings_tag_exists: 'Tag already exists',
   settings_notif_saved_msg: 'You will be notified daily at {time}',
+  settings_weekly_time_saved_msg: 'You will be notified every Monday at {time}',
 
   // TradeCard
   card_style_scalp: 'Scalp',

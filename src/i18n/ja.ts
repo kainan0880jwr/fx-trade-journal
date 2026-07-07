@@ -22,10 +22,14 @@ export const ja = {
   not_found: '見つかりません',
   save_error: '保存エラー',
   save_error_msg: 'トレードの保存に失敗しました。再度お試しください。',
+  settings_save_error_msg: '設定の保存に失敗しました。再度お試しください。',
   saved: '保存しました',
   input_error: '入力エラー',
   delete_confirm: '削除確認',
   error: 'エラー',
+  db_init_error_title: 'データベースの初期化に失敗しました',
+  db_init_error_msg: 'アプリを再起動するか、下のボタンでもう一度お試しください。',
+  retry: '再試行',
 
   // トレード結果
   win: '勝ち',
@@ -273,7 +277,7 @@ export const ja = {
   settings_reminder: '記録リマインダー通知',
   settings_daily_reminder: '毎日リマインダー',
   settings_weekly_summary: '週次サマリー通知',
-  settings_weekly_summary_sub: '毎週月曜 8:00 に先週の成績を振り返る通知を送ります',
+  settings_weekly_summary_sub: '毎週月曜、指定した時刻に先週の成績を振り返る通知を送ります',
   settings_notif_time: '通知時刻',
   settings_notif_install: '通知機能を有効にするには expo-notifications のインストールが必要です。\nターミナルで以下を実行してください:\n\nnpx expo install expo-notifications',
   settings_notif_permission: '通知許可が必要です',
@@ -333,6 +337,7 @@ export const ja = {
   settings_rule_exists: 'すでに存在するルールです',
   settings_tag_exists: 'すでに存在するタグです',
   settings_notif_saved_msg: '毎日 {time} に通知します',
+  settings_weekly_time_saved_msg: '毎週月曜 {time} に通知します',
 
   // TradeCard
   card_style_scalp: 'スキャル',

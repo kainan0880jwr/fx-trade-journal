@@ -110,11 +110,16 @@ export default function SettingsScreen() {
   const [notifHour, setNotifHour] = useState(21);
   const [notifMinute, setNotifMinute] = useState(0);
   const [weeklyEnabled, setWeeklyEnabled] = useState(false);
+  const [weeklyHour, setWeeklyHour] = useState(8);
+  const [weeklyMinute, setWeeklyMinute] = useState(0);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [showWeeklyTimePicker, setShowWeeklyTimePicker] = useState(false);
   const notifAvailable = isNotificationsAvailable();
 
   const notifTimeDate = new Date();
   notifTimeDate.setHours(notifHour, notifMinute, 0, 0);
+  const weeklyTimeDate = new Date();
+  weeklyTimeDate.setHours(weeklyHour, weeklyMinute, 0, 0);
 
   const handleNotifTimeChange = (_: DateTimePickerEvent, selected?: Date) => {
     if (Platform.OS === 'android') setShowTimePicker(false);
@@ -124,31 +129,54 @@ export default function SettingsScreen() {
     }
   };
 
+  const handleWeeklyTimeChange = (_: DateTimePickerEvent, selected?: Date) => {
+    if (Platform.OS === 'android') setShowWeeklyTimePicker(false);
+    if (selected) {
+      setWeeklyHour(selected.getHours());
+      setWeeklyMinute(selected.getMinutes());
+    }
+  };
+
   useEffect(() => {
     getSetting('notif_enabled').then(v => setNotifEnabled(v === '1'));
     getSetting('notif_hour').then(v => { if (v) setNotifHour(parseInt(v, 10)); });
     getSetting('notif_minute').then(v => { if (v) setNotifMinute(parseInt(v, 10)); });
     getSetting('weekly_notif_enabled').then(v => setWeeklyEnabled(v === '1'));
+    getSetting('weekly_notif_hour').then(v => { if (v) setWeeklyHour(parseInt(v, 10)); });
+    getSetting('weekly_notif_minute').then(v => { if (v) setWeeklyMinute(parseInt(v, 10)); });
   }, []);
 
   const handleSaveLotUnit = async () => {
     const val = parseInt(lotInput, 10);
     if (isNaN(val) || val <= 0) { Alert.alert(t('input_error'), t('settings_valid_number')); return; }
-    await updateLotUnit(val); Alert.alert(t('saved'));
+    try {
+      await updateLotUnit(val);
+      Alert.alert(t('saved'));
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
+    }
   };
 
   const handleSaveBalance = async () => {
     const val = parseFloat(balanceInput);
     if (isNaN(val) || val < 0) { Alert.alert(t('input_error'), t('settings_valid_number')); return; }
-    await updateAccountBalance(val);
-    await updateDefaultRiskPct(parseFloat(riskInput) || 2);
-    Alert.alert(t('saved'));
+    try {
+      await updateAccountBalance(val);
+      await updateDefaultRiskPct(parseFloat(riskInput) || 2);
+      Alert.alert(t('saved'));
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
+    }
   };
 
   const handleSaveGoals = async () => {
-    await updateMonthlyPipsGoal(parseFloat(pipsGoalInput) || 0);
-    await updateMonthlyWinRateGoal(parseFloat(winRateGoalInput) || 0);
-    Alert.alert(t('settings_goals_saved'));
+    try {
+      await updateMonthlyPipsGoal(parseFloat(pipsGoalInput) || 0);
+      await updateMonthlyWinRateGoal(parseFloat(winRateGoalInput) || 0);
+      Alert.alert(t('settings_goals_saved'));
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
+    }
   };
 
   const handleExportBackup = async () => {
@@ -190,18 +218,22 @@ export default function SettingsScreen() {
   };
 
   const handleAppLockToggle = async (value: boolean) => {
-    if (!value) {
-      await updateAppLockEnabled(false);
-      return;
+    try {
+      if (!value) {
+        await updateAppLockEnabled(false);
+        return;
+      }
+      const hasHardware = await LocalAuthentication.hasHardwareAsync();
+      const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+      if (!hasHardware || !isEnrolled) {
+        Alert.alert(t('app_lock_unavailable_title'), t('app_lock_unavailable_msg'));
+        return;
+      }
+      // 実際の本人確認はAppLockGate側が有効化を検知して行う（ここで重ねて呼ぶとFace IDシートが競合してフリーズする）
+      await updateAppLockEnabled(true);
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
     }
-    const hasHardware = await LocalAuthentication.hasHardwareAsync();
-    const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-    if (!hasHardware || !isEnrolled) {
-      Alert.alert(t('app_lock_unavailable_title'), t('app_lock_unavailable_msg'));
-      return;
-    }
-    // 実際の本人確認はAppLockGate側が有効化を検知して行う（ここで重ねて呼ぶとFace IDシートが競合してフリーズする）
-    await updateAppLockEnabled(true);
   };
 
   const handleMT4Import = async () => {
@@ -272,27 +304,53 @@ export default function SettingsScreen() {
     const rule = newRule.trim();
     if (!rule) return;
     if (tradeRules.includes(rule)) { Alert.alert(t('settings_rule_exists')); return; }
-    await addTradeRule(rule); setNewRule(''); setShowAddRule(false);
+    try {
+      await addTradeRule(rule); setNewRule(''); setShowAddRule(false);
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
+    }
   };
 
   const handleDeleteRule = (rule: string) => {
     Alert.alert(t('delete_confirm'), `「${rule}」`, [
       { text: t('cancel'), style: 'cancel' },
-      { text: t('delete'), style: 'destructive', onPress: () => removeTradeRule(rule) },
+      {
+        text: t('delete'), style: 'destructive',
+        onPress: async () => {
+          try {
+            await removeTradeRule(rule);
+          } catch {
+            Alert.alert(t('error'), t('settings_save_error_msg'));
+          }
+        },
+      },
     ]);
   };
 
   const handleAddPair = async () => {
     const name = newPairName.trim().toUpperCase();
     if (name.length < 6) { Alert.alert(t('input_error'), t('settings_pair_format')); return; }
-    await addPair({ id: generateId(), name, pipDigits: newPairDigits, isYenPair: newPairIsYen, isActive: true });
-    setNewPairName(''); setShowAddPair(false);
+    try {
+      await addPair({ id: generateId(), name, pipDigits: newPairDigits, isYenPair: newPairIsYen, isActive: true });
+      setNewPairName(''); setShowAddPair(false);
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
+    }
   };
 
   const handleDeletePair = (pair: CurrencyPair) => {
     Alert.alert(t('delete_confirm'), `${pair.name}`, [
       { text: t('cancel'), style: 'cancel' },
-      { text: t('delete'), style: 'destructive', onPress: () => removePair(pair.id) },
+      {
+        text: t('delete'), style: 'destructive',
+        onPress: async () => {
+          try {
+            await removePair(pair.id);
+          } catch {
+            Alert.alert(t('error'), t('settings_save_error_msg'));
+          }
+        },
+      },
     ]);
   };
 
@@ -300,44 +358,89 @@ export default function SettingsScreen() {
     const tag = newTag.trim();
     if (!tag) return;
     if (entryTags.includes(tag)) { Alert.alert(t('settings_tag_exists')); return; }
-    await addEntryTag(tag); setNewTag(''); setShowAddTag(false);
+    try {
+      await addEntryTag(tag); setNewTag(''); setShowAddTag(false);
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
+    }
   };
 
   const handleDeleteTag = (tag: string) => {
     Alert.alert(t('delete_confirm'), `「${tag}」`, [
       { text: t('cancel'), style: 'cancel' },
-      { text: t('delete'), style: 'destructive', onPress: () => removeEntryTag(tag) },
+      {
+        text: t('delete'), style: 'destructive',
+        onPress: async () => {
+          try {
+            await removeEntryTag(tag);
+          } catch {
+            Alert.alert(t('error'), t('settings_save_error_msg'));
+          }
+        },
+      },
     ]);
   };
 
   const handleNotifToggle = async (val: boolean) => {
-    if (val) {
-      const granted = await requestNotificationPermission();
-      if (!granted) { Alert.alert(t('settings_notif_permission'), t('settings_notif_permission_msg')); return; }
-      await scheduleReminder(notifHour, notifMinute);
-    } else {
-      await cancelAllReminders();
+    try {
+      if (val) {
+        const granted = await requestNotificationPermission();
+        if (!granted) { Alert.alert(t('settings_notif_permission'), t('settings_notif_permission_msg')); return; }
+        await scheduleReminder(notifHour, notifMinute);
+      } else {
+        await cancelAllReminders();
+      }
+      await setSetting('notif_enabled', val ? '1' : '0');
+      setNotifEnabled(val);
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
     }
-    setNotifEnabled(val);
-    await setSetting('notif_enabled', val ? '1' : '0');
   };
 
   const handleNotifTimeSave = async () => {
-    await setSetting('notif_hour', String(notifHour));
-    await setSetting('notif_minute', String(notifMinute));
-    if (notifEnabled) await scheduleReminder(notifHour, notifMinute);
-    const timeStr = `${String(notifHour).padStart(2,'0')}:${String(notifMinute).padStart(2,'0')}`;
-    Alert.alert(t('saved'), t('settings_notif_saved_msg').replace('{time}', timeStr));
+    try {
+      await setSetting('notif_hour', String(notifHour));
+      await setSetting('notif_minute', String(notifMinute));
+      if (notifEnabled) await scheduleReminder(notifHour, notifMinute);
+      const timeStr = `${String(notifHour).padStart(2,'0')}:${String(notifMinute).padStart(2,'0')}`;
+      Alert.alert(t('saved'), t('settings_notif_saved_msg').replace('{time}', timeStr));
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
+    }
   };
 
   const handleWeeklyToggle = async (val: boolean) => {
-    if (val) {
-      const granted = await requestNotificationPermission();
-      if (!granted) { Alert.alert(t('settings_notif_permission'), t('settings_notif_permission_msg')); return; }
+    try {
+      if (val) {
+        const granted = await requestNotificationPermission();
+        if (!granted) { Alert.alert(t('settings_notif_permission'), t('settings_notif_permission_msg')); return; }
+      }
+      await setSetting('weekly_notif_enabled', val ? '1' : '0');
+      await scheduleWeeklySummary(weeklyHour, weeklyMinute, val); // 曜日は月曜固定、時刻のみ選択可能
+      setWeeklyEnabled(val);
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
     }
-    setWeeklyEnabled(val);
-    await setSetting('weekly_notif_enabled', val ? '1' : '0');
-    await scheduleWeeklySummary(8, 0, val); // 月曜 8:00 固定
+  };
+
+  const handleWeeklyTimeSave = async () => {
+    try {
+      await setSetting('weekly_notif_hour', String(weeklyHour));
+      await setSetting('weekly_notif_minute', String(weeklyMinute));
+      if (weeklyEnabled) await scheduleWeeklySummary(weeklyHour, weeklyMinute, true);
+      const timeStr = `${String(weeklyHour).padStart(2,'0')}:${String(weeklyMinute).padStart(2,'0')}`;
+      Alert.alert(t('saved'), t('settings_weekly_time_saved_msg').replace('{time}', timeStr));
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
+    }
+  };
+
+  const handleThemeChange = async (mode: ThemeMode) => {
+    try {
+      await updateThemeMode(mode);
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
+    }
   };
 
   const THEME_OPTIONS: { mode: ThemeMode; label: string; icon: string }[] = [
@@ -371,7 +474,7 @@ export default function SettingsScreen() {
                 <TouchableOpacity
                   key={opt.mode}
                   style={[styles.themeSeg, active && styles.themeSegActive]}
-                  onPress={() => updateThemeMode(opt.mode)}
+                  onPress={() => handleThemeChange(opt.mode)}
                   activeOpacity={0.7}
                 >
                   <Ionicons
@@ -439,7 +542,7 @@ export default function SettingsScreen() {
                   )}
                 </View>
               )}
-              {/* 週次サマリー通知（毎週月曜 8:00） */}
+              {/* 週次サマリー通知（毎週月曜、時刻は選択可能） */}
               <View style={[styles.notifRow, { marginTop: 12, borderTopWidth: 1, borderTopColor: C.border, paddingTop: 12 }]}>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.notifLabel}>{t('settings_weekly_summary')}</Text>
@@ -451,6 +554,40 @@ export default function SettingsScreen() {
                   trackColor={{ true: C.primary }}
                 />
               </View>
+              {weeklyEnabled && (
+                <View style={styles.notifTimeRow}>
+                  <Text style={styles.notifLabel}>{t('settings_notif_time')}</Text>
+                  <View style={styles.notifTimeInputs}>
+                    <TouchableOpacity
+                      style={styles.notifTimeTouchable}
+                      onPress={() => setShowWeeklyTimePicker(true)}
+                    >
+                      <Text style={styles.notifTimeText}>
+                        {String(weeklyHour).padStart(2, '0')}:{String(weeklyMinute).padStart(2, '0')}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.notifSaveBtn} onPress={handleWeeklyTimeSave}>
+                      <Text style={styles.notifSaveBtnText}>{t('save')}</Text>
+                    </TouchableOpacity>
+                  </View>
+                  {showWeeklyTimePicker && (
+                    <>
+                      <DateTimePicker
+                        value={weeklyTimeDate}
+                        mode="time"
+                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                        onChange={handleWeeklyTimeChange}
+                        locale="ja-JP"
+                      />
+                      {Platform.OS === 'ios' && (
+                        <TouchableOpacity style={styles.notifSaveBtn} onPress={async () => { setShowWeeklyTimePicker(false); await handleWeeklyTimeSave(); }}>
+                          <Text style={styles.notifSaveBtnText}>{t('done_save')}</Text>
+                        </TouchableOpacity>
+                      )}
+                    </>
+                  )}
+                </View>
+              )}
             </View>
           )}
         </View>
