@@ -615,12 +615,12 @@ function makeStyles(C: ThemeColors, isTablet = false) {
   return StyleSheet.create({
     container: { flex: 1, backgroundColor: C.bg },
     subTabBar: {
-      backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border, maxHeight: isTablet ? 52 : 44,
+      backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border,
     },
     subTabBarContent: { flexDirection: 'row', alignItems: 'center' },
-    subTab: { paddingHorizontal: isTablet ? 18 : 14, paddingVertical: 12, alignItems: 'center' },
+    subTab: { paddingHorizontal: isTablet ? 18 : 14, paddingVertical: 12, alignItems: 'center', justifyContent: 'center' },
     subTabActive: { borderBottomWidth: 2, borderBottomColor: C.primary },
-    subTabLabel: { fontSize: isTablet ? 15 : 13, color: C.text2 },
+    subTabLabel: { fontSize: isTablet ? 15 : 13, color: C.text, fontWeight: '500' },
     subTabLabelActive: { color: C.primary, fontWeight: '700' },
 
     weekCard: { backgroundColor: C.card, borderRadius: 14, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: C.border },

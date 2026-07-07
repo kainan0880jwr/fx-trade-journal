@@ -286,7 +286,8 @@ export default function SettingsScreen() {
             ].join(','));
             const csv = '﻿' + [header, ...rows].join('\r\n'); // BOM付きでExcel日本語文字化けを防止
             if (!cacheDirectory) throw new Error('cacheDirectory unavailable');
-            const dateStr = new Date().toISOString().slice(0, 10);
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
             const filePath = `${cacheDirectory}fx-trades-${dateStr}.csv`;
             await writeAsStringAsync(filePath, csv, { encoding: 'utf8' });
             const isAvailable = await Sharing.isAvailableAsync();

@@ -39,7 +39,12 @@ export default function RecordScreen() {
     loadTradesByMonth(currentMonth);
   }, [currentMonth, loadTradesByMonth]);
 
-  const todayStr = useMemo(() => new Date().toISOString().slice(0, 10), []);
+  // toISOString()はUTC基準のため、JST等UTCより進んだタイムゾーンでは早朝時間帯に
+  // 前日の日付になってしまう。ローカル日付から組み立てる。
+  const todayStr = useMemo(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }, []);
   const filtered = useMemo<Trade[]>(() =>
     styleFilter ? trades.filter(t => t.style === styleFilter) : trades,
     [trades, styleFilter]

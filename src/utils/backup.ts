@@ -68,7 +68,8 @@ export async function exportBackup(): Promise<void> {
 
   if (!cacheDirectory) throw new Error('cacheDirectory unavailable');
 
-  const dateStr = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   const filePath = `${cacheDirectory}fx-backup-${dateStr}.json`;
   await writeAsStringAsync(filePath, JSON.stringify(backup), { encoding: 'utf8' });
 

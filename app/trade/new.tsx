@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
   StyleSheet, Alert, Platform, KeyboardAvoidingView, Image
@@ -142,9 +142,13 @@ export default function NewTradeScreen() {
     return entryRate !== '' || exitRate !== '' || reflection !== '' || imageUris.length > 0;
   }, [mode, quickPips, quickResult, entryRate, exitRate, reflection, imageUris]);
 
+  // 保存成功後、OKタップ→router.back()までの間にsavingがfalseへ戻るため、
+  // isDirty判定だけに頼ると保存済みでも破棄確認が誤って出てしまう。そのためのフラグ。
+  const justSavedRef = useRef(false);
+
   useEffect(() => {
     const unsub = navigation.addListener('beforeRemove', (e: any) => {
-      if (!isDirty || saving) return; // 未入力 or 保存中は通す
+      if (!isDirty || saving || justSavedRef.current) return; // 未入力・保存中・保存済みは通す
       e.preventDefault();
       Alert.alert(
         t('discard_title'),
@@ -182,6 +186,7 @@ export default function NewTradeScreen() {
   const saveAndClose = async (trade: Trade) => {
     try {
       await addTrade(trade);
+      justSavedRef.current = true;
       const streak = await updateRecordStreak();
       const msg = streak <= 1
         ? t('form_quick_saved_first')

@@ -41,6 +41,11 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
     return db;
   }
 
+  // migrated !== 'v1' の場合、fx_journal_v2.db が存在していても正規の移行完了物ではない
+  // （旧バージョンのbackupDatabaseAsyncによる移行失敗で壊れたファイルが残っている可能性がある）。
+  // ATTACHが壊れたファイルにぶつかって失敗しないよう、移行前に必ず削除してから作り直す。
+  await SQLite.deleteDatabaseAsync(NEW_DB_NAME).catch(() => {});
+
   let plainDb: SQLite.SQLiteDatabase | null = null;
   try {
     const candidate = await SQLite.openDatabaseAsync(OLD_DB_NAME);

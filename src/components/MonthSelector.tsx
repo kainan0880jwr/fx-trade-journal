@@ -23,7 +23,9 @@ export default function MonthSelector({ month, onChange }: Props) {
   const styles = makeStyles(C);
 
   const [y, m] = month.split('-').map(Number);
-  const currentYM = new Date().toISOString().slice(0, 7);
+  // toISOString()はUTC基準のため、月末早朝のJST等では前月と誤判定することがある
+  const now = new Date();
+  const currentYM = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   const isCurrentMonth = month === currentYM;
 
   return (
