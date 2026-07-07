@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
   ScrollView, ActivityIndicator, Alert, Linking, Platform,
@@ -7,7 +7,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { type PurchasesPackage, PACKAGE_TYPE } from 'react-native-purchases';
+import Purchases, {
+  type PurchasesPackage, PACKAGE_TYPE, INTRO_ELIGIBILITY_STATUS,
+} from 'react-native-purchases';
 import { usePurchaseStore } from '../src/store/purchaseStore';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
@@ -22,16 +24,20 @@ const FEATURES = () => [
   { icon: 'star-outline' as const,      labelKey: 'paywall_feature_extras' as const },
 ];
 
-/** 年額プランを月割り換算して文字列を返す（例: "¥417/月"）*/
+/** 年額プランの月割り価格文字列（通貨・ロケールはSDKが解決するため¥固定にしない）*/
 function monthlyEquivalent(pkg: PurchasesPackage): string | null {
-  try {
-    const price = pkg.product.price;
-    if (!price || price <= 0) return null;
-    const perMonth = Math.round(price / 12);
-    return `¥${perMonth.toLocaleString()}${t('paywall_per_month')}`;
-  } catch {
-    return null;
-  }
+  const str = pkg.product.pricePerMonthString;
+  return str ? `${str}${t('paywall_per_month')}` : null;
+}
+
+/** 年額プランが月額プラン比で何%お得かを算出（両プランが揃っている場合のみ）*/
+function annualDiscountPct(yearly: PurchasesPackage, monthly: PurchasesPackage | undefined): number | null {
+  if (!monthly) return null;
+  const yearlyPerMonth = yearly.product.pricePerMonth;
+  const monthlyPrice = monthly.product.price;
+  if (!yearlyPerMonth || !monthlyPrice) return null;
+  const pct = Math.round((1 - yearlyPerMonth / monthlyPrice) * 100);
+  return pct > 0 ? pct : null;
 }
 
 export default function PaywallScreen() {
@@ -40,17 +46,45 @@ export default function PaywallScreen() {
   const { getOfferings, purchase, restore, isPremium } = usePurchaseStore();
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
   const [selected, setSelected] = useState<PurchasesPackage | null>(null);
+  const [eligibleTrialIds, setEligibleTrialIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
+  const [restoring, setRestoring] = useState(false);
   const [loadingPkgs, setLoadingPkgs] = useState(true);
+  const isMounted = useRef(true);
+  const requestId = useRef(0);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => { isMounted.current = false; };
+  }, []);
 
   const loadOfferings = () => {
+    const myRequestId = ++requestId.current;
     setLoadingPkgs(true);
-    getOfferings().then((offerings) => {
+    getOfferings().then(async (offerings) => {
+      // 古い（後から呼ばれたリクエストより先に返ってきた）レスポンスは破棄
+      if (!isMounted.current || myRequestId !== requestId.current) return;
+
       const pkgs = offerings?.current?.availablePackages ?? [];
       setPackages(pkgs);
       const yearly = pkgs.find(p => p.packageType === PACKAGE_TYPE.ANNUAL);
       setSelected(yearly ?? pkgs[0] ?? null);
       setLoadingPkgs(false);
+
+      // トライアル資格は「不明」なら誤解を招くため非表示側に倒す（ELIGIBLEのみ表示）
+      const trialProductIds = pkgs.filter(p => p.product.introPrice).map(p => p.product.identifier);
+      if (trialProductIds.length > 0) {
+        try {
+          const result = await Purchases.checkTrialOrIntroductoryPriceEligibility(trialProductIds);
+          if (!isMounted.current || myRequestId !== requestId.current) return;
+          const eligibleIds = Object.entries(result)
+            .filter(([, v]) => v.status === INTRO_ELIGIBILITY_STATUS.INTRO_ELIGIBILITY_STATUS_ELIGIBLE)
+            .map(([id]) => id);
+          setEligibleTrialIds(new Set(eligibleIds));
+        } catch {
+          // 取得失敗時は安全側に倒し、トライアル表示なしのまま
+        }
+      }
     });
   };
 
@@ -66,9 +100,9 @@ export default function PaywallScreen() {
     const ok = await purchase(selected);
     setLoading(false);
     if (ok === true) {
-      Alert.alert(t('purchase_success_title'), t('purchase_success_msg'), [
-        { text: 'OK', onPress: () => router.back() },
-      ]);
+      // isPremiumの変化はストアが検知し、上のuseEffectが自動でrouter.back()するため
+      // ここでは戻らず、ユーザーへの完了通知のみ行う
+      Alert.alert(t('purchase_success_title'), t('purchase_success_msg'));
     } else if (ok === false) {
       Alert.alert(t('error'), t('purchase_fail_msg'));
     }
@@ -76,19 +110,21 @@ export default function PaywallScreen() {
   };
 
   const handleRestore = async () => {
-    setLoading(true);
-    const ok = await restore();
-    setLoading(false);
-    if (ok) {
-      Alert.alert(t('restore_success_title'), t('restore_success_msg'), [
-        { text: 'OK', onPress: () => router.back() },
-      ]);
-    } else {
+    setRestoring(true);
+    const result = await restore();
+    setRestoring(false);
+    if (result === true) {
+      Alert.alert(t('restore_success_title'), t('restore_success_msg'));
+    } else if (result === false) {
       Alert.alert(t('restore_fail_title'), t('restore_fail_msg'));
+    } else {
+      Alert.alert(t('restore_error_title'), t('restore_error_msg'));
     }
   };
 
   const features = FEATURES();
+  const hasTrialSelected = !!selected && eligibleTrialIds.has(selected.product.identifier);
+  const monthlyPkg = packages.find(p => p.packageType === PACKAGE_TYPE.MONTHLY);
 
   return (
     <SafeAreaView style={s.container} edges={['bottom']}>
@@ -135,6 +171,13 @@ export default function PaywallScreen() {
               const isSelected = selected?.identifier === pkg.identifier;
               const isYearly = pkg.packageType === PACKAGE_TYPE.ANNUAL;
               const perMonth = isYearly ? monthlyEquivalent(pkg) : null;
+              const discountPct = isYearly ? annualDiscountPct(pkg, monthlyPkg) : null;
+              const showTrial = !!pkg.product.introPrice && eligibleTrialIds.has(pkg.product.identifier);
+              const trialLabel = pkg.product.introPrice
+                ? `${pkg.product.introPrice.periodNumberOfUnits}${
+                    { DAY: '日間', WEEK: '週間', MONTH: 'ヶ月間', YEAR: '年間' }[pkg.product.introPrice.periodUnit] ?? ''
+                  }${t('paywall_trial_suffix')}`
+                : '';
               return (
                 <TouchableOpacity
                   key={pkg.identifier}
@@ -143,11 +186,16 @@ export default function PaywallScreen() {
                   activeOpacity={0.8}
                   accessibilityRole="radio"
                   accessibilityState={{ checked: isSelected }}
-                  accessibilityLabel={`${pkg.product.title} ${pkg.product.priceString}`}
+                  accessibilityLabel={[
+                    pkg.product.title,
+                    pkg.product.priceString,
+                    discountPct != null ? t('paywall_discount_badge').replace('{pct}', String(discountPct)) : null,
+                    showTrial ? trialLabel : null,
+                  ].filter(Boolean).join('. ')}
                 >
                   {isYearly && (
                     <View style={s.bestBadge}>
-                      <Text style={s.bestBadgeText}>おすすめ</Text>
+                      <Text style={s.bestBadgeText}>{t('paywall_best_badge')}</Text>
                     </View>
                   )}
                   <View style={s.planRadio}>
@@ -161,12 +209,13 @@ export default function PaywallScreen() {
                         <Text style={s.planPerMonth}> = {perMonth}</Text>
                       )}
                     </View>
-                    {pkg.product.introPrice && (
-                      <Text style={s.planTrial}>
-                        {pkg.product.introPrice.periodNumberOfUnits}
-                        {{ DAY: '日間', WEEK: '週間', MONTH: 'ヶ月間', YEAR: '年間' }[pkg.product.introPrice.periodUnit] ?? ''}
-                        無料トライアルあり
+                    {discountPct != null && (
+                      <Text style={s.planDiscount}>
+                        {t('paywall_discount_badge').replace('{pct}', String(discountPct))}
                       </Text>
+                    )}
+                    {showTrial && (
+                      <Text style={s.planTrial}>{trialLabel}</Text>
                     )}
                   </View>
                 </TouchableOpacity>
@@ -178,9 +227,9 @@ export default function PaywallScreen() {
         {/* ── CTAボタン（ファーストビュー内）── プラン取得に失敗した場合は誤操作防止のため非表示 */}
         {packages.length > 0 && (
           <TouchableOpacity
-            style={[s.ctaBtnWrap, (!selected || loading) && s.ctaBtnDisabled]}
+            style={[s.ctaBtnWrap, (!selected || loading || restoring) && s.ctaBtnDisabled]}
             onPress={handlePurchase}
-            disabled={!selected || loading}
+            disabled={!selected || loading || restoring}
             activeOpacity={0.85}
             accessibilityRole="button"
           >
@@ -193,21 +242,29 @@ export default function PaywallScreen() {
                 <ActivityIndicator color="#FFF" />
               ) : (
                 <Text style={s.ctaBtnText}>
-                  {selected?.product.introPrice ? t('premium_trial') : t('premium_cta')}
+                  {hasTrialSelected ? t('premium_trial') : t('premium_cta')}
                 </Text>
               )}
             </LinearGradient>
           </TouchableOpacity>
         )}
 
+        {hasTrialSelected && (
+          <Text style={s.trialDisclaimer}>{t('paywall_trial_disclaimer')}</Text>
+        )}
+
         <TouchableOpacity
           style={s.restoreBtn}
           onPress={handleRestore}
-          disabled={loading}
+          disabled={loading || restoring}
           accessibilityRole="button"
           accessibilityLabel={t('premium_restore')}
         >
-          <Text style={s.restoreBtnText}>{t('premium_restore')}</Text>
+          {restoring ? (
+            <ActivityIndicator color={C.text2} size="small" />
+          ) : (
+            <Text style={s.restoreBtnText}>{t('premium_restore')}</Text>
+          )}
         </TouchableOpacity>
 
         {/* ── 機能リスト（CTAの後 = スクロール領域）── */}
@@ -222,9 +279,14 @@ export default function PaywallScreen() {
           ))}
         </View>
 
-        {/* 法的情報（i18n化） */}
+        {/* 投資助言ではない旨の免責 */}
+        <Text style={s.disclaimer}>{t('paywall_disclaimer')}</Text>
+
+        {/* 法的情報（i18n化・ストア別の自動更新文言を出し分け）*/}
         <Text style={s.legal}>
-          {t('paywall_legal').replace('{store}', Platform.OS === 'ios' ? 'App Store' : 'Google Play')}
+          {t('paywall_legal_charge').replace('{store}', Platform.OS === 'ios' ? 'App Store' : 'Google Play')}
+          {'\n'}
+          {Platform.OS === 'ios' ? t('paywall_legal_renewal_ios') : t('paywall_legal_renewal_android')}
         </Text>
         <View style={s.legalLinks}>
           <TouchableOpacity
@@ -238,7 +300,14 @@ export default function PaywallScreen() {
             onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/terms.html')}
             accessibilityRole="link"
           >
-            <Text style={s.legalLink}>利用規約</Text>
+            <Text style={s.legalLink}>{t('settings_terms')}</Text>
+          </TouchableOpacity>
+          <Text style={s.legalSep}>・</Text>
+          <TouchableOpacity
+            onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/tokushoho.html')}
+            accessibilityRole="link"
+          >
+            <Text style={s.legalLink}>{t('settings_tokushoho')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -296,6 +365,7 @@ function makeStyles(C: ThemeColors) {
     planPrice: { fontSize: 16, fontWeight: '800', color: C.primary },
     planPerMonth: { fontSize: 12, color: C.text2, fontWeight: '600' },
     planTrial: { fontSize: 11, color: C.win, marginTop: 2 },
+    planDiscount: { fontSize: 11, color: C.primary, fontWeight: '700', marginTop: 2 },
 
     ctaBtnWrap: {
       borderRadius: 16, marginBottom: 12,
@@ -306,7 +376,12 @@ function makeStyles(C: ThemeColors) {
     ctaBtnDisabled: { opacity: 0.5 },
     ctaBtnText: { color: '#FFF', fontSize: 16, fontWeight: '800' },
 
-    restoreBtn: { alignItems: 'center', paddingVertical: 10, marginBottom: 20 },
+    trialDisclaimer: {
+      fontSize: 11, color: C.text3, textAlign: 'center',
+      marginBottom: 12, paddingHorizontal: 16, lineHeight: 16,
+    },
+
+    restoreBtn: { alignItems: 'center', paddingVertical: 10, marginBottom: 20, minHeight: 34, justifyContent: 'center' },
     restoreBtnText: { fontSize: 13, color: C.text2 },
 
     featureCard: {
@@ -327,6 +402,11 @@ function makeStyles(C: ThemeColors) {
       paddingHorizontal: 20, paddingVertical: 8, marginBottom: 12,
     },
     retryBtnText: { color: C.primary, fontSize: 13, fontWeight: '700' },
+
+    disclaimer: {
+      fontSize: 11, color: C.text3, textAlign: 'center',
+      lineHeight: 16, paddingHorizontal: 16, marginBottom: 8,
+    },
 
     legal: {
       fontSize: 11, color: C.text3, textAlign: 'center',

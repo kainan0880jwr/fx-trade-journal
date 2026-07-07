@@ -751,8 +751,27 @@ export default function SettingsScreen() {
             <Text style={styles.pairName}>{t('settings_contact')}</Text>
             <Ionicons name="chevron-forward" size={16} color={C.text3} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.pairRow} onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/privacy-policy.html')}>
+          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/privacy-policy.html')}>
             <Text style={styles.pairName}>{t('settings_privacy')}</Text>
+            <Ionicons name="chevron-forward" size={16} color={C.text3} />
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/terms.html')}>
+            <Text style={styles.pairName}>{t('settings_terms')}</Text>
+            <Ionicons name="chevron-forward" size={16} color={C.text3} />
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/tokushoho.html')}>
+            <Text style={styles.pairName}>{t('settings_tokushoho')}</Text>
+            <Ionicons name="chevron-forward" size={16} color={C.text3} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.pairRow}
+            onPress={() => Linking.openURL(
+              Platform.OS === 'ios'
+                ? 'https://apps.apple.com/account/subscriptions'
+                : 'https://play.google.com/store/account/subscriptions'
+            )}
+          >
+            <Text style={styles.pairName}>{t('settings_manage_subscription')}</Text>
             <Ionicons name="chevron-forward" size={16} color={C.text3} />
           </TouchableOpacity>
         </View>

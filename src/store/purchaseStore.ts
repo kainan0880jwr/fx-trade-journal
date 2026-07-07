@@ -4,6 +4,7 @@ import Purchases, {
   type CustomerInfo,
   type PurchasesPackage,
   type PurchasesOfferings,
+  type PurchasesError,
   LOG_LEVEL,
 } from 'react-native-purchases';
 
@@ -13,6 +14,9 @@ const RC_API_KEY = Platform.OS === 'ios'
 
 const ENTITLEMENT_ID = 'premium';
 
+// プレースホルダー（appl_xxxx.../goog_xxxx...）を含む未設定キーを弾く
+const isPlaceholderKey = (key: string) => !key || /xxxx/i.test(key);
+
 interface PurchaseStore {
   isPremium: boolean;
   isInitialized: boolean;
@@ -21,19 +25,27 @@ interface PurchaseStore {
   checkPremium: () => Promise<void>;
   getOfferings: () => Promise<PurchasesOfferings | null>;
   purchase: (pkg: PurchasesPackage) => Promise<boolean | null>; // null = user cancelled
-  restore: () => Promise<boolean>;
+  // true = 復元成功（プレミアム有効） / false = 復元処理は成功したが対象なし / null = 通信等のエラー
+  restore: () => Promise<boolean | null>;
 }
 
 function hasPremium(info: CustomerInfo): boolean {
   return !!info.entitlements.active[ENTITLEMENT_ID];
 }
 
+// StrictModeの二重マウントやuseEffectの多重発火でも configure/リスナー登録が
+// 一度しか実行されないようにするモジュールレベルのガード
+let hasStartedInit = false;
+
 export const usePurchaseStore = create<PurchaseStore>((set) => ({
   isPremium: false,
   isInitialized: false,
 
   initialize: () => {
-    if (!RC_API_KEY || RC_API_KEY.startsWith('appl_xxxx') || RC_API_KEY.startsWith('goog_xxxx')) {
+    if (hasStartedInit) return;
+    hasStartedInit = true;
+
+    if (isPlaceholderKey(RC_API_KEY)) {
       // 開発中はキー未設定のため初期化をスキップ
       set({ isInitialized: true });
       return;
@@ -81,8 +93,8 @@ export const usePurchaseStore = create<PurchaseStore>((set) => ({
       const premium = hasPremium(customerInfo);
       set({ isPremium: premium });
       return premium;
-    } catch (e: any) {
-      if (e?.userCancelled === true) return null;
+    } catch (e) {
+      if ((e as PurchasesError)?.userCancelled === true) return null;
       return false;
     }
   },
@@ -92,9 +104,9 @@ export const usePurchaseStore = create<PurchaseStore>((set) => ({
       const info = await Purchases.restorePurchases();
       const premium = hasPremium(info);
       set({ isPremium: premium });
-      return premium;
+      return premium; // true = 復元成功 / false = 復元対象なし（正常応答）
     } catch {
-      return false;
+      return null; // 通信・SDKエラー
     }
   },
 }));
