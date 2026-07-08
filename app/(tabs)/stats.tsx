@@ -156,13 +156,13 @@ export default function AnalysisScreen() {
                   <>
                     <Text style={styles.sectionTitle}>{t('by_pair')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_pair'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[2,1,1,1]} />
+                      <TableHeader cols={[t('col_pair'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.8,0.9,1,1.3]} />
                       {byPair.map((item, i) => (
                         <View key={item.pair} style={[styles.tableRow, i < byPair.length - 1 && styles.rowBorder]}>
-                          <Text style={[styles.cell, { flex: 2, color: C.text }]}>{item.pair}</Text>
-                          <Text style={styles.cell}>{item.totalTrades}</Text>
+                          <Text style={[styles.cell, { flex: 1.8, color: C.text }]} numberOfLines={1}>{item.pair}</Text>
+                          <Text style={[styles.cell, { flex: 0.9 }]}>{item.totalTrades}</Text>
                           <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
-                          <Text style={[styles.cell, { color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          <Text style={[styles.cell, { flex: 1.3, color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
                         </View>
                       ))}
                     </View>
@@ -173,13 +173,13 @@ export default function AnalysisScreen() {
                   <>
                     <Text style={styles.sectionTitle}>{t('by_style')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_style'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[2,1,1,1]} />
+                      <TableHeader cols={[t('col_style'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.8,0.9,1,1.3]} />
                       {byStyle.map((item, i) => (
                         <View key={item.style} style={[styles.tableRow, i < byStyle.length - 1 && styles.rowBorder]}>
-                          <Text style={[styles.cell, { flex: 2, color: C.text }]}>{STYLE_LABELS()[item.style] ?? item.style}</Text>
-                          <Text style={styles.cell}>{item.totalTrades}</Text>
+                          <Text style={[styles.cell, { flex: 1.8, color: C.text }]} numberOfLines={1}>{STYLE_LABELS()[item.style] ?? item.style}</Text>
+                          <Text style={[styles.cell, { flex: 0.9 }]}>{item.totalTrades}</Text>
                           <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
-                          <Text style={[styles.cell, { color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          <Text style={[styles.cell, { flex: 1.3, color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
                         </View>
                       ))}
                     </View>
@@ -196,12 +196,12 @@ export default function AnalysisScreen() {
                   <>
                     <Text style={styles.sectionTitle}>{t('time_analysis_title')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_time'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.5,1,1,1]} />
+                      <TableHeader cols={[t('col_time'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.8,1,1,1]} />
                       {timeData.map((item, i) => (
                         <View key={item.hour} style={[styles.tableRow, i < timeData.length - 1 && styles.rowBorder]}>
-                          <View style={[styles.cell, { flex: 1.5, flexDirection: 'row', alignItems: 'center', gap: 6 }]}>
-                            <View style={[styles.heatBar, { width: Math.max(4, item.total / maxTimeCount * 48), backgroundColor: C.primary + 'AA' }]} />
-                            <Text style={{ fontSize: 13, color: C.text }}>{item.label}</Text>
+                          <View style={[styles.cell, { flex: 1.8, flexDirection: 'row', alignItems: 'center', gap: 4 }]}>
+                            <View style={[styles.heatBar, { width: Math.max(4, item.total / maxTimeCount * 24), backgroundColor: C.primary + 'AA' }]} />
+                            <Text style={{ fontSize: 13, color: C.text }} numberOfLines={1}>{item.label}</Text>
                           </View>
                           <Text style={styles.cell}>{item.total}</Text>
                           <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
@@ -212,12 +212,12 @@ export default function AnalysisScreen() {
 
                     <Text style={styles.sectionTitle}>{t('day_analysis_title')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_day'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.5,1,1,1]} />
+                      <TableHeader cols={[t('col_day'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.8,1,1,1]} />
                       {dayData.map((item, i) => (
                         <View key={item.day} style={[styles.tableRow, i < dayData.length - 1 && styles.rowBorder]}>
-                          <View style={[styles.cell, { flex: 1.5, flexDirection: 'row', alignItems: 'center', gap: 6 }]}>
-                            <View style={[styles.heatBar, { width: Math.max(4, item.total / maxDayCount * 48), backgroundColor: C.purple + 'AA' }]} />
-                            <Text style={{ fontSize: 13, color: C.text }}>{item.label}</Text>
+                          <View style={[styles.cell, { flex: 1.8, flexDirection: 'row', alignItems: 'center', gap: 4 }]}>
+                            <View style={[styles.heatBar, { width: Math.max(4, item.total / maxDayCount * 24), backgroundColor: C.purple + 'AA' }]} />
+                            <Text style={{ fontSize: 13, color: C.text }} numberOfLines={1}>{item.label}</Text>
                           </View>
                           <Text style={styles.cell}>{item.total}</Text>
                           <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
@@ -542,9 +542,9 @@ function makeStyles(C: ThemeColors, isTablet = false) {
   const ph = isTablet ? 20 : 16;
   return StyleSheet.create({
     container: { flex: 1, backgroundColor: C.bg },
-    subTabBar: { backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border, maxHeight: isTablet ? 52 : 44 },
+    subTabBar: { backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border },
     subTabBarContent: { flexDirection: 'row', alignItems: 'center' },
-    subTab: { paddingHorizontal: isTablet ? 20 : 16, paddingVertical: 12, alignItems: 'center' },
+    subTab: { paddingHorizontal: isTablet ? 20 : 16, paddingVertical: 12, alignItems: 'center', justifyContent: 'center' },
     subTabActive: { borderBottomWidth: 2, borderBottomColor: C.primary },
     subTabLabel: { fontSize: isTablet ? 14 : 12, color: C.text2 },
     subTabLabelActive: { color: C.primary, fontWeight: '700' },
@@ -572,7 +572,7 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     rowBorder: { borderBottomWidth: 1, borderBottomColor: C.border },
     colH: { flex: 1, fontSize: isTablet ? 13 : 11, fontWeight: '600', color: C.text3, textAlign: 'center' },
     cell: { flex: 1, fontSize: isTablet ? 13 : 12, fontWeight: '600', color: C.text2, textAlign: 'center' },
-    heatBar: { height: 8, borderRadius: 4 },
+    heatBar: { height: 8, borderRadius: 4, maxWidth: 24 },
     rrSummary: { backgroundColor: C.card, borderRadius: 14, overflow: 'hidden', borderWidth: 1, borderColor: C.border, marginBottom: 16 },
     rrItem: { paddingHorizontal: 16, paddingVertical: 16 },
     rrLabel: { fontSize: 12, color: C.text2, marginBottom: 4 },
