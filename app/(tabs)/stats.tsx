@@ -547,7 +547,9 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     subTab: { paddingHorizontal: isTablet ? 20 : 16, paddingVertical: 12, alignItems: 'center', justifyContent: 'center' },
     subTabActive: { borderBottomWidth: 2, borderBottomColor: C.primary },
     subTabLabel: { fontSize: isTablet ? 14 : 12, color: C.text2 },
-    subTabLabelActive: { color: C.primary, fontWeight: '700' },
+    // fontWeight:'700'（太字）だと画数の多い漢字が小さいサイズで潰れて見えるため、
+    // 選択状態は色と下線のみで示し、太さは変えない
+    subTabLabelActive: { color: C.primary },
     scroll: { padding: ph, paddingBottom: 40 },
     empty: { alignItems: 'center', paddingTop: 60 },
     emptyHint: { alignItems: 'center', paddingTop: 40, gap: 12 },

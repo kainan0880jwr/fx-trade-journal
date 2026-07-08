@@ -621,7 +621,9 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     subTab: { paddingHorizontal: isTablet ? 18 : 14, paddingVertical: 12, alignItems: 'center', justifyContent: 'center' },
     subTabActive: { borderBottomWidth: 2, borderBottomColor: C.primary },
     subTabLabel: { fontSize: isTablet ? 15 : 13, color: C.text, fontWeight: '500' },
-    subTabLabelActive: { color: C.primary, fontWeight: '700' },
+    // fontWeight:'700'（太字）だと画数の多い漢字（「勝敗」等）が小さいサイズで潰れて見えるため、
+    // 選択状態は色と下線のみで示し、太さは変えない
+    subTabLabelActive: { color: C.primary },
 
     weekCard: { backgroundColor: C.card, borderRadius: 14, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: C.border },
     weekHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
