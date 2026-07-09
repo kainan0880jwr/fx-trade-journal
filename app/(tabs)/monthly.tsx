@@ -141,22 +141,25 @@ export default function MonthlyScreen() {
         </View>
       )}
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.subTabBar}
-        contentContainerStyle={styles.subTabBarContent}
-      >
-        {SUB_TABS().map(tab => (
-          <TouchableOpacity
-            key={tab}
-            style={[styles.subTab, activeTab === tab && styles.subTabActive]}
-            onPress={() => setActiveTab(tab)}
-          >
-            <Text style={[styles.subTabLabel, activeTab === tab && styles.subTabLabelActive]}>{tab}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      <View style={styles.subTabBar}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ flex: 1 }}
+          contentContainerStyle={styles.subTabBarContent}
+        >
+          {SUB_TABS().map(tab => (
+            <TouchableOpacity
+              key={tab}
+              style={styles.subTab}
+              onPress={() => setActiveTab(tab)}
+            >
+              <Text style={[styles.subTabLabel, activeTab === tab && styles.subTabLabelActive]}>{tab}</Text>
+              {activeTab === tab && <View style={styles.subTabUnderline} />}
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
 
       {!isPremium && (activeTab === t('monthly_weekly') || activeTab === t('monthly_insights')) ? (
         <PremiumGate feature={activeTab}><View /></PremiumGate>
@@ -614,12 +617,16 @@ function makeStyles(C: ThemeColors, isTablet = false) {
   const ph = isTablet ? 20 : 16;
   return StyleSheet.create({
     container: { flex: 1, backgroundColor: C.bg },
+    // heightを指定しないとScrollViewが縦に無制限へ広がり、中身が中央寄せされて
+    // 上下に大きな空白ができてしまうため、明示的な高さで確定させる
     subTabBar: {
-      backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border,
+      height: isTablet ? 56 : 48, backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border,
     },
     subTabBarContent: { flexDirection: 'row', alignItems: 'center' },
+    // 下線をborderにすると選択中タブだけ2px高さが増えて文字位置がずれるため、
+    // 高さに影響しないabsolute配置の下線に変更
     subTab: { paddingHorizontal: isTablet ? 18 : 14, paddingVertical: 12, alignItems: 'center', justifyContent: 'center' },
-    subTabActive: { borderBottomWidth: 2, borderBottomColor: C.primary },
+    subTabUnderline: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 2, backgroundColor: C.primary },
     subTabLabel: { fontSize: isTablet ? 15 : 13, color: C.text, fontWeight: '500' },
     // fontWeight:'700'（太字）だと画数の多い漢字（「勝敗」等）が小さいサイズで潰れて見えるため、
     // 選択状態は色と下線のみで示し、太さは変えない
