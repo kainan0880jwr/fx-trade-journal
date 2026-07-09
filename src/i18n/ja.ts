@@ -7,6 +7,7 @@ export const ja = {
   tab_analysis: '分析',
   tab_yearly: '年間',
   tab_saved: '保存済み',
+  tab_settings: '設定',
   period_monthly: '月次',
   period_yearly: '年間',
 

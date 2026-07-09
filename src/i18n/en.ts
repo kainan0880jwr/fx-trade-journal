@@ -9,6 +9,7 @@ export const en: LangStrings = {
   tab_analysis: 'Analysis',
   tab_yearly: 'Yearly',
   tab_saved: 'Saved',
+  tab_settings: 'Settings',
   period_monthly: 'Monthly',
   period_yearly: 'Yearly',
 
