@@ -28,49 +28,6 @@ import type { CurrencyPair, AppSettings } from '../../src/types';
 
 type ThemeMode = AppSettings['themeMode'];
 
-// ──────────────────────────────────────────────────────────────────
-// アフィリエイトブローカー一覧
-// TODO: 各社のアフィリエイトプログラムに登録後、url を自分の紹介リンクに書き換えてください
-// ──────────────────────────────────────────────────────────────────
-const BROKERS = [
-  {
-    id: 'gmo',
-    emoji: '🟩',
-    name: 'GMOクリック証券',
-    tagline: '業界最狭スプレッド・国内FX取引高No.1',
-    badges: ['スプレッド最狭', 'スマホ取引充実'],
-    // TODO: アフィリエイトURL に置き換える
-    url: 'https://www.gmo-click.com/lp/fx3/a/',
-  },
-  {
-    id: 'dmm',
-    emoji: '⬛',
-    name: 'DMM FX',
-    tagline: '豪華キャッシュバック・シンプルな取引画面',
-    badges: ['キャッシュバックあり', '初心者向け'],
-    // TODO: アフィリエイトURL に置き換える
-    url: 'https://fx.dmm.com/lp/01/',
-  },
-  {
-    id: 'sbi',
-    emoji: '🟦',
-    name: 'SBI FXトレード',
-    tagline: 'SBIグループ・1通貨から取引可能',
-    badges: ['1通貨から', '安心の大手証券'],
-    // TODO: アフィリエイトURL に置き換える
-    url: 'https://www.sbifxt.co.jp/',
-  },
-  {
-    id: 'gaitame',
-    emoji: '🟧',
-    name: '外為どっとコム',
-    tagline: '老舗FX会社・情報ツールが充実',
-    badges: ['分析ツール豊富', '老舗で安心'],
-    // TODO: アフィリエイトURL に置き換える
-    url: 'https://www.gaitame.com/fx/',
-  },
-] as const;
-
 export default function SettingsScreen() {
   const C = useTheme();
   const styles = makeStyles(C);
@@ -846,42 +803,6 @@ export default function SettingsScreen() {
           ))}
         </View>
 
-        {/* おすすめFX口座（アフィリエイト） */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, marginBottom: 6, gap: 8 }}>
-          <Text style={{ fontSize: 13, fontWeight: '700', color: C.text2 }}>{t('affiliate_section')}</Text>
-          <View style={{ backgroundColor: '#888', borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2 }}>
-            <Text style={{ fontSize: 10, fontWeight: '700', color: '#FFF', letterSpacing: 0.5 }}>広告</Text>
-          </View>
-        </View>
-        <Text style={styles.affiliateNote}>{t('affiliate_note')}</Text>
-        {BROKERS.map(broker => (
-          <View key={broker.id} style={styles.affiliateCard}>
-            <View style={styles.affiliateHeader}>
-              <Text style={styles.affiliateEmoji}>{broker.emoji}</Text>
-              <View style={styles.affiliateInfo}>
-                <Text style={styles.affiliateName}>{broker.name}</Text>
-                <Text style={styles.affiliateTagline}>{broker.tagline}</Text>
-              </View>
-            </View>
-            <View style={styles.affiliateBadges}>
-              {broker.badges.map(badge => (
-                <View key={badge} style={styles.affiliateBadge}>
-                  <Text style={styles.affiliateBadgeText}>{badge}</Text>
-                </View>
-              ))}
-            </View>
-            <TouchableOpacity
-              style={styles.affiliateBtn}
-              onPress={() => Linking.openURL(broker.url)}
-              activeOpacity={0.8}
-            >
-              <Ionicons name="open-outline" size={14} color="#FFF" style={{ marginRight: 6 }} />
-              <Text style={styles.affiliateBtnText}>{t('affiliate_open_btn')}</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-        <Text style={styles.affiliateDisclaimer}>{t('affiliate_disclaimer')}</Text>
-
         {/* サポート・法的情報 */}
         <SectionTitle>{t('settings_about')}</SectionTitle>
         <View style={styles.listCard}>
@@ -1000,51 +921,6 @@ function makeStyles(C: ThemeColors) {
     backupBtnTitle: { fontSize: 14, fontWeight: '600', color: C.text },
     backupBtnSub: { fontSize: 12, color: C.text2, marginTop: 2 },
     backupSep: { height: 1, backgroundColor: C.border },
-    // アフィリエイト
-    affiliateNote: {
-      fontSize: 12, color: C.text3, marginBottom: 10, lineHeight: 18,
-    },
-    affiliateCard: {
-      backgroundColor: C.card,
-      borderRadius: 14, padding: 16,
-      borderWidth: 1, borderColor: C.border,
-      marginBottom: 10,
-    },
-    affiliateHeader: {
-      flexDirection: 'row', alignItems: 'flex-start', marginBottom: 10,
-    },
-    affiliateEmoji: {
-      fontSize: 28, marginRight: 12, lineHeight: 36,
-    },
-    affiliateInfo: { flex: 1 },
-    affiliateName: {
-      fontSize: 15, fontWeight: '800', color: C.text, marginBottom: 3,
-    },
-    affiliateTagline: {
-      fontSize: 12, color: C.text2, lineHeight: 18,
-    },
-    affiliateBadges: {
-      flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 12,
-    },
-    affiliateBadge: {
-      backgroundColor: C.primary + '20',
-      borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4,
-      borderWidth: 1, borderColor: C.primary + '40',
-    },
-    affiliateBadgeText: {
-      fontSize: 11, fontWeight: '600', color: C.primary,
-    },
-    affiliateBtn: {
-      flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-      backgroundColor: C.primary,
-      borderRadius: 10, paddingVertical: 11,
-    },
-    affiliateBtnText: {
-      fontSize: 13, fontWeight: '800', color: '#FFF',
-    },
-    affiliateDisclaimer: {
-      fontSize: 10, color: C.text3, lineHeight: 16, marginBottom: 8,
-    },
     // テーマ切り替え
     themeRow: { flexDirection: 'row', gap: 8, marginTop: 8 },
     themeSeg: {
