@@ -6,6 +6,7 @@ import Purchases, {
   type PurchasesOfferings,
   type PurchasesError,
   LOG_LEVEL,
+  PURCHASES_ERROR_CODE,
 } from 'react-native-purchases';
 
 const RC_API_KEY = Platform.OS === 'ios'
@@ -17,16 +18,29 @@ const ENTITLEMENT_ID = 'premium';
 // プレースホルダー（appl_xxxx.../goog_xxxx...）を含む未設定キーを弾く
 const isPlaceholderKey = (key: string) => !key || /xxxx/i.test(key);
 
+// 'success'      = 購入成功・プレミアム有効化まで完了
+// 'pending'      = 承認待ち（Ask to Buy等）。エンタイトルメントは未確定
+// 'no_entitlement' = 決済自体は成功したがエンタイトルメントが付与されていない（RevenueCat設定不備等）
+// 'cancelled'    = ユーザーによるキャンセル
+// 'error'        = 通信・SDKエラー
+export type PurchaseResult = 'success' | 'pending' | 'no_entitlement' | 'cancelled' | 'error';
+// 'success'        = 復元成功（プレミアム有効）
+// 'no_entitlement' = 復元処理は成功したが有効なエンタイトルメントがない（未購入・期限切れ等）
+// 'error'          = 通信・SDKエラー
+export type RestoreResult = 'success' | 'no_entitlement' | 'error';
+
 interface PurchaseStore {
   isPremium: boolean;
   isInitialized: boolean;
+  // configure()が成功したかどうか。falseのままgetOfferings等を呼んでも常に失敗するため、
+  // 呼び出し側でリトライ導線を出し分けるために公開する
+  isConfigured: boolean;
 
   initialize: () => void;
   checkPremium: () => Promise<void>;
   getOfferings: () => Promise<PurchasesOfferings | null>;
-  purchase: (pkg: PurchasesPackage) => Promise<boolean | null>; // null = user cancelled
-  // true = 復元成功（プレミアム有効） / false = 復元処理は成功したが対象なし / null = 通信等のエラー
-  restore: () => Promise<boolean | null>;
+  purchase: (pkg: PurchasesPackage) => Promise<PurchaseResult>;
+  restore: () => Promise<RestoreResult>;
 }
 
 function hasPremium(info: CustomerInfo): boolean {
@@ -34,12 +48,14 @@ function hasPremium(info: CustomerInfo): boolean {
 }
 
 // StrictModeの二重マウントやuseEffectの多重発火でも configure/リスナー登録が
-// 一度しか実行されないようにするモジュールレベルのガード
+// 一度しか実行されないようにするモジュールレベルのガード。
+// configure()自体が失敗した場合は再試行できるようfalseに戻す。
 let hasStartedInit = false;
 
-export const usePurchaseStore = create<PurchaseStore>((set) => ({
+export const usePurchaseStore = create<PurchaseStore>((set, get) => ({
   isPremium: false,
   isInitialized: false,
+  isConfigured: false,
 
   initialize: () => {
     if (hasStartedInit) return;
@@ -55,9 +71,12 @@ export const usePurchaseStore = create<PurchaseStore>((set) => ({
       if (__DEV__) Purchases.setLogLevel(LOG_LEVEL.DEBUG);
       Purchases.configure({ apiKey: RC_API_KEY });
     } catch {
+      hasStartedInit = false; // 一時的なエラーの可能性があるため再初期化できるようにする
       set({ isInitialized: true });
       return;
     }
+
+    set({ isConfigured: true });
 
     // 起動をブロックしないよう非同期で購入状態を取得
     Purchases.getCustomerInfo()
@@ -71,6 +90,7 @@ export const usePurchaseStore = create<PurchaseStore>((set) => ({
   },
 
   checkPremium: async () => {
+    if (!get().isConfigured) return;
     try {
       const info = await Purchases.getCustomerInfo();
       set({ isPremium: hasPremium(info) });
@@ -80,6 +100,7 @@ export const usePurchaseStore = create<PurchaseStore>((set) => ({
   },
 
   getOfferings: async () => {
+    if (!get().isConfigured) return null;
     try {
       return await Purchases.getOfferings();
     } catch {
@@ -88,25 +109,29 @@ export const usePurchaseStore = create<PurchaseStore>((set) => ({
   },
 
   purchase: async (pkg: PurchasesPackage) => {
+    if (!get().isConfigured) return 'error';
     try {
       const { customerInfo } = await Purchases.purchasePackage(pkg);
       const premium = hasPremium(customerInfo);
       set({ isPremium: premium });
-      return premium;
+      return premium ? 'success' : 'no_entitlement';
     } catch (e) {
-      if ((e as PurchasesError)?.userCancelled === true) return null;
-      return false;
+      const err = e as PurchasesError;
+      if (err?.userCancelled === true) return 'cancelled';
+      if (err?.code === PURCHASES_ERROR_CODE.PAYMENT_PENDING_ERROR) return 'pending';
+      return 'error';
     }
   },
 
   restore: async () => {
+    if (!get().isConfigured) return 'error';
     try {
       const info = await Purchases.restorePurchases();
       const premium = hasPremium(info);
       set({ isPremium: premium });
-      return premium; // true = 復元成功 / false = 復元対象なし（正常応答）
+      return premium ? 'success' : 'no_entitlement';
     } catch {
-      return null; // 通信・SDKエラー
+      return 'error';
     }
   },
 }));

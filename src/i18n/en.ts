@@ -386,7 +386,7 @@ export const en: LangStrings = {
   // Premium / Purchases
   premium_badge: 'PREMIUM',
   premium_title: 'FX Trade Log Premium',
-  premium_desc: 'Level up your trading with advanced analytics',
+  premium_desc: 'In-depth analytics to review your trades from every angle',
   premium_monthly: 'Monthly',
   premium_yearly: 'Yearly',
   premium_lifetime: 'Lifetime',
@@ -428,19 +428,23 @@ export const en: LangStrings = {
   a11y_open_calendar: 'Open calendar',
 
   // Paywall features (compact list)
-  paywall_feature_analytics: 'All analysis tabs (time, R:R, equity, etc.)',
+  paywall_feature_analytics: 'All analysis tabs (time of day, risk/reward ratio, equity curve, etc.)',
   paywall_feature_insights: 'Monthly insights, weekly stats & yearly report',
   paywall_feature_images: 'Attach up to 3 chart images per trade',
-  paywall_feature_mental: 'Mental state, multi-TF notes & rule checks',
+  paywall_feature_mental: 'Mental state log, multi-timeframe (MTF) notes & rule-compliance checks',
   paywall_feature_extras: 'Bookmarks, badges, lot calculator & watermark-free sharing',
   paywall_per_month: '/mo',
   paywall_legal_charge: 'Payment charged to your {store} account.',
   paywall_legal_renewal_ios: 'Subscription auto-renews unless cancelled 24 hours before the end of each period.',
   paywall_legal_renewal_android: 'Subscription auto-renews unless cancelled before the next renewal date.',
   paywall_trial_disclaimer: 'After the free trial ends, you will automatically be charged for the plan you selected unless you cancel first.',
+  paywall_manage_subscription: 'Manage or cancel your subscription',
   paywall_disclaimer: 'The analysis features in this app are not investment advice or a solicitation for any specific financial product.',
   paywall_best_badge: 'BEST VALUE',
-  paywall_trial_suffix: 'free trial',
+  paywall_trial_day: '{n}-Day Free Trial',
+  paywall_trial_week: '{n}-Week Free Trial',
+  paywall_trial_month: '{n}-Month Free Trial',
+  paywall_trial_year: '{n}-Year Free Trial',
   paywall_discount_badge: 'Save {pct}% vs monthly',
 
   // Form (dehard-coded)
@@ -454,6 +458,10 @@ export const en: LangStrings = {
   purchase_success_title: 'Thank you!',
   purchase_success_msg: 'Your Premium plan is now active.',
   purchase_fail_msg: 'Could not complete purchase. Please try again.',
+  purchase_pending_title: 'Pending Approval',
+  purchase_pending_msg: 'Your purchase is awaiting approval. Premium will activate automatically once approved.',
+  purchase_no_entitlement_title: 'Purchase Not Confirmed',
+  purchase_no_entitlement_msg: 'Payment completed, but we could not confirm your Premium access. Try "Restore Purchases" or check again shortly.',
   restore_success_title: 'Restored',
   restore_success_msg: 'Your Premium plan has been restored.',
   restore_fail_title: 'Not Found',
@@ -506,10 +514,4 @@ export const en: LangStrings = {
   backup_import_error: 'Failed to read backup. Please select a valid backup file',
   backup_exporting: 'Creating backup...',
   backup_importing: 'Restoring...',
-
-  // Recommended FX Brokers (Affiliate)
-  affiliate_section: '[Ad] Recommended FX Brokers',
-  affiliate_note: '* The following section contains affiliate advertising. We may receive compensation for account openings.',
-  affiliate_open_btn: 'Details & Open Account (PR)',
-  affiliate_disclaimer: 'Please check each broker\'s official site for terms, spreads, and risks. FX trading involves risk of loss.',
 };

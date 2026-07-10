@@ -384,7 +384,7 @@ export const ja = {
   // プレミアム・課金
   premium_badge: 'PREMIUM',
   premium_title: 'FXトレードログ プレミアム',
-  premium_desc: '本格分析で勝ちトレードを増やす',
+  premium_desc: '取引を多角的に振り返れる本格分析機能',
   premium_monthly: '月払い',
   premium_yearly: '年払い',
   premium_lifetime: '買い切り',
@@ -426,19 +426,23 @@ export const ja = {
   a11y_open_calendar: 'カレンダーを開く',
 
   // ペイウォール機能リスト（圧縮版）
-  paywall_feature_analytics: '全分析タブ（時間帯・RR・エクイティ等）',
+  paywall_feature_analytics: '全分析タブ（時間帯別・リスクリワード比・資産推移など）',
   paywall_feature_insights: '月次インサイト・週次集計・年間レポート',
   paywall_feature_images: 'チャート画像3枚添付',
-  paywall_feature_mental: 'メンタル・MTFメモ・ルール遵守チェック',
+  paywall_feature_mental: 'メンタル記録・マルチタイムフレーム(MTF)メモ・ルール遵守チェック',
   paywall_feature_extras: 'ブックマーク・バッジ・ロット計算機・シェア画像の透かし除去',
   paywall_per_month: '/月',
   paywall_legal_charge: '購入は{store}アカウントに課金されます。',
   paywall_legal_renewal_ios: 'サブスクリプションは期間終了の24時間前までに解約しない限り自動更新されます。',
   paywall_legal_renewal_android: 'サブスクリプションは次回更新日より前に解約しない限り自動更新されます。',
   paywall_trial_disclaimer: '無料トライアル期間終了後は、自動的に有料プランへ移行し選択したプラン料金が課金されます。',
+  paywall_manage_subscription: 'サブスクリプションの管理・解約はこちら',
   paywall_disclaimer: '本アプリの分析機能は投資助言・特定の金融商品の勧誘を目的とするものではありません。',
   paywall_best_badge: 'おすすめ',
-  paywall_trial_suffix: '無料トライアルあり',
+  paywall_trial_day: '{n}日間無料トライアル',
+  paywall_trial_week: '{n}週間無料トライアル',
+  paywall_trial_month: '{n}ヶ月間無料トライアル',
+  paywall_trial_year: '{n}年間無料トライアル',
   paywall_discount_badge: '月払いより{pct}%お得',
 
   // フォーム（ハードコード解消）
@@ -452,6 +456,10 @@ export const ja = {
   purchase_success_title: 'ありがとうございます！',
   purchase_success_msg: 'プレミアムプランが有効になりました。',
   purchase_fail_msg: '購入を完了できませんでした。もう一度お試しください。',
+  purchase_pending_title: '承認待ちです',
+  purchase_pending_msg: '購入の承認をお待ちしています。承認が完了すると自動でプレミアムが有効になります。',
+  purchase_no_entitlement_title: '購入を確認できませんでした',
+  purchase_no_entitlement_msg: '決済は完了しましたが、プレミアムの反映が確認できませんでした。「購入を復元」をお試しいただくか、しばらくしてから再度ご確認ください。',
   restore_success_title: '復元完了',
   restore_success_msg: 'プレミアムプランを復元しました。',
   restore_fail_title: '復元できませんでした',
@@ -504,12 +512,6 @@ export const ja = {
   backup_import_error: '読み込みに失敗しました。有効なバックアップファイルを選択してください',
   backup_exporting: 'バックアップを作成中...',
   backup_importing: '復元中...',
-
-  // おすすめFX口座（アフィリエイト）
-  affiliate_section: '【広告】おすすめFX口座',
-  affiliate_note: '※ 以下はアフィリエイト広告を含みます。口座開設による報酬を受け取る場合があります。',
-  affiliate_open_btn: '詳細・口座開設（PR）',
-  affiliate_disclaimer: '各口座の条件・スプレッド・リスクは各社公式サイトでご確認ください。FX取引は元本割れのリスクがあります。',
 };
 
 export type LangStrings = typeof ja;

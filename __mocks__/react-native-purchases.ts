@@ -28,6 +28,12 @@ export enum INTRO_ELIGIBILITY_STATUS {
   INTRO_ELIGIBILITY_STATUS_NO_INTRO_OFFER_EXISTS = 3,
 }
 
+export enum PURCHASES_ERROR_CODE {
+  UNKNOWN_ERROR = '0',
+  PURCHASE_CANCELLED_ERROR = '1',
+  PAYMENT_PENDING_ERROR = '20',
+}
+
 const Purchases = {
   configure: jest.fn(),
   setLogLevel: jest.fn(),
