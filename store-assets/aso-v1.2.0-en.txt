@@ -1,0 +1,164 @@
+================================================================
+ ASO Content Sheet (English / en-US locale) — FX Trade Journal v1.2.0
+ Paste this into App Store Connect when creating the English localization.
+ Prepared 2026-07-14. Requires a new app version to publish (see notes).
+================================================================
+
+【Legend】
+・★ = App Store Connect field name
+・Character limits per Apple's official rules (spaces count as characters)
+
+================================================================
+★ Name (30 characters max)
+================================================================
+
+FX Trade Journal - Trading Log
+
+(30 characters, at the limit. Includes "Trading Log" so it also indexes
+ for that phrase without using up Keywords field space.)
+
+================================================================
+★ Subtitle (30 characters max)
+================================================================
+
+Win Rate, Pips, MT4/MT5 Import
+
+(30 characters, at the limit.)
+
+================================================================
+★ Keywords (100 characters max, comma-separated, no spaces after commas)
+================================================================
+
+forex,diary,tracker,stats,broker,scalping,day trading,swing trading,risk management,csv,pnl,lot
+
+(95 characters. Words already in Name/Subtitle — FX, Trade, Journal,
+ Trading, Log, Win, Rate, Pips, MT4, MT5, Import — are auto-indexed by
+ Apple and intentionally excluded here to avoid wasting characters.)
+
+================================================================
+★ Promotional Text (170 characters max, no review required, edit anytime)
+================================================================
+
+v1.2.0 is here! MT4/MT5 CSV import, shareable stats cards, and deeper analytics. Go PRO to remove watermarks and unlock full analytics. Start your trading journal today.
+
+(169 characters)
+
+================================================================
+★ Description (4000 characters max)
+================================================================
+
+📊 Turn your trading history into real improvement
+
+Whether you're new to forex or you've been trading for years, keeping a
+trading journal is one of the fastest ways to raise your win rate.
+FX Trade Journal is a serious trade-tracking app built for traders who
+want to actually learn from their history — including direct MT4/MT5
+trade history import.
+
+━━━━━━━━━━━━━━━━
+■ Log
+━━━━━━━━━━━━━━━━
+
+・Log a trade in one tap: currency pair, entry price, lot size, P/L, and pips
+・Attach chart screenshots to any trade
+・Add notes and tags for easy review later
+・Bulk-import your MT4 / MT5 trade history CSV (new)
+
+━━━━━━━━━━━━━━━━
+■ Analyze
+━━━━━━━━━━━━━━━━
+
+・Monthly dashboard auto-calculates win rate, pips, profit factor, and P/L
+・Weekly, per-pair, and time-of-day performance breakdowns
+・Daily streak tracking to keep your recording habit alive
+
+━━━━━━━━━━━━━━━━
+■ Share
+━━━━━━━━━━━━━━━━
+
+・Turn your monthly results into a clean, shareable stats card (X, Instagram, and more)
+・PRO removes the watermark for a fully clean design
+
+━━━━━━━━━━━━━━━━
+■ Who it's for
+━━━━━━━━━━━━━━━━
+
+・Traders just starting out who want to build a recording habit
+・MT4/MT5 users tired of manual spreadsheet tracking
+・Anyone who wants a monthly view of their win rate and pips
+・Traders who like sharing their results on social media
+・Anyone who wants a trading journal that lives entirely on their phone
+
+━━━━━━━━━━━━━━━━
+■ FX Trade Journal PRO
+━━━━━━━━━━━━━━━━
+
+A monthly or annual subscription unlocks the premium tier:
+
+・Weekly and deep-dive insight analytics
+・Watermark-free share cards
+・Premium-only detailed statistics
+・All future premium features
+
+Pricing is shown on the purchase confirmation screen.
+Subscriptions can be cancelled anytime from your device's Settings app.
+
+━━━━━━━━━━━━━━━━
+■ About your data
+━━━━━━━━━━━━━━━━
+
+・All data is stored locally on your device
+・No cloud sync required, no internet connection needed to use the app
+・Built with a privacy-first design
+
+━━━━━━━━━━━━━━━━
+■ Supported brokers / platforms
+━━━━━━━━━━━━━━━━
+
+Any broker that lets you export MT4/MT5-format trade history CSV works
+with the app. Manual entry is fully supported too, for any broker or
+platform.
+
+━━━━━━━━━━━━━━━━
+■ Feedback & Support
+━━━━━━━━━━━━━━━━
+
+Reach us anytime via Settings → Contact Us in the app.
+We'd love to hear what features you want next.
+
+#forex #trading #tradingjournal #forexjournal #MT4 #MT5 #daytrading #winrate
+
+================================================================
+★ What's New — see store-assets/whats-new-v1.2.0.txt (English section
+  already prepared there)
+================================================================
+
+================================================================
+ Notes for whoever publishes this
+================================================================
+
+1. This locale does not exist yet in App Store Connect. Adding it
+   requires creating a NEW app version (the current v1.2.0 is already
+   approved/live and its metadata is locked — see project memory
+   "App Store Connectの仕様上の制約"). Bundle this with the next
+   feature-update release.
+2. Screenshots must be re-captured with the app's language set to
+   English (src/i18n/en.ts is already implemented, so this is just a
+   matter of switching the device/simulator language before shooting).
+3. Legal pages are ready at:
+   - privacy-policy-en.html
+   - terms-en.html
+   - support-en.html
+   These need to be deployed to the same host as the Japanese versions
+   (GitHub Pages) and linked from the English App Store Connect listing
+   (Support URL / Privacy Policy URL fields) before submission.
+4. IMPORTANT: privacy-policy.html (Japanese) currently states the app is
+   "provided targeting users in Japan" (本アプリは日本国内のユーザーを対象として
+   提供しています). This sentence was intentionally omitted from the
+   English version since it directly contradicts a global release —
+   confirm this is the intended direction before publishing.
+5. Pricing: Apple auto-converts JPY tiers to other currencies. Recommend
+   spot-checking that the auto-converted USD/EUR/GBP price points land on
+   sensible psychological price points (e.g. $4.99/$29.99-style endings)
+   before submission — see output/ideas/marketing_strategy_20260714.md
+   section on international pricing.
