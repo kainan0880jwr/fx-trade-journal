@@ -11,7 +11,12 @@ export const ja = {
   period_monthly: '月次',
   period_yearly: '年間',
 
+  // 画面タイトル
+  screen_title_new_trade: 'トレード記録',
+  screen_title_trade_detail: 'トレード詳細',
+
   // 共通
+  other: 'その他',
   all: 'すべて',
   cancel: 'キャンセル',
   delete: '削除',

@@ -323,7 +323,7 @@ export default function NewTradeScreen() {
                     onPress={() => setMode('full')}
                   >
                     <Text style={[styles.chipLabel, !pairs.slice(0, 4).some(p => p.name === pair) && styles.chipLabelActive]}>
-                      その他
+                      {t('other')}
                     </Text>
                   </TouchableOpacity>
                 )}

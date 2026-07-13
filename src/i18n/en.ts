@@ -13,7 +13,12 @@ export const en: LangStrings = {
   period_monthly: 'Monthly',
   period_yearly: 'Yearly',
 
+  // Screen titles
+  screen_title_new_trade: 'Add Trade',
+  screen_title_trade_detail: 'Trade Details',
+
   // Common
+  other: 'Other',
   all: 'All',
   cancel: 'Cancel',
   delete: 'Delete',

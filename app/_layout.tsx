@@ -78,11 +78,11 @@ export default function RootLayout() {
         />
         <Stack.Screen
           name="trade/new"
-          options={{ title: 'トレード記録', presentation: 'modal', headerStyle: { backgroundColor: C.card }, headerTintColor: C.text }}
+          options={{ title: t('screen_title_new_trade'), presentation: 'modal', headerStyle: { backgroundColor: C.card }, headerTintColor: C.text }}
         />
         <Stack.Screen
           name="trade/[id]"
-          options={{ title: 'トレード詳細', presentation: 'modal', headerStyle: { backgroundColor: C.card }, headerTintColor: C.text }}
+          options={{ title: t('screen_title_trade_detail'), presentation: 'modal', headerStyle: { backgroundColor: C.card }, headerTintColor: C.text }}
         />
         <Stack.Screen
           name="paywall"
