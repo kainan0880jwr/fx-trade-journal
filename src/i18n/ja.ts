@@ -85,6 +85,11 @@ export const ja = {
   empty_month: 'この月のトレードはありません',
   empty_month_sub: '下の＋ボタンで記録しましょう',
   add_trade: '記録する',
+
+  // ブックマークタブ
+  bookmarks_title: 'ブックマーク',
+  bookmarks_empty: 'ブックマークしたトレードはありません',
+  bookmarks_empty_sub: 'トレード詳細でブックマーク登録できます',
   calendar_btn: 'カレンダー',
 
   // 月次タブ (monthly)

@@ -15,7 +15,7 @@ import { calcStats } from '../../src/utils/statsCalc';
 import { useTheme } from '../../src/theme/useTheme';
 import { useIsTablet } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
-import { t } from '../../src/i18n';
+import { t, lang } from '../../src/i18n';
 import type { Trade } from '../../src/types';
 
 const STYLE_FILTERS = [
@@ -90,7 +90,7 @@ export default function RecordScreen() {
             <Text style={styles.todayLabel}>TODAY</Text>
           </View>
           <View style={styles.todayRow}>
-            <MiniStat label={t('trades')} numericValue={todayTrades.length > 0 ? todayTrades.length : undefined} suffix="件" isTablet={isTablet} />
+            <MiniStat label={t('trades')} numericValue={todayTrades.length > 0 ? todayTrades.length : undefined} suffix={lang === 'ja' ? '件' : ''} isTablet={isTablet} />
             <View style={styles.miniSep} />
             <MiniStat label={t('win_rate')} numericValue={todayTrades.length > 0 ? todayStats.winRate : undefined} suffix="%" color={todayTrades.length > 0 ? C.primary : undefined} isTablet={isTablet} />
             <View style={styles.miniSep} />

@@ -9,7 +9,7 @@ import TradeCard from '../../src/components/TradeCard';
 import PremiumGate from '../../src/components/PremiumGate';
 import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
-import { t } from '../../src/i18n';
+import { t, lang } from '../../src/i18n';
 import type { Trade } from '../../src/types';
 
 export default function BookmarksScreen() {
@@ -37,13 +37,13 @@ export default function BookmarksScreen() {
           </Animated.View>
         ), [])}
         ListHeaderComponent={
-          <Text style={styles.header}>ブックマーク ({bookmarks.length}件)</Text>
+          <Text style={styles.header}>{t('bookmarks_title')} ({bookmarks.length}{lang === 'ja' ? '件' : ''})</Text>
         }
         ListEmptyComponent={
           <View style={styles.empty}>
             <Ionicons name="bookmark-outline" size={52} color={C.text3} />
-            <Text style={styles.emptyText}>ブックマークしたトレードはありません</Text>
-            <Text style={styles.emptySubText}>トレード詳細でブックマーク登録できます</Text>
+            <Text style={styles.emptyText}>{t('bookmarks_empty')}</Text>
+            <Text style={styles.emptySubText}>{t('bookmarks_empty_sub')}</Text>
           </View>
         }
         contentContainerStyle={bookmarks.length === 0 ? styles.emptyContainer : { paddingBottom: 40 }}

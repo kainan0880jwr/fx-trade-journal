@@ -87,6 +87,11 @@ export const en: LangStrings = {
   empty_month: 'No trades this month',
   empty_month_sub: 'Tap + below to add a trade',
   add_trade: 'Add Trade',
+
+  // Bookmarks tab
+  bookmarks_title: 'Bookmarks',
+  bookmarks_empty: 'No bookmarked trades',
+  bookmarks_empty_sub: 'You can bookmark trades from the trade detail screen',
   calendar_btn: 'Calendar',
 
   // Monthly tab
