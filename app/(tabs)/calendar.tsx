@@ -8,7 +8,7 @@ import MonthSelector from '../../src/components/MonthSelector';
 import { useTheme } from '../../src/theme/useTheme';
 import { useIsTablet } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
-import { t } from '../../src/i18n';
+import { t, lang } from '../../src/i18n';
 import {
   METRICS, CalMetric, buildDayMap, getDayValue, getDayBg, getDayValueColor,
   calcMonthPF, formatPF,
@@ -186,7 +186,7 @@ export default function CalendarScreen() {
                     </Text>
                     {tr.profitLoss != null && (
                       <Text style={[s.tradePL, { color: tr.profitLoss >= 0 ? C.win : C.loss }]}>
-                        {tr.profitLoss >= 0 ? '+' : ''}{Math.round(tr.profitLoss).toLocaleString()}円
+                        {tr.profitLoss >= 0 ? '+' : ''}{Math.round(tr.profitLoss).toLocaleString()}{lang === 'ja' ? '円' : '¥'}
                       </Text>
                     )}
                   </View>

@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../theme/useTheme';
 import type { ThemeColors } from '../theme/colors';
 import type { Trade } from '../types';
-import { t } from '../i18n';
+import { t, lang } from '../i18n';
 import {
   METRICS, CalMetric, buildDayMap, getDayValue, getDayBg, getDayValueColor,
   calcMonthPF, formatPF,
@@ -53,7 +53,7 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
       <SafeAreaView style={s.container}>
         <View style={s.header}>
-          <Text style={s.title}>カレンダー</Text>
+          <Text style={s.title}>{t('calendar_btn')}</Text>
           <TouchableOpacity onPress={onClose} style={s.closeBtn}>
             <Ionicons name="close" size={24} color={C.text} />
           </TouchableOpacity>
@@ -198,7 +198,7 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
                       </Text>
                       {tr.profitLoss != null && (
                         <Text style={[s.tradePL, { color: tr.profitLoss >= 0 ? C.win : C.loss }]}>
-                          {tr.profitLoss >= 0 ? '+' : ''}{Math.round(tr.profitLoss).toLocaleString()}円
+                          {tr.profitLoss >= 0 ? '+' : ''}{Math.round(tr.profitLoss).toLocaleString()}{lang === 'ja' ? '円' : '¥'}
                         </Text>
                       )}
                     </View>

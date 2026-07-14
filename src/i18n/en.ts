@@ -95,6 +95,7 @@ export const en: LangStrings = {
   calendar_btn: 'Calendar',
 
   // Monthly tab
+  insight_disclaimer: '* The following are statistics based on your own trade records. This is not investment advice.',
   monthly_wl: 'W/L',
   monthly_pips_tab: 'Pips',
   monthly_stats: 'Stats',

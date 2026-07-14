@@ -16,7 +16,7 @@ import { useTheme } from '../../src/theme/useTheme';
 import { useIsTablet, useContentWidth } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
 import type { Trade } from '../../src/types';
-import { t, tArr } from '../../src/i18n';
+import { t, tArr, lang } from '../../src/i18n';
 import { Ionicons } from '@expo/vector-icons';
 import { formatPF } from '../../src/utils/calendarMetrics';
 
@@ -211,7 +211,7 @@ export default function MonthlyScreen() {
                   </Text>
                   {stats.totalProfitLoss !== 0 && (
                     <Text style={[styles.bigNumSub, { color: stats.totalProfitLoss >= 0 ? C.win : C.loss }]}>
-                      {stats.totalProfitLoss > 0 ? '+' : ''}{stats.totalProfitLoss.toLocaleString()}円
+                      {stats.totalProfitLoss > 0 ? '+' : ''}{stats.totalProfitLoss.toLocaleString()}{lang === 'ja' ? '円' : '¥'}
                     </Text>
                   )}
                 </View>
@@ -455,7 +455,7 @@ function InsightsTab({ trades, pipsGoal, winRateGoal }: {
   }
   return (
     <>
-      <Text style={styles.insightDisclaimer}>※ 以下はご自身のトレード記録に基づく統計情報です。投資助言ではありません。</Text>
+      <Text style={styles.insightDisclaimer}>{t('insight_disclaimer')}</Text>
       {insights.map(insight => (
         <View key={insight.id} style={[styles.insightCard, { borderLeftColor: INSIGHT_COLORS[insight.type] }]}>
           <View style={styles.insightHeader}>

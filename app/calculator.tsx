@@ -9,7 +9,7 @@ import { useSettingsStore } from '../src/store/settingsStore';
 import PremiumGate from '../src/components/PremiumGate';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
-import { t } from '../src/i18n';
+import { t, lang } from '../src/i18n';
 
 const RISK_PRESETS = ['0.5', '1', '1.5', '2', '3', '5'];
 
@@ -39,14 +39,19 @@ export default function CalculatorScreen() {
 
   if (canCalc) {
     riskAmount = Math.round(bal * risk / 100);
+    const currencySuffix = lang === 'ja' ? '円' : '¥';
     if (isYenPair) {
       const pipValue = lotUnit / 10;
       lotSize = Math.floor((riskAmount / (sl * pipValue)) * 100) / 100;
-      explanation = `損切りpips ${sl}pips × ロット単位${lotUnit}通貨 / 10 = ${sl * pipValue}円/lot`;
+      explanation = lang === 'ja'
+        ? `損切りpips ${sl}pips × ロット単位${lotUnit}通貨 / 10 = ${sl * pipValue}円/lot`
+        : `Stop-loss ${sl}pips × Lot unit ${lotUnit} / 10 = ${sl * pipValue}${currencySuffix}/lot`;
     } else {
       const pipValue = lotUnit * 0.0001 * usd;
       lotSize = Math.floor((riskAmount / (sl * pipValue)) * 100) / 100;
-      explanation = `損切りpips ${sl}pips × ロット単位${lotUnit}通貨 × 0.0001 × USD/JPY${usd} = ${Math.round(sl * pipValue)}円/lot`;
+      explanation = lang === 'ja'
+        ? `損切りpips ${sl}pips × ロット単位${lotUnit}通貨 × 0.0001 × USD/JPY${usd} = ${Math.round(sl * pipValue)}円/lot`
+        : `Stop-loss ${sl}pips × Lot unit ${lotUnit} × 0.0001 × USD/JPY${usd} = ${Math.round(sl * pipValue)}${currencySuffix}/lot`;
     }
     lotSize = Math.max(0.01, lotSize);
   }
