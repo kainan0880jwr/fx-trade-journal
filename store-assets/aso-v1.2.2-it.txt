@@ -1,0 +1,143 @@
+================================================================
+ ASO Content Sheet (Italian / it locale) — FX Trade Log v1.2.2
+ STATUS (2026-07-15): Already entered and saved into App Store Connect
+ v1.2.2 (name/subtitle on App Info page, description/keywords/promo
+ text on the version page). Not yet submitted for App Review.
+================================================================
+
+NOTE: A run of 16 identical "━" box-drawing characters in the
+description field triggers Apple's "invalid character" validation
+error for a newly-added locale (confirmed on German). This Italian
+text never used that character, which is why it saved cleanly on the
+first try. Keep it that way — don't add ━ divider lines if editing.
+
+【凡例 / Legend】
+・★ = App Store Connect field name
+・Character counts verified with python len()
+・NOTE: do NOT append a hashtag list at the end of the description —
+  Apple rejects it at save time with a misleading "invalid character"
+  error. See project memory "App Store Connect 説明文フィールドの罠".
+
+================================================================
+★ Name (30 characters max) — 29 chars
+================================================================
+
+FX Trade Log - Diario Trading
+
+================================================================
+★ Subtitle (30 characters max) — 24 chars
+================================================================
+
+% Vincita, Pips, MT4/MT5
+
+================================================================
+★ Keywords (100 characters max, comma-separated, no spaces after commas) — 98 chars
+================================================================
+
+forex,diario,statistiche,broker,scalping,day trading,swing trading,gestione rischio,csv,pips,lotto
+
+================================================================
+★ Promotional Text (170 characters max, no review required, edit anytime) — 164 chars
+================================================================
+
+Importa CSV MT4/MT5, calcolo automatico di percentuale di vincita e pips, schede risultati condivisibili. PRO rimuove la filigrana. Inizia il tuo diario di trading.
+
+================================================================
+★ Description (4000 characters max)
+================================================================
+
+📊 Trasforma la tua storia di trading in un miglioramento reale
+
+Che tu sia alle prime armi con il forex o faccia trading da anni,
+tenere un diario di trading è uno dei modi più rapidi per aumentare
+la tua percentuale di vincita. FX Trade Log è un'app seria per il
+tracciamento delle operazioni, pensata per i trader che vogliono
+davvero imparare dalla propria storia — con importazione diretta
+dello storico MT4/MT5.
+
+━━━━━━━━━━━━━━━━
+■ Registra
+━━━━━━━━━━━━━━━━
+
+・Registra un'operazione con un tocco: coppia di valute, prezzo di ingresso, dimensione del lotto, P&L e pips
+・Allega screenshot del grafico a qualsiasi operazione
+・Aggiungi note e tag per rivedere facilmente in seguito
+・Importa in blocco lo storico delle operazioni MT4/MT5 in CSV (novità)
+
+━━━━━━━━━━━━━━━━
+■ Analizza
+━━━━━━━━━━━━━━━━
+
+・La dashboard mensile calcola automaticamente percentuale di vincita, pips, profit factor e P&L
+・Analisi delle performance settimanali, per coppia e per fascia oraria
+・Monitoraggio delle serie giornaliere per mantenere viva l'abitudine di registrazione
+
+━━━━━━━━━━━━━━━━
+■ Condividi
+━━━━━━━━━━━━━━━━
+
+・Trasforma i tuoi risultati mensili in una scheda statistiche pulita e condivisibile (X, Instagram e altro)
+・PRO rimuove la filigrana per un design completamente pulito
+
+━━━━━━━━━━━━━━━━
+■ Per chi è pensata
+━━━━━━━━━━━━━━━━
+
+・Trader alle prime armi che vogliono creare l'abitudine di registrare le operazioni
+・Utenti MT4/MT5 stanchi del tracciamento manuale su foglio di calcolo
+・Chiunque voglia monitorare mensilmente la propria percentuale di vincita e i pips
+・Trader a cui piace condividere i propri risultati sui social media
+・Chiunque voglia un diario di trading interamente sullo smartphone
+
+━━━━━━━━━━━━━━━━
+■ FX Trade Log PRO
+━━━━━━━━━━━━━━━━
+
+Un abbonamento mensile o annuale sblocca il livello premium:
+
+・Analisi settimanali e insights approfonditi
+・Schede condivisibili senza filigrana
+・Statistiche dettagliate esclusive Premium
+・Tutte le future funzioni premium
+
+Il prezzo viene mostrato nella schermata di conferma dell'acquisto.
+Gli abbonamenti possono essere annullati in qualsiasi momento dall'app Impostazioni del dispositivo.
+
+━━━━━━━━━━━━━━━━
+■ I tuoi dati
+━━━━━━━━━━━━━━━━
+
+・Tutti i dati sono salvati localmente sul tuo dispositivo
+・Nessuna sincronizzazione cloud necessaria, nessuna connessione internet richiesta per usare l'app
+・Progettata con un approccio privacy-first
+
+━━━━━━━━━━━━━━━━
+■ Broker e piattaforme supportati
+━━━━━━━━━━━━━━━━
+
+Qualsiasi broker che consenta l'esportazione dello storico operazioni
+in formato CSV MT4/MT5 funziona con l'app. È supportato pienamente
+anche l'inserimento manuale, per qualsiasi broker o piattaforma.
+
+━━━━━━━━━━━━━━━━
+■ Feedback e supporto
+━━━━━━━━━━━━━━━━
+
+Contattaci in qualsiasi momento da Impostazioni → Contattaci nell'app.
+Ci farebbe piacere sapere quali funzioni vorresti vedere in futuro.
+
+================================================================
+ Notes for whoever publishes this
+================================================================
+
+1. Requires creating a NEW app version (see header note). Bundle with
+   the next feature-update release, or add as a metadata-only version
+   like v1.2.1 was.
+2. Screenshots: no Italian-language screenshots exist yet. Apple will
+   fall back to the primary locale's (Japanese) or English screenshots
+   for Italian users unless it screenshots are uploaded.
+3. Legal pages: privacy-policy / terms / support pages are only in
+   Japanese and English. No Italian versions exist yet.
+4. Support URL / Marketing URL / Privacy Policy URL fields need to be
+   filled in for this localization (English URLs can be reused as a
+   fallback if no Italian pages are created).

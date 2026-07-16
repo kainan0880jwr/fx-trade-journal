@@ -1,0 +1,142 @@
+================================================================
+ ASO Content Sheet (Spanish / es-ES locale) — FX Trade Log v1.2.2
+ STATUS (2026-07-15): Already entered and saved into App Store Connect
+ v1.2.2 (name/subtitle on App Info page, description/keywords/promo
+ text on the version page). Not yet submitted for App Review.
+================================================================
+
+NOTE: A run of 16 identical "━" box-drawing characters in the
+description field triggers Apple's "invalid character" validation
+error for a newly-added locale (confirmed on German). This Spanish
+text never used that character, which is why it saved cleanly on the
+first try. Keep it that way — don't add ━ divider lines if editing.
+
+【凡例 / Legend】
+・★ = App Store Connect field name
+・Character counts verified with python len()
+・NOTE: do NOT append a hashtag list at the end of the description —
+  Apple rejects it at save time with a misleading "invalid character"
+  error. See project memory "App Store Connect 説明文フィールドの罠".
+
+================================================================
+★ Name (30 characters max) — 29 chars
+================================================================
+
+FX Trade Log - Diario Trading
+
+================================================================
+★ Subtitle (30 characters max) — 30 chars
+================================================================
+
+Tasa de acierto, Pips, MT4/MT5
+
+================================================================
+★ Keywords (100 characters max, comma-separated, no spaces after commas) — 96 chars
+================================================================
+
+forex,diario,estadisticas,broker,scalping,day trading,swing trading,gestion riesgo,csv,pips,lote
+
+================================================================
+★ Promotional Text (170 characters max, no review required, edit anytime) — 170 chars
+================================================================
+
+Importa CSV de MT4/MT5, calcula automáticamente tasa de acierto y pips, tarjetas de resultados para compartir. PRO elimina la marca de agua. Empieza tu diario de trading.
+
+================================================================
+★ Description (4000 characters max)
+================================================================
+
+📊 Convierte tu historial de trading en mejoras reales
+
+Tanto si empiezas en el forex como si llevas años operando, llevar un
+diario de trading es una de las formas más rápidas de mejorar tu tasa
+de acierto. FX Trade Log es una aplicación seria de seguimiento de
+operaciones para traders que quieren aprender de verdad de su
+historial, incluida la importación directa del historial de MT4/MT5.
+
+━━━━━━━━━━━━━━━━
+■ Registrar
+━━━━━━━━━━━━━━━━
+
+・Registra una operación en un toque: par de divisas, precio de entrada, tamaño de lote, G/P y pips
+・Adjunta capturas del gráfico a cualquier operación
+・Añade notas y etiquetas para revisar fácilmente más tarde
+・Importa en bloque tu historial de operaciones de MT4/MT5 en CSV (nuevo)
+
+━━━━━━━━━━━━━━━━
+■ Analizar
+━━━━━━━━━━━━━━━━
+
+・El panel mensual calcula automáticamente tasa de acierto, pips, factor de beneficio y G/P
+・Análisis de rendimiento semanal, por par y por hora del día
+・Seguimiento de rachas diarias para mantener tu hábito de registro
+
+━━━━━━━━━━━━━━━━
+■ Compartir
+━━━━━━━━━━━━━━━━
+
+・Convierte tus resultados mensuales en una tarjeta de estadísticas limpia y compartible (X, Instagram, etc.)
+・PRO elimina la marca de agua para un diseño totalmente limpio
+
+━━━━━━━━━━━━━━━━
+■ Para quién es
+━━━━━━━━━━━━━━━━
+
+・Traders que empiezan y quieren crear el hábito de registrar sus operaciones
+・Usuarios de MT4/MT5 cansados del seguimiento manual en hojas de cálculo
+・Cualquiera que quiera revisar mensualmente su tasa de acierto y sus pips
+・Traders a los que les gusta compartir sus resultados en redes sociales
+・Cualquiera que quiera un diario de trading completamente en su móvil
+
+━━━━━━━━━━━━━━━━
+■ FX Trade Log PRO
+━━━━━━━━━━━━━━━━
+
+Una suscripción mensual o anual desbloquea el nivel premium:
+
+・Análisis semanal e insights en profundidad
+・Tarjetas para compartir sin marca de agua
+・Estadísticas detalladas exclusivas de Premium
+・Todas las futuras funciones premium
+
+El precio se muestra en la pantalla de confirmación de compra.
+Las suscripciones se pueden cancelar en cualquier momento desde la app Ajustes de tu dispositivo.
+
+━━━━━━━━━━━━━━━━
+■ Sobre tus datos
+━━━━━━━━━━━━━━━━
+
+・Todos los datos se almacenan localmente en tu dispositivo
+・No se requiere sincronización en la nube ni conexión a internet para usar la app
+・Diseñada con un enfoque centrado en la privacidad
+
+━━━━━━━━━━━━━━━━
+■ Brokers y plataformas compatibles
+━━━━━━━━━━━━━━━━
+
+Cualquier broker que permita exportar el historial de operaciones en
+formato CSV de MT4/MT5 funciona con la app. La entrada manual también
+es totalmente compatible, para cualquier broker o plataforma.
+
+━━━━━━━━━━━━━━━━
+■ Comentarios y soporte
+━━━━━━━━━━━━━━━━
+
+Contáctanos en cualquier momento desde Ajustes → Contáctanos en la app.
+Nos encantaría saber qué funciones te gustaría ver a continuación.
+
+================================================================
+ Notes for whoever publishes this
+================================================================
+
+1. Requires creating a NEW app version (see header note). Bundle with
+   the next feature-update release, or add as a metadata-only version
+   like v1.2.1 was.
+2. Screenshots: no Spanish-language screenshots exist yet. Apple will
+   fall back to the primary locale's (Japanese) or English screenshots
+   for Spanish users unless es-ES screenshots are uploaded.
+3. Legal pages: privacy-policy / terms / support pages are only in
+   Japanese and English. No Spanish versions exist yet.
+4. Support URL / Marketing URL / Privacy Policy URL fields need to be
+   filled in for this localization (English URLs can be reused as a
+   fallback if no Spanish pages are created).

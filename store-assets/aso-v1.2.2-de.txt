@@ -1,0 +1,137 @@
+================================================================
+ ASO Content Sheet (German / de-DE locale) — FX Trade Log v1.2.2
+ STATUS (2026-07-15): Already entered and saved into App Store Connect
+ v1.2.2 (name/subtitle on App Info page, description/keywords/promo
+ text on the version page). Not yet submitted for App Review.
+================================================================
+
+★★★ IMPORTANT — repeated-character validation bug (new finding) ★★★
+A run of 16 identical "━" (U+2501) box-drawing characters in the
+description field triggers Apple's "このフィールドには1つ以上の無効な
+文字が含まれています" (invalid character) error for a NEWLY-added
+locale — even though the same pattern already exists successfully in
+the live JA/EN description of this exact app. Confirmed via bisection
+(removing the ━━━━━━━━━━━━━━━━ divider lines fixed the save; nothing
+else needed to change, umlauts/■/・/emoji are all fine). The actual
+saved German description below uses "■ Heading" alone with NO ━ divider
+lines and NO emoji, for this reason. Apply the same fix to any other
+locale being added for the first time.
+
+【凡例 / Legend】
+・★ = App Store Connect field name
+・Character counts verified with python len() — spaces count as characters
+・NOTE: do NOT append a hashtag list at the end of the description.
+  A prior attempt (v1.2.1, Japanese) showed Apple rejects hashtag
+  lists at save time with a misleading "invalid character" error.
+  See project memory "App Store Connect 説明文フィールドの罠".
+
+================================================================
+★ Name (30 characters max) — 30 chars
+================================================================
+
+FX Trade Log - Handelstagebuch
+
+================================================================
+★ Subtitle (30 characters max) — 26 chars
+================================================================
+
+Gewinnrate & Pips, MT4/MT5
+
+================================================================
+★ Keywords (100 characters max, comma-separated, no spaces after commas) — 99 chars
+================================================================
+
+forex,tagebuch,handelsjournal,statistik,broker,scalping,daytrading,swingtrading,risiko,csv,pips,lot
+
+================================================================
+★ Promotional Text (170 characters max, no review required, edit anytime) — 169 chars
+================================================================
+
+MT4/MT5-CSV-Import, Gewinnrate & Pips automatisch berechnet, teilbare Monatskarten. Mit PRO Wasserzeichen entfernen, alle Analysen freischalten. Handelstagebuch starten.
+
+================================================================
+★ Description (4000 characters max)
+================================================================
+
+Verwandle deine Trading-Historie in echten Fortschritt
+
+Ob du gerade erst mit Forex anfängst oder schon seit Jahren tradest - ein
+Handelstagebuch zu führen ist einer der schnellsten Wege, deine
+Gewinnrate zu verbessern. FX Trade Log ist eine ernsthafte
+Trade-Tracking-App für Trader, die wirklich aus ihrer Historie lernen
+wollen - inklusive direktem MT4/MT5-Handelsverlauf-Import.
+
+■ Erfassen
+
+・Einen Trade mit einem Tipp erfassen: Währungspaar, Einstiegskurs, Lotgröße, G/V und Pips
+・Chart-Screenshots zu jedem Trade hinzufügen
+・Notizen und Tags für einfaches späteres Review
+・MT4-/MT5-Handelsverlauf-CSV im Bulk importieren (neu)
+
+■ Analysieren
+
+・Monats-Dashboard berechnet automatisch Gewinnrate, Pips, Profitfaktor und G/V
+・Wöchentliche, paarbezogene und tageszeitbezogene Performance-Auswertungen
+・Tägliches Streak-Tracking hält deine Erfassungs-Gewohnheit am Leben
+
+■ Teilen
+
+・Verwandle deine Monatsergebnisse in eine übersichtliche, teilbare Statistik-Karte (X, Instagram u. a.)
+・PRO entfernt das Wasserzeichen für ein komplett sauberes Design
+
+■ Für wen geeignet
+
+・Einsteiger, die eine Erfassungs-Gewohnheit aufbauen wollen
+・MT4/MT5-Nutzer, die manuelles Tabellen-Tracking satt haben
+・Alle, die ihre Gewinnrate und Pips monatlich im Blick behalten wollen
+・Trader, die ihre Ergebnisse gerne in sozialen Medien teilen
+・Alle, die ein Handelstagebuch komplett auf dem Smartphone führen wollen
+
+■ FX Trade Log PRO
+
+Ein monatliches oder jährliches Abo schaltet die Premium-Stufe frei:
+
+・Wöchentliche und tiefgehende Insight-Analysen
+・Statistik-Karten ohne Wasserzeichen
+・Premium-exklusive Detailstatistiken
+・Alle zukünftigen Premium-Funktionen
+
+Der Preis wird auf dem Kaufbestätigungsbildschirm angezeigt.
+Abos können jederzeit über die Einstellungen-App deines Geräts gekündigt werden.
+
+■ Zu deinen Daten
+
+・Alle Daten werden lokal auf deinem Gerät gespeichert
+・Keine Cloud-Synchronisierung nötig, keine Internetverbindung zur Nutzung erforderlich
+・Mit Privacy-first-Design entwickelt
+
+■ Unterstützte Broker/Plattformen
+
+Jeder Broker, der einen Export des Handelsverlaufs im MT4/MT5-CSV-Format
+erlaubt, funktioniert mit der App. Manuelle Eingabe wird für jeden
+Broker und jede Plattform ebenfalls vollständig unterstützt.
+
+■ Feedback & Support
+
+Erreiche uns jederzeit über Einstellungen -> Kontakt in der App.
+Wir freuen uns, von dir zu hören, welche Funktionen du dir als Nächstes wünschst.
+
+================================================================
+ Notes for whoever publishes this
+================================================================
+
+1. Requires creating a NEW app version (see header note). Bundle with
+   the next feature-update release, or add as a metadata-only version
+   like v1.2.1 was.
+2. Screenshots: no German-language screenshots exist yet. Apple will
+   fall back to showing the primary locale's (Japanese) or English
+   screenshots to German users unless de-DE screenshots are uploaded.
+   Re-capturing 10 screenshots x 4 new languages is a separate,
+   larger task — see task list item "screenshots" if pursuing this.
+3. Legal pages: privacy-policy / terms / support pages are only in
+   Japanese and English. No German versions exist. For EU/DSA
+   compliance this may be worth doing but is not strictly required —
+   English fallback is common practice for smaller markets.
+4. Support URL / Marketing URL / Privacy Policy URL fields need to be
+   filled in for this localization (can reuse the English URLs as a
+   fallback if no German pages are created).

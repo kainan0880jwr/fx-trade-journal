@@ -1,0 +1,143 @@
+================================================================
+ ASO Content Sheet (French / fr-FR locale) — FX Trade Log v1.2.2
+ STATUS (2026-07-15): Already entered and saved into App Store Connect
+ v1.2.2 (name/subtitle on App Info page, description/keywords/promo
+ text on the version page). Not yet submitted for App Review.
+================================================================
+
+NOTE: A run of 16 identical "━" box-drawing characters in the
+description field triggers Apple's "invalid character" validation
+error for a newly-added locale (confirmed on German). This French
+text never used that character, which is why it saved cleanly on the
+first try. Keep it that way — don't add ━ divider lines if editing.
+
+【凡例 / Legend】
+・★ = App Store Connect field name
+・Character counts verified with python len()
+・NOTE: do NOT append a hashtag list at the end of the description —
+  Apple rejects it at save time with a misleading "invalid character"
+  error. See project memory "App Store Connect 説明文フィールドの罠".
+
+================================================================
+★ Name (30 characters max) — 30 chars
+================================================================
+
+FX Trade Log - Journal Trading
+
+================================================================
+★ Subtitle (30 characters max) — 29 chars
+================================================================
+
+Taux de réussite, Pips, MT4/5
+
+================================================================
+★ Keywords (100 characters max, comma-separated, no spaces after commas) — 96 chars
+================================================================
+
+forex,journal,statistiques,broker,scalping,day trading,swing trading,gestion risque,csv,pips,lot
+
+================================================================
+★ Promotional Text (170 characters max, no review required, edit anytime) — 159 chars
+================================================================
+
+Import CSV MT4/MT5, calcul auto du taux de réussite et des pips, cartes de résultats partageables. PRO retire le filigrane. Commencez votre journal de trading.
+
+================================================================
+★ Description (4000 characters max)
+================================================================
+
+📊 Transformez votre historique de trading en réels progrès
+
+Que vous débutiez en forex ou que vous tradiez depuis des années, tenir
+un journal de trading est l'un des moyens les plus rapides d'améliorer
+votre taux de réussite. FX Trade Log est une application sérieuse de
+suivi des trades conçue pour les traders qui veulent vraiment apprendre
+de leur historique — avec import direct de l'historique MT4/MT5.
+
+━━━━━━━━━━━━━━━━
+■ Enregistrer
+━━━━━━━━━━━━━━━━
+
+・Enregistrez un trade en un geste : paire de devises, prix d'entrée, taille de lot, P&L et pips
+・Joignez des captures d'écran de graphiques à chaque trade
+・Ajoutez des notes et des tags pour un suivi facile
+・Importez en masse votre historique de trades MT4/MT5 en CSV (nouveau)
+
+━━━━━━━━━━━━━━━━
+■ Analyser
+━━━━━━━━━━━━━━━━
+
+・Le tableau de bord mensuel calcule automatiquement taux de réussite, pips, facteur de profit et P&L
+・Analyses hebdomadaires, par paire et par heure de la journée
+・Suivi des séries quotidiennes pour maintenir votre habitude d'enregistrement
+
+━━━━━━━━━━━━━━━━
+■ Partager
+━━━━━━━━━━━━━━━━
+
+・Transformez vos résultats mensuels en une carte de statistiques épurée et partageable (X, Instagram, etc.)
+・PRO retire le filigrane pour un design totalement épuré
+
+━━━━━━━━━━━━━━━━
+■ Pour qui
+━━━━━━━━━━━━━━━━
+
+・Les traders débutants qui veulent prendre l'habitude d'enregistrer leurs trades
+・Les utilisateurs de MT4/MT5 lassés du suivi manuel sur tableur
+・Toute personne souhaitant suivre mensuellement son taux de réussite et ses pips
+・Les traders qui aiment partager leurs résultats sur les réseaux sociaux
+・Toute personne voulant un journal de trading entièrement sur son téléphone
+
+━━━━━━━━━━━━━━━━
+■ FX Trade Log PRO
+━━━━━━━━━━━━━━━━
+
+Un abonnement mensuel ou annuel débloque le niveau premium :
+
+・Analyses hebdomadaires et insights approfondis
+・Cartes de partage sans filigrane
+・Statistiques détaillées exclusives Premium
+・Toutes les futures fonctionnalités premium
+
+Le prix est affiché sur l'écran de confirmation d'achat.
+Les abonnements peuvent être annulés à tout moment depuis l'app Réglages de votre appareil.
+
+━━━━━━━━━━━━━━━━
+■ À propos de vos données
+━━━━━━━━━━━━━━━━
+
+・Toutes les données sont stockées localement sur votre appareil
+・Aucune synchronisation cloud requise, aucune connexion internet nécessaire pour utiliser l'application
+・Conçue avec une approche axée sur la confidentialité
+
+━━━━━━━━━━━━━━━━
+■ Brokers et plateformes pris en charge
+━━━━━━━━━━━━━━━━
+
+Tout broker permettant d'exporter l'historique des trades au format
+CSV MT4/MT5 fonctionne avec l'application. La saisie manuelle est
+également entièrement prise en charge, quel que soit le broker ou la
+plateforme.
+
+━━━━━━━━━━━━━━━━
+■ Retours & Support
+━━━━━━━━━━━━━━━━
+
+Contactez-nous à tout moment via Réglages → Nous contacter dans l'application.
+Nous serions ravis de connaître les fonctionnalités que vous souhaitez voir ensuite.
+
+================================================================
+ Notes for whoever publishes this
+================================================================
+
+1. Requires creating a NEW app version (see header note). Bundle with
+   the next feature-update release, or add as a metadata-only version
+   like v1.2.1 was.
+2. Screenshots: no French-language screenshots exist yet. Apple will
+   fall back to the primary locale's (Japanese) or English screenshots
+   for French users unless fr-FR screenshots are uploaded.
+3. Legal pages: privacy-policy / terms / support pages are only in
+   Japanese and English. No French versions exist yet.
+4. Support URL / Marketing URL / Privacy Policy URL fields need to be
+   filled in for this localization (English URLs can be reused as a
+   fallback if no French pages are created).
