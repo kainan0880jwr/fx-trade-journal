@@ -55,33 +55,25 @@ tracciamento delle operazioni, pensata per i trader che vogliono
 davvero imparare dalla propria storia — con importazione diretta
 dello storico MT4/MT5.
 
-━━━━━━━━━━━━━━━━
 ■ Registra
-━━━━━━━━━━━━━━━━
 
 ・Registra un'operazione con un tocco: coppia di valute, prezzo di ingresso, dimensione del lotto, P&L e pips
 ・Allega screenshot del grafico a qualsiasi operazione
 ・Aggiungi note e tag per rivedere facilmente in seguito
 ・Importa in blocco lo storico delle operazioni MT4/MT5 in CSV (novità)
 
-━━━━━━━━━━━━━━━━
 ■ Analizza
-━━━━━━━━━━━━━━━━
 
 ・La dashboard mensile calcola automaticamente percentuale di vincita, pips, profit factor e P&L
 ・Analisi delle performance settimanali, per coppia e per fascia oraria
 ・Monitoraggio delle serie giornaliere per mantenere viva l'abitudine di registrazione
 
-━━━━━━━━━━━━━━━━
 ■ Condividi
-━━━━━━━━━━━━━━━━
 
 ・Trasforma i tuoi risultati mensili in una scheda statistiche pulita e condivisibile (X, Instagram e altro)
 ・PRO rimuove la filigrana per un design completamente pulito
 
-━━━━━━━━━━━━━━━━
 ■ Per chi è pensata
-━━━━━━━━━━━━━━━━
 
 ・Trader alle prime armi che vogliono creare l'abitudine di registrare le operazioni
 ・Utenti MT4/MT5 stanchi del tracciamento manuale su foglio di calcolo
@@ -89,9 +81,7 @@ dello storico MT4/MT5.
 ・Trader a cui piace condividere i propri risultati sui social media
 ・Chiunque voglia un diario di trading interamente sullo smartphone
 
-━━━━━━━━━━━━━━━━
 ■ FX Trade Journal PRO
-━━━━━━━━━━━━━━━━
 
 Un abbonamento mensile o annuale sblocca il livello premium:
 
@@ -103,25 +93,19 @@ Un abbonamento mensile o annuale sblocca il livello premium:
 Il prezzo viene mostrato nella schermata di conferma dell'acquisto.
 Gli abbonamenti possono essere annullati in qualsiasi momento dall'app Impostazioni del dispositivo.
 
-━━━━━━━━━━━━━━━━
 ■ I tuoi dati
-━━━━━━━━━━━━━━━━
 
 ・Tutti i dati sono salvati localmente sul tuo dispositivo
 ・Nessuna sincronizzazione cloud necessaria, nessuna connessione internet richiesta per usare l'app
 ・Progettata con un approccio privacy-first
 
-━━━━━━━━━━━━━━━━
 ■ Broker e piattaforme supportati
-━━━━━━━━━━━━━━━━
 
 Qualsiasi broker che consenta l'esportazione dello storico operazioni
 in formato CSV MT4/MT5 funziona con l'app. È supportato pienamente
 anche l'inserimento manuale, per qualsiasi broker o piattaforma.
 
-━━━━━━━━━━━━━━━━
 ■ Feedback e supporto
-━━━━━━━━━━━━━━━━
 
 Contattaci in qualsiasi momento da Impostazioni → Contattaci nell'app.
 Ci farebbe piacere sapere quali funzioni vorresti vedere in futuro.
