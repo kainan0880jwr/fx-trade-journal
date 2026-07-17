@@ -7,13 +7,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../theme/useTheme';
 import type { ThemeColors } from '../theme/colors';
 import type { Trade } from '../types';
-import { t, lang } from '../i18n';
+import { t, tArr, lang } from '../i18n';
 import {
   METRICS, CalMetric, buildDayMap, getDayValue, getDayBg, getDayValueColor,
   calcMonthPF, formatPF,
 } from '../utils/calendarMetrics';
 
-const RNCalendar = require('react-native-calendars').Calendar;
+const { Calendar: RNCalendar, LocaleConfig } = require('react-native-calendars');
+
+LocaleConfig.locales[lang] = {
+  monthNames: tArr('month_names'),
+  monthNamesShort: tArr('month_names'),
+  dayNames: tArr('day_labels'),
+  dayNamesShort: tArr('day_labels'),
+};
+LocaleConfig.defaultLocale = lang;
 
 interface Props {
   visible: boolean;
@@ -192,7 +200,7 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
                     <View key={tr.id} style={s.tradeRow}>
                       <View style={[s.dirDot, { backgroundColor: tr.direction === 'buy' ? C.buy : C.sell }]} />
                       <Text style={s.tradePair}>{tr.pair}</Text>
-                      <Text style={s.tradeDir}>{tr.direction === 'buy' ? 'BUY' : 'SELL'}</Text>
+                      <Text style={s.tradeDir}>{tr.direction === 'buy' ? t('buy') : t('sell')}</Text>
                       <Text style={[s.tradePips, { color: (tr.pips ?? 0) >= 0 ? C.win : C.loss }]}>
                         {tr.pips != null ? `${tr.pips > 0 ? '+' : ''}${tr.pips} pips` : '-'}
                       </Text>

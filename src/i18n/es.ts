@@ -130,7 +130,7 @@ export const es: LangStrings = {
   cal_metric_pl: "G/P",
   cal_metric_winrate: "% Ganancia",
   cal_metric_count: "Cantidad",
-  cal_metric_wl: "G/P",
+  cal_metric_wl: "V/D",
   cal_metric_pf: "FB",
 
   // Yearly

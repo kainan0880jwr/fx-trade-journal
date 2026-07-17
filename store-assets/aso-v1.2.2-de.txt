@@ -1,5 +1,5 @@
 ================================================================
- ASO Content Sheet (German / de-DE locale) — FX Trade Log v1.2.2
+ ASO Content Sheet (German / de-DE locale) — FX Trade Journal v1.2.2
  STATUS (2026-07-15): Already entered and saved into App Store Connect
  v1.2.2 (name/subtitle on App Info page, description/keywords/promo
  text on the version page). Not yet submitted for App Review.
@@ -26,10 +26,10 @@ locale being added for the first time.
   See project memory "App Store Connect 説明文フィールドの罠".
 
 ================================================================
-★ Name (30 characters max) — 30 chars
+★ Name (30 characters max) — 27 chars
 ================================================================
 
-FX Trade Log - Handelstagebuch
+FX Trade Journal - Tagebuch
 
 ================================================================
 ★ Subtitle (30 characters max) — 26 chars
@@ -38,10 +38,10 @@ FX Trade Log - Handelstagebuch
 Gewinnrate & Pips, MT4/MT5
 
 ================================================================
-★ Keywords (100 characters max, comma-separated, no spaces after commas) — 99 chars
+★ Keywords (100 characters max, comma-separated, no spaces after commas) — 98 chars
 ================================================================
 
-forex,tagebuch,handelsjournal,statistik,broker,scalping,daytrading,swingtrading,risiko,csv,pips,lot
+forex,devisen,handelsjournal,metatrader,statistik,broker,scalping,daytrading,swingtrading,csv,pips
 
 ================================================================
 ★ Promotional Text (170 characters max, no review required, edit anytime) — 169 chars
@@ -57,7 +57,7 @@ Verwandle deine Trading-Historie in echten Fortschritt
 
 Ob du gerade erst mit Forex anfängst oder schon seit Jahren tradest - ein
 Handelstagebuch zu führen ist einer der schnellsten Wege, deine
-Gewinnrate zu verbessern. FX Trade Log ist eine ernsthafte
+Gewinnrate zu verbessern. FX Trade Journal ist eine ernsthafte
 Trade-Tracking-App für Trader, die wirklich aus ihrer Historie lernen
 wollen - inklusive direktem MT4/MT5-Handelsverlauf-Import.
 
@@ -87,7 +87,7 @@ wollen - inklusive direktem MT4/MT5-Handelsverlauf-Import.
 ・Trader, die ihre Ergebnisse gerne in sozialen Medien teilen
 ・Alle, die ein Handelstagebuch komplett auf dem Smartphone führen wollen
 
-■ FX Trade Log PRO
+■ FX Trade Journal PRO
 
 Ein monatliches oder jährliches Abo schaltet die Premium-Stufe frei:
 
