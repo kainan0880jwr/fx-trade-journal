@@ -54,33 +54,25 @@ votre taux de réussite. FX Trade Journal est une application sérieuse de
 suivi des trades conçue pour les traders qui veulent vraiment apprendre
 de leur historique — avec import direct de l'historique MT4/MT5.
 
-━━━━━━━━━━━━━━━━
 ■ Enregistrer
-━━━━━━━━━━━━━━━━
 
 ・Enregistrez un trade en un geste : paire de devises, prix d'entrée, taille de lot, P&L et pips
 ・Joignez des captures d'écran de graphiques à chaque trade
 ・Ajoutez des notes et des tags pour un suivi facile
 ・Importez en masse votre historique de trades MT4/MT5 en CSV (nouveau)
 
-━━━━━━━━━━━━━━━━
 ■ Analyser
-━━━━━━━━━━━━━━━━
 
 ・Le tableau de bord mensuel calcule automatiquement taux de réussite, pips, facteur de profit et P&L
 ・Analyses hebdomadaires, par paire et par heure de la journée
 ・Suivi des séries quotidiennes pour maintenir votre habitude d'enregistrement
 
-━━━━━━━━━━━━━━━━
 ■ Partager
-━━━━━━━━━━━━━━━━
 
 ・Transformez vos résultats mensuels en une carte de statistiques épurée et partageable (X, Instagram, etc.)
 ・PRO retire le filigrane pour un design totalement épuré
 
-━━━━━━━━━━━━━━━━
 ■ Pour qui
-━━━━━━━━━━━━━━━━
 
 ・Les traders débutants qui veulent prendre l'habitude d'enregistrer leurs trades
 ・Les utilisateurs de MT4/MT5 lassés du suivi manuel sur tableur
@@ -88,9 +80,7 @@ de leur historique — avec import direct de l'historique MT4/MT5.
 ・Les traders qui aiment partager leurs résultats sur les réseaux sociaux
 ・Toute personne voulant un journal de trading entièrement sur son téléphone
 
-━━━━━━━━━━━━━━━━
 ■ FX Trade Journal PRO
-━━━━━━━━━━━━━━━━
 
 Un abonnement mensuel ou annuel débloque le niveau premium :
 
@@ -102,26 +92,20 @@ Un abonnement mensuel ou annuel débloque le niveau premium :
 Le prix est affiché sur l'écran de confirmation d'achat.
 Les abonnements peuvent être annulés à tout moment depuis l'app Réglages de votre appareil.
 
-━━━━━━━━━━━━━━━━
 ■ À propos de vos données
-━━━━━━━━━━━━━━━━
 
 ・Toutes les données sont stockées localement sur votre appareil
 ・Aucune synchronisation cloud requise, aucune connexion internet nécessaire pour utiliser l'application
 ・Conçue avec une approche axée sur la confidentialité
 
-━━━━━━━━━━━━━━━━
 ■ Brokers et plateformes pris en charge
-━━━━━━━━━━━━━━━━
 
 Tout broker permettant d'exporter l'historique des trades au format
 CSV MT4/MT5 fonctionne avec l'application. La saisie manuelle est
 également entièrement prise en charge, quel que soit le broker ou la
 plateforme.
 
-━━━━━━━━━━━━━━━━
 ■ Retours & Support
-━━━━━━━━━━━━━━━━
 
 Contactez-nous à tout moment via Réglages → Nous contacter dans l'application.
 Nous serions ravis de connaître les fonctionnalités que vous souhaitez voir ensuite.
