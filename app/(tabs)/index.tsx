@@ -87,7 +87,7 @@ export default function RecordScreen() {
         <View style={styles.todayCard}>
           <View style={styles.todayHeader}>
             <View style={styles.todayDot} />
-            <Text style={styles.todayLabel}>TODAY</Text>
+            <Text style={styles.todayLabel}>{t('today')}</Text>
           </View>
           <View style={styles.todayRow}>
             <MiniStat label={t('trades')} numericValue={todayTrades.length > 0 ? todayTrades.length : undefined} suffix={lang === 'ja' ? '件' : ''} isTablet={isTablet} />

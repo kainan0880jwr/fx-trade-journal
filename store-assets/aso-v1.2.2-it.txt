@@ -1,5 +1,5 @@
 ================================================================
- ASO Content Sheet (Italian / it locale) — FX Trade Log v1.2.2
+ ASO Content Sheet (Italian / it locale) — FX Trade Journal v1.2.2
  STATUS (2026-07-15): Already entered and saved into App Store Connect
  v1.2.2 (name/subtitle on App Info page, description/keywords/promo
  text on the version page). Not yet submitted for App Review.
@@ -19,10 +19,10 @@ first try. Keep it that way — don't add ━ divider lines if editing.
   error. See project memory "App Store Connect 説明文フィールドの罠".
 
 ================================================================
-★ Name (30 characters max) — 29 chars
+★ Name (30 characters max) — 25 chars
 ================================================================
 
-FX Trade Log - Diario Trading
+FX Trade Journal - Diario
 
 ================================================================
 ★ Subtitle (30 characters max) — 24 chars
@@ -31,10 +31,10 @@ FX Trade Log - Diario Trading
 % Vincita, Pips, MT4/MT5
 
 ================================================================
-★ Keywords (100 characters max, comma-separated, no spaces after commas) — 98 chars
+★ Keywords (100 characters max, comma-separated, no spaces after commas) — 100 chars
 ================================================================
 
-forex,diario,statistiche,broker,scalping,day trading,swing trading,gestione rischio,csv,pips,lotto
+forex,valute,metatrader,statistiche,broker,scalping,day trading,swing trading,rischio,csv,pips,lotto
 
 ================================================================
 ★ Promotional Text (170 characters max, no review required, edit anytime) — 164 chars
@@ -50,7 +50,7 @@ Importa CSV MT4/MT5, calcolo automatico di percentuale di vincita e pips, schede
 
 Che tu sia alle prime armi con il forex o faccia trading da anni,
 tenere un diario di trading è uno dei modi più rapidi per aumentare
-la tua percentuale di vincita. FX Trade Log è un'app seria per il
+la tua percentuale di vincita. FX Trade Journal è un'app seria per il
 tracciamento delle operazioni, pensata per i trader che vogliono
 davvero imparare dalla propria storia — con importazione diretta
 dello storico MT4/MT5.
@@ -90,7 +90,7 @@ dello storico MT4/MT5.
 ・Chiunque voglia un diario di trading interamente sullo smartphone
 
 ━━━━━━━━━━━━━━━━
-■ FX Trade Log PRO
+■ FX Trade Journal PRO
 ━━━━━━━━━━━━━━━━
 
 Un abbonamento mensile o annuale sblocca il livello premium:

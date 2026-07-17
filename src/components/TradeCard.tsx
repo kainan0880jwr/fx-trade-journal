@@ -34,7 +34,7 @@ function TradeCard({ trade }: Props) {
   const dateStr   = trade.date.slice(0, 10);
   const timeStr   = trade.date.length >= 16 ? trade.date.slice(11, 16) : '';
   const dirColor  = trade.direction === 'buy' ? C.buy : C.sell;
-  const dirLabel  = trade.direction === 'buy' ? '▲ BUY' : '▼ SELL';
+  const dirLabel  = trade.direction === 'buy' ? `▲ ${t('buy')}` : `▼ ${t('sell')}`;
 
   return (
     <TouchableOpacity style={styles.card} onPress={() => router.push(`/trade/${trade.id}`)} activeOpacity={0.72}>

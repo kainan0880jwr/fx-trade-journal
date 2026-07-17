@@ -1,5 +1,5 @@
 ================================================================
- ASO Content Sheet (Spanish / es-ES locale) — FX Trade Log v1.2.2
+ ASO Content Sheet (Spanish / es-ES locale) — FX Trade Journal v1.2.2
  STATUS (2026-07-15): Already entered and saved into App Store Connect
  v1.2.2 (name/subtitle on App Info page, description/keywords/promo
  text on the version page). Not yet submitted for App Review.
@@ -19,10 +19,10 @@ first try. Keep it that way — don't add ━ divider lines if editing.
   error. See project memory "App Store Connect 説明文フィールドの罠".
 
 ================================================================
-★ Name (30 characters max) — 29 chars
+★ Name (30 characters max) — 25 chars
 ================================================================
 
-FX Trade Log - Diario Trading
+FX Trade Journal - Diario
 
 ================================================================
 ★ Subtitle (30 characters max) — 30 chars
@@ -31,10 +31,10 @@ FX Trade Log - Diario Trading
 Tasa de acierto, Pips, MT4/MT5
 
 ================================================================
-★ Keywords (100 characters max, comma-separated, no spaces after commas) — 96 chars
+★ Keywords (100 characters max, comma-separated, no spaces after commas) — 95 chars
 ================================================================
 
-forex,diario,estadisticas,broker,scalping,day trading,swing trading,gestion riesgo,csv,pips,lote
+forex,divisas,metatrader,estadisticas,broker,scalping,day trading,swing trading,riesgo,csv,pips
 
 ================================================================
 ★ Promotional Text (170 characters max, no review required, edit anytime) — 170 chars
@@ -50,7 +50,7 @@ Importa CSV de MT4/MT5, calcula automáticamente tasa de acierto y pips, tarjeta
 
 Tanto si empiezas en el forex como si llevas años operando, llevar un
 diario de trading es una de las formas más rápidas de mejorar tu tasa
-de acierto. FX Trade Log es una aplicación seria de seguimiento de
+de acierto. FX Trade Journal es una aplicación seria de seguimiento de
 operaciones para traders que quieren aprender de verdad de su
 historial, incluida la importación directa del historial de MT4/MT5.
 
@@ -89,7 +89,7 @@ historial, incluida la importación directa del historial de MT4/MT5.
 ・Cualquiera que quiera un diario de trading completamente en su móvil
 
 ━━━━━━━━━━━━━━━━
-■ FX Trade Log PRO
+■ FX Trade Journal PRO
 ━━━━━━━━━━━━━━━━
 
 Una suscripción mensual o anual desbloquea el nivel premium:
