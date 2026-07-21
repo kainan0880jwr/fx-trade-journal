@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import * as SecureStore from 'expo-secure-store';
-import { getOrCreateEncryptionKey } from './dbEncryption';
+import { getOrCreateEncryptionKey, deleteEncryptionKey } from './dbEncryption';
 
 const OLD_DB_NAME = 'fx_journal.db'; // 旧・平文DB（SQLCipher導入前）
 const NEW_DB_NAME = 'fx_journal_v2.db'; // 新・SQLCipher暗号化DB
@@ -20,6 +20,18 @@ export function getDatabase(): Promise<SQLite.SQLiteDatabase> {
     });
   }
   return dbPromise;
+}
+
+/**
+ * 暗号化キーとDBファイルの不整合等で復号できなくなった場合の最終手段。
+ * DBファイル・移行フラグ・暗号化キーをすべて削除し、次回 getDatabase() で
+ * まっさらな状態から作り直せるようにする（保存されていたトレード記録は失われる）。
+ */
+export async function resetDatabase(): Promise<void> {
+  dbPromise = null;
+  await SQLite.deleteDatabaseAsync(NEW_DB_NAME).catch(() => {});
+  await SecureStore.deleteItemAsync(MIGRATION_FLAG_KEY).catch(() => {});
+  await deleteEncryptionKey().catch(() => {});
 }
 
 // 平文SQLite→SQLCipher暗号化DBへの移行。

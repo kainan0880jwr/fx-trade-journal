@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  ScrollView, Dimensions, Animated,
+  ScrollView, Dimensions, Animated, Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import * as LocalAuthentication from 'expo-local-authentication';
 import { setSetting } from '../src/db/queries';
+import { useSettingsStore } from '../src/store/settingsStore';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t } from '../src/i18n';
@@ -39,6 +41,7 @@ export default function OnboardingScreen() {
   const s = makeStyles(C);
   const [step, setStep] = useState(0);
   const scrollRef = useRef<ScrollView>(null);
+  const updateAppLockEnabled = useSettingsStore(s => s.updateAppLockEnabled);
 
   const goTo = (index: number) => {
     setStep(index);
@@ -55,11 +58,40 @@ export default function OnboardingScreen() {
 
   const finishOnboarding = async () => {
     await setSetting('onboarding_done', '1');
+    await maybePromptAppLock();
     router.replace('/(tabs)');
     // 少し遅らせてからクイック入力を開く
     setTimeout(() => {
       router.push('/trade/new');
     }, 300);
+  };
+
+  // 生体認証が利用可能な端末でのみ、アプリロックの有効化を一度だけ提案する
+  const maybePromptAppLock = async () => {
+    try {
+      const hasHardware = await LocalAuthentication.hasHardwareAsync();
+      const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+      if (!hasHardware || !isEnrolled) return;
+
+      await new Promise<void>((resolve) => {
+        Alert.alert(
+          t('onboarding_app_lock_title'),
+          t('onboarding_app_lock_msg'),
+          [
+            { text: t('onboarding_app_lock_skip'), style: 'cancel', onPress: () => resolve() },
+            {
+              text: t('onboarding_app_lock_enable'),
+              onPress: async () => {
+                await updateAppLockEnabled(true);
+                resolve();
+              },
+            },
+          ]
+        );
+      });
+    } catch {
+      // 認証状態の確認に失敗しても何もしない（ロックなしのまま続行）
+    }
   };
 
   const handleSkip = async () => {

@@ -15,7 +15,7 @@ import { useSettingsStore } from '../../src/store/settingsStore';
 import { useTradeStore } from '../../src/store/tradeStore';
 import { generateId } from '../../src/utils/statsCalc';
 import { getAllTrades, getSetting, setSetting } from '../../src/db/queries';
-import { exportBackup, importBackup } from '../../src/utils/backup';
+import { exportBackup, importBackup, hasPreImportSnapshot, restorePreImportSnapshot } from '../../src/utils/backup';
 import { importMT4CSV } from '../../src/utils/mt4Import';
 import {
   isNotificationsAvailable, requestNotificationPermission,
@@ -62,6 +62,11 @@ export default function SettingsScreen() {
   const [newTag, setNewTag] = useState('');
   const [newRule, setNewRule] = useState('');
   const [backupLoading, setBackupLoading] = useState(false);
+  const [hasSnapshot, setHasSnapshot] = useState(false);
+
+  useEffect(() => {
+    hasPreImportSnapshot().then(setHasSnapshot);
+  }, []);
   const [mt4Loading, setMt4Loading] = useState(false);
   const [notifEnabled, setNotifEnabled] = useState(false);
   const [notifHour, setNotifHour] = useState(21);
@@ -162,9 +167,35 @@ export default function SettingsScreen() {
               const count = await importBackup();
               if (count > 0) {
                 Alert.alert(t('saved'), t('backup_import_success').replace('{n}', String(count)));
+                setHasSnapshot(true);
               }
             } catch {
               Alert.alert(t('error'), t('backup_import_error'));
+            } finally {
+              setBackupLoading(false);
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleRestoreSnapshot = () => {
+    Alert.alert(
+      t('backup_restore_snapshot'),
+      t('backup_restore_confirm'),
+      [
+        { text: t('cancel'), style: 'cancel' },
+        {
+          text: t('backup_restore_snapshot'),
+          style: 'destructive',
+          onPress: async () => {
+            setBackupLoading(true);
+            try {
+              const count = await restorePreImportSnapshot();
+              Alert.alert(t('saved'), t('backup_restore_success').replace('{n}', String(count)));
+            } catch {
+              Alert.alert(t('error'), t('backup_restore_error'));
             } finally {
               setBackupLoading(false);
             }
@@ -630,6 +661,26 @@ export default function SettingsScreen() {
                 <Text style={styles.backupBtnSub}>{t('backup_import_sub')}</Text>
               </View>
             </TouchableOpacity>
+            {hasSnapshot && (
+              <>
+                <View style={styles.backupSep} />
+                <TouchableOpacity
+                  style={[styles.backupBtn, backupLoading && styles.backupBtnDisabled]}
+                  onPress={handleRestoreSnapshot}
+                  disabled={backupLoading}
+                >
+                  {backupLoading ? (
+                    <ActivityIndicator size="small" color={C.text2} />
+                  ) : (
+                    <Ionicons name="arrow-undo-outline" size={20} color={C.text2} />
+                  )}
+                  <View style={{ flex: 1, marginLeft: 12 }}>
+                    <Text style={styles.backupBtnTitle}>{t('backup_restore_snapshot')}</Text>
+                    <Text style={styles.backupBtnSub}>{t('backup_restore_snapshot_sub')}</Text>
+                  </View>
+                </TouchableOpacity>
+              </>
+            )}
           </View>
         </View>
 
