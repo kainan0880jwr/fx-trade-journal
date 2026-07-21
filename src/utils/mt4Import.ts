@@ -9,7 +9,11 @@
 import * as DocumentPicker from 'expo-document-picker';
 import { readAsStringAsync } from 'expo-file-system/legacy';
 import { insertTrade } from '../db/queries';
+import { t } from '../i18n';
 import type { Trade, TradeResult, Direction, TradeStyle } from '../types';
+
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+const MAX_ROWS = 20000;
 
 // ───────────────────────────────────────────────
 // 型
@@ -235,6 +239,7 @@ function parseMT5(lines: string[], sep: string): RawRow[] {
   const commIdx      = idx(['commission']);
   const swapIdx      = idx(['swap']);
   const profitIdx    = idx(['profit']);
+  const positionIdx  = idx(['position']);
 
   // MT5のDeals形式はエントリーと決済が別々の行なので、
   // positionでペアリングする
@@ -242,7 +247,7 @@ function parseMT5(lines: string[], sep: string): RawRow[] {
     time: string; symbol: string; dir: Direction;
     type: string; volume: number; price: number;
     commission: number; swap: number; profit: number;
-    position?: string;
+    position: string;
   }
 
   const deals: Deal[] = [];
@@ -274,51 +279,86 @@ function parseMT5(lines: string[], sep: string): RawRow[] {
       commission: num(f[commIdx]      ?? '0'),
       swap:       num(f[swapIdx]      ?? '0'),
       profit:     num(f[profitIdx]    ?? '0'),
+      position:   positionIdx !== -1 ? (f[positionIdx] ?? '') : '',
     });
   }
 
-  // in/out でペアリング（交互に並んでいると仮定）
-  // 実際には profit=0 のものがエントリー、≠0 のものが決済
-  const entries = deals.filter(d => d.profit === 0);
-  const exits   = deals.filter(d => d.profit !== 0);
-
-  const paired = Math.min(entries.length, exits.length);
-  for (let i = 0; i < paired; i++) {
-    const entry = entries[i];
-    const exit  = exits[i];
-    rows.push({
-      openTime:   entry.time,
-      closeTime:  exit.time,
-      symbol:     entry.symbol,
-      direction:  entry.dir,
-      size:       entry.volume,
-      openPrice:  entry.price,
-      closePrice: exit.price,
-      sl:         0,
-      tp:         0,
-      profit:     exit.profit,
-      swap:       exit.swap,
-      commission: entry.commission + exit.commission,
-    });
-  }
-
-  // ペアリングできなかった行は単体で追加（決済済みとして扱う）
-  if (paired === 0) {
+  if (positionIdx !== -1 && deals.some(d => d.position)) {
+    // Position ID（同一ポジションのエントリー・決済行が共有するID）でグルーピングする。
+    // 損益0円の建値決済でも正しく対応付けられるよう、profit値ではなくposition IDのみで判定する。
+    const byPosition = new Map<string, Deal[]>();
     for (const d of deals) {
-      if (d.profit === 0) continue;
+      if (!d.position) continue;
+      if (!byPosition.has(d.position)) byPosition.set(d.position, []);
+      byPosition.get(d.position)!.push(d);
+    }
+
+    for (const group of byPosition.values()) {
+      group.sort((a, b) => a.time.localeCompare(b.time));
+      const entry = group[0];
+      const exit  = group[group.length - 1];
+      const totalProfit = group.reduce((sum, d) => sum + d.profit, 0);
+      const totalSwap   = group.reduce((sum, d) => sum + d.swap, 0);
+      const totalComm   = group.reduce((sum, d) => sum + d.commission, 0);
       rows.push({
-        openTime:   d.time,
-        closeTime:  d.time,
-        symbol:     d.symbol,
-        direction:  d.dir,
-        size:       d.volume,
-        openPrice:  d.price,
-        closePrice: d.price,
-        sl: 0, tp: 0,
-        profit:     d.profit,
-        swap:       d.swap,
-        commission: d.commission,
+        openTime:   entry.time,
+        closeTime:  exit.time,
+        symbol:     entry.symbol,
+        direction:  entry.dir,
+        size:       entry.volume,
+        openPrice:  entry.price,
+        closePrice: exit.price,
+        sl:         0,
+        tp:         0,
+        profit:     totalProfit,
+        swap:       totalSwap,
+        commission: totalComm,
       });
+    }
+  } else {
+    // Position列がないCSV向けフォールバック: 損益0円=エントリーとみなしてペアリングする
+    // （建値決済が含まれる場合、対応がずれる可能性がある簡易ロジック）
+    const entries = deals.filter(d => d.profit === 0);
+    const exits   = deals.filter(d => d.profit !== 0);
+
+    const paired = Math.min(entries.length, exits.length);
+    for (let i = 0; i < paired; i++) {
+      const entry = entries[i];
+      const exit  = exits[i];
+      rows.push({
+        openTime:   entry.time,
+        closeTime:  exit.time,
+        symbol:     entry.symbol,
+        direction:  entry.dir,
+        size:       entry.volume,
+        openPrice:  entry.price,
+        closePrice: exit.price,
+        sl:         0,
+        tp:         0,
+        profit:     exit.profit,
+        swap:       exit.swap,
+        commission: entry.commission + exit.commission,
+      });
+    }
+
+    // ペアリングできなかった行は単体で追加（決済済みとして扱う）
+    if (paired === 0) {
+      for (const d of deals) {
+        if (d.profit === 0) continue;
+        rows.push({
+          openTime:   d.time,
+          closeTime:  d.time,
+          symbol:     d.symbol,
+          direction:  d.dir,
+          size:       d.volume,
+          openPrice:  d.price,
+          closePrice: d.price,
+          sl: 0, tp: 0,
+          profit:     d.profit,
+          swap:       d.swap,
+          commission: d.commission,
+        });
+      }
     }
   }
 
@@ -351,7 +391,7 @@ function rawToTrade(row: RawRow): Trade {
     tags:        [],
     imageUris:   [],
     pips:        Math.round(pips * 10) / 10,
-    profitLoss:  Math.round(totalPL * 100) / 100 || null,
+    profitLoss:  Number.isFinite(totalPL) ? Math.round(totalPL * 100) / 100 : null,
     result,
     reflection:  '',
     selfRating:  3,
@@ -396,10 +436,16 @@ export async function importMT4CSV(): Promise<ImportResult> {
 
   const uri  = picked.assets[0].uri;
   const name = picked.assets[0].name ?? '';
+  const size = picked.assets[0].size ?? 0;
 
   // .csv / .txt 以外は拒否
   if (!name.toLowerCase().match(/\.(csv|txt)$/)) {
-    result.errors.push('CSV または TXT ファイルを選択してください');
+    result.errors.push(t('mt4_import_invalid_file'));
+    return result;
+  }
+
+  if (size > MAX_FILE_SIZE_BYTES) {
+    result.errors.push(t('mt4_import_file_too_large').replace('{n}', String(MAX_FILE_SIZE_BYTES / (1024 * 1024))));
     return result;
   }
 
@@ -410,7 +456,12 @@ export async function importMT4CSV(): Promise<ImportResult> {
   const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
 
   if (lines.length < 2) {
-    result.errors.push('データが見つかりませんでした');
+    result.errors.push(t('mt4_import_empty_file'));
+    return result;
+  }
+
+  if (lines.length > MAX_ROWS) {
+    result.errors.push(t('mt4_import_too_many_rows').replace('{n}', String(MAX_ROWS)));
     return result;
   }
 
@@ -426,7 +477,7 @@ export async function importMT4CSV(): Promise<ImportResult> {
   }
 
   if (rows.length === 0) {
-    result.errors.push('有効な取引データが見つかりませんでした。MT4/MT5 の取引履歴CSVか確認してください');
+    result.errors.push(t('mt4_import_none'));
     return result;
   }
 
@@ -436,10 +487,10 @@ export async function importMT4CSV(): Promise<ImportResult> {
       const trade = rawToTrade(row);
       await insertTrade(trade);
       result.imported++;
-    } catch (e: any) {
+    } catch {
       result.skipped++;
       if (result.errors.length < 5) {
-        result.errors.push(`行スキップ: ${e?.message ?? e}`);
+        result.errors.push(t('mt4_import_row_error'));
       }
     }
   }

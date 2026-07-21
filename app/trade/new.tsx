@@ -482,12 +482,17 @@ export default function NewTradeScreen() {
                     {pips != null ? `${pips > 0 ? '+' : ''}${pips}` : '-'}
                   </Text>
                 </View>
-                {isYenPair && (
+                {isYenPair ? (
                   <View style={styles.calcItem}>
                     <Text style={styles.calcLabel}>{t('form_pl')}</Text>
                     <Text style={[styles.calcValue, { color: pipsColor }]}>
                       {profitLoss != null ? `${profitLoss > 0 ? '+' : ''}${profitLoss.toLocaleString()}¥` : '-'}
                     </Text>
+                  </View>
+                ) : (
+                  <View style={styles.calcItem}>
+                    <Text style={styles.calcLabel}>{t('form_pl')}</Text>
+                    <Text style={styles.calcNote}>{t('form_pl_non_yen_note')}</Text>
                   </View>
                 )}
                 {plannedRR != null && (
@@ -775,6 +780,7 @@ function makeStyles(C: ThemeColors) {
     calcItem: { flex: 1, alignItems: 'center' },
     calcLabel: { fontSize: 10, color: C.text3, marginBottom: 4, letterSpacing: 0.5 },
     calcValue: { fontSize: 22, fontWeight: '900' },
+    calcNote: { fontSize: 10, color: C.text3, textAlign: 'center', lineHeight: 13, marginTop: 4 },
 
     chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
     chip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 22, borderWidth: 1.5, borderColor: C.border, backgroundColor: C.card },

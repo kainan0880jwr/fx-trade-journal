@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { getDatabase } from '../src/db/database';
+import { getDatabase, resetDatabase } from '../src/db/database';
 import { useSettingsStore } from '../src/store/settingsStore';
 import { usePurchaseStore } from '../src/store/purchaseStore';
 import { getSetting } from '../src/db/queries';
 import { syncScheduledNotifications } from '../src/utils/notifications';
-import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useTheme, useIsDark } from '../src/theme/useTheme';
 import AppLockGate from '../src/components/AppLockGate';
 import { t } from '../src/i18n';
@@ -44,6 +44,25 @@ export default function RootLayout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleResetData = () => {
+    Alert.alert(
+      t('db_reset_confirm_title'),
+      t('db_reset_confirm_msg'),
+      [
+        { text: t('cancel'), style: 'cancel' },
+        {
+          text: t('db_reset_confirm_button'),
+          style: 'destructive',
+          onPress: async () => {
+            await resetDatabase();
+            setDbReady(false);
+            initDb();
+          },
+        },
+      ]
+    );
+  };
+
   if (!dbReady) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: C.bg }}>
@@ -62,6 +81,9 @@ export default function RootLayout() {
           onPress={() => { setDbReady(false); initDb(); }}
         >
           <Text style={styles.retryBtnText}>{t('retry')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.resetLink} onPress={handleResetData}>
+          <Text style={[styles.resetLinkText, { color: C.text3 }]}>{t('db_reset_link')}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -121,5 +143,13 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 15,
     fontWeight: '800',
+  },
+  resetLink: {
+    marginTop: 20,
+    padding: 8,
+  },
+  resetLinkText: {
+    fontSize: 13,
+    textDecorationLine: 'underline',
   },
 });

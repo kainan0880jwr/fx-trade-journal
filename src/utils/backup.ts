@@ -204,3 +204,74 @@ export async function importBackup(): Promise<number> {
 
   return data.trades.length;
 }
+
+interface SnapshotData {
+  exportedAt: string;
+  trades: Trade[];
+  pairs: CurrencyPair[];
+}
+
+const SNAPSHOT_FILENAME = 'fx-pre-import-snapshot.json';
+
+/** 直前のバックアップインポート前のスナップショットが存在するか確認する */
+export async function hasPreImportSnapshot(): Promise<boolean> {
+  if (!cacheDirectory) return false;
+  const info = await getInfoAsync(`${cacheDirectory}${SNAPSHOT_FILENAME}`);
+  return info.exists;
+}
+
+/**
+ * バックアップインポート直前に自動保存されたスナップショットから復元する。
+ * 画像ファイル自体はインポート時に上書き削除されないため、旧パスのままで復元できる。
+ */
+export async function restorePreImportSnapshot(): Promise<number> {
+  if (!cacheDirectory) throw new Error('cacheDirectory unavailable');
+  const snapshotPath = `${cacheDirectory}${SNAPSHOT_FILENAME}`;
+  const info = await getInfoAsync(snapshotPath);
+  if (!info.exists) throw new Error('no_snapshot');
+
+  const raw = await readAsStringAsync(snapshotPath, { encoding: 'utf8' });
+  const data: SnapshotData = JSON.parse(raw);
+  if (!Array.isArray(data.trades)) throw new Error('invalid_format');
+
+  const db = await getDatabase();
+  await db.withTransactionAsync(async () => {
+    await db.execAsync('DELETE FROM trades');
+    await db.execAsync('DELETE FROM currency_pairs');
+
+    for (const pair of (data.pairs ?? [])) {
+      await db.runAsync(
+        'INSERT OR IGNORE INTO currency_pairs (id, name, pip_digits, is_yen_pair, is_active) VALUES (?, ?, ?, ?, ?)',
+        [pair.id, pair.name, pair.pipDigits, pair.isYenPair ? 1 : 0, pair.isActive ? 1 : 0]
+      );
+    }
+
+    for (const trade of data.trades) {
+      await db.runAsync(
+        `INSERT OR REPLACE INTO trades
+          (id, date, pair, direction, entry_rate, exit_rate, stop_loss, take_profit, planned_r_r,
+           lot_size, style, tags, image_uris, entry_method, pips, profit_loss, result, reflection, self_rating,
+           bookmarked, mental_focus, mental_calm, mental_fear, rule_checks,
+           tf_weekly, tf_daily, tf_4h, tf_1h, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          trade.id, trade.date, trade.pair, trade.direction,
+          trade.entryRate, trade.exitRate, trade.stopLoss ?? null, trade.takeProfit ?? null, trade.plannedRR ?? null,
+          trade.lotSize, trade.style,
+          JSON.stringify(trade.tags ?? []),
+          JSON.stringify(trade.imageUris ?? []),
+          trade.entryMethod ?? 'full',
+          trade.pips ?? null, trade.profitLoss ?? null, trade.result,
+          trade.reflection ?? '', trade.selfRating ?? 3,
+          trade.bookmarked ? 1 : 0,
+          trade.mentalFocus ?? null, trade.mentalCalm ?? null, trade.mentalFear ?? null,
+          JSON.stringify(trade.ruleChecks ?? []),
+          trade.tfWeekly ?? '', trade.tfDaily ?? '', trade.tf4h ?? '', trade.tf1h ?? '',
+          trade.createdAt,
+        ]
+      );
+    }
+  });
+
+  return data.trades.length;
+}
