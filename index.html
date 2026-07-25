@@ -7,6 +7,12 @@
 <meta name="description" content="記録するだけで勝率・pips・プロフィットファクターが自動で見える化。成績はそのままSNSシェアできるカードに。スマホ・タブレットで完結するFXトレード日記アプリ「FXトレードログ」。MT4/MT5のCSVインポートにも対応。">
 <link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/">
 <meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- GitHub Pages(legacy build)はレスポンスヘッダーを制御できないため、metaタグでCSPを付与する。
+     このページはビルドステップを持たない静的HTMLで、インラインscript/styleにハッシュ/nonceを
+     動的付与できないため script-src / style-src はやむを得ず 'unsafe-inline' を許可しつつ、
+     接続先・埋め込み元をGoogleアナリティクス関連ドメインのみに限定している。 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -46,7 +52,8 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) - 既定はすべて拒否。ユーザーが同意バナーで同意した場合のみ計測を有効化する -->
+<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) 自体を呼ばない。
+     これにより「同意しない」場合はCookieなしの計測ピングも含めて一切送信されない。 -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){ dataLayer.push(arguments); }
@@ -58,17 +65,13 @@
   });
 </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3HNGHT6YJ"></script>
-<script>
-  gtag('js', new Date());
-  gtag('config', 'G-S3HNGHT6YJ', { 'anonymize_ip': true });
-</script>
 
 <style>
   /* ============ Design tokens ============ */
   :root{
     --ink:#EDF1FA;
     --ink-dim:#9099B4;
-    --ink-faint:#5C6480;
+    --ink-faint:#7A83A0;
     --bg:#05070C;
     --bg-alt:#080B13;
     --surface:#0E1420;
@@ -96,7 +99,7 @@
 
   @media (prefers-color-scheme: light){
     :root{
-      --ink:#12141C; --ink-dim:#565F78; --ink-faint:#6B7488;
+      --ink:#12141C; --ink-dim:#565F78; --ink-faint:#626A7E;
       --bg:#F3F5FA; --bg-alt:#ECEFF6; --surface:#FFFFFF; --surface-2:#EEF1F8;
       --line:rgba(18,20,28,0.08); --line-strong:rgba(18,20,28,0.14);
       --accent:#3358DB; --accent-dim:rgba(51,88,219,0.10);
@@ -106,7 +109,7 @@
     }
   }
   :root[data-theme="dark"]{
-    --ink:#EDF1FA; --ink-dim:#9099B4; --ink-faint:#5C6480;
+    --ink:#EDF1FA; --ink-dim:#9099B4; --ink-faint:#7A83A0;
     --bg:#05070C; --bg-alt:#080B13; --surface:#0E1420; --surface-2:#141C2C;
     --line:rgba(237,241,250,0.09); --line-strong:rgba(237,241,250,0.16);
     --accent:#4F7EF7; --accent-dim:rgba(79,126,247,0.14);
@@ -115,7 +118,7 @@
     --shadow-card:0 20px 60px -30px rgba(0,0,0,0.7);
   }
   :root[data-theme="light"]{
-    --ink:#12141C; --ink-dim:#565F78; --ink-faint:#8A93AC;
+    --ink:#12141C; --ink-dim:#565F78; --ink-faint:#626A7E;
     --bg:#F3F5FA; --bg-alt:#ECEFF6; --surface:#FFFFFF; --surface-2:#EEF1F8;
     --line:rgba(18,20,28,0.08); --line-strong:rgba(18,20,28,0.14);
     --accent:#3358DB; --accent-dim:rgba(51,88,219,0.10);
@@ -410,15 +413,21 @@
     position:fixed; left:0; right:0; bottom:0; z-index:100;
     background:var(--surface); border-top:1px solid var(--line-strong);
     box-shadow:0 -12px 30px -20px rgba(0,0,0,0.5);
+    padding-bottom:env(safe-area-inset-bottom, 0px);
   }
   .consent-inner{
     display:flex; align-items:center; justify-content:space-between; gap:var(--space-4);
     flex-wrap:wrap; padding:var(--space-3) var(--space-5);
   }
+  @media (max-width:720px){ .consent-inner{padding:var(--space-3) var(--space-4);} }
   .consent-inner p{color:var(--ink-dim); font-size:.86rem; max-width:60ch;}
   .consent-inner a{color:var(--accent); text-decoration:underline;}
-  .consent-actions{display:flex; gap:.7em; flex:none;}
-  .consent-actions .btn{padding:.7em 1.3em; font-size:.86rem;}
+  .consent-actions{display:flex; gap:.7em; flex:none; width:100%;}
+  @media (min-width:521px){ .consent-actions{width:auto;} }
+  .consent-actions .btn{padding:.85em 1.3em; font-size:.86rem; min-height:44px; flex:1;}
+  @media (min-width:521px){ .consent-actions .btn{flex:none;} }
+  .btn-neutral{background:var(--surface-2); color:var(--ink); border-color:var(--line-strong);}
+  .btn-neutral:hover{border-color:var(--accent);}
 
   /* reveal animation */
   .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s var(--ease), transform .7s var(--ease);}
@@ -432,15 +441,15 @@
 </head>
 <body>
 
-<div class="consent-banner" id="consentBanner" role="dialog" aria-label="アクセス解析への同意" hidden>
+<section class="consent-banner" id="consentBanner" aria-label="アクセス解析への同意" hidden>
   <div class="wrap consent-inner">
-    <p>本サイトでは、アクセス状況を把握するためGoogleアナリティクスを匿名で利用しています。詳細は<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
+    <p>本サイトでは、アクセス状況を把握するためGoogleアナリティクスを利用しています。詳細は<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
     <div class="consent-actions">
-      <button type="button" class="btn btn-ghost" id="consentDecline">同意しない</button>
-      <button type="button" class="btn btn-primary" id="consentAccept">同意する</button>
+      <button type="button" class="btn btn-neutral" id="consentDecline">同意しない</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">同意する</button>
     </div>
   </div>
-</div>
+</section>
 <script>
 (function(){
   var KEY = 'ga_consent';
@@ -448,15 +457,23 @@
   var saved;
   try { saved = localStorage.getItem(KEY); } catch(e) { saved = null; }
 
-  if (saved === 'granted' && window.gtag) {
+  // gtag('config', ...) をここで初めて呼ぶ。同意が確定するまでは一切呼ばないため、
+  // 「同意しない」場合はCookieなしの計測ピングも含めて本当に何も送信されない。
+  function startMeasurement(){
+    gtag('js', new Date());
+    gtag('config', 'G-S3HNGHT6YJ');
     gtag('consent', 'update', { analytics_storage: 'granted' });
-  } else if (!saved) {
+  }
+
+  if (saved === 'granted') {
+    startMeasurement();
+  } else if (saved !== 'denied') {
     banner.hidden = false;
   }
 
   document.getElementById('consentAccept').addEventListener('click', function(){
     try { localStorage.setItem(KEY, 'granted'); } catch(e) {}
-    if (window.gtag) gtag('consent', 'update', { analytics_storage: 'granted' });
+    startMeasurement();
     banner.hidden = true;
   });
   document.getElementById('consentDecline').addEventListener('click', function(){
