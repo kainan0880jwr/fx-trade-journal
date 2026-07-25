@@ -46,6 +46,23 @@
 }
 </script>
 
+<!-- Google tag (gtag.js) - 既定はすべて拒否。ユーザーが同意バナーで同意した場合のみ計測を有効化する -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('consent', 'default', {
+    'analytics_storage': 'denied',
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied'
+  });
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3HNGHT6YJ"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'G-S3HNGHT6YJ', { 'anonymize_ip': true });
+</script>
+
 <style>
   /* ============ Design tokens ============ */
   :root{
@@ -388,6 +405,21 @@
   .foot-col a:hover{color:var(--ink);}
   .foot-legal{border-top:1px solid var(--line); margin-top:var(--space-5); padding-top:var(--space-4); color:var(--ink-faint); font-size:.78rem; line-height:1.8;}
 
+  /* ============ Consent banner ============ */
+  .consent-banner{
+    position:fixed; left:0; right:0; bottom:0; z-index:100;
+    background:var(--surface); border-top:1px solid var(--line-strong);
+    box-shadow:0 -12px 30px -20px rgba(0,0,0,0.5);
+  }
+  .consent-inner{
+    display:flex; align-items:center; justify-content:space-between; gap:var(--space-4);
+    flex-wrap:wrap; padding:var(--space-3) var(--space-5);
+  }
+  .consent-inner p{color:var(--ink-dim); font-size:.86rem; max-width:60ch;}
+  .consent-inner a{color:var(--accent); text-decoration:underline;}
+  .consent-actions{display:flex; gap:.7em; flex:none;}
+  .consent-actions .btn{padding:.7em 1.3em; font-size:.86rem;}
+
   /* reveal animation */
   .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s var(--ease), transform .7s var(--ease);}
   .reveal.in{opacity:1; transform:translateY(0);}
@@ -399,6 +431,40 @@
 </style>
 </head>
 <body>
+
+<div class="consent-banner" id="consentBanner" role="dialog" aria-label="アクセス解析への同意" hidden>
+  <div class="wrap consent-inner">
+    <p>本サイトでは、アクセス状況を把握するためGoogleアナリティクスを匿名で利用しています。詳細は<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-ghost" id="consentDecline">同意しない</button>
+      <button type="button" class="btn btn-primary" id="consentAccept">同意する</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY = 'ga_consent';
+  var banner = document.getElementById('consentBanner');
+  var saved;
+  try { saved = localStorage.getItem(KEY); } catch(e) { saved = null; }
+
+  if (saved === 'granted' && window.gtag) {
+    gtag('consent', 'update', { analytics_storage: 'granted' });
+  } else if (!saved) {
+    banner.hidden = false;
+  }
+
+  document.getElementById('consentAccept').addEventListener('click', function(){
+    try { localStorage.setItem(KEY, 'granted'); } catch(e) {}
+    if (window.gtag) gtag('consent', 'update', { analytics_storage: 'granted' });
+    banner.hidden = true;
+  });
+  document.getElementById('consentDecline').addEventListener('click', function(){
+    try { localStorage.setItem(KEY, 'denied'); } catch(e) {}
+    banner.hidden = true;
+  });
+})();
+</script>
 
 <header class="nav">
   <div class="wrap nav-row">
