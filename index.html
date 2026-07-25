@@ -231,20 +231,25 @@
   .phone-pills{display:flex; gap:.4em; margin-bottom:.7em; overflow:hidden;}
   .phone-pill{font-size:.68rem; padding:.32em .7em; border-radius:999px; background:var(--surface-2); color:var(--ink-dim); white-space:nowrap;}
   .phone-pill.active{background:var(--accent); color:#fff;}
-  .stat-strip{display:grid; grid-template-columns:repeat(4,1fr); gap:.3em; background:var(--surface-2); border-radius:14px; padding:.7em .3em; margin-bottom:.6em;}
+  .stat-strip{display:grid; grid-template-columns:repeat(5,1fr); gap:.3em; background:var(--surface-2); border-radius:14px; padding:.7em .2em; margin-bottom:.6em;}
   .stat-strip div{text-align:center;}
-  .stat-strip .k{display:block; font-size:.6rem; color:var(--ink-faint); margin-bottom:.2em;}
-  .stat-strip .v{font-family:var(--font-mono); font-weight:700; font-size:.82rem;}
+  .stat-strip .k{display:block; font-size:.56rem; color:var(--ink-faint); margin-bottom:.2em;}
+  .stat-strip .v{font-family:var(--font-mono); font-weight:700; font-size:.76rem;}
   .trade-row{
     display:flex; align-items:center; justify-content:space-between; gap:.6em;
     background:var(--surface-2); border-left:3px solid var(--profit); border-radius:12px;
     padding:.55em .7em; margin-bottom:.4em;
   }
-  .trade-row.loss{border-left-color:var(--loss);}
+  /* 売買方向で常に色が決まる（buy=緑/sell=赤）。損益の勝敗は別のバッジで示す */
+  .trade-row.dir-sell{border-left-color:var(--loss);}
   .trade-row .pair{font-weight:700; font-size:.78rem;}
   .trade-row .side{font-size:.66rem; color:var(--profit);}
-  .trade-row.loss .side{color:var(--loss);}
+  .trade-row.dir-sell .side{color:var(--loss);}
+  .trade-row .result-badge{font-size:.6rem; font-weight:700; padding:.15em .5em; border-radius:6px; margin-left:.4em;}
+  .trade-row .result-badge.win{background:var(--profit-dim); color:var(--profit);}
+  .trade-row .result-badge.lose{background:var(--loss-dim); color:var(--loss);}
   .trade-row .pips{font-family:var(--font-mono); font-weight:700; font-size:.86rem; color:var(--profit); text-align:right;}
+  .trade-row .pips.neg{color:var(--loss);}
   .trade-row.loss .pips{color:var(--loss);}
 
   .float-chip{
@@ -555,20 +560,21 @@
           <div class="stat-strip">
             <div><span class="k">件数</span><span class="v">9</span></div>
             <div><span class="k">勝率</span><span class="v text-accent">78%</span></div>
-            <div><span class="k">pips</span><span class="v text-profit">+138</span></div>
+            <div><span class="k">合計pips</span><span class="v text-profit">+138</span></div>
             <div><span class="k">PF</span><span class="v">7.75</span></div>
+            <div><span class="k">勝/負</span><span class="v">7/2</span></div>
           </div>
           <div class="trade-row">
-            <div><div class="pair">USD/JPY</div><div class="side">▲ BUY</div></div>
+            <div><div class="pair">USD/JPY</div><div class="side">▲ BUY<span class="result-badge win">勝</span></div></div>
             <div class="pips">+19.6 pips</div>
           </div>
           <div class="trade-row">
-            <div><div class="pair">EUR/JPY</div><div class="side">▲ BUY</div></div>
+            <div><div class="pair">EUR/JPY</div><div class="side">▲ BUY<span class="result-badge win">勝</span></div></div>
             <div class="pips">+28.3 pips</div>
           </div>
-          <div class="trade-row loss">
-            <div><div class="pair">GBP/JPY</div><div class="side">▼ SELL</div></div>
-            <div class="pips">−8.5 pips</div>
+          <div class="trade-row dir-sell">
+            <div><div class="pair">GBP/JPY</div><div class="side">▼ SELL<span class="result-badge lose">負</span></div></div>
+            <div class="pips neg">−8.5 pips</div>
           </div>
         </div>
       </div>
