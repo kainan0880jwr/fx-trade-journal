@@ -1,0 +1,48 @@
+name: LP checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "404.html"
+      - "manifest.json"
+      - "lp-assets/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "404.html"
+      - "manifest.json"
+      - "lp-assets/**"
+  workflow_dispatch:
+
+jobs:
+  html-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # LPはアプリ本体(package.json)とは依存関係を分離し、npxでその場実行する
+      - run: npx --yes html-validate index.html 404.html
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: html-validate
+    steps:
+      - uses: actions/checkout@v4
+      - name: Serve LP locally
+        run: npx --yes http-server . -p 8080 &
+      - name: Wait for server
+        run: npx --yes wait-on http://localhost:8080/index.html
+      # スコアの閾値によるビルド失敗は設定しない(非ブロッキング・計測レポートのみ)。
+      # ヒーローのローソク足キャンバスが表示中は継続描画するため、閾値を課すのは時期尚早と判断。
+      - name: Run Lighthouse CI (report only)
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            http://localhost:8080/index.html
+          uploadArtifacts: true
+          temporaryPublicStorage: true
