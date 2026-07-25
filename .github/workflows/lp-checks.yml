@@ -4,15 +4,13 @@ on:
   push:
     branches: [main]
     paths:
-      - "index.html"
-      - "404.html"
+      - "*.html"
       - "manifest.json"
       - "lp-assets/**"
   pull_request:
     branches: [main]
     paths:
-      - "index.html"
-      - "404.html"
+      - "*.html"
       - "manifest.json"
       - "lp-assets/**"
   workflow_dispatch:
@@ -26,7 +24,8 @@ jobs:
         with:
           node-version: 20
       # LPはアプリ本体(package.json)とは依存関係を分離し、npxでその場実行する
-      - run: npx --yes html-validate index.html 404.html
+      # リポジトリルート直下の全HTML(法的ページ含む)を検証対象にする
+      - run: npx --yes html-validate *.html
 
   lighthouse:
     runs-on: ubuntu-latest
