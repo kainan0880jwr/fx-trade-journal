@@ -312,9 +312,13 @@
   .toggle-pair{display:flex; background:var(--surface-2); border-radius:12px; overflow:hidden; margin-bottom:.7em;}
   .toggle-pair button{flex:1; border:0; background:transparent; padding:.75em; font-weight:700; font-size:.85rem; color:var(--ink-faint); font-family:var(--font-body);}
   .toggle-pair button.on-buy{background:var(--profit-dim); color:var(--profit);}
+  .calc-box{background:var(--bg); border:1px dashed var(--line-strong); border-radius:12px; padding:.7em .9em .2em; margin-bottom:.7em;}
+  .calc-label{display:block; font-size:.62rem; color:var(--ink-faint); margin-bottom:.5em;}
+  .tag-label{display:block; width:100%; font-size:.68rem; color:var(--ink-faint); margin-bottom:.5em;}
   .tag-row{display:flex; gap:.4em; flex-wrap:wrap; margin-bottom:.9em;}
   .tag-chip{font-size:.72rem; background:var(--surface-2); color:var(--ink-dim); padding:.35em .8em; border-radius:999px;}
-  .import-btn{display:flex; align-items:center; gap:.6em; background:var(--accent-dim); color:var(--accent); border-radius:12px; padding:.85em 1em; font-weight:700; font-size:.85rem;}
+  .tag-chip.active{background:var(--accent-dim); color:var(--accent);}
+  .save-btn{display:flex; align-items:center; justify-content:center; background:var(--accent); color:#fff; border-radius:12px; padding:.85em 1em; font-weight:700; font-size:.85rem;}
 
   /* analysis donut mock */
   .analysis-tabs{display:flex; gap:1em; font-size:.78rem; color:var(--ink-faint); margin-bottom:var(--space-4); overflow:hidden;}
@@ -678,23 +682,27 @@
             <div class="form-field"><span class="fl">通貨ペア</span><span class="fv">USD/JPY</span></div>
             <div class="form-field"><span class="fl">ロット</span><span class="fv">0.10</span></div>
           </div>
-          <div class="row">
-            <div class="form-field"><span class="fl">pips</span><span class="fv text-profit">+19.6</span></div>
-            <div class="form-field"><span class="fl">損益</span><span class="fv text-profit">+3,920¥</span></div>
+          <div class="calc-box">
+            <span class="calc-label">自動計算</span>
+            <div class="row">
+              <div class="form-field"><span class="fl">pips</span><span class="fv text-profit">+19.6</span></div>
+              <div class="form-field"><span class="fl">損益</span><span class="fv text-profit">+3,920¥</span></div>
+            </div>
           </div>
           <div class="tag-row">
-            <span class="tag-chip">#デイトレ</span><span class="tag-chip">#押し目買い</span><span class="tag-chip">#計画通り</span>
+            <span class="tag-label">エントリー根拠（複数選択可）</span>
+            <span class="tag-chip active">デイトレ</span><span class="tag-chip active">押し目買い</span><span class="tag-chip">計画通り</span>
           </div>
-          <div class="import-btn">⇩ MT4 / MT5 CSVをインポート</div>
+          <div class="save-btn">記録する</div>
         </div>
       </div>
       <div class="feature-copy">
         <h3>PCもExcelも、もういらない。</h3>
         <p>通勤中でも、決済した直後でも。1タップで記録が完結するから、スマホやタブレットだけでトレード日記が続けられます。</p>
         <ul class="feature-list">
-          <li>MT4 / MT5の取引履歴CSVを一括インポート（無料版から利用可能）</li>
-          <li>タグ・メモでエントリー根拠を記録</li>
-          <li>チャート画像を添付（無料版1枚・プレミアム3枚）</li>
+          <li>通貨ペア・ロットを選ぶだけで、pipsと損益は自動計算</li>
+          <li>設定画面からMT4 / MT5の取引履歴CSVを一括インポート（無料版から利用可能）</li>
+          <li>エントリー根拠をタグで複数選択、チャート画像を添付（無料版1枚・プレミアム3枚）</li>
         </ul>
       </div>
     </div>
