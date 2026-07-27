@@ -16,11 +16,10 @@
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- GitHub Pages (build heredado) no permite establecer cabeceras de respuesta, por lo que la CSP
-     se aplica mediante una etiqueta meta. Esta página estática no tiene paso de compilación, por lo
-     que no se pueden generar hashes/nonces para script/style inline; script-src / style-src permiten
-     'unsafe-inline' por necesidad, mientras que los destinos de conexión se limitan a dominios de
-     Google Analytics. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+     se aplica mediante una etiqueta meta. Todo el CSS/JS está externalizado en lp-assets/, por lo
+     que script-src / style-src no necesitan 'unsafe-inline' (y no lo conceden). Los destinos de
+     conexión se limitan a dominios de Google Analytics. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -368,7 +367,7 @@
           </div>
           <div class="price-plan pp-best">
             <span class="pp-label">Anual<em>Ahorra ~17%</em></span>
-            <span class="pp-value mono">¥5000<span class="pp-unit">/año</span></span>
+            <span class="pp-value mono">¥5.000<span class="pp-unit">/año</span></span>
             <span class="pp-trial">Prueba gratis de 7 días</span>
           </div>
         </div>
@@ -380,7 +379,7 @@
           <li>Sin marca de agua e insignias de logros</li>
         </ul>
         <a class="btn btn-primary" href="https://apps.apple.com/es/app/id6786188634">Ver Premium</a>
-        <p class="price-fineprint">Los precios mostrados son para Japón (¥, impuestos incluidos). El precio que verás en el App Store varía según el país o región. Si cancelas durante la prueba gratuita de 7 días del plan anual, no se te cobrará nada. Al finalizar la prueba, se te cobrará automáticamente el plan anual (¥5000). Las suscripciones se renuevan automáticamente y pueden cancelarse hasta 24 horas antes de que finalice el periodo actual desde los ajustes de tu dispositivo. Consulta nuestros <a href="terms-es.html">Términos de servicio</a> y nuestra <a href="privacy-policy-es.html">Política de Privacidad</a> para más detalles.</p>
+        <p class="price-fineprint">Los precios mostrados son para Japón (¥, impuestos incluidos). El precio que verás en el App Store varía según el país o región. Si cancelas durante la prueba gratuita de 7 días del plan anual, no se te cobrará nada. Al finalizar la prueba, se te cobrará automáticamente el plan anual (¥5.000). Las suscripciones se renuevan automáticamente y pueden cancelarse hasta 24 horas antes de que finalice el periodo actual desde los ajustes de tu dispositivo. Consulta nuestros <a href="terms-es.html">Términos de servicio</a> y nuestra <a href="privacy-policy-es.html">Política de Privacidad</a> para más detalles.</p>
       </div>
     </div>
   </div>
@@ -460,7 +459,7 @@
       <a lang="en" href="index-en.html">English</a>
       <a lang="de" href="index-de.html">Deutsch</a>
       <a lang="fr" href="index-fr.html">Français</a>
-      <span lang="es">Español</span>
+      <span lang="es" aria-current="page">Español</span>
       <a lang="it" href="index-it.html">Italiano</a>
     </nav>
     <div class="foot-legal">

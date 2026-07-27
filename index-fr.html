@@ -16,11 +16,10 @@
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- GitHub Pages (build hérité) ne permet pas de définir des en-têtes de réponse ; la CSP est
-     donc appliquée via une balise meta. Cette page statique n'a pas d'étape de build, il est donc
-     impossible de générer des hashs/nonces pour le script/style inline ; script-src / style-src
-     autorisent donc 'unsafe-inline' par nécessité, tandis que les cibles de connexion restent
-     limitées aux domaines de Google Analytics. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+     donc appliquée via une balise meta. Tout le CSS/JS est externalisé sous lp-assets/, donc
+     script-src / style-src n'ont pas besoin de 'unsafe-inline' (et ne l'accordent pas). Les
+     cibles de connexion restent limitées aux domaines de Google Analytics. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -459,7 +458,7 @@
       <a lang="ja" href="index.html">日本語</a>
       <a lang="en" href="index-en.html">English</a>
       <a lang="de" href="index-de.html">Deutsch</a>
-      <span lang="fr">Français</span>
+      <span lang="fr" aria-current="page">Français</span>
       <a lang="es" href="index-es.html">Español</a>
       <a lang="it" href="index-it.html">Italiano</a>
     </nav>

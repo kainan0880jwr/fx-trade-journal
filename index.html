@@ -16,10 +16,10 @@
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- GitHub Pages(legacy build)はレスポンスヘッダーを制御できないため、metaタグでCSPを付与する。
-     このページはビルドステップを持たない静的HTMLで、インラインscript/styleにハッシュ/nonceを
-     動的付与できないため script-src / style-src はやむを得ず 'unsafe-inline' を許可しつつ、
-     接続先・埋め込み元をGoogleアナリティクス関連ドメインのみに限定している。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+     CSS/JSはすべてlp-assets配下の外部ファイルに切り出し済みのため、
+     script-src / style-src とも 'unsafe-inline' は不要（付与していない）。
+     接続先・埋め込み元はGoogleアナリティクス関連ドメインのみに限定している。 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -456,7 +456,7 @@
       </div>
     </div>
     <nav class="foot-lang" aria-label="言語切替">
-      <span lang="ja">日本語</span>
+      <span lang="ja" aria-current="page">日本語</span>
       <a lang="en" href="index-en.html">English</a>
       <a lang="de" href="index-de.html">Deutsch</a>
       <a lang="fr" href="index-fr.html">Français</a>

@@ -16,11 +16,10 @@
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- GitHub Pages (build legacy) non permette di impostare header di risposta, quindi la CSP
-     viene applicata tramite tag meta. Questa pagina statica non ha una fase di build, quindi non
-     è possibile generare hash/nonce per script/style inline; script-src / style-src consentono
-     quindi 'unsafe-inline' per necessità, mentre le destinazioni di connessione restano limitate
-     ai domini di Google Analytics. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+     viene applicata tramite tag meta. Tutto il CSS/JS è esternalizzato in lp-assets/, quindi
+     script-src / style-src non necessitano di 'unsafe-inline' (e non lo concedono). Le
+     destinazioni di connessione restano limitate ai domini di Google Analytics. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -461,7 +460,7 @@
       <a lang="de" href="index-de.html">Deutsch</a>
       <a lang="fr" href="index-fr.html">Français</a>
       <a lang="es" href="index-es.html">Español</a>
-      <span lang="it">Italiano</span>
+      <span lang="it" aria-current="page">Italiano</span>
     </nav>
     <div class="foot-legal">
       Le funzioni di analisi di questa app non hanno lo scopo di fornire consulenza sugli investimenti né di promuovere un prodotto finanziario specifico. Prendi le tue decisioni di trading a tuo rischio e sotto la tua responsabilità.<br>
