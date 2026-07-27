@@ -16,10 +16,10 @@
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- GitHub Pages (legacy build) can't set response headers, so CSP is applied via a meta tag.
-     This is a build-step-free static page, so hashes/nonces can't be generated for inline
-     script/style; script-src / style-src therefore allow 'unsafe-inline' as a necessary
-     tradeoff, while connect/frame targets are restricted to Google Analytics domains only. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+     All CSS/JS is externalized under lp-assets/, so script-src / style-src don't
+     need 'unsafe-inline' (and don't grant it). Connection targets are restricted
+     to Google Analytics domains only. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -456,7 +456,7 @@
     </div>
     <nav class="foot-lang" aria-label="Language switcher">
       <a lang="ja" href="index.html">日本語</a>
-      <span lang="en">English</span>
+      <span lang="en" aria-current="page">English</span>
       <a lang="de" href="index-de.html">Deutsch</a>
       <a lang="fr" href="index-fr.html">Français</a>
       <a lang="es" href="index-es.html">Español</a>

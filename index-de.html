@@ -16,10 +16,10 @@
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- GitHub Pages (legacy build) kann keine Response-Header setzen, daher wird die CSP per
-     Meta-Tag gesetzt. Diese Seite hat keinen Build-Schritt, daher können für Inline-Skripte/
-     -Styles keine Hashes/Nonces erzeugt werden; script-src/style-src erlauben deshalb notgedrungen
-     'unsafe-inline', während Verbindungsziele auf Google-Analytics-Domains beschränkt bleiben. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+     Meta-Tag gesetzt. Sämtliches CSS/JS liegt extern unter lp-assets/, daher benötigen
+     script-src/style-src kein 'unsafe-inline' (und erlauben es auch nicht). Verbindungsziele
+     bleiben auf Google-Analytics-Domains beschränkt. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -457,7 +457,7 @@
     <nav class="foot-lang" aria-label="Sprachauswahl">
       <a lang="ja" href="index.html">日本語</a>
       <a lang="en" href="index-en.html">English</a>
-      <span lang="de">Deutsch</span>
+      <span lang="de" aria-current="page">Deutsch</span>
       <a lang="fr" href="index-fr.html">Français</a>
       <a lang="es" href="index-es.html">Español</a>
       <a lang="it" href="index-it.html">Italiano</a>
