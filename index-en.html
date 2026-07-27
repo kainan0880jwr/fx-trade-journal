@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FX Trade Journal — One trade builds the next win rate.</title>
+<meta name="description" content="Just log your trades and your win rate, pips, and profit factor are tracked automatically. Turn your results into a shareable card. A trading journal app that works entirely on your phone or tablet. MT4/MT5 CSV import supported.">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/index-en.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/index-en.html">
+<link rel="alternate" hreflang="de" href="https://kainan0880jwr.github.io/fx-trade-journal/index-de.html">
+<link rel="alternate" hreflang="fr" href="https://kainan0880jwr.github.io/fx-trade-journal/index-fr.html">
+<link rel="alternate" hreflang="es" href="https://kainan0880jwr.github.io/fx-trade-journal/index-es.html">
+<link rel="alternate" hreflang="it" href="https://kainan0880jwr.github.io/fx-trade-journal/index-it.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- GitHub Pages (legacy build) can't set response headers, so CSP is applied via a meta tag.
+     This is a build-step-free static page, so hashes/nonces can't be generated for inline
+     script/style; script-src / style-src therefore allow 'unsafe-inline' as a necessary
+     tradeoff, while connect/frame targets are restricted to Google Analytics domains only. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FX Trade Journal">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="FX Trade Journal — One trade builds the next win rate.">
+<meta property="og:description" content="Just log your trades and your win rate, pips, and profit factor are tracked automatically. Turn your results into a shareable card. A trading journal app that works entirely on your phone or tablet.">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/index-en.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FX Trade Journal — One trade builds the next win rate.">
+<meta name="twitter:description" content="Just log your trades and your win rate, pips, and profit factor are tracked automatically. A trading journal app that works entirely on your phone or tablet.">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FX Trade Journal",
+  "operatingSystem": "iOS",
+  "applicationCategory": "FinanceApplication",
+  "url": "https://kainan0880jwr.github.io/fx-trade-journal/index-en.html",
+  "downloadUrl": "https://apps.apple.com/us/app/id6786188634",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY"
+  },
+  "description": "A trading journal app for FX with MT4/MT5 support. Just log your trades and win rate, pips, and profit factor are tallied automatically, and you can share your results on social media. Data is encrypted and stored on-device only, with no cloud sync."
+}
+</script>
+
+<!-- Google tag (gtag.js) - gtag('config', ...) itself is never called until consent is confirmed.
+     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
+<script src="lp-assets/ga-init.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3HNGHT6YJ"></script>
+
+<link rel="stylesheet" href="lp-assets/style.css">
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="Consent for analytics" hidden>
+  <div class="wrap consent-inner">
+    <p>This site uses Google Analytics to understand traffic. See our <a href="privacy-policy-en.html">Privacy Policy</a> for details.</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">Decline</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">Accept</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit)"/>
+      </svg>
+      FX Trade Journal
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="https://apps.apple.com/us/app/id6786188634">Get it on the App Store</a>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true" title="Illustrative currency pair display (not real market data)">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+<p class="sr-only">Supported pairs (partial list): USD/JPY, EUR/JPY, GBP/JPY, EUR/USD, AUD/JPY, USD/CHF, NZD/USD, GBP/USD and more</p>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Trading journal &amp; analytics app</p>
+      <h1>One trade builds<br>the next <em>win rate</em>.</h1>
+      <p class="hero-sub">
+        Just log a trade and your win rate, pips, and profit factor appear automatically.
+        Your results become a shareable card that keeps you motivated. Everything works on your phone or tablet.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://apps.apple.com/us/app/id6786188634">Download free on the App Store</a>
+        <a class="btn btn-ghost" href="#features">See features</a>
+      </div>
+      <div class="hero-trust">
+        <span>Works entirely on phone/tablet</span>
+        <span>Share results on social media</span>
+        <span>No account required</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <canvas class="chart-canvas" id="heroChart" aria-hidden="true"></canvas>
+      <div class="float-chip chip-winrate">
+        <span class="k">This month's win rate</span>
+        <span class="v mono">78%</span>
+      </div>
+      <div class="float-chip chip-pf">
+        <span class="k">Profit factor</span>
+        <span class="v mono">7.75</span>
+      </div>
+
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-topbar"><span>9:41</span><span>●●●</span></div>
+          <div class="phone-title">FX Trade Journal</div>
+          <div class="phone-month"><span>‹</span><b>Jul 2026</b><em>This month</em><span>›</span></div>
+          <div class="phone-pills">
+            <span class="phone-pill active">All</span>
+            <span class="phone-pill">Scalp</span>
+            <span class="phone-pill">Day</span>
+            <span class="phone-pill">Swing</span>
+          </div>
+          <div class="stat-strip">
+            <div><span class="k">Trades</span><span class="v">9</span></div>
+            <div><span class="k">Win rate</span><span class="v text-accent">78%</span></div>
+            <div><span class="k">Pips</span><span class="v text-profit">+138</span></div>
+            <div><span class="k">PF</span><span class="v">7.75</span></div>
+            <div><span class="k">W/L</span><span class="v">7/2</span></div>
+          </div>
+          <div class="trade-row">
+            <div><div class="pair">USD/JPY</div><div class="side">▲ BUY<span class="result-badge win">Win</span></div></div>
+            <div class="pips">+19.6 pips</div>
+          </div>
+          <div class="trade-row">
+            <div><div class="pair">EUR/JPY</div><div class="side">▲ BUY<span class="result-badge win">Win</span></div></div>
+            <div class="pips">+28.3 pips</div>
+          </div>
+          <div class="trade-row dir-sell">
+            <div><div class="pair">GBP/JPY</div><div class="side">▼ SELL<span class="result-badge lose">Loss</span></div></div>
+            <div class="pips neg">−8.5 pips</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="problem">
+  <div class="wrap problem-grid reveal">
+    <div class="problem-stat">
+      <span aria-hidden="true">"I'll do it later."</span>
+      <span class="problem-stat-desc">The moment you think that, your trading journal stops.</span>
+    </div>
+    <div class="problem-copy">
+      <p class="eyebrow">Why journaling doesn't stick</p>
+      <h2>Motivation only shows up after a win.</h2>
+      <p>Right after a losing trade is exactly when the will to log it disappears. A notebook or spreadsheet that takes effort to fill in grinds to a halt at that exact moment.</p>
+      <p>FX Trade Journal removes the "too much hassle to write it down" excuse with one-tap logging and MT4/MT5 trade history import. Analysis only becomes meaningful once you keep the streak going.</p>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Features</p>
+      <h2>Log it, analyze it, share it.<br>The more you keep going, the clearer your win rate becomes.</h2>
+    </div>
+
+    <div class="feature-row reveal" id="analysis">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Analysis</span>
+          <div class="analysis-tabs">
+            <b>Performance</b><span>Time/Day</span><span>Tags</span><span>Risk-Reward</span><span>Equity</span><span>Mindset</span>
+          </div>
+          <div class="donut-row">
+            <svg class="donut" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--profit)" stroke-width="14"
+                stroke-dasharray="314" stroke-dashoffset="69" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+              <text x="60" y="56" text-anchor="middle" font-family="var(--font-mono)" font-weight="700" font-size="22" fill="var(--ink)">78%</text>
+              <text x="60" y="74" text-anchor="middle" font-family="var(--font-body)" font-size="9" fill="var(--ink-faint)">Win rate</text>
+            </svg>
+            <div class="donut-figs">
+              <div><span class="f-k">Profit factor</span><span class="f-v">7.75</span></div>
+              <div><span class="f-k">Total pips</span><span class="f-v text-profit">+138.4</span></div>
+              <div><span class="f-k">Current streak</span><span class="f-v">2 wins</span></div>
+            </div>
+          </div>
+          <div class="bw-row">
+            <div class="bw-card"><span class="bwk">Best (USD/JPY)</span><span class="bwv">+32.5 pips</span></div>
+            <div class="bw-card worst"><span class="bwk">Worst (GBP/JPY)</span><span class="bwv">−12 pips</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>The numbers point to your next move.</h3>
+        <p>Just by logging trades, your monthly win rate, pips, and profit factor are tallied automatically. See patterns by time of day, day of week, and currency pair at a glance.</p>
+        <ul class="feature-list">
+          <li>Monthly win rate, pips, and PF are tallied automatically, even on the free plan</li>
+          <li>A logging streak visualizes your consistency</li>
+          <li>Time/Day, Tags, Risk-Reward, Equity, and Mindset analysis tabs (Premium)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reverse reveal">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Share</span>
+          <div class="share-card">
+            <div class="month mono">July 2026 results</div>
+            <div class="big">78%</div>
+            <div class="sub-figs">
+              <span>PF 7.75</span><span>+138 pips</span><span>9 trades</span>
+            </div>
+            <div class="watermark-chip">FX Trade Journal</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Your results become proof.</h3>
+        <p>Turn your monthly results into a stylish card and share it on X, Instagram, or LINE. Seeing your progress add up becomes the fuel to keep going.</p>
+        <ul class="feature-list">
+          <li>Free plan can share with a watermark</li>
+          <li>Premium exports without the watermark</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-visual">
+        <div class="panel form-mock">
+          <span class="panel-tag">Log a trade</span>
+          <div class="toggle-pair">
+            <button type="button" class="on-buy">▲ BUY</button>
+            <button type="button">▼ SELL</button>
+          </div>
+          <div class="row">
+            <div class="form-field"><span class="fl">Pair</span><span class="fv">USD/JPY</span></div>
+            <div class="form-field"><span class="fl">Lot</span><span class="fv">0.10</span></div>
+          </div>
+          <div class="calc-box">
+            <span class="calc-label">Auto-calculated</span>
+            <div class="row">
+              <div class="form-field"><span class="fl">Pips</span><span class="fv text-profit">+19.6</span></div>
+              <div class="form-field"><span class="fl">P/L</span><span class="fv text-profit">+¥3,920</span></div>
+            </div>
+          </div>
+          <div class="tag-row">
+            <span class="tag-label">Entry reasons (multi-select)</span>
+            <span class="tag-chip active">Day trade</span><span class="tag-chip active">Pullback buy</span><span class="tag-chip">As planned</span>
+          </div>
+          <div class="save-btn">Save trade</div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>No more PC, no more Excel.</h3>
+        <p>On your commute or right after closing a trade — one tap is all it takes, so you can keep a trading journal using only your phone or tablet.</p>
+        <ul class="feature-list">
+          <li>Just pick a pair and a lot size — pips and P/L are calculated automatically</li>
+          <li>Bulk-import MT4/MT5 trade history CSVs from Settings (available on the free plan)</li>
+          <li>Multi-select tags for entry reasons, and attach chart images (1 on free, 3 on Premium)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reverse reveal" id="security">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Security</span>
+          <div class="sec-row">
+            <div class="lbl">
+              <div class="sec-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 0112 0v2M5 10h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1v-9a1 1 0 011-1z" stroke="var(--accent)" stroke-width="1.6"/></svg>
+              </div>
+              Biometric lock
+            </div>
+            <div class="switch"></div>
+          </div>
+          <div class="sec-note">Toggle on/off anytime in Settings (off by default)</div>
+          <div class="sec-note">Database encryption via SQLCipher (device-only key, excluded from iCloud)</div>
+          <div class="sec-note">No cloud sync, no internet connection required</div>
+          <div class="sec-note">No account required, data never leaves your device</div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Your trade data belongs to your device alone.</h3>
+        <p>FX trading history is sensitive data that can reveal your financial position. That's why encryption and biometric lock come standard.</p>
+        <ul class="feature-list">
+          <li>Lock the app with Face ID / Touch ID (enable anytime in Settings)</li>
+          <li>Encryption key is device-only (excluded from iCloud backup)</li>
+          <li>Designed to never send data to a server</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stat-band">
+  <div class="wrap">
+    <div class="stat-band-grid reveal">
+      <div class="stat-band-item"><span class="num" data-count="6">0</span><span class="lbl">Languages (JA/EN/DE/FR/ES/IT)</span></div>
+      <div class="stat-band-item"><span class="num" data-count="175">0</span><span class="lbl">Countries &amp; regions available</span></div>
+      <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">Trade history import support</span></div>
+      <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Data sent to the cloud</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Pricing</p>
+      <h2>Start free.<br>Upgrade to Premium when you need more.</h2>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="price-card">
+        <div class="price-name">Free</div>
+        <p class="price-desc">For building the logging habit. Core features stay free forever.</p>
+        <p class="price-tag mono">¥0</p>
+        <ul class="price-list">
+          <li>One-tap trade logging</li>
+          <li>MT4 / MT5 CSV import</li>
+          <li>Monthly dashboard (win rate, pips, PF)</li>
+          <li>Shareable results card (with watermark)</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://apps.apple.com/us/app/id6786188634">Start for free</a>
+      </div>
+      <div class="price-card hi">
+        <span class="price-badge">Recommended</span>
+        <div class="price-name">Premium</div>
+        <p class="price-desc">For traders who want to review their performance seriously.</p>
+        <div class="price-plan-row">
+          <div class="price-plan">
+            <span class="pp-label">Monthly</span>
+            <span class="pp-value mono">¥500<span class="pp-unit">/mo</span></span>
+          </div>
+          <div class="price-plan pp-best">
+            <span class="pp-label">Yearly<em>Save ~17%</em></span>
+            <span class="pp-value mono">¥5,000<span class="pp-unit">/yr</span></span>
+            <span class="pp-trial">7-day free trial</span>
+          </div>
+        </div>
+        <ul class="price-list">
+          <li>All analysis tabs (Time/Day, Tags, Risk-Reward, Equity, Mindset)</li>
+          <li>Monthly &amp; weekly insights, annual report</li>
+          <li>Mindset log &amp; rule-compliance check</li>
+          <li>3 chart image attachments &amp; lot size calculator</li>
+          <li>No watermark &amp; achievement badges</li>
+        </ul>
+        <a class="btn btn-primary" href="https://apps.apple.com/us/app/id6786188634">See Premium</a>
+        <p class="price-fineprint">Prices shown are for Japan (JPY, tax included). The price displayed on the App Store varies by country/region. If you cancel during the 7-day free trial on the annual plan, you will not be charged. Once the trial ends, you will automatically be charged for the annual plan (¥5,000). Subscriptions renew automatically and can be cancelled from your device's Settings app up to 24 hours before the end of the current period. See our <a href="terms-en.html">Terms of Use</a> and <a href="privacy-policy-en.html">Privacy Policy</a> for details.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">FAQ</p>
+      <h2>Before you get started.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq-item">
+        <summary>Where is my trade data stored?</summary>
+        <div class="faq-a">All data is encrypted and stored only on your device. There is no cloud sync, and the app works without an internet connection.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I use it with a broker other than MT4/MT5?</summary>
+        <div class="faq-a">Yes. If your broker's account supports MT4/MT5-format CSV export, it can be imported automatically. If it doesn't, you can still use every feature by entering trades manually.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I cancel my subscription anytime?</summary>
+        <div class="faq-a">Yes. You can cancel anytime from your device's App Store settings. After cancelling, you'll keep Premium access until the next renewal date.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Does the app give investment advice?</summary>
+        <div class="faq-a">This app is a logging and analysis tool. It is not intended to provide investment advice or solicit any specific financial product. Past records and results do not guarantee future performance. Please make your own trading decisions at your own risk.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <canvas id="ctaChart" aria-hidden="true"></canvas>
+  <div class="wrap inner reveal">
+    <h2>Your next log becomes<br>your next win rate.</h2>
+    <p>Start reviewing today, with your very next trade.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://apps.apple.com/us/app/id6786188634">Download free on the App Store</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit)"/>
+          </svg>
+          FX Trade Journal
+        </div>
+        <p class="foot-tag">A trading journal that works entirely on your phone or tablet. Log it, analyze it, and build your next win rate.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Support &amp; Legal</h4>
+        <ul>
+          <li><a href="support-en.html">Contact us</a></li>
+          <li><a href="privacy-policy-en.html">Privacy Policy</a></li>
+          <li><a href="terms-en.html">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <nav class="foot-lang" aria-label="Language switcher">
+      <a lang="ja" href="index.html">日本語</a>
+      <span lang="en">English</span>
+      <a lang="de" href="index-de.html">Deutsch</a>
+      <a lang="fr" href="index-fr.html">Français</a>
+      <a lang="es" href="index-es.html">Español</a>
+      <a lang="it" href="index-it.html">Italiano</a>
+    </nav>
+    <div class="foot-legal">
+      This app's analytics features are not intended to provide investment advice or solicit any specific financial product. Please make your own trading decisions at your own risk.<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+<script src="lp-assets/main.js"></script>
+</body>
+</html>
