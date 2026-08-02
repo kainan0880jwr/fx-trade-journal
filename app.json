@@ -17,7 +17,12 @@
           "de",
           "fr",
           "es",
-          "it"
+          "it",
+          "id",
+          "tr",
+          "hi",
+          "vi",
+          "pt"
         ],
         "CFBundleDevelopmentRegion": "ja"
       }
