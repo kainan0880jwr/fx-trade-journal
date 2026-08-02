@@ -5,10 +5,15 @@ import { de } from './de';
 import { fr } from './fr';
 import { es } from './es';
 import { it } from './it';
+import { id } from './id';
+import { tr } from './tr';
+import { hi } from './hi';
+import { vi } from './vi';
+import { pt } from './pt';
 
-export type SupportedLang = 'ja' | 'en' | 'de' | 'fr' | 'es' | 'it';
+export type SupportedLang = 'ja' | 'en' | 'de' | 'fr' | 'es' | 'it' | 'id' | 'tr' | 'hi' | 'vi' | 'pt';
 
-const SUPPORTED_LANGS: SupportedLang[] = ['ja', 'de', 'fr', 'es', 'it'];
+const SUPPORTED_LANGS: SupportedLang[] = ['ja', 'de', 'fr', 'es', 'it', 'id', 'tr', 'hi', 'vi', 'pt'];
 
 function resolveLang(code: string): SupportedLang {
   const base = code.slice(0, 2).toLowerCase();
@@ -49,7 +54,7 @@ function detectLang(): SupportedLang {
 
 export const lang: SupportedLang = detectLang();
 
-const LANG_MAP: Record<SupportedLang, LangStrings> = { ja, en, de, fr, es, it };
+const LANG_MAP: Record<SupportedLang, LangStrings> = { ja, en, de, fr, es, it, id, tr, hi, vi, pt };
 
 const strings: LangStrings = LANG_MAP[lang];
 
