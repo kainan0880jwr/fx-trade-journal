@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FX Trade Journal — Bir işlem, bir sonraki kazanma oranını inşa eder.</title>
+<meta name="description" content="Sadece işlemlerinizi kaydedin; kazanma oranınız, pip'leriniz ve kâr faktörünüz otomatik olarak hesaplansın. Sonuçlarınızı paylaşılabilir bir karta dönüştürün. Tamamen telefonunuzda veya tabletinizde çalışan bir işlem günlüğü uygulaması. MT4/MT5 CSV içe aktarma destekli.">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/index-tr.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/index-en.html">
+<link rel="alternate" hreflang="de" href="https://kainan0880jwr.github.io/fx-trade-journal/index-de.html">
+<link rel="alternate" hreflang="fr" href="https://kainan0880jwr.github.io/fx-trade-journal/index-fr.html">
+<link rel="alternate" hreflang="es" href="https://kainan0880jwr.github.io/fx-trade-journal/index-es.html">
+<link rel="alternate" hreflang="it" href="https://kainan0880jwr.github.io/fx-trade-journal/index-it.html">
+<link rel="alternate" hreflang="id" href="https://kainan0880jwr.github.io/fx-trade-journal/index-id.html">
+<link rel="alternate" hreflang="tr" href="https://kainan0880jwr.github.io/fx-trade-journal/index-tr.html">
+<link rel="alternate" hreflang="hi" href="https://kainan0880jwr.github.io/fx-trade-journal/index-hi.html">
+<link rel="alternate" hreflang="vi" href="https://kainan0880jwr.github.io/fx-trade-journal/index-vi.html">
+<link rel="alternate" hreflang="pt-BR" href="https://kainan0880jwr.github.io/fx-trade-journal/index-pt.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- GitHub Pages (legacy build) can't set response headers, so CSP is applied via a meta tag.
+     All CSS/JS is externalized under lp-assets/, so script-src / style-src don't
+     need 'unsafe-inline' (and don't grant it). Connection targets are restricted
+     to Google Analytics domains only. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FX Trade Journal">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="FX Trade Journal — Bir işlem, bir sonraki kazanma oranını inşa eder.">
+<meta property="og:description" content="Sadece işlemlerinizi kaydedin; kazanma oranınız, pip'leriniz ve kâr faktörünüz otomatik olarak hesaplansın. Sonuçlarınızı paylaşılabilir bir karta dönüştürün. Tamamen telefonunuzda veya tabletinizde çalışan bir işlem günlüğü uygulaması.">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/index-tr.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FX Trade Journal — Bir işlem, bir sonraki kazanma oranını inşa eder.">
+<meta name="twitter:description" content="Sadece işlemlerinizi kaydedin; kazanma oranınız, pip'leriniz ve kâr faktörünüz otomatik olarak hesaplansın. Tamamen telefonunuzda veya tabletinizde çalışan bir işlem günlüğü uygulaması.">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FX Trade Journal",
+  "operatingSystem": "iOS",
+  "applicationCategory": "FinanceApplication",
+  "url": "https://kainan0880jwr.github.io/fx-trade-journal/index-tr.html",
+  "downloadUrl": "https://apps.apple.com/tr/app/id6786188634",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY"
+  },
+  "description": "MT4/MT5 destekli bir FX işlem günlüğü uygulaması. Sadece işlemlerinizi kaydedin; kazanma oranı, pip ve kâr faktörü otomatik olarak hesaplanır ve sonuçlarınızı sosyal medyada paylaşabilirsiniz. Veriler şifrelenir ve yalnızca cihazda saklanır, bulut senkronizasyonu yoktur."
+}
+</script>
+
+<!-- Google tag (gtag.js) - gtag('config', ...) itself is never called until consent is confirmed.
+     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
+<script src="lp-assets/ga-init.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3HNGHT6YJ"></script>
+
+<link rel="stylesheet" href="lp-assets/style.css">
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="Analitik için onay" hidden>
+  <div class="wrap consent-inner">
+    <p>Bu site, trafiği anlamak için Google Analytics kullanır. Ayrıntılar için <a href="privacy-policy-tr.html">Gizlilik Politikamıza</a> bakın.</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">Reddet</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">Kabul Et</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit)"/>
+      </svg>
+      FX Trade Journal
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">Özellikler</a></li>
+      <li><a href="#security">Güvenlik</a></li>
+      <li><a href="#pricing">Fiyatlandırma</a></li>
+      <li><a href="#faq">SSS</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="https://apps.apple.com/tr/app/id6786188634">App Store'da edinin</a>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true" title="Örnek döviz çifti gösterimi (gerçek piyasa verisi değildir)">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+<p class="sr-only">Desteklenen paritler (kısmi liste): USD/JPY, EUR/JPY, GBP/JPY, EUR/USD, AUD/JPY, USD/CHF, NZD/USD, GBP/USD ve daha fazlası</p>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">İşlem günlüğü ve analiz uygulaması</p>
+      <h1>Bir işlem,<br>bir sonraki <em>kazanma oranını</em> inşa eder.</h1>
+      <p class="hero-sub">
+        Sadece bir işlemi kaydedin; kazanma oranınız, pip'leriniz ve kâr faktörünüz otomatik olarak görünsün.
+        Sonuçlarınız, sizi motive eden paylaşılabilir bir karta dönüşür. Her şey telefonunuzda veya tabletinizde çalışır.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://apps.apple.com/tr/app/id6786188634">App Store'dan ücretsiz indirin</a>
+        <a class="btn btn-ghost" href="#features">Özellikleri görün</a>
+      </div>
+      <div class="hero-trust">
+        <span>Tamamen telefon/tablette çalışır</span>
+        <span>Sonuçları sosyal medyada paylaşın</span>
+        <span>Hesap gerektirmez</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <canvas class="chart-canvas" id="heroChart" aria-hidden="true"></canvas>
+      <div class="float-chip chip-winrate">
+        <span class="k">Bu ayki kazanma oranı</span>
+        <span class="v mono">78%</span>
+      </div>
+      <div class="float-chip chip-pf">
+        <span class="k">Kâr faktörü</span>
+        <span class="v mono">7.75</span>
+      </div>
+
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-topbar"><span>9:41</span><span>●●●</span></div>
+          <div class="phone-title">FX Trade Journal</div>
+          <div class="phone-month"><span>‹</span><b>Tem 2026</b><em>Bu ay</em><span>›</span></div>
+          <div class="phone-pills">
+            <span class="phone-pill active">Tümü</span>
+            <span class="phone-pill">Scalp</span>
+            <span class="phone-pill">Gün İçi</span>
+            <span class="phone-pill">Swing</span>
+          </div>
+          <div class="stat-strip">
+            <div><span class="k">İşlem</span><span class="v">9</span></div>
+            <div><span class="k">Kazanma oranı</span><span class="v text-accent">78%</span></div>
+            <div><span class="k">Pip</span><span class="v text-profit">+138</span></div>
+            <div><span class="k">KF</span><span class="v">7.75</span></div>
+            <div><span class="k">G/K</span><span class="v">7/2</span></div>
+          </div>
+          <div class="trade-row">
+            <div><div class="pair">USD/JPY</div><div class="side">▲ BUY<span class="result-badge win">Kazandı</span></div></div>
+            <div class="pips">+19.6 pips</div>
+          </div>
+          <div class="trade-row">
+            <div><div class="pair">EUR/JPY</div><div class="side">▲ BUY<span class="result-badge win">Kazandı</span></div></div>
+            <div class="pips">+28.3 pips</div>
+          </div>
+          <div class="trade-row dir-sell">
+            <div><div class="pair">GBP/JPY</div><div class="side">▼ SELL<span class="result-badge lose">Kaybetti</span></div></div>
+            <div class="pips neg">−8.5 pips</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="problem">
+  <div class="wrap problem-grid reveal">
+    <div class="problem-stat">
+      <span aria-hidden="true">"Sonra yaparım."</span>
+      <span class="problem-stat-desc">Bu düşünceyi kurduğunuz an, işlem günlüğünüz durur.</span>
+    </div>
+    <div class="problem-copy">
+      <p class="eyebrow">Günlük tutma neden sürdürülemiyor</p>
+      <h2>Motivasyon yalnızca kazandığınızda ortaya çıkar.</h2>
+      <p>Kaybeden bir işlemin hemen ardından, onu kaydetme isteği tam da o anda kayboluyor. Doldurulması emek isteyen bir defter ya da elektronik tablo, tam o noktada duruyor.</p>
+      <p>FX Trade Journal, tek dokunuşla kayıt ve MT4/MT5 işlem geçmişi içe aktarma özellikleriyle "kaydetmek çok uğraştırıcı" bahanesini ortadan kaldırır. Analiz, ancak seriyi sürdürdüğünüzde gerçek anlam kazanır.</p>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Özellikler</p>
+      <h2>Kaydedin, analiz edin, paylaşın.<br>Ne kadar devam ederseniz, kazanma oranınız o kadar netleşir.</h2>
+    </div>
+
+    <div class="feature-row reveal" id="analysis">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Analiz</span>
+          <div class="analysis-tabs">
+            <b>Performans</b><span>Saat/Gün</span><span>Etiketler</span><span>Risk-Ödül</span><span>Bakiye</span><span>Zihniyet</span>
+          </div>
+          <div class="donut-row">
+            <svg class="donut" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--profit)" stroke-width="14"
+                stroke-dasharray="314" stroke-dashoffset="69" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+              <text x="60" y="56" text-anchor="middle" font-family="var(--font-mono)" font-weight="700" font-size="22" fill="var(--ink)">78%</text>
+              <text x="60" y="74" text-anchor="middle" font-family="var(--font-body)" font-size="9" fill="var(--ink-faint)">Kazanma oranı</text>
+            </svg>
+            <div class="donut-figs">
+              <div><span class="f-k">Kâr faktörü</span><span class="f-v">7.75</span></div>
+              <div><span class="f-k">Toplam pip</span><span class="f-v text-profit">+138.4</span></div>
+              <div><span class="f-k">Güncel seri</span><span class="f-v">2 galibiyet</span></div>
+            </div>
+          </div>
+          <div class="bw-row">
+            <div class="bw-card"><span class="bwk">En iyi (USD/JPY)</span><span class="bwv">+32.5 pips</span></div>
+            <div class="bw-card worst"><span class="bwk">En kötü (GBP/JPY)</span><span class="bwv">−12 pips</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Rakamlar bir sonraki hamlenizi gösterir.</h3>
+        <p>Sadece işlemlerinizi kaydederek aylık kazanma oranınız, pip'leriniz ve kâr faktörünüz otomatik olarak hesaplanır. Saat, gün ve parite bazındaki kalıpları tek bakışta görün.</p>
+        <ul class="feature-list">
+          <li>Aylık kazanma oranı, pip ve KF, ücretsiz planda bile otomatik hesaplanır</li>
+          <li>Kayıt serisi, tutarlılığınızı görselleştirir</li>
+          <li>Saat/Gün, Etiketler, Risk-Ödül, Bakiye ve Zihniyet analiz sekmeleri (Premium)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reverse reveal">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Paylaş</span>
+          <div class="share-card">
+            <div class="month mono">Temmuz 2026 sonuçları</div>
+            <div class="big">78%</div>
+            <div class="sub-figs">
+              <span>KF 7.75</span><span>+138 pips</span><span>9 işlem</span>
+            </div>
+            <div class="watermark-chip">FX Trade Journal</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Sonuçlarınız kanıta dönüşür.</h3>
+        <p>Aylık sonuçlarınızı şık bir karta dönüştürün ve X, Instagram veya LINE üzerinden paylaşın. İlerlemenizin birikimini görmek, devam etmeniz için gereken motivasyonu sağlar.</p>
+        <ul class="feature-list">
+          <li>Ücretsiz planda filigranla paylaşılabilir</li>
+          <li>Premium'da filigransız dışa aktarma</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-visual">
+        <div class="panel form-mock">
+          <span class="panel-tag">İşlem kaydet</span>
+          <div class="toggle-pair">
+            <button type="button" class="on-buy">▲ BUY</button>
+            <button type="button">▼ SELL</button>
+          </div>
+          <div class="row">
+            <div class="form-field"><span class="fl">Parite</span><span class="fv">USD/JPY</span></div>
+            <div class="form-field"><span class="fl">Lot</span><span class="fv">0.10</span></div>
+          </div>
+          <div class="calc-box">
+            <span class="calc-label">Otomatik hesaplanır</span>
+            <div class="row">
+              <div class="form-field"><span class="fl">Pip</span><span class="fv text-profit">+19.6</span></div>
+              <div class="form-field"><span class="fl">K/Z</span><span class="fv text-profit">+¥3,920</span></div>
+            </div>
+          </div>
+          <div class="tag-row">
+            <span class="tag-label">Giriş nedenleri (çoklu seçim)</span>
+            <span class="tag-chip active">Gün içi işlem</span><span class="tag-chip active">Geri çekilme alışı</span><span class="tag-chip">Plana uygun</span>
+          </div>
+          <div class="save-btn">İşlemi kaydet</div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Artık bilgisayar yok, Excel yok.</h3>
+        <p>İşe giderken ya da bir işlemi kapattıktan hemen sonra — tek dokunuş yeterli, böylece işlem günlüğünüzü yalnızca telefonunuzu veya tabletinizi kullanarak tutabilirsiniz.</p>
+        <ul class="feature-list">
+          <li>Sadece bir parite ve lot büyüklüğü seçin — pip ve K/Z otomatik hesaplanır</li>
+          <li>Ayarlar'dan MT4/MT5 işlem geçmişi CSV'lerini toplu içe aktarın (ücretsiz planda da mevcut)</li>
+          <li>Giriş nedenleri için çoklu seçim etiketleri ve grafik görselleri ekleyin (ücretsizde 1, Premium'da 3)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reverse reveal" id="security">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Güvenlik</span>
+          <div class="sec-row">
+            <div class="lbl">
+              <div class="sec-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 0112 0v2M5 10h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1v-9a1 1 0 011-1z" stroke="var(--accent)" stroke-width="1.6"/></svg>
+              </div>
+              Biyometrik kilit
+            </div>
+            <div class="switch"></div>
+          </div>
+          <div class="sec-note">Ayarlar'dan istediğiniz zaman açıp kapatın (varsayılan olarak kapalı)</div>
+          <div class="sec-note">SQLCipher ile veritabanı şifreleme (yalnızca cihaza özel anahtar, iCloud'a dahil değil)</div>
+          <div class="sec-note">Bulut senkronizasyonu yok, internet bağlantısı gerekmez</div>
+          <div class="sec-note">Hesap gerekmez, veriler cihazınızdan asla çıkmaz</div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>İşlem verileriniz yalnızca cihazınıza aittir.</h3>
+        <p>FX işlem geçmişi, finansal durumunuzu ortaya çıkarabilecek hassas bir veridir. Bu yüzden şifreleme ve biyometrik kilit standart olarak sunulur.</p>
+        <ul class="feature-list">
+          <li>Uygulamayı Face ID / Touch ID ile kilitleyin (Ayarlar'dan istediğiniz zaman etkinleştirin)</li>
+          <li>Şifreleme anahtarı yalnızca cihaza özeldir (iCloud yedeklemesine dahil değildir)</li>
+          <li>Verilerin hiçbir sunucuya gönderilmeyeceği şekilde tasarlanmıştır</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stat-band">
+  <div class="wrap">
+    <div class="stat-band-grid reveal">
+      <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Dil (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
+      <div class="stat-band-item"><span class="num" data-count="175">0</span><span class="lbl">Kullanılabilen ülke ve bölge</span></div>
+      <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">İşlem geçmişi içe aktarma desteği</span></div>
+      <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Buluta gönderilen veri</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Fiyatlandırma</p>
+      <h2>Ücretsiz başlayın.<br>İhtiyaç duyduğunuzda Premium'a yükseltin.</h2>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="price-card">
+        <div class="price-name">Ücretsiz</div>
+        <p class="price-desc">Kayıt alışkanlığı oluşturmak için. Temel özellikler sonsuza dek ücretsiz kalır.</p>
+        <p class="price-tag mono">¥0</p>
+        <ul class="price-list">
+          <li>Tek dokunuşla işlem kaydı</li>
+          <li>MT4 / MT5 CSV içe aktarma</li>
+          <li>Aylık gösterge paneli (kazanma oranı, pip, KF)</li>
+          <li>Paylaşılabilir sonuç kartı (filigranlı)</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://apps.apple.com/tr/app/id6786188634">Ücretsiz başlayın</a>
+      </div>
+      <div class="price-card hi">
+        <span class="price-badge">Önerilen</span>
+        <div class="price-name">Premium</div>
+        <p class="price-desc">Performansını ciddiye alarak incelemek isteyen işlemciler için.</p>
+        <div class="price-plan-row">
+          <div class="price-plan">
+            <span class="pp-label">Aylık</span>
+            <span class="pp-value mono">¥500<span class="pp-unit">/mo</span></span>
+          </div>
+          <div class="price-plan pp-best">
+            <span class="pp-label">Yıllık<em>~%17 tasarruf</em></span>
+            <span class="pp-value mono">¥5,000<span class="pp-unit">/yr</span></span>
+            <span class="pp-trial">7 gün ücretsiz deneme</span>
+          </div>
+        </div>
+        <ul class="price-list">
+          <li>Tüm analiz sekmeleri (Saat/Gün, Etiketler, Risk-Ödül, Bakiye, Zihniyet)</li>
+          <li>Aylık ve haftalık içgörüler, yıllık rapor</li>
+          <li>Zihniyet günlüğü ve kural uyum kontrolü</li>
+          <li>3 grafik görseli eki ve lot büyüklüğü hesaplayıcı</li>
+          <li>Filigransız paylaşım ve başarı rozetleri</li>
+        </ul>
+        <a class="btn btn-primary" href="https://apps.apple.com/tr/app/id6786188634">Premium'u inceleyin</a>
+        <p class="price-fineprint">Gösterilen fiyatlar Japonya (JPY, vergi dahil) içindir. App Store'da görüntülenen fiyat ülkeye/bölgeye göre değişir. Yıllık planın 7 günlük ücretsiz deneme süresi içinde iptal ederseniz ücretlendirilmezsiniz. Deneme süresi sona erdiğinde yıllık plan için otomatik olarak ücretlendirilirsiniz (¥5,000). Abonelikler otomatik olarak yenilenir ve mevcut dönemin bitiminden en geç 24 saat önce cihazınızın Ayarlar uygulamasından iptal edilebilir. Ayrıntılar için <a href="terms-tr.html">Kullanım Koşulları</a> ve <a href="privacy-policy-tr.html">Gizlilik Politikası</a>'na bakın.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">SSS</p>
+      <h2>Başlamadan önce.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq-item">
+        <summary>İşlem verilerim nerede saklanır?</summary>
+        <div class="faq-a">Tüm veriler şifrelenir ve yalnızca cihazınızda saklanır. Bulut senkronizasyonu yoktur ve uygulama internet bağlantısı olmadan da çalışır.</div>
+      </details>
+      <details class="faq-item">
+        <summary>MT4/MT5 dışında bir brokerle kullanabilir miyim?</summary>
+        <div class="faq-a">Evet. Broker hesabınız MT4/MT5 formatında CSV dışa aktarmayı destekliyorsa otomatik olarak içe aktarılabilir. Desteklemiyorsa, işlemleri manuel olarak girerek yine tüm özellikleri kullanabilirsiniz.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Aboneliğimi istediğim zaman iptal edebilir miyim?</summary>
+        <div class="faq-a">Evet. Cihazınızın App Store ayarlarından istediğiniz zaman iptal edebilirsiniz. İptal ettikten sonra, bir sonraki yenileme tarihine kadar Premium erişiminizi sürdürürsünüz.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Uygulama yatırım tavsiyesi veriyor mu?</summary>
+        <div class="faq-a">Bu uygulama bir kayıt ve analiz aracıdır. Yatırım tavsiyesi vermek veya belirli bir finansal ürünü teşvik etmek amacıyla tasarlanmamıştır. Geçmiş kayıtlar ve sonuçlar gelecekteki performansı garanti etmez. Lütfen işlem kararlarınızı kendi sorumluluğunuzda alın.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <canvas id="ctaChart" aria-hidden="true"></canvas>
+  <div class="wrap inner reveal">
+    <h2>Bir sonraki kaydınız,<br>bir sonraki kazanma oranınız olur.</h2>
+    <p>İncelemeye bugün, bir sonraki işleminizle başlayın.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://apps.apple.com/tr/app/id6786188634">App Store'dan ücretsiz indirin</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit)"/>
+          </svg>
+          FX Trade Journal
+        </div>
+        <p class="foot-tag">Tamamen telefonunuzda veya tabletinizde çalışan bir işlem günlüğü. Kaydedin, analiz edin ve bir sonraki kazanma oranınızı inşa edin.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Ürün</h4>
+        <ul>
+          <li><a href="#features">Özellikler</a></li>
+          <li><a href="#pricing">Fiyatlandırma</a></li>
+          <li><a href="#faq">SSS</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Destek ve Yasal</h4>
+        <ul>
+          <li><a href="support-tr.html">Bize ulaşın</a></li>
+          <li><a href="privacy-policy-tr.html">Gizlilik Politikası</a></li>
+          <li><a href="terms-tr.html">Kullanım Koşulları</a></li>
+        </ul>
+      </div>
+    </div>
+    <nav class="foot-lang" aria-label="Dil seçimi">
+      <a lang="ja" href="index.html">日本語</a>
+      <a lang="en" href="index-en.html">English</a>
+      <a lang="de" href="index-de.html">Deutsch</a>
+      <a lang="fr" href="index-fr.html">Français</a>
+      <a lang="es" href="index-es.html">Español</a>
+      <a lang="it" href="index-it.html">Italiano</a>
+      <a lang="id" href="index-id.html">Bahasa Indonesia</a>
+      <span lang="tr" aria-current="page">Türkçe</span>
+      <a lang="hi" href="index-hi.html">हिन्दी</a>
+      <a lang="vi" href="index-vi.html">Tiếng Việt</a>
+      <a lang="pt" href="index-pt.html">Português</a>
+    </nav>
+    <div class="foot-legal">
+      Bu uygulamanın analiz özellikleri, yatırım tavsiyesi vermek veya belirli bir finansal ürünü teşvik etmek amacıyla tasarlanmamıştır. Lütfen işlem kararlarınızı kendi sorumluluğunuzda alın.<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+<script src="lp-assets/main.js"></script>
+</body>
+</html>

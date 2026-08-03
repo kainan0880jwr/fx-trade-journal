@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FX Trade Journal — Mỗi giao dịch xây nên tỷ lệ thắng tiếp theo.</title>
+<meta name="description" content="Chỉ cần ghi lại giao dịch, tỷ lệ thắng, số pip và profit factor sẽ được tự động tính toán. Biến kết quả giao dịch thành thẻ chia sẻ đẹp mắt. Ứng dụng nhật ký giao dịch hoạt động hoàn toàn trên điện thoại hoặc máy tính bảng của bạn. Hỗ trợ nhập file CSV từ MT4/MT5.">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/index-vi.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/index-en.html">
+<link rel="alternate" hreflang="de" href="https://kainan0880jwr.github.io/fx-trade-journal/index-de.html">
+<link rel="alternate" hreflang="fr" href="https://kainan0880jwr.github.io/fx-trade-journal/index-fr.html">
+<link rel="alternate" hreflang="es" href="https://kainan0880jwr.github.io/fx-trade-journal/index-es.html">
+<link rel="alternate" hreflang="it" href="https://kainan0880jwr.github.io/fx-trade-journal/index-it.html">
+<link rel="alternate" hreflang="id" href="https://kainan0880jwr.github.io/fx-trade-journal/index-id.html">
+<link rel="alternate" hreflang="tr" href="https://kainan0880jwr.github.io/fx-trade-journal/index-tr.html">
+<link rel="alternate" hreflang="hi" href="https://kainan0880jwr.github.io/fx-trade-journal/index-hi.html">
+<link rel="alternate" hreflang="vi" href="https://kainan0880jwr.github.io/fx-trade-journal/index-vi.html">
+<link rel="alternate" hreflang="pt-BR" href="https://kainan0880jwr.github.io/fx-trade-journal/index-pt.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- GitHub Pages (legacy build) can't set response headers, so CSP is applied via a meta tag.
+     All CSS/JS is externalized under lp-assets/, so script-src / style-src don't
+     need 'unsafe-inline' (and don't grant it). Connection targets are restricted
+     to Google Analytics domains only. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FX Trade Journal">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:title" content="FX Trade Journal — Mỗi giao dịch xây nên tỷ lệ thắng tiếp theo.">
+<meta property="og:description" content="Chỉ cần ghi lại giao dịch, tỷ lệ thắng, số pip và profit factor sẽ được tự động tính toán. Biến kết quả giao dịch thành thẻ chia sẻ đẹp mắt. Ứng dụng nhật ký giao dịch hoạt động hoàn toàn trên điện thoại hoặc máy tính bảng của bạn.">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/index-vi.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FX Trade Journal — Mỗi giao dịch xây nên tỷ lệ thắng tiếp theo.">
+<meta name="twitter:description" content="Chỉ cần ghi lại giao dịch, tỷ lệ thắng, số pip và profit factor sẽ được tự động tính toán. Ứng dụng nhật ký giao dịch hoạt động hoàn toàn trên điện thoại hoặc máy tính bảng của bạn.">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FX Trade Journal",
+  "operatingSystem": "iOS",
+  "applicationCategory": "FinanceApplication",
+  "url": "https://kainan0880jwr.github.io/fx-trade-journal/index-vi.html",
+  "downloadUrl": "https://apps.apple.com/vn/app/id6786188634",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY"
+  },
+  "description": "Ứng dụng nhật ký giao dịch FX có hỗ trợ MT4/MT5. Chỉ cần ghi lại giao dịch, tỷ lệ thắng, số pip và profit factor sẽ được tổng hợp tự động, và bạn có thể chia sẻ kết quả lên mạng xã hội. Dữ liệu được mã hóa và chỉ lưu trữ trên thiết bị, không đồng bộ lên đám mây."
+}
+</script>
+
+<!-- Google tag (gtag.js) - gtag('config', ...) itself is never called until consent is confirmed.
+     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
+<script src="lp-assets/ga-init.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3HNGHT6YJ"></script>
+
+<link rel="stylesheet" href="lp-assets/style.css">
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="Consent for analytics" hidden>
+  <div class="wrap consent-inner">
+    <p>Trang web này sử dụng Google Analytics để tìm hiểu về lượng truy cập. Xem <a href="privacy-policy-vi.html">Chính sách bảo mật</a> của chúng tôi để biết thêm chi tiết.</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">Từ chối</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">Đồng ý</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit)"/>
+      </svg>
+      FX Trade Journal
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">Tính năng</a></li>
+      <li><a href="#security">Bảo mật</a></li>
+      <li><a href="#pricing">Giá</a></li>
+      <li><a href="#faq">Hỏi đáp</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="https://apps.apple.com/vn/app/id6786188634">Tải trên App Store</a>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true" title="Hình minh họa các cặp tiền tệ (không phải dữ liệu thị trường thực)">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+<p class="sr-only">Các cặp tiền tệ được hỗ trợ (danh sách một phần): USD/JPY, EUR/JPY, GBP/JPY, EUR/USD, AUD/JPY, USD/CHF, NZD/USD, GBP/USD và nhiều cặp khác</p>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Ứng dụng nhật ký &amp; phân tích giao dịch</p>
+      <h1>Mỗi giao dịch xây nên<br>một <em>tỷ lệ thắng</em> mới.</h1>
+      <p class="hero-sub">
+        Chỉ cần ghi lại một giao dịch, tỷ lệ thắng, số pip và profit factor sẽ tự động hiển thị.
+        Kết quả của bạn trở thành một thẻ chia sẻ giúp bạn luôn giữ động lực. Mọi thứ đều hoạt động trên điện thoại hoặc máy tính bảng.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://apps.apple.com/vn/app/id6786188634">Tải miễn phí trên App Store</a>
+        <a class="btn btn-ghost" href="#features">Xem tính năng</a>
+      </div>
+      <div class="hero-trust">
+        <span>Hoạt động hoàn toàn trên điện thoại/máy tính bảng</span>
+        <span>Chia sẻ kết quả lên mạng xã hội</span>
+        <span>Không cần tài khoản</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <canvas class="chart-canvas" id="heroChart" aria-hidden="true"></canvas>
+      <div class="float-chip chip-winrate">
+        <span class="k">Tỷ lệ thắng tháng này</span>
+        <span class="v mono">78%</span>
+      </div>
+      <div class="float-chip chip-pf">
+        <span class="k">Profit factor</span>
+        <span class="v mono">7.75</span>
+      </div>
+
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-topbar"><span>9:41</span><span>●●●</span></div>
+          <div class="phone-title">FX Trade Journal</div>
+          <div class="phone-month"><span>‹</span><b>T7/2026</b><em>Tháng này</em><span>›</span></div>
+          <div class="phone-pills">
+            <span class="phone-pill active">Tất cả</span>
+            <span class="phone-pill">Scalp</span>
+            <span class="phone-pill">Day</span>
+            <span class="phone-pill">Swing</span>
+          </div>
+          <div class="stat-strip">
+            <div><span class="k">Giao dịch</span><span class="v">9</span></div>
+            <div><span class="k">Tỷ lệ thắng</span><span class="v text-accent">78%</span></div>
+            <div><span class="k">Pips</span><span class="v text-profit">+138</span></div>
+            <div><span class="k">PF</span><span class="v">7.75</span></div>
+            <div><span class="k">T/B</span><span class="v">7/2</span></div>
+          </div>
+          <div class="trade-row">
+            <div><div class="pair">USD/JPY</div><div class="side">▲ BUY<span class="result-badge win">Thắng</span></div></div>
+            <div class="pips">+19.6 pips</div>
+          </div>
+          <div class="trade-row">
+            <div><div class="pair">EUR/JPY</div><div class="side">▲ BUY<span class="result-badge win">Thắng</span></div></div>
+            <div class="pips">+28.3 pips</div>
+          </div>
+          <div class="trade-row dir-sell">
+            <div><div class="pair">GBP/JPY</div><div class="side">▼ SELL<span class="result-badge lose">Thua</span></div></div>
+            <div class="pips neg">−8.5 pips</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="problem">
+  <div class="wrap problem-grid reveal">
+    <div class="problem-stat">
+      <span aria-hidden="true">"Để lúc khác ghi cũng được."</span>
+      <span class="problem-stat-desc">Chỉ cần nghĩ vậy thôi, nhật ký giao dịch của bạn sẽ dừng lại.</span>
+    </div>
+    <div class="problem-copy">
+      <p class="eyebrow">Vì sao việc ghi nhật ký khó duy trì</p>
+      <h2>Động lực chỉ xuất hiện sau một lệnh thắng.</h2>
+      <p>Ngay sau một giao dịch thua lỗ chính là lúc ý muốn ghi chép biến mất. Một cuốn sổ tay hay bảng tính đòi hỏi công sức để điền vào sẽ dừng lại đúng vào thời điểm đó.</p>
+      <p>FX Trade Journal loại bỏ lý do "ghi chép rắc rối quá" bằng cách ghi lại chỉ với một chạm và nhập lịch sử giao dịch từ MT4/MT5. Việc phân tích chỉ thực sự có ý nghĩa khi bạn duy trì được thói quen này liên tục.</p>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Tính năng</p>
+      <h2>Ghi lại, phân tích, chia sẻ.<br>Càng duy trì đều đặn, tỷ lệ thắng của bạn càng rõ ràng.</h2>
+    </div>
+
+    <div class="feature-row reveal" id="analysis">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Phân tích</span>
+          <div class="analysis-tabs">
+            <b>Hiệu suất</b><span>Giờ/Ngày</span><span>Thẻ tag</span><span>Tỷ lệ R:R</span><span>Vốn</span><span>Tâm lý</span>
+          </div>
+          <div class="donut-row">
+            <svg class="donut" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--profit)" stroke-width="14"
+                stroke-dasharray="314" stroke-dashoffset="69" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+              <text x="60" y="56" text-anchor="middle" font-family="var(--font-mono)" font-weight="700" font-size="22" fill="var(--ink)">78%</text>
+              <text x="60" y="74" text-anchor="middle" font-family="var(--font-body)" font-size="9" fill="var(--ink-faint)">Tỷ lệ thắng</text>
+            </svg>
+            <div class="donut-figs">
+              <div><span class="f-k">Profit factor</span><span class="f-v">7.75</span></div>
+              <div><span class="f-k">Tổng số pip</span><span class="f-v text-profit">+138.4</span></div>
+              <div><span class="f-k">Chuỗi hiện tại</span><span class="f-v">2 thắng</span></div>
+            </div>
+          </div>
+          <div class="bw-row">
+            <div class="bw-card"><span class="bwk">Tốt nhất (USD/JPY)</span><span class="bwv">+32.5 pips</span></div>
+            <div class="bw-card worst"><span class="bwk">Tệ nhất (GBP/JPY)</span><span class="bwv">−12 pips</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Những con số chỉ ra bước đi tiếp theo của bạn.</h3>
+        <p>Chỉ cần ghi lại giao dịch, tỷ lệ thắng, số pip và profit factor hàng tháng sẽ được tổng hợp tự động. Nhìn ra ngay các quy luật theo khung giờ, ngày trong tuần và từng cặp tiền tệ.</p>
+        <ul class="feature-list">
+          <li>Tỷ lệ thắng, số pip và PF hàng tháng được tổng hợp tự động, kể cả ở gói miễn phí</li>
+          <li>Chuỗi ngày ghi liên tục trực quan hóa sự kiên trì của bạn</li>
+          <li>Các tab phân tích Giờ/Ngày, Thẻ tag, Tỷ lệ R:R, Vốn và Tâm lý (Premium)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reverse reveal">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Chia sẻ</span>
+          <div class="share-card">
+            <div class="month mono">Kết quả tháng 7/2026</div>
+            <div class="big">78%</div>
+            <div class="sub-figs">
+              <span>PF 7.75</span><span>+138 pips</span><span>9 giao dịch</span>
+            </div>
+            <div class="watermark-chip">FX Trade Journal</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Kết quả của bạn trở thành minh chứng.</h3>
+        <p>Biến kết quả hàng tháng thành một thẻ đẹp mắt và chia sẻ lên X, Instagram hay LINE. Thấy được sự tiến bộ tích lũy dần chính là động lực để bạn tiếp tục.</p>
+        <ul class="feature-list">
+          <li>Gói miễn phí có thể chia sẻ kèm watermark</li>
+          <li>Gói Premium xuất ảnh không có watermark</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-visual">
+        <div class="panel form-mock">
+          <span class="panel-tag">Ghi giao dịch</span>
+          <div class="toggle-pair">
+            <button type="button" class="on-buy">▲ BUY</button>
+            <button type="button">▼ SELL</button>
+          </div>
+          <div class="row">
+            <div class="form-field"><span class="fl">Cặp tiền</span><span class="fv">USD/JPY</span></div>
+            <div class="form-field"><span class="fl">Khối lượng</span><span class="fv">0.10</span></div>
+          </div>
+          <div class="calc-box">
+            <span class="calc-label">Tự động tính toán</span>
+            <div class="row">
+              <div class="form-field"><span class="fl">Pips</span><span class="fv text-profit">+19.6</span></div>
+              <div class="form-field"><span class="fl">Lãi/Lỗ</span><span class="fv text-profit">+¥3,920</span></div>
+            </div>
+          </div>
+          <div class="tag-row">
+            <span class="tag-label">Lý do vào lệnh (chọn nhiều)</span>
+            <span class="tag-chip active">Day trade</span><span class="tag-chip active">Mua khi hồi giá</span><span class="tag-chip">Đúng kế hoạch</span>
+          </div>
+          <div class="save-btn">Lưu giao dịch</div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Không cần máy tính, không cần Excel nữa.</h3>
+        <p>Trên đường đi làm hay ngay sau khi đóng lệnh — chỉ một chạm là đủ, để bạn có thể ghi nhật ký giao dịch chỉ bằng điện thoại hoặc máy tính bảng.</p>
+        <ul class="feature-list">
+          <li>Chỉ cần chọn cặp tiền và khối lượng — số pip và lãi/lỗ được tính tự động</li>
+          <li>Nhập hàng loạt file CSV lịch sử giao dịch MT4/MT5 từ mục Cài đặt (có sẵn ở gói miễn phí)</li>
+          <li>Chọn nhiều thẻ tag cho lý do vào lệnh, đính kèm ảnh biểu đồ (1 ảnh ở gói miễn phí, 3 ảnh ở Premium)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reverse reveal" id="security">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Bảo mật</span>
+          <div class="sec-row">
+            <div class="lbl">
+              <div class="sec-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 0112 0v2M5 10h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1v-9a1 1 0 011-1z" stroke="var(--accent)" stroke-width="1.6"/></svg>
+              </div>
+              Khóa sinh trắc học
+            </div>
+            <div class="switch"></div>
+          </div>
+          <div class="sec-note">Bật/tắt bất cứ lúc nào trong Cài đặt (mặc định tắt)</div>
+          <div class="sec-note">Mã hóa cơ sở dữ liệu bằng SQLCipher (khóa chỉ lưu trên thiết bị, không đồng bộ iCloud)</div>
+          <div class="sec-note">Không đồng bộ đám mây, không cần kết nối internet</div>
+          <div class="sec-note">Không cần tài khoản, dữ liệu không bao giờ rời khỏi thiết bị</div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Dữ liệu giao dịch của bạn chỉ thuộc về thiết bị của bạn.</h3>
+        <p>Lịch sử giao dịch FX là dữ liệu nhạy cảm, có thể tiết lộ tình hình tài chính của bạn. Vì vậy, mã hóa và khóa sinh trắc học được trang bị sẵn như một tiêu chuẩn.</p>
+        <ul class="feature-list">
+          <li>Khóa ứng dụng bằng Face ID / Touch ID (bật bất cứ lúc nào trong Cài đặt)</li>
+          <li>Khóa mã hóa chỉ tồn tại trên thiết bị (không sao lưu lên iCloud)</li>
+          <li>Được thiết kế để không bao giờ gửi dữ liệu lên máy chủ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stat-band">
+  <div class="wrap">
+    <div class="stat-band-grid reveal">
+      <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Ngôn ngữ (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
+      <div class="stat-band-item"><span class="num" data-count="175">0</span><span class="lbl">Quốc gia &amp; khu vực có thể tải</span></div>
+      <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">Hỗ trợ nhập lịch sử giao dịch</span></div>
+      <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Dữ liệu gửi lên đám mây</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Giá</p>
+      <h2>Bắt đầu miễn phí.<br>Nâng cấp lên Premium khi bạn cần thêm.</h2>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="price-card">
+        <div class="price-name">Miễn phí</div>
+        <p class="price-desc">Để xây dựng thói quen ghi nhật ký. Các tính năng cốt lõi luôn miễn phí.</p>
+        <p class="price-tag mono">¥0</p>
+        <ul class="price-list">
+          <li>Ghi giao dịch chỉ với một chạm</li>
+          <li>Nhập file CSV từ MT4 / MT5</li>
+          <li>Bảng thống kê hàng tháng (tỷ lệ thắng, số pip, PF)</li>
+          <li>Thẻ kết quả có thể chia sẻ (kèm watermark)</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://apps.apple.com/vn/app/id6786188634">Bắt đầu miễn phí</a>
+      </div>
+      <div class="price-card hi">
+        <span class="price-badge">Đề xuất</span>
+        <div class="price-name">Premium</div>
+        <p class="price-desc">Dành cho những nhà giao dịch muốn nhìn lại hiệu suất một cách nghiêm túc.</p>
+        <div class="price-plan-row">
+          <div class="price-plan">
+            <span class="pp-label">Hàng tháng</span>
+            <span class="pp-value mono">¥500<span class="pp-unit">/tháng</span></span>
+          </div>
+          <div class="price-plan pp-best">
+            <span class="pp-label">Hàng năm<em>Tiết kiệm ~17%</em></span>
+            <span class="pp-value mono">¥5,000<span class="pp-unit">/năm</span></span>
+            <span class="pp-trial">Dùng thử miễn phí 7 ngày</span>
+          </div>
+        </div>
+        <ul class="price-list">
+          <li>Tất cả các tab phân tích (Giờ/Ngày, Thẻ tag, Tỷ lệ R:R, Vốn, Tâm lý)</li>
+          <li>Thông tin chi tiết hàng tháng &amp; hàng tuần, báo cáo hàng năm</li>
+          <li>Nhật ký tâm lý &amp; kiểm tra tuân thủ quy tắc giao dịch</li>
+          <li>Đính kèm 3 ảnh biểu đồ &amp; công cụ tính khối lượng lệnh</li>
+          <li>Không watermark &amp; huy hiệu thành tích</li>
+        </ul>
+        <a class="btn btn-primary" href="https://apps.apple.com/vn/app/id6786188634">Xem Premium</a>
+        <p class="price-fineprint">Giá hiển thị áp dụng cho Nhật Bản (JPY, đã bao gồm thuế). Giá hiển thị trên App Store có thể khác nhau tùy theo quốc gia/khu vực. Nếu bạn hủy trong thời gian dùng thử miễn phí 7 ngày của gói năm, bạn sẽ không bị tính phí. Sau khi thời gian dùng thử kết thúc, bạn sẽ tự động bị tính phí cho gói năm (¥5,000). Gói đăng ký sẽ tự động gia hạn và có thể hủy trong mục Cài đặt của thiết bị, chậm nhất 24 giờ trước khi kỳ hiện tại kết thúc. Xem <a href="terms-vi.html">Điều khoản sử dụng</a> và <a href="privacy-policy-vi.html">Chính sách bảo mật</a> để biết thêm chi tiết.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Hỏi đáp</p>
+      <h2>Trước khi bạn bắt đầu.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq-item">
+        <summary>Dữ liệu giao dịch của tôi được lưu trữ ở đâu?</summary>
+        <div class="faq-a">Toàn bộ dữ liệu được mã hóa và chỉ lưu trữ trên thiết bị của bạn. Không có đồng bộ đám mây, và ứng dụng hoạt động ngay cả khi không có kết nối internet.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Tôi có thể sử dụng với sàn giao dịch khác ngoài MT4/MT5 không?</summary>
+        <div class="faq-a">Có. Nếu tài khoản sàn của bạn hỗ trợ xuất file CSV theo định dạng MT4/MT5, dữ liệu có thể được nhập tự động. Nếu không, bạn vẫn có thể sử dụng đầy đủ mọi tính năng bằng cách nhập giao dịch thủ công.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Tôi có thể hủy đăng ký bất cứ lúc nào không?</summary>
+        <div class="faq-a">Có. Bạn có thể hủy bất cứ lúc nào trong mục cài đặt App Store trên thiết bị. Sau khi hủy, bạn vẫn giữ quyền truy cập Premium cho đến ngày gia hạn tiếp theo.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Ứng dụng có đưa ra lời khuyên đầu tư không?</summary>
+        <div class="faq-a">Ứng dụng này là công cụ ghi chép và phân tích. Nó không nhằm mục đích cung cấp lời khuyên đầu tư hay mời chào bất kỳ sản phẩm tài chính cụ thể nào. Lịch sử và kết quả trong quá khứ không đảm bảo cho hiệu suất trong tương lai. Vui lòng tự đưa ra quyết định giao dịch và tự chịu trách nhiệm với rủi ro của mình.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <canvas id="ctaChart" aria-hidden="true"></canvas>
+  <div class="wrap inner reveal">
+    <h2>Lệnh ghi tiếp theo của bạn<br>sẽ tạo nên tỷ lệ thắng tiếp theo.</h2>
+    <p>Hãy bắt đầu nhìn lại ngay hôm nay, với giao dịch tiếp theo của bạn.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://apps.apple.com/vn/app/id6786188634">Tải miễn phí trên App Store</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit)"/>
+          </svg>
+          FX Trade Journal
+        </div>
+        <p class="foot-tag">Một nhật ký giao dịch hoạt động hoàn toàn trên điện thoại hoặc máy tính bảng của bạn. Ghi lại, phân tích và xây nên tỷ lệ thắng tiếp theo.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Sản phẩm</h4>
+        <ul>
+          <li><a href="#features">Tính năng</a></li>
+          <li><a href="#pricing">Giá</a></li>
+          <li><a href="#faq">Hỏi đáp</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Hỗ trợ &amp; Pháp lý</h4>
+        <ul>
+          <li><a href="support-vi.html">Liên hệ</a></li>
+          <li><a href="privacy-policy-vi.html">Chính sách bảo mật</a></li>
+          <li><a href="terms-vi.html">Điều khoản sử dụng</a></li>
+        </ul>
+      </div>
+    </div>
+    <nav class="foot-lang" aria-label="Chọn ngôn ngữ">
+      <a lang="ja" href="index.html">日本語</a>
+      <a lang="en" href="index-en.html">English</a>
+      <a lang="de" href="index-de.html">Deutsch</a>
+      <a lang="fr" href="index-fr.html">Français</a>
+      <a lang="es" href="index-es.html">Español</a>
+      <a lang="it" href="index-it.html">Italiano</a>
+      <a lang="id" href="index-id.html">Bahasa Indonesia</a>
+      <a lang="tr" href="index-tr.html">Türkçe</a>
+      <a lang="hi" href="index-hi.html">हिन्दी</a>
+      <span lang="vi" aria-current="page">Tiếng Việt</span>
+      <a lang="pt" href="index-pt.html">Português</a>
+    </nav>
+    <div class="foot-legal">
+      Các tính năng phân tích của ứng dụng này không nhằm mục đích cung cấp lời khuyên đầu tư hay mời chào bất kỳ sản phẩm tài chính cụ thể nào. Vui lòng tự đưa ra quyết định giao dịch và tự chịu trách nhiệm với rủi ro của mình.<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+<script src="lp-assets/main.js"></script>
+</body>
+</html>
