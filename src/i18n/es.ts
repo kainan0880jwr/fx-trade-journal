@@ -545,4 +545,9 @@ export const es: LangStrings = {
   backup_import_error: "No se pudo leer la copia de seguridad. Selecciona un archivo de copia de seguridad válido",
   backup_exporting: "Creando copia de seguridad...",
   backup_importing: "Restaurando...",
+
+  // Gestión de errores
+  error_boundary_title: 'Se produjo un error',
+  error_boundary_message: 'Se produjo un error inesperado. Por favor, reinicia la app.',
+  error_boundary_restart_button: 'Reiniciar la app',
 };

@@ -545,4 +545,9 @@ export const en: LangStrings = {
   backup_import_error: 'Failed to read backup. Please select a valid backup file',
   backup_exporting: 'Creating backup...',
   backup_importing: 'Restoring...',
+
+  // Error boundary
+  error_boundary_title: 'Something went wrong',
+  error_boundary_message: 'An unexpected error occurred. Please restart the app.',
+  error_boundary_restart_button: 'Restart app',
 };

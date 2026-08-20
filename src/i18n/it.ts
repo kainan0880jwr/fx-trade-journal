@@ -545,4 +545,9 @@ export const it: LangStrings = {
   backup_import_error: "Impossibile leggere il backup. Seleziona un file di backup valido",
   backup_exporting: "Creazione backup...",
   backup_importing: "Ripristino in corso...",
+
+  // Gestione degli errori
+  error_boundary_title: 'Si è verificato un errore',
+  error_boundary_message: "Si è verificato un errore imprevisto. Riavvia l'app.",
+  error_boundary_restart_button: "Riavvia l'app",
 };

@@ -545,4 +545,9 @@ export const vi: LangStrings = {
   backup_import_error: 'Không thể đọc bản sao lưu. Vui lòng chọn file sao lưu hợp lệ',
   backup_exporting: 'Đang tạo bản sao lưu...',
   backup_importing: 'Đang khôi phục...',
+
+  // Xử lý lỗi
+  error_boundary_title: 'Đã xảy ra sự cố',
+  error_boundary_message: 'Đã xảy ra lỗi không mong muốn. Vui lòng khởi động lại ứng dụng.',
+  error_boundary_restart_button: 'Khởi động lại ứng dụng',
 };

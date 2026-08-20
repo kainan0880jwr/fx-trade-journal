@@ -545,4 +545,9 @@ export const pt: LangStrings = {
   backup_import_error: 'Falha ao ler o backup. Selecione um arquivo de backup válido',
   backup_exporting: 'Criando backup...',
   backup_importing: 'Restaurando...',
+
+  // Tratamento de erros
+  error_boundary_title: 'Ocorreu um erro',
+  error_boundary_message: 'Ocorreu um erro inesperado. Reinicie o aplicativo.',
+  error_boundary_restart_button: 'Reiniciar o aplicativo',
 };

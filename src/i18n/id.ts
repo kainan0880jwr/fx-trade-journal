@@ -545,4 +545,9 @@ export const id: LangStrings = {
   backup_import_error: 'Gagal membaca backup. Silakan pilih file backup yang valid',
   backup_exporting: 'Membuat backup...',
   backup_importing: 'Memulihkan...',
+
+  // Penanganan error
+  error_boundary_title: 'Terjadi kesalahan',
+  error_boundary_message: 'Terjadi kesalahan tak terduga. Silakan mulai ulang aplikasi.',
+  error_boundary_restart_button: 'Mulai ulang aplikasi',
 };
