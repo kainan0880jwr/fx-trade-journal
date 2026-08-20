@@ -545,4 +545,9 @@ export const tr: LangStrings = {
   backup_import_error: 'Yedek okunamadı. Lütfen geçerli bir yedek dosyası seçin',
   backup_exporting: 'Yedek oluşturuluyor...',
   backup_importing: 'Geri yükleniyor...',
+
+  // Hata yönetimi
+  error_boundary_title: 'Bir sorun oluştu',
+  error_boundary_message: 'Beklenmeyen bir hata oluştu. Lütfen uygulamayı yeniden başlatın.',
+  error_boundary_restart_button: 'Uygulamayı yeniden başlat',
 };

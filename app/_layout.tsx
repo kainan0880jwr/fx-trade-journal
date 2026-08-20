@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import * as Sentry from '@sentry/react-native';
 import { getDatabase, resetDatabase } from '../src/db/database';
 import { useSettingsStore } from '../src/store/settingsStore';
 import { usePurchaseStore } from '../src/store/purchaseStore';
@@ -9,9 +10,28 @@ import { syncScheduledNotifications } from '../src/utils/notifications';
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useTheme, useIsDark } from '../src/theme/useTheme';
 import AppLockGate from '../src/components/AppLockGate';
+import ErrorBoundary from '../src/components/ErrorBoundary';
 import { t } from '../src/i18n';
 
+const SENTRY_DSN = process.env.EXPO_PUBLIC_SENTRY_DSN ?? '';
+// プレースホルダー（未設定）のDSNでinit()を呼ぶと通信エラーが出続けるため弾く。
+// purchaseStore.tsのisPlaceholderKeyと同じ考え方。
+const isPlaceholderDsn = (dsn: string) => !dsn || /xxxx/i.test(dsn);
+
+if (!isPlaceholderDsn(SENTRY_DSN)) {
+  Sentry.init({ dsn: SENTRY_DSN });
+}
+
 export default function RootLayout() {
+  const C = useTheme();
+  return (
+    <ErrorBoundary colors={C}>
+      <RootLayoutContent />
+    </ErrorBoundary>
+  );
+}
+
+function RootLayoutContent() {
   const C = useTheme();
   const isDark = useIsDark();
   const [dbReady, setDbReady] = useState(false);

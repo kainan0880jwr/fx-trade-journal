@@ -545,4 +545,9 @@ export const hi: LangStrings = {
   backup_import_error: 'बैकअप पढ़ने में विफल। कृपया एक मान्य बैकअप फाइल चुनें',
   backup_exporting: 'बैकअप बन रहा है...',
   backup_importing: 'रीस्टोर हो रहा है...',
+
+  // एरर हैंडलिंग
+  error_boundary_title: 'कुछ गड़बड़ हो गई',
+  error_boundary_message: 'एक अनपेक्षित त्रुटि हुई। कृपया ऐप को पुनरारंभ करें।',
+  error_boundary_restart_button: 'ऐप पुनरारंभ करें',
 };

@@ -545,4 +545,9 @@ export const fr: LangStrings = {
   backup_import_error: "Échec de la lecture de la sauvegarde. Veuillez sélectionner un fichier de sauvegarde valide",
   backup_exporting: "Création de la sauvegarde...",
   backup_importing: "Restauration en cours...",
+
+  // Gestion des erreurs
+  error_boundary_title: "Une erreur s'est produite",
+  error_boundary_message: "Une erreur inattendue s'est produite. Veuillez redémarrer l'application.",
+  error_boundary_restart_button: "Redémarrer l'application",
 };

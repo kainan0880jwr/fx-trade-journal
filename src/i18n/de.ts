@@ -545,4 +545,9 @@ export const de: LangStrings = {
   backup_import_error: 'Backup konnte nicht gelesen werden. Bitte wähle eine gültige Backup-Datei',
   backup_exporting: 'Backup wird erstellt...',
   backup_importing: 'Wird wiederhergestellt...',
+
+  // Fehlerbehandlung
+  error_boundary_title: 'Ein Fehler ist aufgetreten',
+  error_boundary_message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte starte die App neu.',
+  error_boundary_restart_button: 'App neu starten',
 };

@@ -543,6 +543,11 @@ export const ja = {
   backup_import_error: '読み込みに失敗しました。有効なバックアップファイルを選択してください',
   backup_exporting: 'バックアップを作成中...',
   backup_importing: '復元中...',
+
+  // エラーバウンダリ
+  error_boundary_title: '問題が発生しました',
+  error_boundary_message: '予期しないエラーが発生しました。お手数ですが、アプリを再起動してください。',
+  error_boundary_restart_button: 'アプリを再起動',
 };
 
 export type LangStrings = typeof ja;

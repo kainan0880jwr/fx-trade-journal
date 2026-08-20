@@ -80,6 +80,13 @@
         {
           "faceIDPermission": "生体認証でアプリをロックし、トレード記録を保護します。"
         }
+      ],
+      [
+        "@sentry/react-native",
+        {
+          "organization": "photomachi",
+          "project": "fx-trade-journal"
+        }
       ]
     ],
     "runtimeVersion": {
