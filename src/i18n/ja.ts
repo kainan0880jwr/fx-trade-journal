@@ -435,6 +435,8 @@ export const ja = {
   onboarding_app_lock_msg: 'Face ID/Touch IDでアプリを保護し、トレード記録を第三者から守ります。設定はいつでも変更できます。',
   onboarding_app_lock_skip: 'あとで',
   onboarding_app_lock_enable: '有効にする',
+  d1_notif_prompt_title: '記録リマインダーを有効にしますか？',
+  d1_notif_prompt_msg: '決まった時間に記録を促す通知を送ります。継続のコツは毎日の習慣化です。設定はいつでも変更できます。',
   onboarding_skip: 'スキップ',
   onboarding_next: '次へ',
 

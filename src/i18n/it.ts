@@ -437,6 +437,8 @@ export const it: LangStrings = {
   onboarding_app_lock_msg: "Proteggi l'app con Face ID/Touch ID per mantenere private le tue registrazioni di operazioni. Puoi modificarlo in qualsiasi momento nelle Impostazioni.",
   onboarding_app_lock_skip: "Più tardi",
   onboarding_app_lock_enable: "Attiva",
+  d1_notif_prompt_title: "Attivare i promemoria giornalieri?",
+  d1_notif_prompt_msg: "Ricevi una notifica a un orario fisso per registrare la tua operazione. La costanza è più facile con un'abitudine quotidiana. Puoi modificarlo in qualsiasi momento nelle Impostazioni.",
   onboarding_skip: "Salta",
   onboarding_next: "Avanti",
 

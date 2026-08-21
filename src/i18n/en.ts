@@ -437,6 +437,8 @@ export const en: LangStrings = {
   onboarding_app_lock_msg: 'Protect the app with Face ID/Touch ID so your trade records stay private. You can change this anytime in Settings.',
   onboarding_app_lock_skip: 'Later',
   onboarding_app_lock_enable: 'Enable',
+  d1_notif_prompt_title: 'Enable daily reminders?',
+  d1_notif_prompt_msg: 'Get a nudge at a set time to log your trade. Consistency is easier with a daily habit. You can change this anytime in Settings.',
   onboarding_skip: 'Skip',
   onboarding_next: 'Next',
 

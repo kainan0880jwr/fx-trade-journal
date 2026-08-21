@@ -437,6 +437,8 @@ export const hi: LangStrings = {
   onboarding_app_lock_msg: 'अपने ट्रेड रिकॉर्ड को निजी रखने के लिए ऐप को Face ID/Touch ID से सुरक्षित करें। आप इसे कभी भी सेटिंग्स में बदल सकते हैं।',
   onboarding_app_lock_skip: 'बाद में',
   onboarding_app_lock_enable: 'सक्षम करें',
+  d1_notif_prompt_title: 'दैनिक रिमाइंडर सक्षम करें?',
+  d1_notif_prompt_msg: 'तय समय पर अपना ट्रेड दर्ज करने के लिए सूचना पाएं। रोज़ की आदत से निरंतरता आसान हो जाती है। आप इसे कभी भी सेटिंग्स में बदल सकते हैं।',
   onboarding_skip: 'छोड़ें',
   onboarding_next: 'आगे',
 
