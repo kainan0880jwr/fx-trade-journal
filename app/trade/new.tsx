@@ -19,6 +19,7 @@ import { generateId } from '../../src/utils/statsCalc';
 import { updateRecordStreak } from '../../src/db/queries';
 import { useReviewPrompt } from '../../src/hooks/useReviewPrompt';
 import { useAppLockPrompt } from '../../src/hooks/useAppLockPrompt';
+import { recordFirstTradeSaved } from '../../src/utils/retentionEvents';
 import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
@@ -189,6 +190,7 @@ export default function NewTradeScreen() {
     try {
       await addTrade(trade);
       justSavedRef.current = true;
+      recordFirstTradeSaved(); // リテンション自前計測、結果は待たない
       const streak = await updateRecordStreak();
       const msg = streak <= 1
         ? t('form_quick_saved_first')

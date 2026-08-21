@@ -451,7 +451,7 @@ export const it: LangStrings = {
   paywall_feature_analytics: "Tutte le schede di analisi (ora del giorno, rapporto rischio/rendimento, curva equity, ecc.)",
   paywall_feature_insights: "Insights mensili, statistiche settimanali e report annuale",
   paywall_feature_images: "Allega fino a 3 immagini del grafico per operazione",
-  paywall_feature_mental: "Registro dello stato mentale, note multi-timeframe (MTF) e controlli di rispetto delle regole",
+  paywall_feature_mental: "Registro dello stato mentale, note multi-timeframe e controlli di rispetto delle regole",
   paywall_feature_extras: "Preferiti, badge, calcolatore di lotto e condivisione senza filigrana",
   paywall_per_month: "/mese",
   paywall_legal_charge: "Il pagamento verrà addebitato sul tuo account {store}.",

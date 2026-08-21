@@ -451,7 +451,7 @@ export const fr: LangStrings = {
   paywall_feature_analytics: "Tous les onglets d'analyse (heure de la journée, ratio risque/rendement, courbe d'équité, etc.)",
   paywall_feature_insights: "Insights mensuels, statistiques hebdomadaires et rapport annuel",
   paywall_feature_images: "Joignez jusqu'à 3 images de graphique par trade",
-  paywall_feature_mental: "Journal de l'état mental, notes multi-unités de temps (UT) et vérifications de règles",
+  paywall_feature_mental: "Journal de l'état mental, notes multi-unités de temps et vérifications de règles",
   paywall_feature_extras: "Favoris, badges, calculatrice de lot et partage sans filigrane",
   paywall_per_month: "/mois",
   paywall_legal_charge: "Le paiement sera prélevé sur votre compte {store}.",

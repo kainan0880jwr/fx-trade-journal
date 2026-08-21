@@ -451,7 +451,7 @@ export const vi: LangStrings = {
   paywall_feature_analytics: 'Tất cả tab phân tích (khung giờ, tỷ lệ rủi ro/lợi nhuận, đường cong vốn, v.v.)',
   paywall_feature_insights: 'Thông tin chi tiết hàng tháng, thống kê hàng tuần & báo cáo hàng năm',
   paywall_feature_images: 'Đính kèm tối đa 3 ảnh biểu đồ mỗi giao dịch',
-  paywall_feature_mental: 'Nhật ký trạng thái tâm lý, ghi chú đa khung thời gian (MTF) & kiểm tra tuân thủ quy tắc',
+  paywall_feature_mental: 'Nhật ký trạng thái tâm lý, ghi chú đa khung thời gian & kiểm tra tuân thủ quy tắc',
   paywall_feature_extras: 'Đánh dấu, huy hiệu, máy tính lot & chia sẻ không watermark',
   paywall_per_month: '/tháng',
   paywall_legal_charge: 'Thanh toán được tính vào tài khoản {store} của bạn.',

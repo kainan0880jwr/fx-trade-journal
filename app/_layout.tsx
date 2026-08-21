@@ -7,6 +7,7 @@ import { useSettingsStore } from '../src/store/settingsStore';
 import { usePurchaseStore } from '../src/store/purchaseStore';
 import { getSetting } from '../src/db/queries';
 import { syncScheduledNotifications } from '../src/utils/notifications';
+import { recordAppOpen } from '../src/utils/retentionEvents';
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useTheme, useIsDark } from '../src/theme/useTheme';
 import AppLockGate from '../src/components/AppLockGate';
@@ -54,6 +55,7 @@ function RootLayoutContent() {
       await getDatabase();
       await loadAll();
       syncScheduledNotifications(); // OS側の通知予約が消えていた場合に備えて再同期（結果は待たない）
+      recordAppOpen(); // リテンション自前計測（D1/D7）、結果は待たない
       const onboardingDone = await getSetting('onboarding_done');
       if (onboardingDone !== '1') {
         // DB 準備完了後にオンボーディングへ誘導

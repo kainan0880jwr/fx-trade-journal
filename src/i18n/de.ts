@@ -451,7 +451,7 @@ export const de: LangStrings = {
   paywall_feature_analytics: 'Alle Analyse-Tabs (Tageszeit, Risiko-Rendite-Verhältnis, Equity-Kurve usw.)',
   paywall_feature_insights: 'Monatliche Insights, wöchentliche Statistiken & Jahresbericht',
   paywall_feature_images: 'Füge bis zu 3 Chart-Bilder pro Trade hinzu',
-  paywall_feature_mental: 'Mentalzustand-Protokoll, Multi-Timeframe-Notizen (MTF) & Regeltreue-Prüfungen',
+  paywall_feature_mental: 'Mentalzustand-Protokoll, Notizen über mehrere Zeitrahmen & Regeltreue-Prüfungen',
   paywall_feature_extras: 'Lesezeichen, Abzeichen, Lot-Rechner & Teilen ohne Wasserzeichen',
   paywall_per_month: '/Monat',
   paywall_legal_charge: 'Die Zahlung wird deinem {store}-Konto belastet.',
