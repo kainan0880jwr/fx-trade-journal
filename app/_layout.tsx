@@ -19,7 +19,16 @@ const SENTRY_DSN = process.env.EXPO_PUBLIC_SENTRY_DSN ?? '';
 const isPlaceholderDsn = (dsn: string) => !dsn || /xxxx/i.test(dsn);
 
 if (!isPlaceholderDsn(SENTRY_DSN)) {
-  Sentry.init({ dsn: SENTRY_DSN });
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    // extra は現状どこからも送っていない（唯一の送信元はErrorBoundaryのcontexts.react.componentStack）。
+    // 将来誰かが catch節で captureException(error, { extra: { trade } }) のようにオブジェクトを
+    // まるごと渡してしまっても、トレード内容等のPIIが飛ばないよう一律で除去する（許可リスト方式）。
+    beforeSend(event) {
+      if (event.extra) delete event.extra;
+      return event;
+    },
+  });
 }
 
 export default function RootLayout() {

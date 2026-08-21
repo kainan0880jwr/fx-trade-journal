@@ -18,6 +18,7 @@ import { calcProfitLoss, determineResult } from '../../src/utils/profitCalc';
 import { generateId } from '../../src/utils/statsCalc';
 import { updateRecordStreak } from '../../src/db/queries';
 import { useReviewPrompt } from '../../src/hooks/useReviewPrompt';
+import { useAppLockPrompt } from '../../src/hooks/useAppLockPrompt';
 import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
@@ -54,6 +55,7 @@ export default function NewTradeScreen() {
   const isPremium = usePurchaseStore(s => s.isPremium);
   const imageLimit = isPremium ? 3 : 1;
   const promptReviewIfNeeded = useReviewPrompt();
+  const promptAppLockIfNeeded = useAppLockPrompt();
 
   const [mode, setMode] = useState<InputMode>('quick');
   const [saving, setSaving] = useState(false);
@@ -191,8 +193,11 @@ export default function NewTradeScreen() {
       const msg = streak <= 1
         ? t('form_quick_saved_first')
         : `${streak}${t('form_quick_saved_streak')}`;
-      Alert.alert('', msg, [{ text: 'OK', onPress: () => router.back() }]);
-      // 保存後にレビュー促進チェック（10件・30件・100件マイルストーン）
+      await new Promise<void>((resolve) => {
+        Alert.alert('', msg, [{ text: 'OK', onPress: () => { router.back(); resolve(); } }]);
+      });
+      // 保存完了ダイアログを閉じた後、初回のみアプリロック提案 → レビュー促進チェック（10件・30件・100件マイルストーン）の順で確認
+      await promptAppLockIfNeeded();
       await promptReviewIfNeeded();
     } catch {
       Alert.alert(t('save_error'), t('save_error_msg'));
