@@ -7,13 +7,16 @@ import type { CustomerInfo, PurchasesPackage } from 'react-native-purchases';
 function loadStore() {
   jest.resetModules();
   const Purchases = require('react-native-purchases').default;
-  const { usePurchaseStore } = require('../purchaseStore');
-  return { Purchases, usePurchaseStore };
+  const { usePurchaseStore, ENTITLEMENT_ID } = require('../purchaseStore');
+  return { Purchases, usePurchaseStore, ENTITLEMENT_ID };
 }
 
-function makeCustomerInfo(active: boolean): CustomerInfo {
+// RevenueCat上の実際のEntitlement Identifierとテストのモックがずれると、購入は成功する
+// のにhasPremium()が常にfalseを返すという事故に気づけない（2026-08-21に実際に発生した
+// 不一致）。ENTITLEMENT_IDをpurchaseStore.tsから都度importし、ハードコードしない。
+function makeCustomerInfo(active: boolean, entitlementId: string): CustomerInfo {
   return {
-    entitlements: { active: active ? { premium: {} } : {} },
+    entitlements: { active: active ? { [entitlementId]: {} } : {} },
   } as unknown as CustomerInfo;
 }
 
@@ -30,7 +33,7 @@ afterAll(() => {
 describe('initialize', () => {
   it('プレースホルダーキー（appl_xxxx...）の場合はconfigureを呼ばずに初期化完了とする', () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-    const { Purchases, usePurchaseStore } = loadStore();
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
 
     usePurchaseStore.getState().initialize();
 
@@ -41,7 +44,7 @@ describe('initialize', () => {
 
   it('キー未設定（空文字）の場合もconfigureを呼ばない', () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = '';
-    const { Purchases, usePurchaseStore } = loadStore();
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
 
     usePurchaseStore.getState().initialize();
 
@@ -51,8 +54,8 @@ describe('initialize', () => {
 
   it('本物のキーが設定されていればconfigureを呼ぶ', () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
 
     usePurchaseStore.getState().initialize();
 
@@ -62,8 +65,8 @@ describe('initialize', () => {
 
   it('複数回呼んでもconfigureとリスナー登録は1回しか実行されない（冪等性）', () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
 
     usePurchaseStore.getState().initialize();
     usePurchaseStore.getState().initialize();
@@ -75,7 +78,7 @@ describe('initialize', () => {
 
   it('configure自体が例外を投げた場合はisConfigured=falseのまま再初期化できる', () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
     Purchases.configure.mockImplementationOnce(() => { throw new Error('native init failed'); });
 
     usePurchaseStore.getState().initialize();
@@ -83,7 +86,7 @@ describe('initialize', () => {
     expect(usePurchaseStore.getState().isInitialized).toBe(true);
 
     // 失敗後は再度initialize()を呼べば再試行される（hasStartedInitが戻っているため）
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
     usePurchaseStore.getState().initialize();
     expect(Purchases.configure).toHaveBeenCalledTimes(2);
     expect(usePurchaseStore.getState().isConfigured).toBe(true);
@@ -91,12 +94,12 @@ describe('initialize', () => {
 
   it('addCustomerInfoUpdateListenerのコールバックでisPremiumが更新される', () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
 
     usePurchaseStore.getState().initialize();
     const listener = Purchases.addCustomerInfoUpdateListener.mock.calls[0][0];
-    listener(makeCustomerInfo(true));
+    listener(makeCustomerInfo(true, ENTITLEMENT_ID));
 
     expect(usePurchaseStore.getState().isPremium).toBe(true);
   });
@@ -105,7 +108,7 @@ describe('initialize', () => {
 describe('未configure時', () => {
   it('getOfferings/purchase/restoreは呼び出さずエラー相当を返す', async () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-    const { Purchases, usePurchaseStore } = loadStore();
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
 
     usePurchaseStore.getState().initialize(); // プレースホルダーキーのためisConfigured=falseのまま
 
@@ -121,9 +124,9 @@ describe('未configure時', () => {
 describe('purchase', () => {
   it('購入成功でエンタイトルメントが有効になる場合は"success"を返す', async () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
-    Purchases.purchasePackage.mockResolvedValue({ customerInfo: makeCustomerInfo(true) });
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
+    Purchases.purchasePackage.mockResolvedValue({ customerInfo: makeCustomerInfo(true, ENTITLEMENT_ID) });
     usePurchaseStore.getState().initialize();
 
     const result = await usePurchaseStore.getState().purchase({} as PurchasesPackage);
@@ -134,9 +137,9 @@ describe('purchase', () => {
 
   it('決済は成功したがエンタイトルメントが付与されない場合は"no_entitlement"を返す（"error"と区別する）', async () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
-    Purchases.purchasePackage.mockResolvedValue({ customerInfo: makeCustomerInfo(false) });
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
+    Purchases.purchasePackage.mockResolvedValue({ customerInfo: makeCustomerInfo(false, ENTITLEMENT_ID) });
     usePurchaseStore.getState().initialize();
 
     const result = await usePurchaseStore.getState().purchase({} as PurchasesPackage);
@@ -147,8 +150,8 @@ describe('purchase', () => {
 
   it('ユーザーがキャンセルした場合は"cancelled"を返す（エラー扱いにしない）', async () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
     Purchases.purchasePackage.mockRejectedValue({ userCancelled: true });
     usePurchaseStore.getState().initialize();
 
@@ -159,9 +162,9 @@ describe('purchase', () => {
 
   it('承認待ち（Ask to Buy等）の場合は"pending"を返す（失敗扱いにしない）', async () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
     const { PURCHASES_ERROR_CODE } = require('react-native-purchases');
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
     Purchases.purchasePackage.mockRejectedValue({ code: PURCHASES_ERROR_CODE.PAYMENT_PENDING_ERROR });
     usePurchaseStore.getState().initialize();
 
@@ -172,8 +175,8 @@ describe('purchase', () => {
 
   it('その他のエラーは"error"を返す（フェイルクローズ）', async () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
     Purchases.purchasePackage.mockRejectedValue(new Error('network error'));
     usePurchaseStore.getState().initialize();
 
@@ -187,9 +190,9 @@ describe('purchase', () => {
 describe('restore', () => {
   it('復元成功でエンタイトルメントが有効なら"success"を返す', async () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
-    Purchases.restorePurchases.mockResolvedValue(makeCustomerInfo(true));
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
+    Purchases.restorePurchases.mockResolvedValue(makeCustomerInfo(true, ENTITLEMENT_ID));
     usePurchaseStore.getState().initialize();
 
     const result = await usePurchaseStore.getState().restore();
@@ -199,9 +202,9 @@ describe('restore', () => {
 
   it('復元は成功したが対象がない場合は"no_entitlement"を返す（エラーと区別する）', async () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
-    Purchases.restorePurchases.mockResolvedValue(makeCustomerInfo(false));
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
+    Purchases.restorePurchases.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
     usePurchaseStore.getState().initialize();
 
     const result = await usePurchaseStore.getState().restore();
@@ -211,8 +214,8 @@ describe('restore', () => {
 
   it('通信エラー等で処理自体が失敗した場合は"error"を返す', async () => {
     process.env.EXPO_PUBLIC_RC_IOS_KEY = 'appl_realKeyExample123';
-    const { Purchases, usePurchaseStore } = loadStore();
-    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false));
+    const { Purchases, usePurchaseStore, ENTITLEMENT_ID } = loadStore();
+    Purchases.getCustomerInfo.mockResolvedValue(makeCustomerInfo(false, ENTITLEMENT_ID));
     Purchases.restorePurchases.mockRejectedValue(new Error('network error'));
     usePurchaseStore.getState().initialize();
 
