@@ -8,6 +8,7 @@ import { usePurchaseStore } from '../src/store/purchaseStore';
 import { getSetting } from '../src/db/queries';
 import { syncScheduledNotifications } from '../src/utils/notifications';
 import { recordAppOpen } from '../src/utils/retentionEvents';
+import { useNotificationPrompt } from '../src/hooks/useNotificationPrompt';
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useTheme, useIsDark } from '../src/theme/useTheme';
 import AppLockGate from '../src/components/AppLockGate';
@@ -48,6 +49,7 @@ function RootLayoutContent() {
   const [dbError, setDbError] = useState(false);
   const loadAll = useSettingsStore(s => s.loadAll);
   const initializePurchases = usePurchaseStore(s => s.initialize);
+  const promptNotificationIfNeeded = useNotificationPrompt();
 
   const initDb = async () => {
     setDbError(false);
@@ -60,6 +62,8 @@ function RootLayoutContent() {
       if (onboardingDone !== '1') {
         // DB 準備完了後にオンボーディングへ誘導
         setTimeout(() => router.replace('/onboarding'), 100);
+      } else {
+        promptNotificationIfNeeded(); // D1再起動時のみ通知の有効化を提案、結果は待たない
       }
     } catch (e) {
       console.error('DB init error:', e);

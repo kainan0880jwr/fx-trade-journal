@@ -437,6 +437,8 @@ export const id: LangStrings = {
   onboarding_app_lock_msg: 'Lindungi aplikasi dengan Face ID/Touch ID agar catatan trade Anda tetap privat. Anda bisa mengubahnya kapan saja di Pengaturan.',
   onboarding_app_lock_skip: 'Nanti',
   onboarding_app_lock_enable: 'Aktifkan',
+  d1_notif_prompt_title: 'Aktifkan pengingat harian?',
+  d1_notif_prompt_msg: 'Dapatkan notifikasi pada waktu tertentu untuk mencatat trade Anda. Konsistensi lebih mudah dengan kebiasaan harian. Anda bisa mengubahnya kapan saja di Pengaturan.',
   onboarding_skip: 'Lewati',
   onboarding_next: 'Lanjut',
 

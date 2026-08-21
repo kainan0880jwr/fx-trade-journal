@@ -437,6 +437,8 @@ export const de: LangStrings = {
   onboarding_app_lock_msg: 'Schütze die App mit Face ID/Touch ID, damit deine Trade-Aufzeichnungen privat bleiben. Du kannst dies jederzeit in den Einstellungen ändern.',
   onboarding_app_lock_skip: 'Später',
   onboarding_app_lock_enable: 'Aktivieren',
+  d1_notif_prompt_title: 'Tägliche Erinnerungen aktivieren?',
+  d1_notif_prompt_msg: 'Erhalte zu einer festen Uhrzeit eine Erinnerung, deinen Trade einzutragen. Regelmäßigkeit fällt mit einer täglichen Gewohnheit leichter. Du kannst dies jederzeit in den Einstellungen ändern.',
   onboarding_skip: 'Überspringen',
   onboarding_next: 'Weiter',
 

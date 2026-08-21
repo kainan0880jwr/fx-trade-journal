@@ -437,6 +437,8 @@ export const vi: LangStrings = {
   onboarding_app_lock_msg: 'Bảo vệ ứng dụng bằng Face ID/Touch ID để giữ hồ sơ giao dịch của bạn riêng tư. Bạn có thể thay đổi điều này bất cứ lúc nào trong Cài đặt.',
   onboarding_app_lock_skip: 'Để sau',
   onboarding_app_lock_enable: 'Bật',
+  d1_notif_prompt_title: 'Bật nhắc nhở hàng ngày?',
+  d1_notif_prompt_msg: 'Nhận thông báo vào giờ cố định để ghi lại giao dịch của bạn. Duy trì thói quen hàng ngày sẽ dễ dàng hơn. Bạn có thể thay đổi điều này bất cứ lúc nào trong Cài đặt.',
   onboarding_skip: 'Bỏ qua',
   onboarding_next: 'Tiếp theo',
 

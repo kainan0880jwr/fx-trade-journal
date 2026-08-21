@@ -437,6 +437,8 @@ export const tr: LangStrings = {
   onboarding_app_lock_msg: 'İşlem kayıtlarınızın gizli kalması için uygulamayı Face ID/Touch ID ile koruyun. Bunu istediğiniz zaman Ayarlar\'dan değiştirebilirsiniz.',
   onboarding_app_lock_skip: 'Sonra',
   onboarding_app_lock_enable: 'Etkinleştir',
+  d1_notif_prompt_title: 'Günlük hatırlatıcılar etkinleştirilsin mi?',
+  d1_notif_prompt_msg: 'Belirlediğiniz saatte işleminizi kaydetmeniz için bildirim alın. Günlük alışkanlıkla düzenli olmak daha kolay. Bunu istediğiniz zaman Ayarlar\'dan değiştirebilirsiniz.',
   onboarding_skip: 'Atla',
   onboarding_next: 'İleri',
 
