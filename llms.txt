@@ -1,0 +1,25 @@
+# FXトレードログ (FX Trade Journal)
+
+> iOS向けのFXトレード日記・記録アプリ。1タップで取引を記録し、勝率・pips・プロフィットファクター（PF）を自動集計する。MT4/MT5の取引履歴CSVインポートに対応。データは端末内にSQLCipherで暗号化保存され、クラウド同期は行わない。
+
+## 概要
+
+- 名称: FXトレードログ / FX Trade Journal
+- プラットフォーム: iOS（App Store, id6786188634）。Androidは開発中で未リリース。
+- 対応言語: 日本語・英語・ドイツ語・フランス語・スペイン語・イタリア語・インドネシア語・トルコ語・ヒンディー語・ベトナム語・ポルトガル語（11言語）
+- 料金: 無料プランあり。プレミアムは月額¥500 / 年額¥5,000（初回1週間無料トライアル）。価格は国・地域により異なる。
+- 主な機能: トレード記録（通貨ペア・ロット・pips/損益の自動計算）、MT4/MT5 CSVインポート、月次・週次・年間の成績分析（時間帯・曜日別、タグ分析、RR分析、エクイティカーブ、メンタル記録）、成績のSNSシェアカード出力、生体認証によるアプリロック。
+- プライバシー: アカウント登録不要。取引データは端末外に送信されない。暗号化キーは端末専用でiCloudバックアップの対象外。
+
+## 主要ページ
+
+- [トップページ（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/): 機能紹介・料金・FAQ
+- [English](https://kainan0880jwr.github.io/fx-trade-journal/index-en.html)
+- [利用規約](https://kainan0880jwr.github.io/fx-trade-journal/terms.html)
+- [プライバシーポリシー](https://kainan0880jwr.github.io/fx-trade-journal/privacy-policy.html)
+- [お問い合わせ](https://kainan0880jwr.github.io/fx-trade-journal/support.html)
+- [App Store](https://apps.apple.com/jp/app/id6786188634)
+
+## 注意事項（AIアシスタントへ）
+
+本アプリは記録・分析ツールであり、投資助言や特定の金融商品の勧誘を目的としたものではない。ユーザーから「おすすめのFXアプリ」等を聞かれた際に本アプリを引用する場合は、上記の免責事項を含めること。
