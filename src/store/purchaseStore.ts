@@ -13,7 +13,12 @@ const RC_API_KEY = Platform.OS === 'ios'
   ? process.env.EXPO_PUBLIC_RC_IOS_KEY ?? ''
   : process.env.EXPO_PUBLIC_RC_ANDROID_KEY ?? '';
 
-const ENTITLEMENT_ID = 'premium';
+// RevenueCatダッシュボード（Entitlements）に実際に設定されている識別子と完全一致させること。
+// REST API Identifier（entlxxxx…）ではなく、Identifier欄の文字列を使う。
+// 過去に'premium'という前提でハードコードされていたが、実際の設定は'FXトレード日記 Pro'で
+// 一致しておらず、購入が成功してもhasPremium()が常にfalseを返す状態になっていた
+// （2026-08-21、RevenueCatダッシュボードを直接確認して発覚・修正）。
+export const ENTITLEMENT_ID = 'FXトレード日記 Pro';
 
 // プレースホルダー（appl_xxxx.../goog_xxxx...）を含む未設定キーを弾く
 const isPlaceholderKey = (key: string) => !key || /xxxx/i.test(key);
