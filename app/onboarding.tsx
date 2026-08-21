@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { setSetting } from '../src/db/queries';
+import { recordOnboardingCompleted } from '../src/utils/retentionEvents';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t } from '../src/i18n';
@@ -55,6 +56,7 @@ export default function OnboardingScreen() {
 
   const finishOnboarding = async () => {
     await setSetting('onboarding_done', '1');
+    recordOnboardingCompleted();
     router.replace('/(tabs)');
     // 少し遅らせてからクイック入力を開く
     // アプリロックの提案はここではなく、初回トレード保存後（useAppLockPrompt）に
