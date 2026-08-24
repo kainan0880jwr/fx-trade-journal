@@ -417,3 +417,7 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
 .article-cta-final p{color:var(--ink-dim); margin-bottom:var(--space-4);}
 .brand-link{text-decoration:none; color:inherit;}
 .table-scroll{overflow-x:auto;}
+
+/* ============ Region unavailability notice ============ */
+.region-notice{background:var(--surface-2); border-bottom:1px solid var(--line-strong); padding:.9em 0; text-align:center;}
+.region-notice p{color:var(--ink-dim); font-size:.86rem; max-width:70ch; margin:0 auto;}
