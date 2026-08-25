@@ -459,7 +459,7 @@ export const en: LangStrings = {
   paywall_legal_charge: 'Payment charged to your {store} account.',
   paywall_legal_renewal_ios: 'Subscription auto-renews unless cancelled 24 hours before the end of each period.',
   paywall_legal_renewal_android: 'Subscription auto-renews unless cancelled before the next renewal date.',
-  paywall_trial_disclaimer: 'After the free trial ends, you will automatically be charged for the plan you selected unless you cancel first.',
+  paywall_trial_disclaimer: 'After the free trial ends, you will automatically be charged {price} unless you cancel first.',
   paywall_trial_disclaimer_android: 'If you have already used a free trial before, you may be charged the regular price immediately upon selection, regardless of what is shown here.',
   paywall_manage_subscription: 'Manage or cancel your subscription',
   paywall_disclaimer: 'The analysis features in this app are not investment advice or a solicitation for any specific financial product.',

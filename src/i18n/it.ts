@@ -459,7 +459,7 @@ export const it: LangStrings = {
   paywall_legal_charge: "Il pagamento verrà addebitato sul tuo account {store}.",
   paywall_legal_renewal_ios: "L'abbonamento si rinnova automaticamente salvo cancellazione almeno 24 ore prima della fine di ciascun periodo.",
   paywall_legal_renewal_android: "L'abbonamento si rinnova automaticamente salvo cancellazione prima della prossima data di rinnovo.",
-  paywall_trial_disclaimer: "Al termine della prova gratuita, ti verrà addebitato automaticamente il piano selezionato salvo disdetta anticipata.",
+  paywall_trial_disclaimer: "Al termine della prova gratuita, ti verrà addebitato automaticamente {price} salvo disdetta anticipata.",
   paywall_trial_disclaimer_android: "Se hai già utilizzato una prova gratuita in precedenza, potrebbe esserti addebitato subito il prezzo normale alla selezione, indipendentemente da quanto mostrato qui.",
   paywall_manage_subscription: "Gestisci o annulla il tuo abbonamento",
   paywall_disclaimer: "Le funzioni di analisi di questa app non costituiscono consulenza di investimento né sollecitazione per uno specifico prodotto finanziario.",

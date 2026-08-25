@@ -459,7 +459,7 @@ export const vi: LangStrings = {
   paywall_legal_charge: 'Thanh toán được tính vào tài khoản {store} của bạn.',
   paywall_legal_renewal_ios: 'Đăng ký tự động gia hạn trừ khi bị hủy trước 24 giờ khi kết thúc mỗi kỳ.',
   paywall_legal_renewal_android: 'Đăng ký tự động gia hạn trừ khi bị hủy trước ngày gia hạn tiếp theo.',
-  paywall_trial_disclaimer: 'Sau khi bản dùng thử miễn phí kết thúc, bạn sẽ tự động bị tính phí cho gói đã chọn trừ khi hủy trước.',
+  paywall_trial_disclaimer: 'Sau khi bản dùng thử miễn phí kết thúc, bạn sẽ tự động bị tính phí {price} trừ khi hủy trước.',
   paywall_trial_disclaimer_android: 'Nếu bạn đã từng sử dụng bản dùng thử miễn phí trước đây, bạn có thể bị tính phí thông thường ngay khi chọn, bất kể những gì hiển thị ở đây.',
   paywall_manage_subscription: 'Quản lý hoặc hủy đăng ký của bạn',
   paywall_disclaimer: 'Các tính năng phân tích trong ứng dụng này không phải là lời khuyên đầu tư hay lời mời chào cho bất kỳ sản phẩm tài chính cụ thể nào.',

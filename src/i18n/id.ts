@@ -459,7 +459,7 @@ export const id: LangStrings = {
   paywall_legal_charge: 'Pembayaran dibebankan ke akun {store} Anda.',
   paywall_legal_renewal_ios: 'Langganan diperpanjang otomatis kecuali dibatalkan 24 jam sebelum akhir setiap periode.',
   paywall_legal_renewal_android: 'Langganan diperpanjang otomatis kecuali dibatalkan sebelum tanggal perpanjangan berikutnya.',
-  paywall_trial_disclaimer: 'Setelah uji coba gratis berakhir, Anda akan otomatis dikenakan biaya untuk paket yang dipilih kecuali Anda membatalkan terlebih dahulu.',
+  paywall_trial_disclaimer: 'Setelah uji coba gratis berakhir, Anda akan otomatis dikenakan biaya {price} kecuali Anda membatalkan terlebih dahulu.',
   paywall_trial_disclaimer_android: 'Jika Anda sudah pernah menggunakan uji coba gratis sebelumnya, Anda mungkin akan langsung dikenakan harga normal saat memilih, terlepas dari apa yang ditampilkan di sini.',
   paywall_manage_subscription: 'Kelola atau batalkan langganan Anda',
   paywall_disclaimer: 'Fitur analisis dalam aplikasi ini bukan saran investasi atau ajakan untuk produk keuangan tertentu.',
