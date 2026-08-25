@@ -457,7 +457,7 @@ export const ja = {
   paywall_legal_charge: '購入は{store}アカウントに課金されます。',
   paywall_legal_renewal_ios: 'サブスクリプションは期間終了の24時間前までに解約しない限り自動更新されます。',
   paywall_legal_renewal_android: 'サブスクリプションは次回更新日より前に解約しない限り自動更新されます。',
-  paywall_trial_disclaimer: '無料トライアル期間終了後は、自動的に有料プランへ移行し選択したプラン料金が課金されます。',
+  paywall_trial_disclaimer: '無料トライアル期間終了後は、解約しない限り自動的に{price}が課金されます。',
   paywall_trial_disclaimer_android: '過去に無料トライアルをご利用済みの場合、この表示にかかわらず選択時点で通常料金が課金されることがあります。',
   paywall_manage_subscription: 'サブスクリプションの管理・解約はこちら',
   paywall_disclaimer: '本アプリの分析機能は投資助言・特定の金融商品の勧誘を目的とするものではありません。',

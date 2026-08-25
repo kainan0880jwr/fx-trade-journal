@@ -459,7 +459,7 @@ export const tr: LangStrings = {
   paywall_legal_charge: 'Ödeme {store} hesabınıza yansıtılır.',
   paywall_legal_renewal_ios: 'Abonelik, her dönemin bitiminden 24 saat önce iptal edilmedikçe otomatik olarak yenilenir.',
   paywall_legal_renewal_android: 'Abonelik, bir sonraki yenileme tarihinden önce iptal edilmedikçe otomatik olarak yenilenir.',
-  paywall_trial_disclaimer: 'Ücretsiz deneme sona erdiğinde, önce iptal etmediğiniz sürece seçtiğiniz plan için otomatik olarak ücretlendirileceksiniz.',
+  paywall_trial_disclaimer: 'Ücretsiz deneme sona erdiğinde, önce iptal etmediğiniz sürece otomatik olarak {price} ücretlendirileceksiniz.',
   paywall_trial_disclaimer_android: 'Daha önce ücretsiz deneme kullandıysanız, burada gösterilenden bağımsız olarak seçim yaptığınızda hemen normal fiyat üzerinden ücretlendirilebilirsiniz.',
   paywall_manage_subscription: 'Aboneliğinizi yönetin veya iptal edin',
   paywall_disclaimer: 'Bu uygulamadaki analiz özellikleri yatırım tavsiyesi veya belirli bir finansal ürün için teşvik değildir.',

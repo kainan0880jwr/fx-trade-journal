@@ -459,7 +459,7 @@ export const de: LangStrings = {
   paywall_legal_charge: 'Die Zahlung wird deinem {store}-Konto belastet.',
   paywall_legal_renewal_ios: 'Das Abo verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ablauf des jeweiligen Zeitraums gekündigt wird.',
   paywall_legal_renewal_android: 'Das Abo verlängert sich automatisch, sofern es nicht vor dem nächsten Verlängerungsdatum gekündigt wird.',
-  paywall_trial_disclaimer: 'Nach Ablauf der kostenlosen Testphase wird dir automatisch der gewählte Plan berechnet, sofern du nicht vorher kündigst.',
+  paywall_trial_disclaimer: 'Nach Ablauf der kostenlosen Testphase wird dir automatisch {price} berechnet, sofern du nicht vorher kündigst.',
   paywall_trial_disclaimer_android: 'Wenn du bereits zuvor eine kostenlose Testphase genutzt hast, kann dir bei der Auswahl unabhängig von dieser Anzeige sofort der reguläre Preis berechnet werden.',
   paywall_manage_subscription: 'Abo verwalten oder kündigen',
   paywall_disclaimer: 'Die Analysefunktionen dieser App stellen keine Anlageberatung und keine Empfehlung für ein bestimmtes Finanzprodukt dar.',

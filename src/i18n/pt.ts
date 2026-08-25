@@ -459,7 +459,7 @@ export const pt: LangStrings = {
   paywall_legal_charge: 'O pagamento será cobrado na sua conta {store}.',
   paywall_legal_renewal_ios: 'A assinatura é renovada automaticamente, a menos que cancelada 24 horas antes do fim de cada período.',
   paywall_legal_renewal_android: 'A assinatura é renovada automaticamente, a menos que cancelada antes da próxima data de renovação.',
-  paywall_trial_disclaimer: 'Após o término do teste gratuito, você será cobrado automaticamente pelo plano selecionado, a menos que cancele antes.',
+  paywall_trial_disclaimer: 'Após o término do teste gratuito, você será cobrado automaticamente {price}, a menos que cancele antes.',
   paywall_trial_disclaimer_android: 'Se você já usou um teste gratuito antes, poderá ser cobrado o preço normal imediatamente ao selecionar, independentemente do que é mostrado aqui.',
   paywall_manage_subscription: 'Gerencie ou cancele sua assinatura',
   paywall_disclaimer: 'Os recursos de análise deste aplicativo não constituem aconselhamento de investimento nem oferta de qualquer produto financeiro específico.',

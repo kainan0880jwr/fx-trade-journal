@@ -356,9 +356,9 @@ export default function PaywallScreen() {
             </LinearGradient>
           </TouchableOpacity>
 
-          {hasTrialSelected && (
+          {hasTrialSelected && selected && (
             <Text style={s.trialDisclaimer}>
-              {t('paywall_trial_disclaimer')}
+              {t('paywall_trial_disclaimer').replace('{price}', selected.product.priceString)}
               {Platform.OS === 'android' && `\n${t('paywall_trial_disclaimer_android')}`}
             </Text>
           )}

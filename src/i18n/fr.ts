@@ -459,7 +459,7 @@ export const fr: LangStrings = {
   paywall_legal_charge: "Le paiement sera prélevé sur votre compte {store}.",
   paywall_legal_renewal_ios: "L'abonnement se renouvelle automatiquement sauf annulation au moins 24 heures avant la fin de chaque période.",
   paywall_legal_renewal_android: "L'abonnement se renouvelle automatiquement sauf annulation avant la prochaine date de renouvellement.",
-  paywall_trial_disclaimer: "À la fin de l'essai gratuit, le forfait choisi vous sera automatiquement facturé, sauf annulation préalable.",
+  paywall_trial_disclaimer: "À la fin de l'essai gratuit, {price} vous sera automatiquement facturé, sauf annulation préalable.",
   paywall_trial_disclaimer_android: "Si vous avez déjà utilisé un essai gratuit auparavant, le tarif normal peut vous être facturé immédiatement dès la sélection, indépendamment de cet affichage.",
   paywall_manage_subscription: "Gérer ou résilier votre abonnement",
   paywall_disclaimer: "Les fonctionnalités d'analyse de cette application ne constituent ni un conseil en investissement ni une sollicitation pour un produit financier spécifique.",
