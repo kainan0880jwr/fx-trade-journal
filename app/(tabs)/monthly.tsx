@@ -22,11 +22,20 @@ import { formatPF } from '../../src/utils/calendarMetrics';
 
 type Period = 'monthly' | 'yearly';
 
-const SUB_TABS = () => [
-  t('monthly_wl'), t('monthly_pips_tab'), t('monthly_stats'),
-  t('monthly_reflection'), t('monthly_rating'), t('monthly_weekly'), t('monthly_insights'),
+type SubTab = 'wl' | 'pips' | 'stats' | 'reflection' | 'rating' | 'weekly' | 'insights';
+
+// 翻訳文字列そのものをactiveTabの状態値にすると、訳語を1文字直しただけで
+// タブの比較(activeTab === t('monthly_xxx'))が壊れる。安定したキーで状態を持ち、
+// 表示ラベルは描画時にt()で解決する。
+const SUB_TABS: () => { key: SubTab; label: string }[] = () => [
+  { key: 'wl', label: t('monthly_wl') },
+  { key: 'pips', label: t('monthly_pips_tab') },
+  { key: 'stats', label: t('monthly_stats') },
+  { key: 'reflection', label: t('monthly_reflection') },
+  { key: 'rating', label: t('monthly_rating') },
+  { key: 'weekly', label: t('monthly_weekly') },
+  { key: 'insights', label: t('monthly_insights') },
 ];
-type SubTab = string;
 
 export default function MonthlyScreen() {
   const C = useTheme();
@@ -37,7 +46,7 @@ export default function MonthlyScreen() {
   const { settings } = useSettingsStore();
   const isPremium = usePurchaseStore(s => s.isPremium);
   const [period, setPeriod] = useState<Period>('monthly');
-  const [activeTab, setActiveTab] = useState<SubTab>(t('monthly_wl'));
+  const [activeTab, setActiveTab] = useState<SubTab>('wl');
   const [shareVisible, setShareVisible] = useState(false);
   const [recordStreak, setRecordStreak] = useState(0);
   const navigation = useNavigation();
@@ -150,19 +159,19 @@ export default function MonthlyScreen() {
         >
           {SUB_TABS().map(tab => (
             <TouchableOpacity
-              key={tab}
+              key={tab.key}
               style={styles.subTab}
-              onPress={() => setActiveTab(tab)}
+              onPress={() => setActiveTab(tab.key)}
             >
-              <Text style={[styles.subTabLabel, activeTab === tab && styles.subTabLabelActive]}>{tab}</Text>
-              {activeTab === tab && <View style={styles.subTabUnderline} />}
+              <Text style={[styles.subTabLabel, activeTab === tab.key && styles.subTabLabelActive]}>{tab.label}</Text>
+              {activeTab === tab.key && <View style={styles.subTabUnderline} />}
             </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
 
-      {!isPremium && (activeTab === t('monthly_weekly') || activeTab === t('monthly_insights')) ? (
-        <PremiumGate feature={activeTab}><View /></PremiumGate>
+      {!isPremium && (activeTab === 'weekly' || activeTab === 'insights') ? (
+        <PremiumGate feature={SUB_TABS().find(tb => tb.key === activeTab)?.label ?? ''}><View /></PremiumGate>
       ) : (
       <ScrollView contentContainerStyle={styles.scroll}>
         {trades.length === 0 ? (
@@ -172,7 +181,7 @@ export default function MonthlyScreen() {
           </View>
         ) : (
           <>
-            {activeTab === t('monthly_wl') && (
+            {activeTab === 'wl' && (
               <>
                 <View style={styles.row3}>
                   <BigStat label={t('wins')} value={String(stats.wins)} color={C.win} />
@@ -202,7 +211,7 @@ export default function MonthlyScreen() {
               </>
             )}
 
-            {activeTab === t('monthly_pips_tab') && (
+            {activeTab === 'pips' && (
               <>
                 <View style={styles.bigNumCard}>
                   <Text style={styles.bigNumLabel}>{t('total_pips')}</Text>
@@ -239,7 +248,7 @@ export default function MonthlyScreen() {
               </>
             )}
 
-            {activeTab === t('monthly_stats') && (
+            {activeTab === 'stats' && (
               <View style={styles.statsTable}>
                 <TableRow label={t('trade_count_times')} value={`${stats.totalTrades}${t('times_unit')}`} />
                 <TableRow label={t('wins')} value={`${stats.wins}${t('times_unit')}`} color={C.win} />
@@ -254,7 +263,7 @@ export default function MonthlyScreen() {
               </View>
             )}
 
-            {activeTab === t('monthly_reflection') && (
+            {activeTab === 'reflection' && (
               <>
                 <Text style={styles.sectionNote}>{t('reflection_with_count')}（{reflections.length}{t('count_unit')}）</Text>
                 {reflections.length === 0 ? (
@@ -276,15 +285,15 @@ export default function MonthlyScreen() {
               </>
             )}
 
-            {activeTab === t('monthly_weekly') && (
+            {activeTab === 'weekly' && (
               <WeeklyTab trades={trades} yearMonth={currentMonth} />
             )}
 
-            {activeTab === t('monthly_insights') && (
+            {activeTab === 'insights' && (
               <InsightsTab trades={trades} pipsGoal={settings.monthlyPipsGoal} winRateGoal={settings.monthlyWinRateGoal} />
             )}
 
-            {activeTab === t('monthly_rating') && (
+            {activeTab === 'rating' && (
               <>
                 <View style={styles.bigNumCard}>
                   <Text style={styles.bigNumLabel}>{t('avg_rating')}</Text>
