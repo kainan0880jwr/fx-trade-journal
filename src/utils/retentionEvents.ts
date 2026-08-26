@@ -10,7 +10,7 @@
  *
  * 使い方:
  *   - app/_layout.tsx の初期化フローで recordAppOpen() を毎回呼ぶ
- *   - onboarding.tsx の finishOnboarding() で recordOnboardingCompleted() を呼ぶ
+ *   - onboarding.tsx の completeOnboarding() で recordOnboardingCompleted() を呼ぶ
  *   - trade/new.tsx の保存成功後に recordFirstTradeSaved() を呼ぶ（内部で初回のみ判定）
  */
 

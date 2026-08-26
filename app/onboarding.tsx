@@ -39,6 +39,7 @@ export default function OnboardingScreen() {
   const C = useTheme();
   const s = makeStyles(C);
   const [step, setStep] = useState(0);
+  const [showChoice, setShowChoice] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
 
   const goTo = (index: number) => {
@@ -50,21 +51,37 @@ export default function OnboardingScreen() {
     if (step < STEPS.length - 1) {
       goTo(step + 1);
     } else {
-      finishOnboarding();
+      // 説明スライドの最後まで来たら、いきなり記録画面へ飛ばすのではなく
+      // 「今すぐ記録する / CSVを取り込む / まず見る」の3択を提示する。
+      setShowChoice(true);
     }
   };
 
-  const finishOnboarding = async () => {
+  const completeOnboarding = async () => {
     await setSetting('onboarding_done', '1');
     recordOnboardingCompleted();
+  };
+
+  // アプリロックの提案はここではなく、初回トレード保存後（useAppLockPrompt）に
+  // 分離している — オンボーディング直後に許諾ダイアログと強制遷移が重なる
+  // 体験を避けるため
+  const handleChooseRecord = async () => {
+    await completeOnboarding();
     router.replace('/(tabs)');
-    // 少し遅らせてからクイック入力を開く
-    // アプリロックの提案はここではなく、初回トレード保存後（useAppLockPrompt）に
-    // 分離している — オンボーディング直後に許諾ダイアログと強制遷移が重なる
-    // 体験を避けるため
+    setTimeout(() => { router.push('/trade/new'); }, 300);
+  };
+
+  const handleChooseImport = async () => {
+    await completeOnboarding();
+    router.replace('/(tabs)');
     setTimeout(() => {
-      router.push('/trade/new');
+      router.push({ pathname: '/(tabs)/settings', params: { autoImport: '1' } });
     }, 300);
+  };
+
+  const handleChooseBrowse = async () => {
+    await completeOnboarding();
+    router.replace('/(tabs)');
   };
 
   const handleSkip = async () => {
@@ -73,6 +90,49 @@ export default function OnboardingScreen() {
   };
 
   const isLast = step === STEPS.length - 1;
+
+  if (showChoice) {
+    return (
+      <SafeAreaView style={s.container}>
+        <View style={s.choiceWrap}>
+          <Text style={s.choiceTitle}>{t('onboarding_choice_title')}</Text>
+
+          <TouchableOpacity style={s.choiceCard} onPress={handleChooseRecord} activeOpacity={0.85}>
+            <View style={[s.choiceIcon, { backgroundColor: '#F5A62320' }]}>
+              <Ionicons name="flash" size={26} color="#F5A623" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={s.choiceCardTitle}>{t('onboarding_choice_record_title')}</Text>
+              <Text style={s.choiceCardDesc}>{t('onboarding_choice_record_desc')}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={C.text3} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={s.choiceCard} onPress={handleChooseImport} activeOpacity={0.85}>
+            <View style={[s.choiceIcon, { backgroundColor: '#4F7EF720' }]}>
+              <Ionicons name="cloud-upload" size={26} color="#4F7EF7" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={s.choiceCardTitle}>{t('onboarding_choice_import_title')}</Text>
+              <Text style={s.choiceCardDesc}>{t('onboarding_choice_import_desc')}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={C.text3} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={s.choiceCard} onPress={handleChooseBrowse} activeOpacity={0.85}>
+            <View style={[s.choiceIcon, { backgroundColor: C.text3 + '20' }]}>
+              <Ionicons name="eye" size={26} color={C.text3} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={s.choiceCardTitle}>{t('onboarding_choice_browse_title')}</Text>
+              <Text style={s.choiceCardDesc}>{t('onboarding_choice_browse_desc')}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={C.text3} />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={s.container}>
@@ -163,5 +223,22 @@ function makeStyles(C: ThemeColors) {
       shadowOpacity: 0.4, shadowRadius: 14, elevation: 8,
     },
     nextBtnText: { color: '#FFF', fontSize: 16, fontWeight: '800' },
+
+    choiceWrap: { flex: 1, justifyContent: 'center', paddingHorizontal: 24, gap: 14 },
+    choiceTitle: {
+      fontSize: 24, fontWeight: '800', color: C.text,
+      textAlign: 'center', marginBottom: 16, letterSpacing: -0.5,
+    },
+    choiceCard: {
+      flexDirection: 'row', alignItems: 'center', gap: 14,
+      backgroundColor: C.card, borderRadius: 16, padding: 16,
+      borderWidth: 1, borderColor: C.border,
+    },
+    choiceIcon: {
+      width: 48, height: 48, borderRadius: 24,
+      alignItems: 'center', justifyContent: 'center',
+    },
+    choiceCardTitle: { fontSize: 15, fontWeight: '700', color: C.text },
+    choiceCardDesc: { fontSize: 12.5, color: C.text2, marginTop: 3, lineHeight: 17 },
   });
 }
