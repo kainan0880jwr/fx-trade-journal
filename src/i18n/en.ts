@@ -37,6 +37,8 @@ export const en: LangStrings = {
   delete_confirm: 'Confirm Delete',
   db_init_error_title: 'Failed to initialize the database',
   db_init_error_msg: 'Please restart the app, or try again using the button below.',
+  db_key_lost_title: "Unable to decrypt your data",
+  db_key_lost_msg: "Your device's encryption key was lost, so your saved trade records can no longer be opened. If you previously made a backup (Settings → JSON Backup), reset your data using the button below and then restore from that backup. Without a backup, these records cannot be recovered.",
   db_reset_link: "Still not working? Reset data and start over",
   db_reset_confirm_title: 'Reset all data?',
   db_reset_confirm_msg: 'This will permanently delete all saved trade records and cannot be undone. The app will restart from a blank state.',

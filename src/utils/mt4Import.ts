@@ -7,7 +7,7 @@
  */
 
 import * as DocumentPicker from 'expo-document-picker';
-import { readAsStringAsync } from 'expo-file-system/legacy';
+import { readAsStringAsync, getInfoAsync } from 'expo-file-system/legacy';
 import { insertTrade } from '../db/queries';
 import { t } from '../i18n';
 import type { Trade, TradeResult, Direction, TradeStyle } from '../types';
@@ -43,10 +43,13 @@ interface RawRow {
 // ヘルパー
 // ───────────────────────────────────────────────
 
-/** 文字列 → 数値。パース失敗時は 0 */
+/** 文字列 → 数値。パース失敗、あるいはInfinity・現実的にありえない桁数の場合は 0 */
 const num = (s: string): number => {
   const v = parseFloat(s.replace(/,/g, '').trim());
-  return isNaN(v) ? 0 : v;
+  // isNaNのみのチェックだと "1e999" 等がInfinityとして通過し、統計（合計pips・平均等）を
+  // NaN/Infinityで汚染してしまう。為替レート・ロット・損益としてありえない桁数も弾く。
+  if (!Number.isFinite(v) || Math.abs(v) > 1e9) return 0;
+  return v;
 };
 
 /** "2024.01.15 10:23" または "2024-01-15T10:23:00" → ISO日付部分 "YYYY-MM-DD" */
@@ -93,11 +96,12 @@ function detectSep(header: string): string {
 }
 
 /** 通貨ペア名を正規化 ("USDJPY" / "USD/JPY" → "USD/JPY") */
+// 通貨ペア表記としてありえない文字・長さの値（壊れたCSVや悪意あるファイル由来）を
+// 弾く。正規化後に英数字・スラッシュ・ハイフン・アンダースコアのみ、20文字以内のみ許可。
 function normalizePair(raw: string): string {
   const s = raw.trim().toUpperCase();
-  if (s.includes('/')) return s;
-  if (s.length >= 6) return `${s.slice(0, 3)}/${s.slice(3, 6)}`;
-  return s;
+  const normalized = s.includes('/') ? s : s.length >= 6 ? `${s.slice(0, 3)}/${s.slice(3, 6)}` : s;
+  return /^[A-Z0-9/_-]{1,20}$/.test(normalized) ? normalized : '';
 }
 
 /** pip数を計算（/JPY ペアは2桁、その他4桁） */
@@ -436,7 +440,14 @@ export async function importMT4CSV(): Promise<ImportResult> {
 
   const uri  = picked.assets[0].uri;
   const name = picked.assets[0].name ?? '';
-  const size = picked.assets[0].size ?? 0;
+  // ピッカーがsizeを返さないケース（一部のプロバイダ拡張経由等）では、上限チェックを
+  // 素通りしてから readAsStringAsync でファイル全体をメモリへ読み込むことになり、
+  // 巨大ファイルによるOOMを防げない。0扱いにせず実サイズを取得し直す。
+  let size = picked.assets[0].size ?? 0;
+  if (!size) {
+    const info = await getInfoAsync(uri);
+    size = info.exists && 'size' in info ? info.size : 0;
+  }
 
   // .csv / .txt 以外は拒否
   if (!name.toLowerCase().match(/\.(csv|txt)$/)) {

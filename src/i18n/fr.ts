@@ -37,6 +37,8 @@ export const fr: LangStrings = {
   delete_confirm: "Confirmer la suppression",
   db_init_error_title: "Échec de l'initialisation de la base de données",
   db_init_error_msg: "Veuillez redémarrer l'application ou réessayer avec le bouton ci-dessous.",
+  db_key_lost_title: "Impossible de déchiffrer vos données",
+  db_key_lost_msg: "La clé de chiffrement de votre appareil a été perdue, vos trades enregistrés ne peuvent donc plus être ouverts. Si vous aviez fait une sauvegarde (Réglages → Sauvegarde JSON), réinitialisez vos données avec le bouton ci-dessous puis restaurez-les depuis cette sauvegarde. Sans sauvegarde, ces enregistrements ne peuvent pas être récupérés.",
   db_reset_link: "Toujours pas résolu ? Réinitialiser les données et recommencer",
   db_reset_confirm_title: "Réinitialiser toutes les données ?",
   db_reset_confirm_msg: "Cette action supprimera définitivement tous les enregistrements de trades et ne pourra pas être annulée. L'application redémarrera à zéro.",

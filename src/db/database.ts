@@ -1,10 +1,20 @@
 import * as SQLite from 'expo-sqlite';
 import * as SecureStore from 'expo-secure-store';
-import { getOrCreateEncryptionKey, deleteEncryptionKey } from './dbEncryption';
+import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey } from './dbEncryption';
 
 const OLD_DB_NAME = 'fx_journal.db'; // 旧・平文DB（SQLCipher導入前）
 const NEW_DB_NAME = 'fx_journal_v2.db'; // 新・SQLCipher暗号化DB
 const MIGRATION_FLAG_KEY = 'fx_db_migrated_v1';
+
+// 暗号化DBが既に存在するはずなのに、SecureStoreから復号鍵を取得できない状態。
+// resetDatabase()による全データ削除以外に復旧手段がないため、通常のDB初期化失敗
+// （db_init_error）とは別のエラーとして扱い、呼び出し側で状況に応じた案内を出す。
+export class EncryptionKeyLostError extends Error {
+  constructor() {
+    super('encryption_key_lost');
+    this.name = 'EncryptionKeyLostError';
+  }
+}
 
 // Promiseをキャッシュして並行呼び出し時の二重初期化を防ぐ
 let dbPromise: Promise<SQLite.SQLiteDatabase> | null = null;
@@ -45,14 +55,21 @@ export async function resetDatabase(): Promise<void> {
 // 暗号化状態が異なるDB間の移行には使えない。SQLCipherは平文ページと暗号化ページで
 // フォーマットが異なるため、ページを生コピーすると宛先DBが読み取り不能になる。
 async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
-  const key = await getOrCreateEncryptionKey();
   const migrated = await SecureStore.getItemAsync(MIGRATION_FLAG_KEY);
 
   if (migrated === 'v1') {
+    // 暗号化DBは既に存在する前提の状態。ここで鍵が取得できない場合、
+    // getOrCreateEncryptionKeyで新規鍵を生成してしまうと、既存の暗号化DBを
+    // 二度と復号できない鍵で開こうとすることになる（＝実質的な全データ消失）。
+    // 新規鍵は生成せず、専用のエラーとして呼び出し側に委ねる。
+    const key = await getEncryptionKey();
+    if (!key) throw new EncryptionKeyLostError();
     const db = await SQLite.openDatabaseAsync(NEW_DB_NAME);
     await db.execAsync(`PRAGMA key = '${key}';`);
     return db;
   }
+
+  const key = await getOrCreateEncryptionKey();
 
   // migrated !== 'v1' の場合、fx_journal_v2.db が存在していても正規の移行完了物ではない
   // （旧バージョンのbackupDatabaseAsyncによる移行失敗で壊れたファイルが残っている可能性がある）。

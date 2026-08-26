@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as Sentry from '@sentry/react-native';
-import { getDatabase, resetDatabase } from '../src/db/database';
+import { getDatabase, resetDatabase, EncryptionKeyLostError } from '../src/db/database';
 import { useSettingsStore } from '../src/store/settingsStore';
 import { usePurchaseStore } from '../src/store/purchaseStore';
 import { getSetting } from '../src/db/queries';
@@ -47,12 +47,14 @@ function RootLayoutContent() {
   const isDark = useIsDark();
   const [dbReady, setDbReady] = useState(false);
   const [dbError, setDbError] = useState(false);
+  const [keyLost, setKeyLost] = useState(false);
   const loadAll = useSettingsStore(s => s.loadAll);
   const initializePurchases = usePurchaseStore(s => s.initialize);
   const promptNotificationIfNeeded = useNotificationPrompt();
 
   const initDb = async () => {
     setDbError(false);
+    setKeyLost(false);
     try {
       await getDatabase();
       await loadAll();
@@ -67,7 +69,11 @@ function RootLayoutContent() {
       }
     } catch (e) {
       console.error('DB init error:', e);
-      setDbError(true);
+      if (e instanceof EncryptionKeyLostError) {
+        setKeyLost(true);
+      } else {
+        setDbError(true);
+      }
     } finally {
       setDbReady(true);
     }
@@ -102,6 +108,21 @@ function RootLayoutContent() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: C.bg }}>
         <ActivityIndicator size="large" color={C.primary} />
+      </View>
+    );
+  }
+
+  if (keyLost) {
+    return (
+      <View style={[styles.errorContainer, { backgroundColor: C.bg }]}>
+        <Text style={[styles.errorTitle, { color: C.text }]}>{t('db_key_lost_title')}</Text>
+        <Text style={[styles.errorMsg, { color: C.text2 }]}>{t('db_key_lost_msg')}</Text>
+        <TouchableOpacity
+          style={[styles.retryBtn, { backgroundColor: C.primary }]}
+          onPress={handleResetData}
+        >
+          <Text style={styles.retryBtnText}>{t('db_reset_confirm_button')}</Text>
+        </TouchableOpacity>
       </View>
     );
   }

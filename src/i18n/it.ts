@@ -37,6 +37,8 @@ export const it: LangStrings = {
   delete_confirm: "Conferma eliminazione",
   db_init_error_title: "Impossibile inizializzare il database",
   db_init_error_msg: "Riavvia l'app oppure riprova con il pulsante qui sotto.",
+  db_key_lost_title: "Impossibile decrittografare i tuoi dati",
+  db_key_lost_msg: "La chiave di crittografia del tuo dispositivo è andata persa, quindi le tue operazioni salvate non possono più essere aperte. Se avevi fatto un backup (Impostazioni → Backup JSON), reimposta i tuoi dati con il pulsante qui sotto e poi ripristina da quel backup. Senza un backup, questi dati non possono essere recuperati.",
   db_reset_link: "Il problema persiste? Ripristina i dati e ricomincia",
   db_reset_confirm_title: "Ripristinare tutti i dati?",
   db_reset_confirm_msg: "Questa operazione eliminerà definitivamente tutte le registrazioni delle operazioni salvate e non potrà essere annullata. L'app ripartirà da uno stato iniziale.",

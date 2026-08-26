@@ -4,7 +4,7 @@ import {
   StyleSheet, Alert, Switch, Platform, ActivityIndicator, Linking
 } from 'react-native';
 import Constants from 'expo-constants';
-import { cacheDirectory, writeAsStringAsync } from 'expo-file-system/legacy';
+import { cacheDirectory, writeAsStringAsync, deleteAsync } from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import * as LocalAuthentication from 'expo-local-authentication';
 import DateTimePicker, { type DateTimePickerEvent } from '@react-native-community/datetimepicker';
@@ -291,6 +291,8 @@ export default function SettingsScreen() {
             const isAvailable = await Sharing.isAvailableAsync();
             if (!isAvailable) throw new Error('sharing_unavailable');
             await Sharing.shareAsync(filePath, { mimeType: 'text/csv', dialogTitle: t('settings_csv') });
+            // 暗号化DBの投資を無にしないよう、共有後は平文の一時ファイルをキャッシュに残さない
+            await deleteAsync(filePath, { idempotent: true }).catch(() => {});
           } catch {
             Alert.alert(t('error'), t('settings_export_error'));
           }

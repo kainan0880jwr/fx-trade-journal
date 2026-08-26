@@ -1,6 +1,6 @@
 import { Share } from 'react-native';
 import * as Sharing from 'expo-sharing';
-import { writeAsStringAsync, cacheDirectory } from 'expo-file-system/legacy';
+import { writeAsStringAsync, deleteAsync, cacheDirectory } from 'expo-file-system/legacy';
 import { lang, t } from '../i18n';
 import type { DailyStats } from '../types';
 
@@ -241,6 +241,9 @@ export async function shareStatsAsHTML(opts: ShareStatsOptions): Promise<void> {
     dialogTitle: opts.period,
     UTI: 'public.html',
   });
+
+  // 暗号化DBの投資を無にしないよう、共有後は平文の一時ファイルをキャッシュに残さない
+  await deleteAsync(filePath, { idempotent: true }).catch(() => {});
 }
 
 // ── 期間ラベル ────────────────────────────────────────────────

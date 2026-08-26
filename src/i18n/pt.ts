@@ -37,6 +37,8 @@ export const pt: LangStrings = {
   delete_confirm: 'Confirmar Exclusão',
   db_init_error_title: 'Falha ao inicializar o banco de dados',
   db_init_error_msg: 'Reinicie o aplicativo ou tente novamente usando o botão abaixo.',
+  db_key_lost_title: "Não é possível descriptografar seus dados",
+  db_key_lost_msg: "A chave de criptografia do seu dispositivo foi perdida, então seus registros de operações salvos não podem mais ser abertos. Se você já havia feito um backup (Configurações → Backup JSON), redefina seus dados usando o botão abaixo e depois restaure a partir desse backup. Sem um backup, esses registros não podem ser recuperados.",
   db_reset_link: 'Ainda não funciona? Redefina os dados e comece do zero',
   db_reset_confirm_title: 'Redefinir todos os dados?',
   db_reset_confirm_msg: 'Isso excluirá permanentemente todos os registros de operações salvos e não pode ser desfeito. O aplicativo será reiniciado do zero.',
