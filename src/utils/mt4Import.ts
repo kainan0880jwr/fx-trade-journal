@@ -9,6 +9,7 @@
 import * as DocumentPicker from 'expo-document-picker';
 import { readAsStringAsync, getInfoAsync } from 'expo-file-system/legacy';
 import { insertTrade } from '../db/queries';
+import { getDatabase } from '../db/database';
 import { t } from '../i18n';
 import type { Trade, TradeResult, Direction, TradeStyle } from '../types';
 
@@ -493,18 +494,23 @@ export async function importMT4CSV(): Promise<ImportResult> {
   }
 
   // DB挿入
-  for (const row of rows) {
-    try {
-      const trade = rawToTrade(row);
-      await insertTrade(trade);
-      result.imported++;
-    } catch {
-      result.skipped++;
-      if (result.errors.length < 5) {
-        result.errors.push(t('mt4_import_row_error'));
+  // 1行ごとにawaitすると数千行で暗黙のfsyncが繰り返され数分かかることがあるため、
+  // トランザクションでまとめてコミットする。
+  const db = await getDatabase();
+  await db.withTransactionAsync(async () => {
+    for (const row of rows) {
+      try {
+        const trade = rawToTrade(row);
+        await insertTrade(trade);
+        result.imported++;
+      } catch {
+        result.skipped++;
+        if (result.errors.length < 5) {
+          result.errors.push(t('mt4_import_row_error'));
+        }
       }
     }
-  }
+  });
 
   return result;
 }

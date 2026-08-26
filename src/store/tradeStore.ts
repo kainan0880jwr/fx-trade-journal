@@ -5,6 +5,7 @@ import {
   getTradesByMonth, getTradesForYear,
   getBookmarkedTrades, toggleBookmark, getAllTrades,
 } from '../db/queries';
+import { t } from '../i18n';
 
 interface TradeStore {
   trades: Trade[];
@@ -29,6 +30,12 @@ function todayYearMonth(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 }
 
+// index/calendar/monthly/statsの4画面が同じcurrentMonthの変化に反応してそれぞれ
+// loadTradesByMonthを呼ぶため、月切り替え1回で同一クエリが最大4回同時に発行される。
+// 同じ月への同時呼び出しは進行中のPromiseを共有し、重複クエリを避ける。
+let inflightMonth: string | null = null;
+let inflightPromise: Promise<void> | null = null;
+
 export const useTradeStore = create<TradeStore>((set, get) => ({
   trades: [],
   currentMonth: todayYearMonth(),
@@ -40,13 +47,26 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
   },
 
   loadTradesByMonth: async (yearMonth) => {
-    set({ isLoading: true, error: null });
-    try {
-      const trades = await getTradesByMonth(yearMonth);
-      set({ trades, isLoading: false });
-    } catch (e) {
-      set({ isLoading: false, error: e instanceof Error ? e.message : '読み込みに失敗しました' });
+    if (inflightMonth === yearMonth && inflightPromise) {
+      return inflightPromise;
     }
+    const promise = (async () => {
+      set({ isLoading: true, error: null });
+      try {
+        const trades = await getTradesByMonth(yearMonth);
+        set({ trades, isLoading: false });
+      } catch (e) {
+        set({ isLoading: false, error: e instanceof Error ? e.message : t('trade_load_error') });
+      } finally {
+        if (inflightMonth === yearMonth) {
+          inflightMonth = null;
+          inflightPromise = null;
+        }
+      }
+    })();
+    inflightMonth = yearMonth;
+    inflightPromise = promise;
+    return promise;
   },
 
   loadTradesForYear: async (year) => getTradesForYear(year),
@@ -58,7 +78,7 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
       await insertTrade(trade);
       await get().loadTradesByMonth(get().currentMonth);
     } catch (e) {
-      set({ error: e instanceof Error ? e.message : '保存に失敗しました' });
+      set({ error: e instanceof Error ? e.message : t('trade_save_error') });
       throw e;
     }
   },
@@ -68,7 +88,7 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
       await updateTrade(trade);
       await get().loadTradesByMonth(get().currentMonth);
     } catch (e) {
-      set({ error: e instanceof Error ? e.message : '更新に失敗しました' });
+      set({ error: e instanceof Error ? e.message : t('trade_update_error') });
       throw e;
     }
   },
@@ -76,9 +96,9 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
   removeTrade: async (id) => {
     try {
       await deleteTrade(id);
-      set(state => ({ trades: state.trades.filter(t => t.id !== id) }));
+      set(state => ({ trades: state.trades.filter(tr => tr.id !== id) }));
     } catch (e) {
-      set({ error: e instanceof Error ? e.message : '削除に失敗しました' });
+      set({ error: e instanceof Error ? e.message : t('trade_delete_error') });
       throw e;
     }
   },
@@ -87,10 +107,10 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
     try {
       await toggleBookmark(id, bookmarked);
       set(state => ({
-        trades: state.trades.map(t => t.id === id ? { ...t, bookmarked } : t),
+        trades: state.trades.map(tr => tr.id === id ? { ...tr, bookmarked } : tr),
       }));
     } catch (e) {
-      set({ error: e instanceof Error ? e.message : 'ブックマークの更新に失敗しました' });
+      set({ error: e instanceof Error ? e.message : t('trade_bookmark_error') });
       throw e;
     }
   },

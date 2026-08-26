@@ -58,7 +58,9 @@ export function calcMonthPF(trades: Trade[]): number {
 
 export function formatPF(pf: number): string {
   if (pf === 0) return '-';
-  if (!isFinite(pf)) return '∞';
+  // 損失0のため無限大になるケース。数式記号の「∞」だけでは初心者に意味が伝わらないため、
+  // 「負けなし」等の自然文で表す
+  if (!isFinite(pf)) return t('pf_no_loss');
   return String(pf);
 }
 

@@ -273,33 +273,44 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
     }
   }
 
-  // 画像パスの相対化マイグレーション（絶対パス保存だとOSアップデート後にコンテナIDが変わり画像が失われるため）
-  const imageRows = await database.getAllAsync<{ id: string; image_uris: string }>(
-    'SELECT id, image_uris FROM trades'
+  // 画像パスの相対化マイグレーション（絶対パス保存だとOSアップデート後にコンテナIDが変わり画像が失われるため）。
+  // 完了後はフラグを立てて以後の起動でスキップする（画像を1枚も使っていないユーザーでも
+  // 毎起動 SELECT id, image_uris FROM trades で全件を読んでいたコストを避ける）。
+  const imageMigrated = await database.getFirstAsync<{ value: string }>(
+    `SELECT value FROM settings WHERE key='image_path_migrated_v1'`
   );
-  for (const row of imageRows) {
-    let uris: string[];
-    try {
-      uris = JSON.parse(row.image_uris || '[]');
-    } catch {
-      continue;
-    }
-    if (!Array.isArray(uris) || uris.length === 0) continue;
-    let changed = false;
-    const newUris = uris.map((u) => {
-      if (typeof u === 'string' && u.includes('://')) {
-        changed = true;
-        const filename = u.split('/').pop()?.split('?')[0] ?? u;
-        return `charts/${filename}`;
+  if (!imageMigrated) {
+    // 相対パス（charts/...）は "://" を含まないため、絶対パス（file://等）を含む行だけに絞る
+    const imageRows = await database.getAllAsync<{ id: string; image_uris: string }>(
+      `SELECT id, image_uris FROM trades WHERE image_uris LIKE '%://%'`
+    );
+    for (const row of imageRows) {
+      let uris: string[];
+      try {
+        uris = JSON.parse(row.image_uris || '[]');
+      } catch {
+        continue;
       }
-      return u;
-    });
-    if (changed) {
-      await database.runAsync('UPDATE trades SET image_uris = ? WHERE id = ?', [
-        JSON.stringify(newUris),
-        row.id,
-      ]);
+      if (!Array.isArray(uris) || uris.length === 0) continue;
+      let changed = false;
+      const newUris = uris.map((u) => {
+        if (typeof u === 'string' && u.includes('://')) {
+          changed = true;
+          const filename = u.split('/').pop()?.split('?')[0] ?? u;
+          return `charts/${filename}`;
+        }
+        return u;
+      });
+      if (changed) {
+        await database.runAsync('UPDATE trades SET image_uris = ? WHERE id = ?', [
+          JSON.stringify(newUris),
+          row.id,
+        ]);
+      }
     }
+    await database.runAsync(
+      `INSERT OR REPLACE INTO settings (key, value) VALUES ('image_path_migrated_v1', '1')`
+    );
   }
 
   // 既存データのisYenPairフラグ修正（EUR/JPY, GBP/JPY, AUD/JPY が誤って0になっていた場合を修正）
