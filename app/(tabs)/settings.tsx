@@ -9,7 +9,7 @@ import * as Sharing from 'expo-sharing';
 import * as LocalAuthentication from 'expo-local-authentication';
 import DateTimePicker, { type DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { useTradeStore } from '../../src/store/tradeStore';
@@ -244,6 +244,13 @@ export default function SettingsScreen() {
       setMt4Loading(false);
     }
   };
+
+  // オンボーディングの「CSVを取り込む」選択から遷移してきた場合、ファイル選択を自動起動する
+  const { autoImport } = useLocalSearchParams<{ autoImport?: string }>();
+  useEffect(() => {
+    if (autoImport === '1') handleMT4Import();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoImport]);
 
   // Excel/Googleスプレッドシートでの数式実行（CSVインジェクション）を防ぐため、
   // 数式と解釈されうる先頭文字にはシングルクォートを前置してから、RFC 4180準拠で全セルをクォートする
