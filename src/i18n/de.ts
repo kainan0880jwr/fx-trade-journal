@@ -111,11 +111,8 @@ export const de: LangStrings = {
   // Monthly tab
   insight_disclaimer: '* Die folgenden Statistiken basieren auf deinen eigenen Trade-Aufzeichnungen. Dies ist keine Anlageberatung.',
   share_disclaimer: 'Persönliche Handelsaufzeichnung. Vergangene Ergebnisse garantieren keine zukünftige Wertentwicklung. Keine Anlageberatung.',
-  monthly_wl: 'G/V',
-  monthly_pips_tab: 'Pips',
-  monthly_stats: 'Statistik',
-  monthly_reflection: 'Notizen',
-  monthly_rating: 'Bewertung',
+  monthly_performance: 'Leistung',
+  monthly_reflection_rating: 'Reflexion & Bewertung',
   monthly_weekly: 'Wöchentlich',
   monthly_insights: 'Insights',
   pips_goal: 'Pips-Ziel',
