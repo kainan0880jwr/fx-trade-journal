@@ -508,6 +508,7 @@ export const en: LangStrings = {
   a11y_bookmark_add: "Add bookmark",
   a11y_bookmark_remove: "Remove bookmark",
   a11y_view_image: "View image",
+  a11y_remove_image: "Remove image",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'All analysis tabs (time of day, risk/reward ratio, equity curve, etc.)',

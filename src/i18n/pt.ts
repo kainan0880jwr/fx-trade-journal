@@ -508,6 +508,7 @@ export const pt: LangStrings = {
   a11y_bookmark_add: "Adicionar aos favoritos",
   a11y_bookmark_remove: "Remover dos favoritos",
   a11y_view_image: "Ver imagem",
+  a11y_remove_image: "Remover imagem",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'Todas as abas de análise (horário, relação risco/retorno, curva de patrimônio, etc.)',

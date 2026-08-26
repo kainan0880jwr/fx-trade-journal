@@ -508,6 +508,7 @@ export const tr: LangStrings = {
   a11y_bookmark_add: "Yer imi ekle",
   a11y_bookmark_remove: "Yer imini kaldır",
   a11y_view_image: "Görseli görüntüle",
+  a11y_remove_image: "Görseli kaldır",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'Tüm analiz sekmeleri (gün içi saat, risk/getiri oranı, özkaynak eğrisi vb.)',

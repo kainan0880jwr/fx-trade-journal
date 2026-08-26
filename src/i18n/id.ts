@@ -508,6 +508,7 @@ export const id: LangStrings = {
   a11y_bookmark_add: "Tambah bookmark",
   a11y_bookmark_remove: "Hapus bookmark",
   a11y_view_image: "Lihat gambar",
+  a11y_remove_image: "Hapus gambar",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'Semua tab analisis (waktu, rasio risiko/hasil, kurva ekuitas, dll.)',

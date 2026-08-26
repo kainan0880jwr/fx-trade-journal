@@ -508,6 +508,7 @@ export const hi: LangStrings = {
   a11y_bookmark_add: "बुकमार्क जोड़ें",
   a11y_bookmark_remove: "बुकमार्क हटाएं",
   a11y_view_image: "इमेज देखें",
+  a11y_remove_image: "छवि हटाएं",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'सभी विश्लेषण टैब (समय, जोखिम/लाभ अनुपात, इक्विटी कर्व, आदि)',

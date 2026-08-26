@@ -10,8 +10,9 @@ import type { Trade } from '../types';
 import { t, tArr, lang } from '../i18n';
 import {
   METRICS, CalMetric, buildDayMap, getDayValue, getDayBg, getDayValueColor,
-  calcMonthPF, formatPF,
+  calcMonthPF, formatPF, buildDayCellA11yLabel,
 } from '../utils/calendarMetrics';
+import { SCard, CalendarLegend } from './CalendarShared';
 
 const { Calendar: RNCalendar, LocaleConfig } = require('react-native-calendars');
 
@@ -70,24 +71,24 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* サマリーグリッド */}
           <View style={s.summaryGrid}>
-            <SCard label={t('cal_trades')} value={`${trades.length}${t('count_unit')}`} C={C} />
-            <SCard label={t('cal_wl')} value={`${wins}${t('win_short')} ${losses}${t('loss_short')}`} C={C} />
+            <SCard label={t('cal_trades')} value={`${trades.length}${t('count_unit')}`} />
+            <SCard label={t('cal_wl')} value={`${wins}${t('win_short')} ${losses}${t('loss_short')}`} />
             <SCard
-              label={t('win_rate')} value={`${winRate}%`} C={C}
+              label={t('win_rate')} value={`${winRate}%`}
               color={trades.length === 0 ? C.text : winRate >= 50 ? C.win : C.loss}
             />
             <SCard
-              label={t('cal_profit_factor')} value={formatPF(profitFactor)} C={C}
+              label={t('cal_profit_factor')} value={formatPF(profitFactor)}
               color={profitFactor === 0 ? C.text2 : profitFactor >= 1 ? C.win : C.loss}
             />
             <SCard
-              label={t('total_pips')} C={C}
+              label={t('total_pips')}
               value={totalPips === 0 && trades.length === 0 ? '-' : `${totalPips >= 0 ? '+' : ''}${totalPips}`}
               color={totalPips >= 0 ? C.win : C.loss}
             />
             {hasPL && (
               <SCard
-                label={t('cal_total_pl')} C={C}
+                label={t('cal_total_pl')}
                 value={`${totalPL >= 0 ? '+' : ''}${totalPL.toLocaleString()}¥`}
                 color={totalPL >= 0 ? C.win : C.loss}
               />
@@ -140,6 +141,9 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
                       s.dayCell,
                       { backgroundColor: bg, borderColor: isSelected ? C.primary : 'transparent' },
                     ]}
+                    accessibilityLabel={buildDayCellA11yLabel(date.dateString, ds)}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: isSelected, disabled: isDisabled }}
                   >
                     <Text style={[s.dayNum, { color: isDisabled ? C.text3 : C.text }]}>
                       {date.day}
@@ -173,20 +177,7 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
           </View>
 
           {/* 凡例 */}
-          <View style={s.legend}>
-            <View style={s.legendItem}>
-              <View style={[s.legendDot, { backgroundColor: C.win + '50', borderColor: C.win }]} />
-              <Text style={s.legendLabel}>{t('cal_plus_day')}</Text>
-            </View>
-            <View style={s.legendItem}>
-              <View style={[s.legendDot, { backgroundColor: C.loss + '50', borderColor: C.loss }]} />
-              <Text style={s.legendLabel}>{t('cal_minus_day')}</Text>
-            </View>
-            <View style={s.legendItem}>
-              <View style={[s.legendDot, { backgroundColor: C.border + '80', borderColor: C.border }]} />
-              <Text style={s.legendLabel}>{t('cal_zero_day')}</Text>
-            </View>
-          </View>
+          <CalendarLegend />
 
           {/* 日別詳細 */}
           {selectedDate && (
@@ -240,15 +231,6 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
   );
 }
 
-function SCard({ label, value, color, C }: { label: string; value: string; color?: string; C: ThemeColors }) {
-  return (
-    <View style={{ flex: 1, minWidth: '46%', backgroundColor: C.card, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: C.border }}>
-      <Text style={{ fontSize: 10, color: C.text2, marginBottom: 4 }} numberOfLines={1}>{label}</Text>
-      <Text style={[{ fontSize: 17, fontWeight: '800', color: C.text }, color ? { color } : {}]} numberOfLines={1}>{value}</Text>
-    </View>
-  );
-}
-
 function makeStyles(C: ThemeColors) {
   return StyleSheet.create({
     container: { flex: 1, backgroundColor: C.bg },
@@ -268,11 +250,6 @@ function makeStyles(C: ThemeColors) {
     dayCell: { width: 46, height: 56, borderRadius: 8, alignItems: 'center', justifyContent: 'flex-start', paddingTop: 4, borderWidth: 1.5, margin: 1 },
     dayNum: { fontSize: 12, fontWeight: '700', lineHeight: 16 },
     dayValue: { fontSize: 9, fontWeight: '800', lineHeight: 13, width: '100%', textAlign: 'center', paddingHorizontal: 2 },
-
-    legend: { flexDirection: 'row', gap: 14, justifyContent: 'center', marginBottom: 12, paddingVertical: 4 },
-    legendItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-    legendDot: { width: 12, height: 12, borderRadius: 3, borderWidth: 1 },
-    legendLabel: { fontSize: 11, color: C.text2 },
 
     dayDetail: { marginHorizontal: 12, backgroundColor: C.card, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: C.border },
     detailTitle: { fontSize: 14, fontWeight: '700', color: C.text2, marginBottom: 10 },

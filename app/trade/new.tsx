@@ -433,6 +433,8 @@ export default function NewTradeScreen() {
             <TouchableOpacity
               style={[styles.modeBtn, mode === 'quick' && styles.modeBtnActive]}
               onPress={() => setMode('quick')}
+              accessibilityRole="button"
+              accessibilityState={{ selected: mode === 'quick' }}
             >
               <Ionicons name="flash" size={14} color={mode === 'quick' ? '#FFF' : C.text2} />
               <Text style={[styles.modeBtnText, mode === 'quick' && styles.modeBtnTextActive]}>
@@ -442,6 +444,8 @@ export default function NewTradeScreen() {
             <TouchableOpacity
               style={[styles.modeBtn, mode === 'full' && styles.modeBtnActive]}
               onPress={() => setMode('full')}
+              accessibilityRole="button"
+              accessibilityState={{ selected: mode === 'full' }}
             >
               <Ionicons name="document-text" size={14} color={mode === 'full' ? '#FFF' : C.text2} />
               <Text style={[styles.modeBtnText, mode === 'full' && styles.modeBtnTextActive]}>
@@ -464,6 +468,8 @@ export default function NewTradeScreen() {
                     key={p.id}
                     style={[styles.chip, pair === p.name && styles.chipActive]}
                     onPress={() => setPair(p.name)}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: pair === p.name }}
                   >
                     <Text style={[styles.chipLabel, pair === p.name && styles.chipLabelActive]}>
                       {p.name}
@@ -474,6 +480,8 @@ export default function NewTradeScreen() {
                   <TouchableOpacity
                     style={[styles.chip, !pairs.slice(0, 4).some(p => p.name === pair) && styles.chipActive]}
                     onPress={() => { if (!isEditMode) setMode('full'); }}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: !pairs.slice(0, 4).some(p => p.name === pair) }}
                   >
                     <Text style={[styles.chipLabel, !pairs.slice(0, 4).some(p => p.name === pair) && styles.chipLabelActive]}>
                       {t('other')}
@@ -488,6 +496,8 @@ export default function NewTradeScreen() {
                 <TouchableOpacity
                   style={[styles.dirBtn, direction === 'buy' && styles.buyActive]}
                   onPress={() => setDirection('buy')}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: direction === 'buy' }}
                 >
                   <Text style={[styles.dirLabel, direction === 'buy' && { color: C.buy, fontWeight: '700' }]}>
                     {t('buy_label')}
@@ -496,6 +506,8 @@ export default function NewTradeScreen() {
                 <TouchableOpacity
                   style={[styles.dirBtn, direction === 'sell' && styles.sellActive]}
                   onPress={() => setDirection('sell')}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: direction === 'sell' }}
                 >
                   <Text style={[styles.dirLabel, direction === 'sell' && { color: C.sell, fontWeight: '700' }]}>
                     {t('sell_label')}
@@ -518,6 +530,8 @@ export default function NewTradeScreen() {
                       ),
                     ]}
                     onPress={() => setQuickResult(r)}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: quickResult === r }}
                   >
                     <Text style={[
                       styles.resultBtnText,
@@ -603,11 +617,13 @@ export default function NewTradeScreen() {
               <Label>{t('form_direction')}</Label>
               <View style={styles.row}>
                 <TouchableOpacity style={[styles.dirBtn, direction === 'buy' && styles.buyActive]}
-                  onPress={() => setDirection('buy')}>
+                  onPress={() => setDirection('buy')}
+                  accessibilityRole="button" accessibilityState={{ selected: direction === 'buy' }}>
                   <Text style={[styles.dirLabel, direction === 'buy' && { color: C.buy, fontWeight: '700' }]}>{t('buy_label')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.dirBtn, direction === 'sell' && styles.sellActive]}
-                  onPress={() => setDirection('sell')}>
+                  onPress={() => setDirection('sell')}
+                  accessibilityRole="button" accessibilityState={{ selected: direction === 'sell' }}>
                   <Text style={[styles.dirLabel, direction === 'sell' && { color: C.sell, fontWeight: '700' }]}>{t('sell_label')}</Text>
                 </TouchableOpacity>
               </View>
@@ -662,7 +678,8 @@ export default function NewTradeScreen() {
                 keyboardType="decimal-pad" placeholder="0.1" placeholderTextColor={C.text3} />
 
               {/* ── 詳細セクション（Progressive Disclosure）── */}
-              <TouchableOpacity style={styles.sectionToggle} onPress={() => setDetailsOpen(v => !v)}>
+              <TouchableOpacity style={styles.sectionToggle} onPress={() => setDetailsOpen(v => !v)}
+                accessibilityRole="button" accessibilityState={{ expanded: detailsOpen }}>
                 <Text style={styles.sectionToggleText}>
                   {detailsOpen ? t('form_details_collapse') : t('form_details_expand')}
                 </Text>
@@ -694,7 +711,8 @@ export default function NewTradeScreen() {
                     {STYLES().map(s => (
                       <TouchableOpacity key={s.value}
                         style={[styles.chip, style === s.value && styles.chipActive]}
-                        onPress={() => setStyle(s.value)}>
+                        onPress={() => setStyle(s.value)}
+                        accessibilityRole="button" accessibilityState={{ selected: style === s.value }}>
                         <Text style={[styles.chipLabel, style === s.value && styles.chipLabelActive]}>{s.label}</Text>
                       </TouchableOpacity>
                     ))}
@@ -708,7 +726,8 @@ export default function NewTradeScreen() {
                         {entryTags.map(tag => (
                           <TouchableOpacity key={tag}
                             style={[styles.chip, selectedTags.includes(tag) && styles.tagActive]}
-                            onPress={() => toggleTag(tag)}>
+                            onPress={() => toggleTag(tag)}
+                            accessibilityRole="button" accessibilityState={{ selected: selectedTags.includes(tag) }}>
                             <Text style={[styles.chipLabel, selectedTags.includes(tag) && styles.chipLabelActive]}>{tag}</Text>
                           </TouchableOpacity>
                         ))}
@@ -725,7 +744,12 @@ export default function NewTradeScreen() {
                     {imageUris.map((uri, i) => (
                       <View key={i} style={styles.thumbWrap}>
                         <Image source={{ uri }} style={styles.thumb} />
-                        <TouchableOpacity style={styles.thumbRemove} onPress={() => setImageUris(prev => prev.filter((_, j) => j !== i))}>
+                        <TouchableOpacity
+                          style={styles.thumbRemove}
+                          onPress={() => setImageUris(prev => prev.filter((_, j) => j !== i))}
+                          accessibilityLabel={t('a11y_remove_image')}
+                          accessibilityRole="button"
+                        >
                           <Ionicons name="close-circle" size={20} color={C.loss} />
                         </TouchableOpacity>
                       </View>
@@ -750,7 +774,14 @@ export default function NewTradeScreen() {
                   <Label>{t('form_rating')}</Label>
                   <View style={styles.starsRow}>
                     {[1,2,3,4,5].map(n => (
-                      <TouchableOpacity key={n} onPress={() => setSelfRating(n)} style={styles.starBtn}>
+                      <TouchableOpacity
+                        key={n}
+                        onPress={() => setSelfRating(n)}
+                        style={styles.starBtn}
+                        accessibilityLabel={`${t('form_rating')} ${n}`}
+                        accessibilityRole="button"
+                        accessibilityState={{ selected: n === selfRating }}
+                      >
                         <Ionicons name="star" size={32} color={n <= selfRating ? C.yellow : C.border} />
                       </TouchableOpacity>
                     ))}
@@ -760,7 +791,8 @@ export default function NewTradeScreen() {
 
               {/* ── プレミアム機能（Progressive Disclosure）── */}
               {isPremium && (
-                <TouchableOpacity style={styles.sectionToggle} onPress={() => setPremiumOpen(v => !v)}>
+                <TouchableOpacity style={styles.sectionToggle} onPress={() => setPremiumOpen(v => !v)}
+                  accessibilityRole="button" accessibilityState={{ expanded: premiumOpen }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                     <Ionicons name="star" size={13} color={C.yellow} />
                     <Text style={styles.sectionToggleText}>{t('form_premium_section')}</Text>
@@ -772,7 +804,8 @@ export default function NewTradeScreen() {
               {isPremium && premiumOpen && (
                 <>
                   {/* MTF メモ */}
-                  <TouchableOpacity style={styles.tfHeader} onPress={() => setShowTF(!showTF)}>
+                  <TouchableOpacity style={styles.tfHeader} onPress={() => setShowTF(!showTF)}
+                    accessibilityRole="button" accessibilityState={{ expanded: showTF }}>
                     <Text style={styles.label}>{t('form_tf')}</Text>
                     <Ionicons name={showTF ? 'chevron-up' : 'chevron-down'} size={18} color={C.text2} />
                   </TouchableOpacity>
@@ -813,7 +846,8 @@ export default function NewTradeScreen() {
                             <TouchableOpacity key={rule} style={styles.ruleRow}
                               onPress={() => setRuleChecks(prev =>
                                 prev.includes(rule) ? prev.filter(r => r !== rule) : [...prev, rule]
-                              )}>
+                              )}
+                              accessibilityRole="checkbox" accessibilityState={{ checked }}>
                               <Ionicons name={checked ? 'checkbox' : 'square-outline'} size={22}
                                 color={checked ? C.win : C.text3} />
                               <Text style={[styles.ruleLabel, checked && { color: C.text }]}>{rule}</Text>
@@ -881,7 +915,10 @@ function MentalRow({ label, value, onChange, positiveHigh }: {
         {[1, 2, 3, 4, 5].map(n => (
           <TouchableOpacity key={n}
             style={{ width: 38, height: 38, borderRadius: 10, borderWidth: 1.5, alignItems: 'center', justifyContent: 'center', borderColor: color(n), backgroundColor: value === n ? color(n) + '30' : 'transparent' }}
-            onPress={() => onChange(value === n ? null : n)}>
+            onPress={() => onChange(value === n ? null : n)}
+            accessibilityLabel={`${label} ${n}`}
+            accessibilityRole="button"
+            accessibilityState={{ selected: value === n }}>
             <Text style={{ fontSize: 13, fontWeight: '800', color: value === n ? color(n) : C.text3 }}>{n}</Text>
           </TouchableOpacity>
         ))}
