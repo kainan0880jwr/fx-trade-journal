@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTradeStore } from '../../src/store/tradeStore';
+import { usePurchaseStore } from '../../src/store/purchaseStore';
 import TradeCard from '../../src/components/TradeCard';
 import MonthSelector from '../../src/components/MonthSelector';
 import CalendarModal from '../../src/components/CalendarModal';
@@ -32,6 +33,7 @@ export default function RecordScreen() {
   const styles = useMemo(() => makeStyles(C, isTablet), [C, isTablet]);
 
   const { trades, currentMonth, setCurrentMonth, loadTradesByMonth } = useTradeStore();
+  const isPremium = usePurchaseStore(s => s.isPremium);
   const [styleFilter, setStyleFilter] = useState('');
   const [calendarVisible, setCalendarVisible] = useState(false);
 
@@ -151,6 +153,11 @@ export default function RecordScreen() {
           accessibilityRole="button"
         >
           <Ionicons name="bookmark-outline" size={18} color={C.text2} />
+          {!isPremium && (
+            <View style={styles.bookmarkLockDot}>
+              <Ionicons name="lock-closed" size={9} color="#FFFFFF" />
+            </View>
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.fab}
@@ -290,6 +297,13 @@ function makeStyles(C: ThemeColors, isTablet: boolean) {
       alignItems: 'center', justifyContent: 'center',
       backgroundColor: C.card, borderWidth: 1, borderColor: C.border,
       borderRadius: 14,
+    },
+    bookmarkLockDot: {
+      position: 'absolute', top: -4, right: -4,
+      width: 16, height: 16, borderRadius: 8,
+      backgroundColor: C.primary,
+      alignItems: 'center', justifyContent: 'center',
+      borderWidth: 1.5, borderColor: C.bg,
     },
     fab: {
       flexDirection: 'row', alignItems: 'center', gap: 6,

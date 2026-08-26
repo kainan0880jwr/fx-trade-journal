@@ -13,6 +13,7 @@ import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { useTradeStore } from '../../src/store/tradeStore';
+import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { generateId } from '../../src/utils/statsCalc';
 import { getAllTrades, getSetting, setSetting } from '../../src/db/queries';
 import { exportBackup, importBackup, hasPreImportSnapshot, restorePreImportSnapshot } from '../../src/utils/backup';
@@ -42,6 +43,7 @@ export default function SettingsScreen() {
     addTradeRule, removeTradeRule,
     updateThemeMode, updateAppLockEnabled,
   } = useSettingsStore();
+  const isPremium = usePurchaseStore(s => s.isPremium);
 
   const [lotInput, setLotInput] = useState(String(settings.lotUnit));
   const [balanceInput, setBalanceInput] = useState(
@@ -447,7 +449,10 @@ export default function SettingsScreen() {
         <TouchableOpacity style={styles.exportBtn} onPress={() => router.push('/badges')}>
           <Ionicons name="trophy-outline" size={22} color={C.yellow} />
           <View style={{ flex: 1, marginLeft: 12 }}>
-            <Text style={styles.exportTitle}>{t('settings_badges')}</Text>
+            <View style={styles.rowTitleWrap}>
+              <Text style={styles.exportTitle}>{t('settings_badges')}</Text>
+              {!isPremium && <Text style={styles.proTag}>{t('premium_badge')}</Text>}
+            </View>
             <Text style={styles.exportSub}>{t('settings_badges_sub')}</Text>
           </View>
           <Ionicons name="chevron-forward" size={18} color={C.text3} />
@@ -689,7 +694,10 @@ export default function SettingsScreen() {
         <TouchableOpacity style={styles.calcShortcut} onPress={() => router.push('/calculator')}>
           <Ionicons name="calculator-outline" size={22} color={C.primary} />
           <View style={{ flex: 1, marginLeft: 12 }}>
-            <Text style={styles.calcTitle}>{t('settings_calculator')}</Text>
+            <View style={styles.rowTitleWrap}>
+              <Text style={styles.calcTitle}>{t('settings_calculator')}</Text>
+              {!isPremium && <Text style={styles.proTag}>{t('premium_badge')}</Text>}
+            </View>
             <Text style={styles.calcSubtitle}>{t('settings_calculator_sub')}</Text>
           </View>
           <Ionicons name="chevron-forward" size={18} color={C.text3} />
@@ -961,6 +969,8 @@ function makeStyles(C: ThemeColors) {
     section: { marginBottom: 4 },
     exportTitle: { fontSize: 15, fontWeight: '700', color: C.text },
     exportSub: { fontSize: 12, color: C.text2, marginTop: 2 },
+    rowTitleWrap: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+    proTag: { fontSize: 10, fontWeight: '800', color: C.primary, letterSpacing: 1, backgroundColor: C.primary + '18', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 6 },
     notifNote: { fontSize: 13, color: C.text2, lineHeight: 20 },
     notifRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
     notifLabel: { fontSize: 14, color: C.text },
