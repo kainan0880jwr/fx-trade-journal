@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
-  StyleSheet, Alert, Platform, KeyboardAvoidingView, Image
+  StyleSheet, Alert, Platform, KeyboardAvoidingView, Image, ActivityIndicator
 } from 'react-native';
 import DateTimePicker, { type DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { router, useNavigation } from 'expo-router';
+import { router, useNavigation, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,7 +16,7 @@ import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { calcPips } from '../../src/utils/pipsCalc';
 import { calcProfitLoss, determineResult } from '../../src/utils/profitCalc';
 import { generateId } from '../../src/utils/statsCalc';
-import { updateRecordStreak } from '../../src/db/queries';
+import { getTradeById, updateRecordStreak } from '../../src/db/queries';
 import { useReviewPrompt } from '../../src/hooks/useReviewPrompt';
 import { useAppLockPrompt } from '../../src/hooks/useAppLockPrompt';
 import { recordFirstTradeSaved } from '../../src/utils/retentionEvents';
@@ -51,12 +51,19 @@ export default function NewTradeScreen() {
   const C = useTheme();
   const styles = makeStyles(C);
   const navigation = useNavigation();
-  const { addTrade } = useTradeStore();
+  const { addTrade, editTrade } = useTradeStore();
   const { pairs, settings, entryTags, tradeRules } = useSettingsStore();
   const isPremium = usePurchaseStore(s => s.isPremium);
   const imageLimit = isPremium ? 3 : 1;
   const promptReviewIfNeeded = useReviewPrompt();
   const promptAppLockIfNeeded = useAppLockPrompt();
+
+  const { id: editId } = useLocalSearchParams<{ id?: string }>();
+  const isEditMode = !!editId;
+  const [loadingExisting, setLoadingExisting] = useState(isEditMode);
+  // 編集元トレードのスナップショット。id/createdAt/bookmarkedの保持と、
+  // 編集モードでのisDirty判定（初期値との比較）に使う。
+  const originalTradeRef = useRef<Trade | null>(null);
 
   const [mode, setMode] = useState<InputMode>('quick');
   const [saving, setSaving] = useState(false);
@@ -112,6 +119,52 @@ export default function NewTradeScreen() {
   const [tf4h, setTf4h] = useState('');
   const [tf1h, setTf1h] = useState('');
 
+  // 編集モード: 既存トレードを読み込んでフォームへ反映する。
+  // クイック/フルの入力構造がそれぞれ異なるため、記録時と同じモードで開く
+  // （モード切替UIは編集中は表示しない）。
+  useEffect(() => {
+    if (!editId) return;
+    let cancelled = false;
+    getTradeById(editId).then(tr => {
+      if (cancelled || !tr) return;
+      originalTradeRef.current = tr;
+      setMode(tr.entryMethod === 'quick' ? 'quick' : 'full');
+      setPair(tr.pair);
+      setDirection(tr.direction);
+      setQuickResult(tr.result);
+      setQuickPips(tr.pips != null ? String(tr.pips) : '');
+      if (tr.date) {
+        const d = new Date(tr.date.length <= 10 ? `${tr.date}T00:00:00` : tr.date);
+        if (!isNaN(d.getTime())) setDateObj(d);
+      }
+      setEntryRate(tr.entryRate != null ? String(tr.entryRate) : '');
+      setExitRate(tr.exitRate != null ? String(tr.exitRate) : '');
+      setStopLossStr(tr.stopLoss != null ? String(tr.stopLoss) : '');
+      setTakeProfitStr(tr.takeProfit != null ? String(tr.takeProfit) : '');
+      setLotSize(String(tr.lotSize));
+      setStyle(tr.style);
+      setSelectedTags(tr.tags ?? []);
+      setImageUris(tr.imageUris ?? []);
+      setReflection(tr.reflection ?? '');
+      setSelfRating(tr.selfRating ?? 3);
+      setMentalFocus(tr.mentalFocus ?? null);
+      setMentalCalm(tr.mentalCalm ?? null);
+      setMentalFear(tr.mentalFear ?? null);
+      setRuleChecks(tr.ruleChecks ?? []);
+      setTfWeekly(tr.tfWeekly ?? '');
+      setTfDaily(tr.tfDaily ?? '');
+      setTf4h(tr.tf4h ?? '');
+      setTf1h(tr.tf1h ?? '');
+      setLoadingExisting(false);
+    }).catch(() => setLoadingExisting(false));
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editId]);
+
+  useEffect(() => {
+    if (isEditMode) navigation.setOptions({ title: t('screen_title_edit_trade') });
+  }, [isEditMode, navigation]);
+
   // Progressive Disclosure の開閉状態
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [premiumOpen, setPremiumOpen] = useState(false);
@@ -141,6 +194,40 @@ export default function NewTradeScreen() {
   // フル: レート・メモ・画像のいずれか入力済み
   // ──────────────────────────────────────────────
   const isDirty = useMemo(() => {
+    // 編集モードは「初期値と何か違うか」で判定する（新規モードの固定デフォルト
+    // 比較をそのまま使うと、既存データを読み込んだだけで dirty 判定されてしまう）。
+    if (isEditMode) {
+      const orig = originalTradeRef.current;
+      if (loadingExisting || !orig) return false;
+      if (mode === 'quick') {
+        return (
+          pair !== orig.pair || direction !== orig.direction ||
+          quickResult !== orig.result ||
+          quickPips !== (orig.pips != null ? String(orig.pips) : '')
+        );
+      }
+      return (
+        pair !== orig.pair || direction !== orig.direction ||
+        entryRate !== (orig.entryRate != null ? String(orig.entryRate) : '') ||
+        exitRate !== (orig.exitRate != null ? String(orig.exitRate) : '') ||
+        stopLossStr !== (orig.stopLoss != null ? String(orig.stopLoss) : '') ||
+        takeProfitStr !== (orig.takeProfit != null ? String(orig.takeProfit) : '') ||
+        lotSize !== String(orig.lotSize) ||
+        style !== orig.style ||
+        JSON.stringify(selectedTags) !== JSON.stringify(orig.tags ?? []) ||
+        JSON.stringify(imageUris) !== JSON.stringify(orig.imageUris ?? []) ||
+        reflection !== (orig.reflection ?? '') ||
+        selfRating !== (orig.selfRating ?? 3) ||
+        mentalFocus !== (orig.mentalFocus ?? null) ||
+        mentalCalm !== (orig.mentalCalm ?? null) ||
+        mentalFear !== (orig.mentalFear ?? null) ||
+        JSON.stringify(ruleChecks) !== JSON.stringify(orig.ruleChecks ?? []) ||
+        tfWeekly !== (orig.tfWeekly ?? '') ||
+        tfDaily !== (orig.tfDaily ?? '') ||
+        tf4h !== (orig.tf4h ?? '') ||
+        tf1h !== (orig.tf1h ?? '')
+      );
+    }
     if (mode === 'quick') return quickPips !== '' || quickResult !== null;
     return (
       entryRate !== '' || exitRate !== '' || reflection !== '' || imageUris.length > 0 ||
@@ -149,7 +236,8 @@ export default function NewTradeScreen() {
       ruleChecks.length > 0 || tfWeekly !== '' || tfDaily !== '' || tf4h !== '' || tf1h !== ''
     );
   }, [
-    mode, quickPips, quickResult, entryRate, exitRate, reflection, imageUris,
+    isEditMode, loadingExisting, mode, pair, direction, lotSize, style,
+    quickPips, quickResult, entryRate, exitRate, reflection, imageUris,
     stopLossStr, takeProfitStr, selectedTags, selfRating, mentalFocus, mentalCalm, mentalFear,
     ruleChecks, tfWeekly, tfDaily, tf4h, tf1h,
   ]);
@@ -215,15 +303,33 @@ export default function NewTradeScreen() {
     }
   };
 
+  // 編集保存: ストリーク更新・初回記録計測・レビュー促進は新規記録時のみの
+  // 施策なので、更新時には呼ばない。
+  const saveEditAndClose = async (trade: Trade) => {
+    try {
+      await editTrade(trade);
+      justSavedRef.current = true;
+      router.back();
+    } catch {
+      Alert.alert(t('save_error'), t('save_error_msg'));
+    }
+  };
+
   // ── クイック保存 ──
   const handleQuickSave = async () => {
     if (!quickResult) { Alert.alert(t('input_error'), t('form_result')); return; }
     if (saving) return;
     setSaving(true);
     try {
+      const parsedPips = quickPips.trim() ? parseFloat(quickPips) : null;
+      const orig = originalTradeRef.current;
+      if (isEditMode && orig) {
+        const trade: Trade = { ...orig, pair, direction, pips: parsedPips, result: quickResult };
+        await saveEditAndClose(trade);
+        return;
+      }
       const now = new Date();
       const isoDate = toLocalISOString(now);
-      const parsedPips = quickPips.trim() ? parseFloat(quickPips) : null;
       const tradeId = generateId();
       const trade: Trade = {
         id: tradeId,
@@ -257,13 +363,32 @@ export default function NewTradeScreen() {
     if (saving) return;
     setSaving(true);
     try {
+      const orig = originalTradeRef.current;
       const finalPips = pips ?? calcPips(direction, entry, exit, pipDigits);
-      const tradeId = generateId();
+      const tradeId = isEditMode && orig ? orig.id : generateId();
       let persistedUris = imageUris;
       try {
         persistedUris = await saveTradeImages(imageUris, tradeId);
       } catch {
         Alert.alert(t('image_save_error'), t('image_save_error_msg'));
+      }
+      if (isEditMode && orig) {
+        const trade: Trade = {
+          ...orig,
+          date: `${date}T${time}:00`.slice(0, 19),
+          pair, direction,
+          entryRate: entry, exitRate: exit,
+          stopLoss: sl, takeProfit: tp, plannedRR,
+          lotSize: lot, style,
+          tags: selectedTags, imageUris: persistedUris,
+          pips: finalPips, profitLoss,
+          result: determineResult(finalPips),
+          reflection, selfRating,
+          mentalFocus, mentalCalm, mentalFear, ruleChecks,
+          tfWeekly, tfDaily, tf4h, tf1h,
+        };
+        await saveEditAndClose(trade);
+        return;
       }
       const trade: Trade = {
         id: tradeId,
@@ -288,31 +413,43 @@ export default function NewTradeScreen() {
     }
   };
 
+  if (loadingExisting) {
+    return (
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <View style={styles.loadingBox}>
+          <ActivityIndicator size="large" color={C.primary} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 
-        {/* ── モード切替 ── */}
-        <View style={styles.modeBar}>
-          <TouchableOpacity
-            style={[styles.modeBtn, mode === 'quick' && styles.modeBtnActive]}
-            onPress={() => setMode('quick')}
-          >
-            <Ionicons name="flash" size={14} color={mode === 'quick' ? '#FFF' : C.text2} />
-            <Text style={[styles.modeBtnText, mode === 'quick' && styles.modeBtnTextActive]}>
-              {t('form_mode_quick')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.modeBtn, mode === 'full' && styles.modeBtnActive]}
-            onPress={() => setMode('full')}
-          >
-            <Ionicons name="document-text" size={14} color={mode === 'full' ? '#FFF' : C.text2} />
-            <Text style={[styles.modeBtnText, mode === 'full' && styles.modeBtnTextActive]}>
-              {t('form_mode_full')}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {/* ── モード切替（編集モードでは記録時のモードに固定し、切替UIは出さない）── */}
+        {!isEditMode && (
+          <View style={styles.modeBar}>
+            <TouchableOpacity
+              style={[styles.modeBtn, mode === 'quick' && styles.modeBtnActive]}
+              onPress={() => setMode('quick')}
+            >
+              <Ionicons name="flash" size={14} color={mode === 'quick' ? '#FFF' : C.text2} />
+              <Text style={[styles.modeBtnText, mode === 'quick' && styles.modeBtnTextActive]}>
+                {t('form_mode_quick')}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.modeBtn, mode === 'full' && styles.modeBtnActive]}
+              onPress={() => setMode('full')}
+            >
+              <Ionicons name="document-text" size={14} color={mode === 'full' ? '#FFF' : C.text2} />
+              <Text style={[styles.modeBtnText, mode === 'full' && styles.modeBtnTextActive]}>
+                {t('form_mode_full')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
 
@@ -336,7 +473,7 @@ export default function NewTradeScreen() {
                 {pairs.length > 4 && (
                   <TouchableOpacity
                     style={[styles.chip, !pairs.slice(0, 4).some(p => p.name === pair) && styles.chipActive]}
-                    onPress={() => setMode('full')}
+                    onPress={() => { if (!isEditMode) setMode('full'); }}
                   >
                     <Text style={[styles.chipLabel, !pairs.slice(0, 4).some(p => p.name === pair) && styles.chipLabelActive]}>
                       {t('other')}
@@ -756,6 +893,7 @@ function MentalRow({ label, value, onChange, positiveHigh }: {
 function makeStyles(C: ThemeColors) {
   return StyleSheet.create({
     container: { flex: 1, backgroundColor: C.bg },
+    loadingBox: { flex: 1, alignItems: 'center', justifyContent: 'center' },
     scroll: { padding: 14, paddingTop: 10 },
     label: { fontSize: 12, fontWeight: '700', color: C.text3, marginTop: 20, marginBottom: 8, letterSpacing: 0.8, textTransform: 'uppercase' },
 

@@ -15,6 +15,7 @@ export const pt: LangStrings = {
 
   // Screen titles
   screen_title_new_trade: 'Adicionar Operação',
+  screen_title_edit_trade: 'Editar Operação',
   screen_title_trade_detail: 'Detalhes da Operação',
 
   // Common
@@ -289,6 +290,8 @@ export const pt: LangStrings = {
   detail_tf: 'Notas Multi-Timeframe',
   detail_reflection: 'Notas e Reflexão',
   detail_delete: 'Excluir',
+  detail_edit: 'Editar',
+  detail_add_details: 'Adicionar Detalhes',
   detail_delete_msg: 'Excluir esta operação?',
   detail_not_found: 'Operação não encontrada',
   detail_datetime: 'Data e Hora',

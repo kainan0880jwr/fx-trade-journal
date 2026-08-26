@@ -15,6 +15,7 @@ export const en: LangStrings = {
 
   // Screen titles
   screen_title_new_trade: 'Add Trade',
+  screen_title_edit_trade: 'Edit Trade',
   screen_title_trade_detail: 'Trade Details',
 
   // Common
@@ -289,6 +290,8 @@ export const en: LangStrings = {
   detail_tf: 'Multi-TF Notes',
   detail_reflection: 'Notes & Reflection',
   detail_delete: 'Delete',
+  detail_edit: 'Edit',
+  detail_add_details: 'Add Details',
   detail_delete_msg: 'Delete this trade?',
   detail_not_found: 'Trade not found',
   detail_datetime: 'Date & Time',

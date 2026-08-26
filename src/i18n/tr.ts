@@ -15,6 +15,7 @@ export const tr: LangStrings = {
 
   // Screen titles
   screen_title_new_trade: 'İşlem Ekle',
+  screen_title_edit_trade: 'İşlemi Düzenle',
   screen_title_trade_detail: 'İşlem Detayı',
 
   // Common
@@ -289,6 +290,8 @@ export const tr: LangStrings = {
   detail_tf: 'Çoklu Zaman Dilimi Notları',
   detail_reflection: 'Notlar ve Yansıma',
   detail_delete: 'Sil',
+  detail_edit: 'Düzenle',
+  detail_add_details: 'Detay Ekle',
   detail_delete_msg: 'Bu işlem silinsin mi?',
   detail_not_found: 'İşlem bulunamadı',
   detail_datetime: 'Tarih ve Saat',
