@@ -502,6 +502,12 @@ export const tr: LangStrings = {
   // Accessibility labels
   a11y_settings: 'Ayarları aç',
   a11y_open_calendar: 'Takvimi aç',
+  a11y_prev_month: "Önceki ay",
+  a11y_next_month: "Sonraki ay",
+  a11y_share: "Paylaş",
+  a11y_bookmark_add: "Yer imi ekle",
+  a11y_bookmark_remove: "Yer imini kaldır",
+  a11y_view_image: "Görseli görüntüle",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'Tüm analiz sekmeleri (gün içi saat, risk/getiri oranı, özkaynak eğrisi vb.)',

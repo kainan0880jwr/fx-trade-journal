@@ -502,6 +502,12 @@ export const it: LangStrings = {
   // Accessibility labels
   a11y_settings: "Apri impostazioni",
   a11y_open_calendar: "Apri calendario",
+  a11y_prev_month: "Mese precedente",
+  a11y_next_month: "Mese successivo",
+  a11y_share: "Condividi",
+  a11y_bookmark_add: "Aggiungi ai preferiti",
+  a11y_bookmark_remove: "Rimuovi dai preferiti",
+  a11y_view_image: "Visualizza immagine",
 
   // Paywall features (compact list)
   paywall_feature_analytics: "Tutte le schede di analisi (ora del giorno, rapporto rischio/rendimento, curva equity, ecc.)",

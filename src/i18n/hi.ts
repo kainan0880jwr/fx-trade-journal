@@ -502,6 +502,12 @@ export const hi: LangStrings = {
   // Accessibility labels
   a11y_settings: 'सेटिंग्स खोलें',
   a11y_open_calendar: 'कैलेंडर खोलें',
+  a11y_prev_month: "पिछला महीना",
+  a11y_next_month: "अगला महीना",
+  a11y_share: "शेयर करें",
+  a11y_bookmark_add: "बुकमार्क जोड़ें",
+  a11y_bookmark_remove: "बुकमार्क हटाएं",
+  a11y_view_image: "इमेज देखें",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'सभी विश्लेषण टैब (समय, जोखिम/लाभ अनुपात, इक्विटी कर्व, आदि)',

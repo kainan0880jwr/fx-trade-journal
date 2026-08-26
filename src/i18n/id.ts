@@ -502,6 +502,12 @@ export const id: LangStrings = {
   // Accessibility labels
   a11y_settings: 'Buka pengaturan',
   a11y_open_calendar: 'Buka kalender',
+  a11y_prev_month: "Bulan sebelumnya",
+  a11y_next_month: "Bulan berikutnya",
+  a11y_share: "Bagikan",
+  a11y_bookmark_add: "Tambah bookmark",
+  a11y_bookmark_remove: "Hapus bookmark",
+  a11y_view_image: "Lihat gambar",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'Semua tab analisis (waktu, rasio risiko/hasil, kurva ekuitas, dll.)',
