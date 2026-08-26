@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "NSPhotoLibraryUsageDescription": "Usado para anexar imagens de gráficos às operações.",
+    "NSFaceIDUsageDescription": "Usa o Face ID para bloquear o app e proteger seus registros de operações."
+  }
+}

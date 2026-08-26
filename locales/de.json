@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "NSPhotoLibraryUsageDescription": "Wird verwendet, um Chart-Bilder an Trades anzuhängen.",
+    "NSFaceIDUsageDescription": "Verwendet Face ID, um die App zu sperren und deine Trade-Daten zu schützen."
+  }
+}

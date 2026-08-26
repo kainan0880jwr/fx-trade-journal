@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "NSPhotoLibraryUsageDescription": "Dùng để đính kèm ảnh biểu đồ vào giao dịch.",
+    "NSFaceIDUsageDescription": "Sử dụng Face ID để khóa ứng dụng và bảo vệ nhật ký giao dịch của bạn."
+  }
+}

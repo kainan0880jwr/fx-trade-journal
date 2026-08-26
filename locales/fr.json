@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "NSPhotoLibraryUsageDescription": "Utilisé pour joindre des captures de graphique à vos trades.",
+    "NSFaceIDUsageDescription": "Utilise Face ID pour verrouiller l'application et protéger vos données de trading."
+  }
+}
