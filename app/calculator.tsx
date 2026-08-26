@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { useSettingsStore } from '../src/store/settingsStore';
 import PremiumGate from '../src/components/PremiumGate';
 import { useTheme } from '../src/theme/useTheme';
@@ -58,13 +59,22 @@ export default function CalculatorScreen() {
 
   return (
     <PremiumGate feature={t('calculator_title')}>
-    <SafeAreaView style={styles.container} edges={['bottom']}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
 
           <View style={styles.titleRow}>
             <Ionicons name="calculator-outline" size={24} color={C.primary} />
             <Text style={styles.title}>{t('calculator_title')}</Text>
+            <TouchableOpacity
+              style={styles.closeBtn}
+              onPress={() => router.back()}
+              accessibilityLabel={t('cancel')}
+              accessibilityRole="button"
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Ionicons name="close" size={22} color={C.text2} />
+            </TouchableOpacity>
           </View>
           <Text style={styles.subtitle}>{t('calculator_subtitle')}</Text>
 
@@ -170,6 +180,7 @@ function makeStyles(C: ThemeColors) {
     container: { flex: 1, backgroundColor: C.bg },
     scroll: { padding: 16 },
     titleRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6 },
+    closeBtn: { marginLeft: 'auto', padding: 4 },
     title: { fontSize: 20, fontWeight: '800', color: C.text },
     subtitle: { fontSize: 13, color: C.text2, marginBottom: 4, lineHeight: 20 },
     input: { backgroundColor: C.card, borderWidth: 1, borderColor: C.border, borderRadius: 12, padding: 13, fontSize: 15, color: C.text },
