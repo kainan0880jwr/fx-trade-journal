@@ -111,11 +111,8 @@ export const pt: LangStrings = {
   // Monthly tab
   insight_disclaimer: '* A seguir estão estatísticas baseadas em seus próprios registros de operações. Isso não é aconselhamento de investimento.',
   share_disclaimer: 'Registro de negociação pessoal. Resultados passados não garantem desempenho futuro. Isso não é aconselhamento de investimento.',
-  monthly_wl: 'G/P',
-  monthly_pips_tab: 'Pips',
-  monthly_stats: 'Estatísticas',
-  monthly_reflection: 'Notas',
-  monthly_rating: 'Avaliação',
+  monthly_performance: 'Desempenho',
+  monthly_reflection_rating: 'Reflexão e Avaliação',
   monthly_weekly: 'Semanal',
   monthly_insights: 'Insights',
   pips_goal: 'Meta de Pips',

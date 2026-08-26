@@ -111,11 +111,8 @@ export const tr: LangStrings = {
   // Monthly tab
   insight_disclaimer: '* Aşağıdakiler kendi işlem kayıtlarınıza dayanan istatistiklerdir. Yatırım tavsiyesi değildir.',
   share_disclaimer: 'Kişisel işlem kaydı. Geçmiş sonuçlar gelecekteki performansı garanti etmez. Yatırım tavsiyesi değildir.',
-  monthly_wl: 'K/Y',
-  monthly_pips_tab: 'Pip',
-  monthly_stats: 'İstatistik',
-  monthly_reflection: 'Notlar',
-  monthly_rating: 'Puan',
+  monthly_performance: 'Performans',
+  monthly_reflection_rating: 'Değerlendirme ve Puan',
   monthly_weekly: 'Haftalık',
   monthly_insights: 'İçgörüler',
   pips_goal: 'Pip Hedefi',

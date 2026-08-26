@@ -22,17 +22,17 @@ import { formatPF } from '../../src/utils/calendarMetrics';
 
 type Period = 'monthly' | 'yearly';
 
-type SubTab = 'wl' | 'pips' | 'stats' | 'reflection' | 'rating' | 'weekly' | 'insights';
+type SubTab = 'performance' | 'reflection' | 'weekly' | 'insights';
 
 // 翻訳文字列そのものをactiveTabの状態値にすると、訳語を1文字直しただけで
 // タブの比較(activeTab === t('monthly_xxx'))が壊れる。安定したキーで状態を持ち、
 // 表示ラベルは描画時にt()で解決する。
+// 以前は勝敗/pips/集計/反省/評価/週次/インサイトの7タブだったが、勝敗・pips・集計は
+// 表示している数値がほぼ重複していたため「成績」に、反省・評価は関連が深いため
+// 「反省・評価」にそれぞれ統合し、4タブに整理した。
 const SUB_TABS: () => { key: SubTab; label: string }[] = () => [
-  { key: 'wl', label: t('monthly_wl') },
-  { key: 'pips', label: t('monthly_pips_tab') },
-  { key: 'stats', label: t('monthly_stats') },
-  { key: 'reflection', label: t('monthly_reflection') },
-  { key: 'rating', label: t('monthly_rating') },
+  { key: 'performance', label: t('monthly_performance') },
+  { key: 'reflection', label: t('monthly_reflection_rating') },
   { key: 'weekly', label: t('monthly_weekly') },
   { key: 'insights', label: t('monthly_insights') },
 ];
@@ -46,7 +46,7 @@ export default function MonthlyScreen() {
   const { settings } = useSettingsStore();
   const isPremium = usePurchaseStore(s => s.isPremium);
   const [period, setPeriod] = useState<Period>('monthly');
-  const [activeTab, setActiveTab] = useState<SubTab>('wl');
+  const [activeTab, setActiveTab] = useState<SubTab>('performance');
   const [shareVisible, setShareVisible] = useState(false);
   const [recordStreak, setRecordStreak] = useState(0);
   const navigation = useNavigation();
@@ -181,7 +181,7 @@ export default function MonthlyScreen() {
           </View>
         ) : (
           <>
-            {activeTab === 'wl' && (
+            {activeTab === 'performance' && (
               <>
                 <View style={styles.row3}>
                   <BigStat label={t('wins')} value={String(stats.wins)} color={C.win} />
@@ -208,11 +208,7 @@ export default function MonthlyScreen() {
                     />
                   </View>
                 )}
-              </>
-            )}
 
-            {activeTab === 'pips' && (
-              <>
                 <View style={styles.bigNumCard}>
                   <Text style={styles.bigNumLabel}>{t('total_pips')}</Text>
                   <Text style={[styles.bigNum, { color: stats.totalPips >= 0 ? C.win : C.loss }]}>
@@ -245,55 +241,23 @@ export default function MonthlyScreen() {
                     />
                   </View>
                 )}
-              </>
-            )}
 
-            {activeTab === 'stats' && (
-              <View style={styles.statsTable}>
-                <TableRow label={t('trade_count_times')} value={`${stats.totalTrades}${t('times_unit')}`} />
-                <TableRow label={t('wins')} value={`${stats.wins}${t('times_unit')}`} color={C.win} />
-                <TableRow label={t('losses')} value={`${stats.losses}${t('times_unit')}`} color={C.loss} />
-                <TableRow label={t('evens')} value={`${stats.evens}${t('times_unit')}`} color={C.even} />
-                <TableRow label={t('win_rate')} value={`${stats.winRate}%`} color={C.primary} />
-                <TableRow label={t('profit_factor_long')} value={formatPF(stats.profitFactor)} />
-                <TableRow label={t('total_pips')} value={`${stats.totalPips > 0 ? '+' : ''}${stats.totalPips}`} color={stats.totalPips >= 0 ? C.win : C.loss} />
-                {stats.totalProfitLoss !== 0 && (
-                  <TableRow label={t('total_pl_yen')} value={`${stats.totalProfitLoss > 0 ? '+' : ''}${stats.totalProfitLoss.toLocaleString()}¥`} color={stats.totalProfitLoss >= 0 ? C.win : C.loss} last />
-                )}
-              </View>
+                <View style={styles.statsTable}>
+                  <TableRow label={t('trade_count_times')} value={`${stats.totalTrades}${t('times_unit')}`} />
+                  <TableRow label={t('wins')} value={`${stats.wins}${t('times_unit')}`} color={C.win} />
+                  <TableRow label={t('losses')} value={`${stats.losses}${t('times_unit')}`} color={C.loss} />
+                  <TableRow label={t('evens')} value={`${stats.evens}${t('times_unit')}`} color={C.even} />
+                  <TableRow label={t('win_rate')} value={`${stats.winRate}%`} color={C.primary} />
+                  <TableRow label={t('profit_factor_long')} value={formatPF(stats.profitFactor)} />
+                  <TableRow label={t('total_pips')} value={`${stats.totalPips > 0 ? '+' : ''}${stats.totalPips}`} color={stats.totalPips >= 0 ? C.win : C.loss} />
+                  {stats.totalProfitLoss !== 0 && (
+                    <TableRow label={t('total_pl_yen')} value={`${stats.totalProfitLoss > 0 ? '+' : ''}${stats.totalProfitLoss.toLocaleString()}¥`} color={stats.totalProfitLoss >= 0 ? C.win : C.loss} last />
+                  )}
+                </View>
+              </>
             )}
 
             {activeTab === 'reflection' && (
-              <>
-                <Text style={styles.sectionNote}>{t('reflection_with_count')}（{reflections.length}{t('count_unit')}）</Text>
-                {reflections.length === 0 ? (
-                  <Text style={styles.emptyText}>{t('no_reflection')}</Text>
-                ) : (
-                  reflections.map((tr) => (
-                    <View key={tr.id} style={styles.reflectCard}>
-                      <View style={styles.reflectHeader}>
-                        <Text style={styles.reflectPair}>{tr.pair} {tr.direction === 'buy' ? 'BUY' : 'SELL'}</Text>
-                        <Text style={[styles.reflectPips, { color: tr.result === 'win' ? C.win : tr.result === 'loss' ? C.loss : C.even }]}>
-                          {tr.pips != null ? `${tr.pips > 0 ? '+' : ''}${tr.pips} pips` : '-'}
-                        </Text>
-                      </View>
-                      <Text style={styles.reflectText}>{tr.reflection}</Text>
-                      <Text style={styles.reflectDate}>{tr.date.slice(0, 16).replace('T', ' ')}</Text>
-                    </View>
-                  ))
-                )}
-              </>
-            )}
-
-            {activeTab === 'weekly' && (
-              <WeeklyTab trades={trades} yearMonth={currentMonth} />
-            )}
-
-            {activeTab === 'insights' && (
-              <InsightsTab trades={trades} pipsGoal={settings.monthlyPipsGoal} winRateGoal={settings.monthlyWinRateGoal} />
-            )}
-
-            {activeTab === 'rating' && (
               <>
                 <View style={styles.bigNumCard}>
                   <Text style={styles.bigNumLabel}>{t('avg_rating')}</Text>
@@ -323,7 +287,33 @@ export default function MonthlyScreen() {
                     );
                   })}
                 </View>
+
+                <Text style={styles.sectionNote}>{t('reflection_with_count')}（{reflections.length}{t('count_unit')}）</Text>
+                {reflections.length === 0 ? (
+                  <Text style={styles.emptyText}>{t('no_reflection')}</Text>
+                ) : (
+                  reflections.map((tr) => (
+                    <View key={tr.id} style={styles.reflectCard}>
+                      <View style={styles.reflectHeader}>
+                        <Text style={styles.reflectPair}>{tr.pair} {tr.direction === 'buy' ? 'BUY' : 'SELL'}</Text>
+                        <Text style={[styles.reflectPips, { color: tr.result === 'win' ? C.win : tr.result === 'loss' ? C.loss : C.even }]}>
+                          {tr.pips != null ? `${tr.pips > 0 ? '+' : ''}${tr.pips} pips` : '-'}
+                        </Text>
+                      </View>
+                      <Text style={styles.reflectText}>{tr.reflection}</Text>
+                      <Text style={styles.reflectDate}>{tr.date.slice(0, 16).replace('T', ' ')}</Text>
+                    </View>
+                  ))
+                )}
               </>
+            )}
+
+            {activeTab === 'weekly' && (
+              <WeeklyTab trades={trades} yearMonth={currentMonth} />
+            )}
+
+            {activeTab === 'insights' && (
+              <InsightsTab trades={trades} pipsGoal={settings.monthlyPipsGoal} winRateGoal={settings.monthlyWinRateGoal} />
             )}
           </>
         )}
