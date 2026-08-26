@@ -120,7 +120,7 @@ export default function CalculatorScreen() {
                   <Text style={styles.resultSubValue}>{riskAmount.toLocaleString()}¥</Text>
                 </View>
                 <View style={styles.resultRow}>
-                  <Text style={styles.resultSubLabel}>{riskPct}%</Text>
+                  <Text style={styles.resultSubLabel}>{t('calc_risk_pct')}</Text>
                   <Text style={styles.resultSubValue}>{riskPct}%</Text>
                 </View>
                 <Text style={styles.resultExplan}>{explanation}</Text>

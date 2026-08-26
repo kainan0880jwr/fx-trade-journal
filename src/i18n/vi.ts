@@ -100,6 +100,7 @@ export const vi: LangStrings = {
 
   // Monthly tab
   insight_disclaimer: '* Sau đây là số liệu thống kê dựa trên hồ sơ giao dịch của riêng bạn. Đây không phải là lời khuyên đầu tư.',
+  share_disclaimer: 'Hồ sơ giao dịch cá nhân. Kết quả trong quá khứ không đảm bảo hiệu suất trong tương lai. Đây không phải là lời khuyên đầu tư.',
   monthly_wl: 'T/B',
   monthly_pips_tab: 'Pips',
   monthly_stats: 'Thống kê',

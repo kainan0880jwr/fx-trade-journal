@@ -100,6 +100,7 @@ export const de: LangStrings = {
 
   // Monthly tab
   insight_disclaimer: '* Die folgenden Statistiken basieren auf deinen eigenen Trade-Aufzeichnungen. Dies ist keine Anlageberatung.',
+  share_disclaimer: 'Persönliche Handelsaufzeichnung. Vergangene Ergebnisse garantieren keine zukünftige Wertentwicklung. Keine Anlageberatung.',
   monthly_wl: 'G/V',
   monthly_pips_tab: 'Pips',
   monthly_stats: 'Statistik',

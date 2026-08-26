@@ -100,6 +100,7 @@ export const id: LangStrings = {
 
   // Monthly tab
   insight_disclaimer: '* Berikut adalah statistik berdasarkan catatan trade Anda sendiri. Ini bukan saran investasi.',
+  share_disclaimer: 'Catatan trading pribadi. Hasil masa lalu tidak menjamin kinerja di masa depan. Bukan saran investasi.',
   monthly_wl: 'M/K',
   monthly_pips_tab: 'Pips',
   monthly_stats: 'Statistik',
