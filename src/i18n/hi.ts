@@ -371,6 +371,30 @@ export const hi: LangStrings = {
 
   // Day of week
   day_labels: ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'],
+  hour_label: '{h} बजे',
+  day_suffix: '',
+  insight_best_pair_title: "{pair} आपकी मजबूत जोड़ी है",
+  insight_best_pair_body: "जीत दर {rate}% ({count} ट्रेड)। आपका रिकॉर्ड इस जोड़ी पर मजबूत परिणाम दिखाता है।",
+  insight_worst_pair_title: "{pair} से सावधान रहें",
+  insight_worst_pair_body: "जीत दर कम है, {rate}% ({count} ट्रेड), आपके ट्रेड इतिहास के आधार पर।",
+  insight_best_time_title: "{time} आपका सबसे अच्छा समय है",
+  insight_best_time_body: "इस समय के दौरान आपकी जीत दर {rate}% है, आपके ट्रेड इतिहास के आधार पर।",
+  insight_worst_day_title: "{day} को सावधान रहें",
+  insight_worst_day_body: "{day} को आपकी जीत दर आमतौर पर कम रहती है, {rate}%।",
+  insight_win_streak_title: "{count} ट्रेड की जीत की लकीर!",
+  insight_win_streak_body: "आप बहुत अच्छा कर रहे हैं। अनुशासित रहें और अपने नियमों का पालन करते रहें।",
+  insight_loss_streak_title: "{count} ट्रेड की हार की लकीर",
+  insight_loss_streak_body: "एक कदम पीछे हटें और अपनी रणनीति और मानसिकता को फिर से व्यवस्थित करें। ब्रेक लेना भी एक रणनीति है।",
+  insight_mental_focus_title: "अधिक फोकस, अधिक जीत दर",
+  insight_mental_focus_body: "उच्च फोकस: {high}% बनाम कम फोकस: {low}% — {diff} अंकों का अंतर।",
+  insight_no_sl_title: "स्टॉप-लॉस सेट करें",
+  insight_no_sl_body: "{count} ट्रेड ({pct}%) में स्टॉप-लॉस सेट नहीं है।",
+  insight_goal_pips_title: "लक्ष्य तक {rem} pips बाकी हैं",
+  insight_goal_pips_body: "आप अपने लक्ष्य के {pct}% पर हैं। ऐसे ही जारी रखें!",
+  insight_goal_pips_done_title: "मासिक pips लक्ष्य पूरा हुआ!",
+  insight_goal_pips_done_body: "आपने {goal} pips के अपने लक्ष्य को पार कर लिया है। शानदार काम!",
+  insight_goal_wr_done_title: "जीत दर लक्ष्य पूरा हुआ!",
+  insight_goal_wr_done_body: "आपका लक्ष्य {goal}% था — आप अभी {rate}% पर हैं।",
 
   // Insights
   insights_min_trades: 'इनसाइट्स देखने के लिए 3+ ट्रेड रिकॉर्ड करें',
@@ -449,6 +473,16 @@ export const hi: LangStrings = {
 
   // App name
   app_name: 'FX Trade Log',
+  notif_daily_streak: "{n} दिन लगातार! आज का ट्रेड रिकॉर्ड करें",
+  notif_daily_default: "आज का ट्रेड रिकॉर्ड करने का समय है!",
+  notif_weekly_title: "📊 पिछले सप्ताह के नतीजों की समीक्षा करें",
+  notif_weekly_body: "मंथली टैब में अपनी जीत दर और pips देखें! इस सप्ताह भी जारी रखें 🔥",
+  notif_channel_reminders: "रिमाइंडर",
+  eg_prefix: "उदा. ",
+  calc_formula_yen: "स्टॉप-लॉस {sl}pips × लॉट यूनिट {lotUnit} / 10 = {value}{currency}/lot",
+  calc_formula_nonyen: "स्टॉप-लॉस {sl}pips × लॉट यूनिट {lotUnit} × 0.0001 × USD/JPY{usd} = {value}{currency}/lot",
+  locale_tag: "hi-IN",
+  csv_header: "ID,दिनांक,जोड़ी,दिशा,एंट्री रेट,एग्जिट रेट,SL,TP,योजनाबद्ध RR,लॉट,शैली,टैग,pips,लाभ/हानि,परिणाम,रेटिंग,नोट्स,फोकस,शांति,डर,पालन किए गए नियम",
 
   // Accessibility labels
   a11y_settings: 'सेटिंग्स खोलें',

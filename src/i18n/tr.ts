@@ -371,6 +371,30 @@ export const tr: LangStrings = {
 
   // Day of week
   day_labels: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
+  hour_label: 'Saat {h}',
+  day_suffix: '',
+  insight_best_pair_title: "{pair} en güçlü pariteniz",
+  insight_best_pair_body: "Kazanma oranı %{rate} ({count} işlem). Geçmiş kayıtlarınız bu paritede güçlü sonuçlar gösteriyor.",
+  insight_worst_pair_title: "{pair} konusunda dikkatli olun",
+  insight_worst_pair_body: "Kazanma oranı düşük, %{rate} ({count} işlem), işlem geçmişinize göre.",
+  insight_best_time_title: "{time} en iyi zaman aralığınız",
+  insight_best_time_body: "Bu zaman aralığındaki kazanma oranınız %{rate}, işlem geçmişinize göre.",
+  insight_worst_day_title: "{day} günü dikkatli olun",
+  insight_worst_day_body: "{day} günündeki kazanma oranınız genellikle düşük, %{rate}.",
+  insight_win_streak_title: "{count} işlemlik kazanma serisi!",
+  insight_win_streak_body: "İyi gidiyorsunuz. Disiplinli kalın ve kurallarınızı uygulamaya devam edin.",
+  insight_loss_streak_title: "{count} işlemlik kaybetme serisi",
+  insight_loss_streak_body: "Bir adım geri çekilip stratejinizi ve zihinsel durumunuzu gözden geçirin. Mola vermek de bir stratejidir.",
+  insight_mental_focus_title: "Daha yüksek odak, daha yüksek kazanma oranı",
+  insight_mental_focus_body: "Yüksek odak: %{high} vs düşük odak: %{low} — {diff} puanlık fark.",
+  insight_no_sl_title: "Bir stop-loss belirleyin",
+  insight_no_sl_body: "{count} işlemde (%{pct}) stop-loss belirlenmemiş.",
+  insight_goal_pips_title: "Hedefe {rem} pip kaldı",
+  insight_goal_pips_body: "Hedefinizin %{pct}'ine ulaştınız. Böyle devam edin!",
+  insight_goal_pips_done_title: "Aylık pip hedefine ulaşıldı!",
+  insight_goal_pips_done_body: "{goal} pip hedefinizi aştınız. Harika iş!",
+  insight_goal_wr_done_title: "Kazanma oranı hedefine ulaşıldı!",
+  insight_goal_wr_done_body: "Hedefiniz %{goal} idi — şu anda %{rate} seviyesindesiniz.",
 
   // Insights
   insights_min_trades: 'İçgörüleri görmek için 3+ işlem kaydedin',
@@ -449,6 +473,16 @@ export const tr: LangStrings = {
 
   // App name
   app_name: 'FX Trade Log',
+  notif_daily_streak: "{n} gün üst üste! Bugünkü işleminizi kaydedin",
+  notif_daily_default: "Bugünkü işleminizi kaydetme zamanı!",
+  notif_weekly_title: "📊 Geçen haftanın sonuçlarını gözden geçirin",
+  notif_weekly_body: "Aylık sekmesinde kazanma oranınızı ve pip'lerinizi kontrol edin! Bu hafta da böyle devam edin 🔥",
+  notif_channel_reminders: "Hatırlatıcılar",
+  eg_prefix: "örn. ",
+  calc_formula_yen: "Zarar durdur {sl}pips × Lot birimi {lotUnit} / 10 = {value}{currency}/lot",
+  calc_formula_nonyen: "Zarar durdur {sl}pips × Lot birimi {lotUnit} × 0.0001 × USD/JPY{usd} = {value}{currency}/lot",
+  locale_tag: "tr-TR",
+  csv_header: "ID,Tarih,Parite,Yön,Giriş Fiyatı,Çıkış Fiyatı,SL,TP,Planlanan RR,Lot,Stil,Etiketler,pips,K/Z,Sonuç,Değerlendirme,Not,Odak,Sakinlik,Korku,Uyulan Kurallar",
 
   // Accessibility labels
   a11y_settings: 'Ayarları aç',

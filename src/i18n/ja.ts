@@ -369,6 +369,30 @@ export const ja = {
 
   // 曜日
   day_labels: ['日', '月', '火', '水', '木', '金', '土'],
+  hour_label: '{h}時',
+  day_suffix: '曜',
+  insight_best_pair_title: "{pair} が得意ペア",
+  insight_best_pair_body: "勝率 {rate}%（{count}件）。過去の記録ではこのペアの成績が良い傾向があります。",
+  insight_worst_pair_title: "{pair} に注意",
+  insight_worst_pair_body: "勝率 {rate}%（{count}件）と低め。過去の記録に基づく統計です。",
+  insight_best_time_title: "{time}台が最も得意",
+  insight_best_time_body: "この時間帯の勝率は {rate}%（過去の記録に基づく統計）。",
+  insight_worst_day_title: "{day}は要注意",
+  insight_worst_day_body: "{day}の勝率が {rate}%と低い傾向があります。",
+  insight_win_streak_title: "{count}連勝中！",
+  insight_win_streak_body: "好調継続中です。ただし過信せずルールを守って取引しましょう。",
+  insight_loss_streak_title: "{count}連敗中",
+  insight_loss_streak_body: "一度立ち止まり、戦略と精神状態を整えましょう。休むことも戦略です。",
+  insight_mental_focus_title: "集中度が高いと勝率UP",
+  insight_mental_focus_body: "集中度高時 {high}% vs 低時 {low}%。差が {diff}%あります。",
+  insight_no_sl_title: "損切りを設定しよう",
+  insight_no_sl_body: "{count}件（{pct}%）の取引でSLが未設定です。",
+  insight_goal_pips_title: "目標まであと {rem} pips",
+  insight_goal_pips_body: "達成率 {pct}%。引き続き頑張りましょう！",
+  insight_goal_pips_done_title: "月間pips目標達成！",
+  insight_goal_pips_done_body: "目標の {goal}pips を超えました。素晴らしい成果です！",
+  insight_goal_wr_done_title: "勝率目標達成！",
+  insight_goal_wr_done_body: "目標 {goal}% に対して現在 {rate}%。",
 
   // インサイト
   insights_min_trades: '3件以上でインサイトが表示されます',
@@ -447,6 +471,16 @@ export const ja = {
 
   // アプリ名
   app_name: 'FXトレードログ',
+  notif_daily_streak: "{n}日連続記録中！今日のトレードを記録しましょう",
+  notif_daily_default: "今日のトレードを記録しましょう！",
+  notif_weekly_title: "📊 先週の成績を振り返ろう",
+  notif_weekly_body: "月次タブで勝率・pipsをチェック！今週も頑張りましょう 🔥",
+  notif_channel_reminders: "リマインダー",
+  eg_prefix: "例: ",
+  calc_formula_yen: "損切り{sl}pips × ロット単位{lotUnit}通貨 / 10 = {value}{currency}/lot",
+  calc_formula_nonyen: "損切り{sl}pips × ロット単位{lotUnit}通貨 × 0.0001 × USD/JPY{usd} = {value}{currency}/lot",
+  locale_tag: "ja-JP",
+  csv_header: "ID,日時,通貨ペア,方向,新規レート,決済レート,SL,TP,計画RR,ロット,スタイル,タグ,pips,損益,結果,自己評価,反省,集中度,冷静さ,焦り度,遵守ルール",
 
   // アクセシビリティラベル
   a11y_settings: '設定を開く',

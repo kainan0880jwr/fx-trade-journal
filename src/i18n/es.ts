@@ -371,6 +371,30 @@ export const es: LangStrings = {
 
   // Day of week
   day_labels: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+  hour_label: '{h}:00 h',
+  day_suffix: '',
+  insight_best_pair_title: "{pair} es tu par fuerte",
+  insight_best_pair_body: "Tasa de acierto {rate}% ({count} operaciones). Tu historial muestra buenos resultados en este par.",
+  insight_worst_pair_title: "Cuidado con {pair}",
+  insight_worst_pair_body: "La tasa de acierto es baja, {rate}% ({count} operaciones), según tu historial.",
+  insight_best_time_title: "{time} es tu mejor franja horaria",
+  insight_best_time_body: "Tu tasa de acierto en esta franja es del {rate}%, según tu historial.",
+  insight_worst_day_title: "Ten cuidado el {day}",
+  insight_worst_day_body: "Tu tasa de acierto el {day} suele ser baja, del {rate}%.",
+  insight_win_streak_title: "¡Racha de {count} operaciones ganadoras!",
+  insight_win_streak_body: "Vas por buen camino. Mantén la disciplina y sigue tus reglas.",
+  insight_loss_streak_title: "Racha de {count} operaciones perdedoras",
+  insight_loss_streak_body: "Da un paso atrás y reajusta tu estrategia y tu estado de ánimo. Descansar también es una estrategia.",
+  insight_mental_focus_title: "Más concentración, más acierto",
+  insight_mental_focus_body: "Concentración alta: {high}% vs baja: {low}% — una diferencia de {diff} puntos.",
+  insight_no_sl_title: "Define un stop-loss",
+  insight_no_sl_body: "{count} operaciones ({pct}%) no tienen stop-loss definido.",
+  insight_goal_pips_title: "Faltan {rem} pips para tu objetivo",
+  insight_goal_pips_body: "Vas por el {pct}% de tu objetivo. ¡Sigue así!",
+  insight_goal_pips_done_title: "¡Objetivo mensual de pips alcanzado!",
+  insight_goal_pips_done_body: "Has superado tu objetivo de {goal} pips. ¡Buen trabajo!",
+  insight_goal_wr_done_title: "¡Objetivo de tasa de acierto alcanzado!",
+  insight_goal_wr_done_body: "Tu objetivo era {goal}% — actualmente estás en {rate}%.",
 
   // Insights
   insights_min_trades: "Registra 3+ operaciones para ver los insights",
@@ -449,6 +473,16 @@ export const es: LangStrings = {
 
   // App name
   app_name: "FX Trade Log",
+  notif_daily_streak: "¡{n} días seguidos! Registra tu operación de hoy",
+  notif_daily_default: "¡Es hora de registrar tu operación de hoy!",
+  notif_weekly_title: "📊 Revisa los resultados de la semana pasada",
+  notif_weekly_body: "¡Consulta tu tasa de acierto y pips en la pestaña Mes! Sigue así esta semana 🔥",
+  notif_channel_reminders: "Recordatorios",
+  eg_prefix: "ej. ",
+  calc_formula_yen: "Stop-loss {sl}pips × Unidad de lote {lotUnit} / 10 = {value}{currency}/lote",
+  calc_formula_nonyen: "Stop-loss {sl}pips × Unidad de lote {lotUnit} × 0.0001 × USD/JPY{usd} = {value}{currency}/lote",
+  locale_tag: "es-ES",
+  csv_header: "ID,Fecha,Par,Dirección,Precio entrada,Precio salida,SL,TP,RR previsto,Lote,Estilo,Etiquetas,pips,P&L,Resultado,Valoración,Notas,Concentración,Calma,Miedo,Reglas seguidas",
 
   // Accessibility labels
   a11y_settings: "Abrir ajustes",

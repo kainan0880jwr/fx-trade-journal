@@ -262,7 +262,7 @@ export default function SettingsScreen() {
         text: t('settings_csv'),
         onPress: async () => {
           try {
-            const header = 'ID,日時,通貨ペア,方向,新規レート,決済レート,SL,TP,計画RR,ロット,スタイル,タグ,pips,損益,結果,自己評価,反省,集中度,冷静さ,焦り度,遵守ルール';
+            const header = t('csv_header');
             const rows = trades.map(tr => [
               csvCell(tr.id), csvCell(tr.date), csvCell(tr.pair), csvCell(tr.direction),
               csvCell(tr.entryRate ?? ''), csvCell(tr.exitRate ?? ''),
@@ -526,7 +526,7 @@ export default function SettingsScreen() {
                         mode="time"
                         display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                         onChange={handleNotifTimeChange}
-                        locale="ja-JP"
+                        locale={t('locale_tag')}
                       />
                       {Platform.OS === 'ios' && (
                         <TouchableOpacity style={styles.notifSaveBtn} onPress={async () => { setShowTimePicker(false); await handleNotifTimeSave(); }}>
@@ -572,7 +572,7 @@ export default function SettingsScreen() {
                         mode="time"
                         display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                         onChange={handleWeeklyTimeChange}
-                        locale="ja-JP"
+                        locale={t('locale_tag')}
                       />
                       {Platform.OS === 'ios' && (
                         <TouchableOpacity style={styles.notifSaveBtn} onPress={async () => { setShowWeeklyTimePicker(false); await handleWeeklyTimeSave(); }}>
@@ -709,7 +709,7 @@ export default function SettingsScreen() {
           <Text style={styles.cardLabel}>{t('settings_balance')}</Text>
           <TextInput style={[styles.input, { marginBottom: 12 }]}
             value={balanceInput} onChangeText={setBalanceInput}
-            keyboardType="number-pad" placeholder="例: 500000" placeholderTextColor={C.text3} />
+            keyboardType="number-pad" placeholder={`${t('eg_prefix')}500000`} placeholderTextColor={C.text3} />
           <Text style={styles.cardLabel}>{t('settings_risk')}</Text>
           <TextInput style={[styles.input, { marginBottom: 14 }]}
             value={riskInput} onChangeText={setRiskInput}
@@ -725,11 +725,11 @@ export default function SettingsScreen() {
           <Text style={styles.cardLabel}>{t('settings_pips_goal')}</Text>
           <TextInput style={[styles.input, { marginBottom: 12 }]}
             value={pipsGoalInput} onChangeText={setPipsGoalInput}
-            keyboardType="decimal-pad" placeholder="例: 100" placeholderTextColor={C.text3} />
+            keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}100`} placeholderTextColor={C.text3} />
           <Text style={styles.cardLabel}>{t('settings_winrate_goal')}</Text>
           <TextInput style={[styles.input, { marginBottom: 14 }]}
             value={winRateGoalInput} onChangeText={setWinRateGoalInput}
-            keyboardType="decimal-pad" placeholder="例: 60" placeholderTextColor={C.text3} />
+            keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}60`} placeholderTextColor={C.text3} />
           <TouchableOpacity style={styles.primaryBtn} onPress={handleSaveGoals}>
             <Text style={styles.primaryBtnText}>{t('save')}</Text>
           </TouchableOpacity>
@@ -827,7 +827,7 @@ export default function SettingsScreen() {
             <Text style={styles.cardLabel}>{t('settings_add_pair_title')}</Text>
             <TextInput style={[styles.input, { marginBottom: 12 }]}
               value={newPairName} onChangeText={setNewPairName}
-              placeholder="例: NZD/JPY" placeholderTextColor={C.text3} autoCapitalize="characters" />
+              placeholder={`${t('eg_prefix')}NZD/JPY`} placeholderTextColor={C.text3} autoCapitalize="characters" />
             <Text style={styles.cardLabel}>{t('settings_pip_digits')}</Text>
             <View style={[styles.row, { marginBottom: 12 }]}>
               {([2, 4] as const).map(d => (

@@ -1,5 +1,5 @@
 import type { Trade } from '../types';
-import { lang } from '../i18n';
+import { t } from '../i18n';
 import {
   calcStatsByPair, calcTimeAnalysis, calcDayAnalysis,
   calcMentalStats, calcCurrentStreak,
@@ -11,6 +11,13 @@ export interface Insight {
   title: string;
   body: string;
   icon: string;
+}
+
+function fmt(template: string, vars: Record<string, string | number>): string {
+  return Object.entries(vars).reduce(
+    (s, [k, v]) => s.replaceAll(`{${k}}`, String(v)),
+    template
+  );
 }
 
 export function generateInsights(
@@ -30,17 +37,13 @@ export function generateInsights(
   const wins      = trades.filter(t => t.result === 'win').length;
   const winRate   = Math.round(wins / trades.length * 1000) / 10;
 
-  const isJa = lang === 'ja';
-
   // ベストペア
   const best = [...byPair].sort((a, b) => b.winRate - a.winRate)[0];
   if (best && best.winRate >= 60 && best.totalTrades >= 3) {
     insights.push({
       id: 'best_pair', type: 'positive',
-      title: isJa ? `${best.pair} が得意ペア` : `${best.pair} is your strong pair`,
-      body: isJa
-        ? `勝率 ${best.winRate}%（${best.totalTrades}件）。過去の記録ではこのペアの成績が良い傾向があります。`
-        : `Win rate ${best.winRate}% (${best.totalTrades} trades). Your track record shows strong results on this pair.`,
+      title: fmt(t('insight_best_pair_title'), { pair: best.pair }),
+      body: fmt(t('insight_best_pair_body'), { rate: best.winRate, count: best.totalTrades }),
       icon: 'trending-up-outline',
     });
   }
@@ -50,10 +53,8 @@ export function generateInsights(
   if (worst && worst.winRate <= 40 && worst.totalTrades >= 3 && worst.pair !== best?.pair) {
     insights.push({
       id: 'worst_pair', type: 'negative',
-      title: isJa ? `${worst.pair} に注意` : `Watch out for ${worst.pair}`,
-      body: isJa
-        ? `勝率 ${worst.winRate}%（${worst.totalTrades}件）と低め。過去の記録に基づく統計です。`
-        : `Win rate is low at ${worst.winRate}% (${worst.totalTrades} trades), based on your trade history.`,
+      title: fmt(t('insight_worst_pair_title'), { pair: worst.pair }),
+      body: fmt(t('insight_worst_pair_body'), { rate: worst.winRate, count: worst.totalTrades }),
       icon: 'alert-circle-outline',
     });
   }
@@ -63,10 +64,8 @@ export function generateInsights(
   if (bestTime && bestTime.winRate >= 65 && bestTime.total >= 3) {
     insights.push({
       id: 'best_time', type: 'positive',
-      title: isJa ? `${bestTime.label}台が最も得意` : `${bestTime.label} is your best time window`,
-      body: isJa
-        ? `この時間帯の勝率は ${bestTime.winRate}%（過去の記録に基づく統計）。`
-        : `Your win rate during this window is ${bestTime.winRate}%, based on your trade history.`,
+      title: fmt(t('insight_best_time_title'), { time: bestTime.label }),
+      body: fmt(t('insight_best_time_body'), { rate: bestTime.winRate }),
       icon: 'time-outline',
     });
   }
@@ -76,10 +75,8 @@ export function generateInsights(
   if (worstDay && worstDay.winRate <= 35 && worstDay.total >= 3) {
     insights.push({
       id: 'worst_day', type: 'negative',
-      title: isJa ? `${worstDay.label}は要注意` : `Be careful on ${worstDay.label}`,
-      body: isJa
-        ? `${worstDay.label}の勝率が ${worstDay.winRate}%と低い傾向があります。`
-        : `Your win rate on ${worstDay.label} tends to be low, at ${worstDay.winRate}%.`,
+      title: fmt(t('insight_worst_day_title'), { day: worstDay.label }),
+      body: fmt(t('insight_worst_day_body'), { day: worstDay.label, rate: worstDay.winRate }),
       icon: 'calendar-outline',
     });
   }
@@ -88,20 +85,16 @@ export function generateInsights(
   if (streak.type === 'win' && streak.count >= 3) {
     insights.push({
       id: 'win_streak', type: 'positive',
-      title: isJa ? `${streak.count}連勝中！` : `${streak.count}-trade win streak!`,
-      body: isJa
-        ? '好調継続中です。ただし過信せずルールを守って取引しましょう。'
-        : "You're on a roll. Stay disciplined and keep following your rules.",
+      title: fmt(t('insight_win_streak_title'), { count: streak.count }),
+      body: t('insight_win_streak_body'),
       icon: 'flame-outline',
     });
   }
   if (streak.type === 'loss' && streak.count >= 3) {
     insights.push({
       id: 'loss_streak', type: 'negative',
-      title: isJa ? `${streak.count}連敗中` : `${streak.count}-trade losing streak`,
-      body: isJa
-        ? '一度立ち止まり、戦略と精神状態を整えましょう。休むことも戦略です。'
-        : 'Take a step back and reset your strategy and mindset. Taking a break is a strategy too.',
+      title: fmt(t('insight_loss_streak_title'), { count: streak.count }),
+      body: t('insight_loss_streak_body'),
       icon: 'pause-circle-outline',
     });
   }
@@ -112,10 +105,8 @@ export function generateInsights(
     if (diff >= 15 && mental.focus.high != null) {
       insights.push({
         id: 'mental_focus', type: 'positive',
-        title: isJa ? '集中度が高いと勝率UP' : 'Higher focus, higher win rate',
-        body: isJa
-          ? `集中度高時 ${mental.focus.high}% vs 低時 ${mental.focus.low}%。差が ${diff}%あります。`
-          : `High focus: ${mental.focus.high}% vs low focus: ${mental.focus.low}% — a ${diff}pt difference.`,
+        title: t('insight_mental_focus_title'),
+        body: fmt(t('insight_mental_focus_body'), { high: mental.focus.high, low: mental.focus.low ?? 0, diff }),
         icon: 'bulb-outline',
       });
     }
@@ -126,10 +117,8 @@ export function generateInsights(
   if (noSL / trades.length > 0.5) {
     insights.push({
       id: 'no_sl', type: 'tip',
-      title: isJa ? '損切りを設定しよう' : 'Set a stop-loss',
-      body: isJa
-        ? `${noSL}件（${Math.round(noSL / trades.length * 100)}%）の取引でSLが未設定です。`
-        : `${noSL} trades (${Math.round(noSL / trades.length * 100)}%) have no stop-loss set.`,
+      title: t('insight_no_sl_title'),
+      body: fmt(t('insight_no_sl_body'), { count: noSL, pct: Math.round(noSL / trades.length * 100) }),
       icon: 'shield-outline',
     });
   }
@@ -140,19 +129,15 @@ export function generateInsights(
     if (rem > 0) {
       insights.push({
         id: 'goal_pips', type: 'neutral',
-        title: isJa ? `目標まであと ${rem} pips` : `${rem} pips to go`,
-        body: isJa
-          ? `達成率 ${Math.round(totalPips / monthlyPipsGoal * 100)}%。引き続き頑張りましょう！`
-          : `You're at ${Math.round(totalPips / monthlyPipsGoal * 100)}% of your goal. Keep it up!`,
+        title: fmt(t('insight_goal_pips_title'), { rem }),
+        body: fmt(t('insight_goal_pips_body'), { pct: Math.round(totalPips / monthlyPipsGoal * 100) }),
         icon: 'flag-outline',
       });
     } else {
       insights.push({
         id: 'goal_pips_done', type: 'positive',
-        title: isJa ? '月間pips目標達成！' : 'Monthly pips goal reached!',
-        body: isJa
-          ? `目標の ${monthlyPipsGoal}pips を超えました。素晴らしい成果です！`
-          : `You've exceeded your goal of ${monthlyPipsGoal} pips. Great work!`,
+        title: t('insight_goal_pips_done_title'),
+        body: fmt(t('insight_goal_pips_done_body'), { goal: monthlyPipsGoal }),
         icon: 'checkmark-circle-outline',
       });
     }
@@ -162,10 +147,8 @@ export function generateInsights(
   if (monthlyWinRateGoal > 0 && winRate >= monthlyWinRateGoal) {
     insights.push({
       id: 'goal_wr_done', type: 'positive',
-      title: isJa ? '勝率目標達成！' : 'Win rate goal reached!',
-      body: isJa
-        ? `目標 ${monthlyWinRateGoal}% に対して現在 ${winRate}%。`
-        : `Your goal was ${monthlyWinRateGoal}% — you're currently at ${winRate}%.`,
+      title: t('insight_goal_wr_done_title'),
+      body: fmt(t('insight_goal_wr_done_body'), { goal: monthlyWinRateGoal, rate: winRate }),
       icon: 'star-outline',
     });
   }
