@@ -25,11 +25,19 @@ const STYLE_LABELS = () => ({
   scalping: t('card_style_scalp'), day: t('card_style_day'), swing: t('card_style_swing'), other: t('card_style_other'),
 } as Record<string, string>);
 
-const ANALYSIS_TABS = () => [
-  t('analysis_performance'), t('analysis_time'), t('analysis_tags'),
-  t('analysis_rr'), t('analysis_equity'), t('analysis_mental'),
+type ATab = 'performance' | 'time' | 'tags' | 'rr' | 'equity' | 'mental';
+
+// 翻訳文字列そのものをactiveTabの状態値にすると、訳語を1文字直しただけで
+// タブの比較(activeTab === t('analysis_xxx'))が壊れる。安定したキーで状態を持ち、
+// 表示ラベルは描画時にt()で解決する。
+const ANALYSIS_TABS: () => { key: ATab; label: string }[] = () => [
+  { key: 'performance', label: t('analysis_performance') },
+  { key: 'time', label: t('analysis_time') },
+  { key: 'tags', label: t('analysis_tags') },
+  { key: 'rr', label: t('analysis_rr') },
+  { key: 'equity', label: t('analysis_equity') },
+  { key: 'mental', label: t('analysis_mental') },
 ];
-type ATab = string;
 
 export default function AnalysisScreen() {
   const C = useTheme();
@@ -39,7 +47,7 @@ export default function AnalysisScreen() {
   const { trades, currentMonth, setCurrentMonth, loadTradesByMonth, loadAllTrades } = useTradeStore();
   const { settings, tradeRules } = useSettingsStore();
   const isPremium = usePurchaseStore(s => s.isPremium);
-  const [activeTab, setActiveTab] = useState<ATab>(t('analysis_performance'));
+  const [activeTab, setActiveTab] = useState<ATab>('performance');
   const [allTrades, setAllTrades] = useState<typeof trades>([]);
   const [equityMode, setEquityMode] = useState<'month' | 'all'>('month');
   const { width: SW } = useWindowDimensions();
@@ -47,7 +55,7 @@ export default function AnalysisScreen() {
 
   useEffect(() => { loadTradesByMonth(currentMonth); }, [currentMonth, loadTradesByMonth]);
   useEffect(() => {
-    if (activeTab === t('analysis_equity') && equityMode === 'all') {
+    if (activeTab === 'equity' && equityMode === 'all') {
       loadAllTrades().then(setAllTrades);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,18 +101,18 @@ export default function AnalysisScreen() {
           contentContainerStyle={styles.subTabBarContent}
         >
           {ANALYSIS_TABS().map(tab => (
-            <TouchableOpacity key={tab}
+            <TouchableOpacity key={tab.key}
               style={styles.subTab}
-              onPress={() => setActiveTab(tab)}>
-              <Text style={[styles.subTabLabel, activeTab === tab && styles.subTabLabelActive]} numberOfLines={1}>{tab}</Text>
-              {activeTab === tab && <View style={styles.subTabUnderline} />}
+              onPress={() => setActiveTab(tab.key)}>
+              <Text style={[styles.subTabLabel, activeTab === tab.key && styles.subTabLabelActive]} numberOfLines={1}>{tab.label}</Text>
+              {activeTab === tab.key && <View style={styles.subTabUnderline} />}
             </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
 
-      {!isPremium && activeTab !== t('analysis_performance') ? (
-        <PremiumGate feature={activeTab}><View /></PremiumGate>
+      {!isPremium && activeTab !== 'performance' ? (
+        <PremiumGate feature={ANALYSIS_TABS().find(tb => tb.key === activeTab)?.label ?? ''}><View /></PremiumGate>
       ) : (
       <ScrollView contentContainerStyle={styles.scroll}>
         {trades.length === 0 ? (
@@ -114,7 +122,7 @@ export default function AnalysisScreen() {
           </View>
         ) : (
           <>
-            {activeTab === t('analysis_performance') && (
+            {activeTab === 'performance' && (
               <>
                 <View style={styles.streakCard}>
                   <Ionicons name={streak.type === 'win' ? 'trending-up' : streak.type === 'loss' ? 'trending-down' : 'remove'} size={28}
@@ -191,7 +199,7 @@ export default function AnalysisScreen() {
               </>
             )}
 
-            {activeTab === t('analysis_time') && (
+            {activeTab === 'time' && (
               <>
                 {timeData.length === 0 ? (
                   <Text style={styles.emptyText}>{t('no_time_trades')}</Text>
@@ -233,7 +241,7 @@ export default function AnalysisScreen() {
               </>
             )}
 
-            {activeTab === t('analysis_tags') && (
+            {activeTab === 'tags' && (
               <>
                 {tagStats.length === 0 ? (
                   <Text style={styles.emptyText}>{t('no_tag_trades')}</Text>
@@ -259,7 +267,7 @@ export default function AnalysisScreen() {
               </>
             )}
 
-            {activeTab === t('analysis_rr') && (
+            {activeTab === 'rr' && (
               <>
                 <View style={styles.rrSummary}>
                   <View style={styles.rrItem}>
@@ -310,7 +318,7 @@ export default function AnalysisScreen() {
               </>
             )}
 
-            {activeTab === t('analysis_equity') && (
+            {activeTab === 'equity' && (
               <>
                 <View style={styles.segRow}>
                   {(['month', 'all'] as const).map(m => (
@@ -389,7 +397,7 @@ export default function AnalysisScreen() {
               </>
             )}
 
-            {activeTab === t('analysis_mental') && (
+            {activeTab === 'mental' && (
               <>
                 {mentalStats === null ? (
                   <View style={styles.emptyHint}>
