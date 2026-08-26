@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "NSPhotoLibraryUsageDescription": "Utilizzato per allegare screenshot del grafico alle operazioni.",
+    "NSFaceIDUsageDescription": "Usa Face ID per bloccare l'app e proteggere i tuoi dati di trading."
+  }
+}

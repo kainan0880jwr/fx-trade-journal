@@ -6,6 +6,19 @@
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+    "locales": {
+      "ja": "./locales/ja.json",
+      "en": "./locales/en.json",
+      "de": "./locales/de.json",
+      "fr": "./locales/fr.json",
+      "es": "./locales/es.json",
+      "it": "./locales/it.json",
+      "id": "./locales/id.json",
+      "tr": "./locales/tr.json",
+      "hi": "./locales/hi.json",
+      "vi": "./locales/vi.json",
+      "pt": "./locales/pt.json"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.fxtradejournal.ios",

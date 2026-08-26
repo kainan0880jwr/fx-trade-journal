@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "NSPhotoLibraryUsageDescription": "ट्रेड चार्ट इमेज संलग्न करने के लिए उपयोग किया जाता है।",
+    "NSFaceIDUsageDescription": "ऐप लॉक करने और आपके ट्रेड रिकॉर्ड को सुरक्षित रखने के लिए Face ID का उपयोग करता है।"
+  }
+}

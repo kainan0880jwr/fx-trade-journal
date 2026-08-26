@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "NSPhotoLibraryUsageDescription": "Digunakan untuk melampirkan gambar chart ke transaksi.",
+    "NSFaceIDUsageDescription": "Menggunakan Face ID untuk mengunci aplikasi dan melindungi data transaksi Anda."
+  }
+}

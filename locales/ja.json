@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "NSPhotoLibraryUsageDescription": "トレードのチャート画像を添付するために写真へのアクセスを使用します。",
+    "NSFaceIDUsageDescription": "生体認証でアプリをロックし、トレード記録を保護します。"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "NSPhotoLibraryUsageDescription": "İşlem grafiği görsellerini eklemek için kullanılır.",
+    "NSFaceIDUsageDescription": "Uygulamayı kilitlemek ve işlem kayıtlarınızı korumak için Face ID kullanır."
+  }
+}
