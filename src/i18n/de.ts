@@ -183,6 +183,8 @@ export const de: LangStrings = {
   no_time_trades: 'Keine Trades mit erfasster Uhrzeit',
   time_analysis_title: 'Nach Zeitfenster (Anzahl Trades)',
   day_analysis_title: 'Nach Wochentag',
+  heatmap_title: 'Wochentag × Stunde Heatmap',
+  heatmap_hint: 'Dunklere Zellen bedeuten mehr Trades; Grün/Rot zeigt den durchschnittlichen Pips-Gewinn/-Verlust',
   tag_analysis_perf: 'Performance nach Einstiegsgrundlage',
   no_tag_trades: 'Keine Trades mit Schlagwörtern',
   rr_recorded: 'Trades mit R:R',

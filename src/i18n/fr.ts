@@ -183,6 +183,8 @@ export const fr: LangStrings = {
   no_time_trades: "Aucun trade avec heure enregistrée",
   time_analysis_title: "Par créneau horaire (nombre de trades)",
   day_analysis_title: "Par jour de la semaine",
+  heatmap_title: "Carte thermique jour × heure",
+  heatmap_hint: "Plus la cellule est foncée, plus il y a de trades ; le vert/rouge indique le gain/perte moyen en pips",
   tag_analysis_perf: "Performance par base d'entrée",
   no_tag_trades: "Aucun trade avec tags",
   rr_recorded: "Trades avec R:R",

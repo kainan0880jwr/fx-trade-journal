@@ -183,6 +183,8 @@ export const vi: LangStrings = {
   no_time_trades: 'Không có giao dịch ghi nhận thời gian',
   time_analysis_title: 'Theo Khung Giờ (Số Giao Dịch)',
   day_analysis_title: 'Theo Ngày Trong Tuần',
+  heatmap_title: 'Bản đồ nhiệt Ngày × Giờ',
+  heatmap_hint: 'Ô càng đậm nghĩa là càng nhiều giao dịch; xanh/đỏ thể hiện lãi/lỗ pips trung bình',
   tag_analysis_perf: 'Hiệu Suất Theo Cơ Sở Vào Lệnh',
   no_tag_trades: 'Không có giao dịch gắn thẻ',
   rr_recorded: 'Giao dịch có R:R',

@@ -175,6 +175,40 @@ export function calcDayAnalysis(trades: Trade[]) {
     .sort((a, b) => a.day - b.day);
 }
 
+export interface HeatmapCell {
+  dow: number;
+  hour: number;
+  total: number;
+  wins: number;
+  avgPips: number;
+}
+
+// 曜日×時間帯のヒートマップ用グリッド（7行×24列、常に全セルを返す）
+export function calcHourDayHeatmap(trades: Trade[]): HeatmapCell[][] {
+  const grid: { total: number; wins: number; pips: number }[][] =
+    Array.from({ length: 7 }, () => Array.from({ length: 24 }, () => ({ total: 0, wins: 0, pips: 0 })));
+
+  for (const tr of trades) {
+    const timeStr = tr.date.slice(11, 13);
+    if (!timeStr) continue;
+    const hour = parseInt(timeStr, 10);
+    if (isNaN(hour)) continue;
+    const dow = new Date(tr.date.slice(0, 10)).getDay();
+    const cell = grid[dow][hour];
+    cell.total++;
+    if (tr.result === 'win') cell.wins++;
+    cell.pips += tr.pips ?? 0;
+  }
+
+  return grid.map((row, dow) => row.map((cell, hour) => ({
+    dow,
+    hour,
+    total: cell.total,
+    wins: cell.wins,
+    avgPips: cell.total > 0 ? Math.round((cell.pips / cell.total) * 10) / 10 : 0,
+  })));
+}
+
 // 機能1: RR統計
 export function calcRRStats(trades: Trade[]) {
   const withPlanned = trades.filter(t => t.plannedRR != null);

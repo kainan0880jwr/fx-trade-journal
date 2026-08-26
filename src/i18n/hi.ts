@@ -183,6 +183,8 @@ export const hi: LangStrings = {
   no_time_trades: 'समय दर्ज किए गए कोई ट्रेड नहीं',
   time_analysis_title: 'समय स्लॉट के अनुसार (ट्रेड संख्या)',
   day_analysis_title: 'सप्ताह के दिन के अनुसार',
+  heatmap_title: 'दिन × घंटा हीटमैप',
+  heatmap_hint: 'गहरे रंग की सेल का मतलब अधिक ट्रेड है; हरा/लाल औसत pips लाभ/हानि दिखाता है',
   tag_analysis_perf: 'एंट्री आधार के अनुसार प्रदर्शन',
   no_tag_trades: 'टैग वाले कोई ट्रेड नहीं',
   rr_recorded: 'R:R वाले ट्रेड',

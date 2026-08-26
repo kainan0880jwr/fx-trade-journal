@@ -183,6 +183,8 @@ export const en: LangStrings = {
   no_time_trades: 'No trades with time recorded',
   time_analysis_title: 'By Time Slot (Trade Count)',
   day_analysis_title: 'By Day of Week',
+  heatmap_title: 'Day × Hour Heatmap',
+  heatmap_hint: 'Darker cells mean more trades; green/red shows average pips gain/loss',
   tag_analysis_perf: 'Performance by Entry Basis',
   no_tag_trades: 'No trades with tags',
   rr_recorded: 'Trades with R:R',

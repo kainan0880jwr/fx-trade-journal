@@ -183,6 +183,8 @@ export const tr: LangStrings = {
   no_time_trades: 'Saati kaydedilmiş işlem yok',
   time_analysis_title: 'Saat Dilimine Göre (İşlem Sayısı)',
   day_analysis_title: 'Haftanın Gününe Göre',
+  heatmap_title: 'Gün × Saat Isı Haritası',
+  heatmap_hint: 'Koyu hücreler daha fazla işlem anlamına gelir; yeşil/kırmızı ortalama pip kazanç/kaybını gösterir',
   tag_analysis_perf: 'Giriş Gerekçesine Göre Performans',
   no_tag_trades: 'Etiketli işlem yok',
   rr_recorded: 'R:R\'li işlemler',

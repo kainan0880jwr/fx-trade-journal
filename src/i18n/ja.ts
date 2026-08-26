@@ -181,6 +181,8 @@ export const ja = {
   no_time_trades: '時刻が記録されたトレードがありません',
   time_analysis_title: '時間帯別（トレード数）',
   day_analysis_title: '曜日別',
+  heatmap_title: '曜日 × 時間帯ヒートマップ',
+  heatmap_hint: '色の濃さは取引回数、緑/赤は平均pipsのプラス/マイナスを表します',
   tag_analysis_perf: 'エントリー根拠別パフォーマンス',
   no_tag_trades: 'タグが付いたトレードがありません',
   rr_recorded: 'RR記録済みトレード',
