@@ -502,6 +502,12 @@ export const vi: LangStrings = {
   // Accessibility labels
   a11y_settings: 'Mở cài đặt',
   a11y_open_calendar: 'Mở lịch',
+  a11y_prev_month: "Tháng trước",
+  a11y_next_month: "Tháng sau",
+  a11y_share: "Chia sẻ",
+  a11y_bookmark_add: "Thêm đánh dấu",
+  a11y_bookmark_remove: "Bỏ đánh dấu",
+  a11y_view_image: "Xem hình ảnh",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'Tất cả tab phân tích (khung giờ, tỷ lệ rủi ro/lợi nhuận, đường cong vốn, v.v.)',

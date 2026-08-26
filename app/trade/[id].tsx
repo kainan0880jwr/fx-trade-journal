@@ -116,7 +116,12 @@ export default function TradeDetailScreen() {
       {selectedImg && (
         <TouchableOpacity style={styles.imgOverlay} onPress={() => setSelectedImg(null)} activeOpacity={1}>
           <Image source={{ uri: resolveImageUri(selectedImg) }} style={styles.imgFull} resizeMode="contain" />
-          <TouchableOpacity style={styles.imgClose} onPress={() => setSelectedImg(null)}>
+          <TouchableOpacity
+            style={styles.imgClose}
+            onPress={() => setSelectedImg(null)}
+            accessibilityLabel={t('cancel')}
+            accessibilityRole="button"
+          >
             <Ionicons name="close-circle" size={32} color="#FFFFFF" />
           </TouchableOpacity>
         </TouchableOpacity>
@@ -142,10 +147,21 @@ export default function TradeDetailScreen() {
             >
               <Ionicons name="create-outline" size={22} color={C.text2} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleShare} style={styles.bookmarkBtn}>
+            <TouchableOpacity
+              onPress={handleShare}
+              style={styles.bookmarkBtn}
+              accessibilityLabel={t('a11y_share')}
+              accessibilityRole="button"
+            >
               <Ionicons name="share-outline" size={22} color={C.text2} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleBookmark} style={styles.bookmarkBtn}>
+            <TouchableOpacity
+              onPress={handleBookmark}
+              style={styles.bookmarkBtn}
+              accessibilityLabel={trade.bookmarked ? t('a11y_bookmark_remove') : t('a11y_bookmark_add')}
+              accessibilityRole="button"
+              accessibilityState={{ selected: trade.bookmarked }}
+            >
               <Ionicons name={trade.bookmarked ? 'bookmark' : 'bookmark-outline'} size={24}
                 color={trade.bookmarked ? C.primary : C.text2} />
             </TouchableOpacity>
@@ -190,7 +206,13 @@ export default function TradeDetailScreen() {
             <Text style={styles.sectionLabel}>{t('detail_images')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageScroll}>
               {trade.imageUris.map((uri, i) => (
-                <TouchableOpacity key={i} onPress={() => setSelectedImg(uri)} style={styles.thumbTouch}>
+                <TouchableOpacity
+                  key={i}
+                  onPress={() => setSelectedImg(uri)}
+                  style={styles.thumbTouch}
+                  accessibilityLabel={`${t('a11y_view_image')} ${i + 1}`}
+                  accessibilityRole="button"
+                >
                   <Image source={{ uri: resolveImageUri(uri) }} style={styles.thumb} />
                 </TouchableOpacity>
               ))}

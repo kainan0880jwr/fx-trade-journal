@@ -502,6 +502,12 @@ export const de: LangStrings = {
   // Accessibility labels
   a11y_settings: 'Einstellungen öffnen',
   a11y_open_calendar: 'Kalender öffnen',
+  a11y_prev_month: "Vorheriger Monat",
+  a11y_next_month: "Nächster Monat",
+  a11y_share: "Teilen",
+  a11y_bookmark_add: "Lesezeichen hinzufügen",
+  a11y_bookmark_remove: "Lesezeichen entfernen",
+  a11y_view_image: "Bild anzeigen",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'Alle Analyse-Tabs (Tageszeit, Risiko-Rendite-Verhältnis, Equity-Kurve usw.)',

@@ -30,7 +30,13 @@ export default function MonthSelector({ month, onChange }: Props) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => onChange(addMonths(month, -1))} style={styles.btn} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+      <TouchableOpacity
+        onPress={() => onChange(addMonths(month, -1))}
+        style={styles.btn}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        accessibilityLabel={t('a11y_prev_month')}
+        accessibilityRole="button"
+      >
         <Ionicons name="chevron-back" size={20} color={C.primary} />
       </TouchableOpacity>
 
@@ -40,7 +46,13 @@ export default function MonthSelector({ month, onChange }: Props) {
         {isCurrentMonth && <View style={styles.nowBadge}><Text style={styles.nowText}>{t('this_month')}</Text></View>}
       </View>
 
-      <TouchableOpacity onPress={() => onChange(addMonths(month, 1))} style={styles.btn} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+      <TouchableOpacity
+        onPress={() => onChange(addMonths(month, 1))}
+        style={styles.btn}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        accessibilityLabel={t('a11y_next_month')}
+        accessibilityRole="button"
+      >
         <Ionicons name="chevron-forward" size={20} color={C.primary} />
       </TouchableOpacity>
     </View>

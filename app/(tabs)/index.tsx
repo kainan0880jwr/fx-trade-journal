@@ -87,6 +87,8 @@ export default function RecordScreen() {
             key={f.value}
             style={[styles.filterBtn, styleFilter === f.value && styles.filterBtnActive]}
             onPress={() => setStyleFilter(f.value)}
+            accessibilityRole="button"
+            accessibilityState={{ selected: styleFilter === f.value }}
           >
             <Text style={[styles.filterLabel, styleFilter === f.value && styles.filterLabelActive]}>
               {f.label()}
@@ -205,7 +207,7 @@ function MiniStat({ label, numericValue, decimals, suffix, showSign, color, isTa
       <Text style={{ fontSize: isTablet ? 12 : 10, color: C.text3, marginBottom: 2 }}>{label}</Text>
       {numericValue !== undefined ? (
         !isFinite(numericValue) ? (
-          <Text style={{ fontSize: isTablet ? 17 : 14, fontWeight: '800', color: color ?? C.text, textAlign: 'center' }}>∞</Text>
+          <Text style={{ fontSize: isTablet ? 17 : 14, fontWeight: '800', color: color ?? C.text, textAlign: 'center' }}>{t('pf_no_loss')}</Text>
         ) : (
           <CountUp
             value={numericValue} decimals={decimals} suffix={suffix} showSign={showSign}
@@ -229,7 +231,7 @@ function SummaryItem({ label, numericValue, decimals, suffix, showSign, color, i
       <Text style={{ fontSize: isTablet ? 11 : 9, color: C.text3, marginBottom: 2, letterSpacing: 0.5, textAlign: 'center' }}>{label}</Text>
       {numericValue !== undefined ? (
         !isFinite(numericValue) ? (
-          <Text style={{ fontSize: isTablet ? 15 : 13, fontWeight: '800', color: color ?? C.text, textAlign: 'center' }}>∞</Text>
+          <Text style={{ fontSize: isTablet ? 15 : 13, fontWeight: '800', color: color ?? C.text, textAlign: 'center' }}>{t('pf_no_loss')}</Text>
         ) : (
           <CountUp
             value={numericValue} decimals={decimals} suffix={suffix} showSign={showSign}

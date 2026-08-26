@@ -117,6 +117,12 @@ export default function CalendarScreen() {
               if (ds) bg = getDayBg(ds, metric, C);
               if (isSelected) bg = C.primary + '45';
 
+              const formattedDate = new Date(`${date.dateString}T00:00:00`)
+                .toLocaleDateString(t('locale_tag'), { month: 'long', day: 'numeric' });
+              const a11yLabel = ds
+                ? `${formattedDate}, ${ds.trades}${t('count_unit')}, ${ds.pips >= 0 ? '+' : ''}${ds.pips}pips`
+                : `${formattedDate}, ${t('cal_no_trades')}`;
+
               return (
                 <TouchableOpacity
                   activeOpacity={0.7}
@@ -125,6 +131,9 @@ export default function CalendarScreen() {
                     s.dayCell,
                     { backgroundColor: bg, borderColor: isSelected ? C.primary : 'transparent' },
                   ]}
+                  accessibilityLabel={a11yLabel}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: isSelected, disabled: isDisabled }}
                 >
                   <Text style={[s.dayNum, { color: isDisabled ? C.text3 : C.text }]}>
                     {date.day}

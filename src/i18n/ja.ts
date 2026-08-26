@@ -500,6 +500,12 @@ export const ja = {
   // アクセシビリティラベル
   a11y_settings: '設定を開く',
   a11y_open_calendar: 'カレンダーを開く',
+  a11y_prev_month: "前の月",
+  a11y_next_month: "次の月",
+  a11y_share: "シェアする",
+  a11y_bookmark_add: "ブックマークに追加",
+  a11y_bookmark_remove: "ブックマークを解除",
+  a11y_view_image: "画像を表示",
 
   // ペイウォール機能リスト（圧縮版）
   paywall_feature_analytics: '全分析タブ（時間帯別・リスクリワード比・資産推移など）',
