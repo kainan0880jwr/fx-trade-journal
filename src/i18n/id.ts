@@ -15,6 +15,7 @@ export const id: LangStrings = {
 
   // Screen titles
   screen_title_new_trade: 'Tambah Trade',
+  screen_title_edit_trade: 'Edit Trade',
   screen_title_trade_detail: 'Detail Trade',
 
   // Common
@@ -289,6 +290,8 @@ export const id: LangStrings = {
   detail_tf: 'Catatan Multi-TF',
   detail_reflection: 'Catatan & Refleksi',
   detail_delete: 'Hapus',
+  detail_edit: 'Edit',
+  detail_add_details: 'Tambah Detail',
   detail_delete_msg: 'Hapus trade ini?',
   detail_not_found: 'Trade tidak ditemukan',
   detail_datetime: 'Tanggal & Waktu',

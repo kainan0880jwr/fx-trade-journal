@@ -15,6 +15,7 @@ export const vi: LangStrings = {
 
   // Screen titles
   screen_title_new_trade: 'Thêm giao dịch',
+  screen_title_edit_trade: 'Chỉnh sửa giao dịch',
   screen_title_trade_detail: 'Chi tiết giao dịch',
 
   // Common
@@ -289,6 +290,8 @@ export const vi: LangStrings = {
   detail_tf: 'Ghi Chú Đa Khung Thời Gian',
   detail_reflection: 'Ghi Chú & Suy Ngẫm',
   detail_delete: 'Xóa',
+  detail_edit: 'Chỉnh sửa',
+  detail_add_details: 'Thêm chi tiết',
   detail_delete_msg: 'Xóa giao dịch này?',
   detail_not_found: 'Không tìm thấy giao dịch',
   detail_datetime: 'Ngày & Giờ',

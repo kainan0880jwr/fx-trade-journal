@@ -15,6 +15,7 @@ export const hi: LangStrings = {
 
   // Screen titles
   screen_title_new_trade: 'ट्रेड जोड़ें',
+  screen_title_edit_trade: 'ट्रेड संपादित करें',
   screen_title_trade_detail: 'ट्रेड विवरण',
 
   // Common
@@ -289,6 +290,8 @@ export const hi: LangStrings = {
   detail_tf: 'मल्टी-टाइमफ्रेम नोट्स',
   detail_reflection: 'नोट्स और चिंतन',
   detail_delete: 'हटाएं',
+  detail_edit: 'संपादित करें',
+  detail_add_details: 'विवरण जोड़ें',
   detail_delete_msg: 'इस ट्रेड को हटाएं?',
   detail_not_found: 'ट्रेड नहीं मिला',
   detail_datetime: 'तारीख और समय',

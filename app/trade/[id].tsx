@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert, Image, ActivityIndicator, Share } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { getTradeById } from '../../src/db/queries';
@@ -24,15 +25,17 @@ export default function TradeDetailScreen() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const { removeTrade, bookmarkTrade } = useTradeStore();
 
-  useEffect(() => {
-    if (id) {
+  // フォーカス毎に再取得することで、編集画面から戻ってきた際に最新の内容を反映する
+  useFocusEffect(
+    useCallback(() => {
+      if (!id) return;
       setIsLoading(true);
       getTradeById(id)
         .then(tr => { setTrade(tr); })
         .catch(e => { console.error('loadTrade error:', e); })
         .finally(() => setIsLoading(false));
-    }
-  }, [id]);
+    }, [id])
+  );
 
   const handleDelete = () => {
     Alert.alert(t('delete_confirm'), t('detail_delete_msg'), [
@@ -131,6 +134,14 @@ export default function TradeDetailScreen() {
             <View style={[styles.resultBadge, { backgroundColor: resultColor }]}>
               <Text style={styles.resultBadgeText}>{resultLabel}</Text>
             </View>
+            <TouchableOpacity
+              onPress={() => router.push({ pathname: '/trade/new', params: { id } })}
+              style={styles.bookmarkBtn}
+              accessibilityLabel={t('detail_edit')}
+              accessibilityRole="button"
+            >
+              <Ionicons name="create-outline" size={22} color={C.text2} />
+            </TouchableOpacity>
             <TouchableOpacity onPress={handleShare} style={styles.bookmarkBtn}>
               <Ionicons name="share-outline" size={22} color={C.text2} />
             </TouchableOpacity>

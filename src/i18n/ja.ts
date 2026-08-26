@@ -13,6 +13,7 @@ export const ja = {
 
   // 画面タイトル
   screen_title_new_trade: 'トレード記録',
+  screen_title_edit_trade: 'トレードを編集',
   screen_title_trade_detail: 'トレード詳細',
 
   // 共通
@@ -287,6 +288,8 @@ export const ja = {
   detail_tf: 'マルチタイムフレームメモ',
   detail_reflection: '反省・メモ',
   detail_delete: '削除する',
+  detail_edit: '編集',
+  detail_add_details: '詳細を追加する',
   detail_delete_msg: 'このトレードを削除しますか？',
   detail_not_found: 'トレードが見つかりません',
   detail_datetime: '日時',
