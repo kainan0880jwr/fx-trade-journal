@@ -11,8 +11,9 @@ import type { ThemeColors } from '../../src/theme/colors';
 import { t, lang } from '../../src/i18n';
 import {
   METRICS, CalMetric, buildDayMap, getDayValue, getDayBg, getDayValueColor,
-  calcMonthPF, formatPF,
+  calcMonthPF, formatPF, buildDayCellA11yLabel,
 } from '../../src/utils/calendarMetrics';
+import { SCard, CalendarLegend } from '../../src/components/CalendarShared';
 
 const Calendar = require('react-native-calendars').Calendar;
 
@@ -52,25 +53,29 @@ export default function CalendarScreen() {
       <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
 
         <View style={s.summaryGrid}>
-          <SCard label={t('cal_trades')} value={`${trades.length}${t('count_unit')}`} />
-          <SCard label={t('cal_wl')} value={`${wins}${t('win_short')} ${losses}${t('loss_short')}`} />
+          <SCard isTablet={isTablet} label={t('cal_trades')} value={`${trades.length}${t('count_unit')}`} />
+          <SCard isTablet={isTablet} label={t('cal_wl')} value={`${wins}${t('win_short')} ${losses}${t('loss_short')}`} />
           <SCard
+            isTablet={isTablet}
             label={t('win_rate')}
             value={`${winRate}%`}
             color={trades.length === 0 ? C.text : winRate >= 50 ? C.win : C.loss}
           />
           <SCard
+            isTablet={isTablet}
             label={t('cal_profit_factor')}
             value={formatPF(profitFactor)}
             color={profitFactor === 0 ? C.text2 : profitFactor >= 1 ? C.win : C.loss}
           />
           <SCard
+            isTablet={isTablet}
             label={t('total_pips')}
             value={totalPips === 0 && trades.length === 0 ? '-' : `${totalPips >= 0 ? '+' : ''}${totalPips}`}
             color={totalPips >= 0 ? C.win : C.loss}
           />
           {hasPL && (
             <SCard
+              isTablet={isTablet}
               label={t('cal_total_pl')}
               value={`${totalPL >= 0 ? '+' : ''}${totalPL.toLocaleString()}¥`}
               color={totalPL >= 0 ? C.win : C.loss}
@@ -117,11 +122,7 @@ export default function CalendarScreen() {
               if (ds) bg = getDayBg(ds, metric, C);
               if (isSelected) bg = C.primary + '45';
 
-              const formattedDate = new Date(`${date.dateString}T00:00:00`)
-                .toLocaleDateString(t('locale_tag'), { month: 'long', day: 'numeric' });
-              const a11yLabel = ds
-                ? `${formattedDate}, ${ds.trades}${t('count_unit')}, ${ds.pips >= 0 ? '+' : ''}${ds.pips}pips`
-                : `${formattedDate}, ${t('cal_no_trades')}`;
+              const a11yLabel = buildDayCellA11yLabel(date.dateString, ds);
 
               return (
                 <TouchableOpacity
@@ -163,20 +164,7 @@ export default function CalendarScreen() {
           />
         </View>
 
-        <View style={s.legend}>
-          <View style={s.legendItem}>
-            <View style={[s.legendDot, { backgroundColor: C.win + '50', borderColor: C.win }]} />
-            <Text style={s.legendLabel}>{t('cal_plus_day')}</Text>
-          </View>
-          <View style={s.legendItem}>
-            <View style={[s.legendDot, { backgroundColor: C.loss + '50', borderColor: C.loss }]} />
-            <Text style={s.legendLabel}>{t('cal_minus_day')}</Text>
-          </View>
-          <View style={s.legendItem}>
-            <View style={[s.legendDot, { backgroundColor: C.border + '80', borderColor: C.border }]} />
-            <Text style={s.legendLabel}>{t('cal_zero_day')}</Text>
-          </View>
-        </View>
+        <CalendarLegend isTablet={isTablet} />
 
         {selectedDay && (
           <View style={s.dayDetail}>
@@ -190,6 +178,7 @@ export default function CalendarScreen() {
                   <View key={tr.id} style={s.tradeRow}>
                     <View style={[s.dirDot, { backgroundColor: tr.direction === 'buy' ? C.buy : C.sell }]} />
                     <Text style={s.tradePair}>{tr.pair}</Text>
+                    <Text style={s.tradeDir}>{tr.direction === 'buy' ? t('buy') : t('sell')}</Text>
                     <Text style={[s.tradePips, { color: (tr.pips ?? 0) >= 0 ? C.win : C.loss }]}>
                       {tr.pips != null ? `${tr.pips > 0 ? '+' : ''}${tr.pips} pips` : '-'}
                     </Text>
@@ -229,21 +218,6 @@ export default function CalendarScreen() {
   );
 }
 
-function SCard({ label, value, color }: { label: string; value: string; color?: string }) {
-  const C = useTheme();
-  const isTablet = useIsTablet();
-  return (
-    <View style={{
-      flex: 1, minWidth: isTablet ? '30%' : '46%',
-      backgroundColor: C.card, borderRadius: 12,
-      padding: isTablet ? 16 : 12, borderWidth: 1, borderColor: C.border,
-    }}>
-      <Text style={{ fontSize: isTablet ? 12 : 10, color: C.text2, marginBottom: 4 }} numberOfLines={1}>{label}</Text>
-      <Text style={[{ fontSize: isTablet ? 20 : 17, fontWeight: '800', color: C.text }, color ? { color } : {}]} numberOfLines={1}>{value}</Text>
-    </View>
-  );
-}
-
 function makeStyles(C: ThemeColors, isTablet = false) {
   const ph = isTablet ? 20 : 12;
   return StyleSheet.create({
@@ -269,10 +243,6 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     },
     dayNum: { fontSize: isTablet ? 14 : 12, fontWeight: '700', lineHeight: isTablet ? 20 : 16 },
     dayValue: { fontSize: isTablet ? 11 : 9, fontWeight: '800', lineHeight: isTablet ? 15 : 13, width: '100%', textAlign: 'center', paddingHorizontal: 2 },
-    legend: { flexDirection: 'row', gap: 14, justifyContent: 'center', marginBottom: 12, paddingVertical: 4 },
-    legendItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-    legendDot: { width: 12, height: 12, borderRadius: 3, borderWidth: 1 },
-    legendLabel: { fontSize: isTablet ? 13 : 11, color: C.text2 },
     dayDetail: {
       backgroundColor: C.card, borderRadius: 14, padding: isTablet ? 18 : 14,
       borderWidth: 1, borderColor: C.border,
@@ -286,6 +256,7 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     },
     dirDot: { width: 8, height: 8, borderRadius: 4 },
     tradePair: { flex: 1, fontSize: isTablet ? 16 : 14, fontWeight: '700', color: C.text },
+    tradeDir: { fontSize: isTablet ? 14 : 12, color: C.text2, width: 36 },
     tradePips: { fontSize: isTablet ? 15 : 13, fontWeight: '700', minWidth: 72, textAlign: 'right' },
     tradePL: { fontSize: isTablet ? 14 : 12, color: C.text2, minWidth: 80, textAlign: 'right' },
     daySum: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingTop: 10, justifyContent: 'flex-end' },

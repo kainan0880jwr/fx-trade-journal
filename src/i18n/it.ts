@@ -508,6 +508,7 @@ export const it: LangStrings = {
   a11y_bookmark_add: "Aggiungi ai preferiti",
   a11y_bookmark_remove: "Rimuovi dai preferiti",
   a11y_view_image: "Visualizza immagine",
+  a11y_remove_image: "Rimuovi l'immagine",
 
   // Paywall features (compact list)
   paywall_feature_analytics: "Tutte le schede di analisi (ora del giorno, rapporto rischio/rendimento, curva equity, ecc.)",

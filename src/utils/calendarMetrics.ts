@@ -109,6 +109,14 @@ export function getDayBg(ds: DayStat, metric: CalMetric, C: ThemeColors): string
   }
 }
 
+export function buildDayCellA11yLabel(dateString: string, ds: DayStat | undefined): string {
+  const formattedDate = new Date(`${dateString}T00:00:00`)
+    .toLocaleDateString(t('locale_tag'), { month: 'long', day: 'numeric' });
+  return ds
+    ? `${formattedDate}, ${ds.trades}${t('count_unit')}, ${ds.pips >= 0 ? '+' : ''}${ds.pips}pips`
+    : `${formattedDate}, ${t('cal_no_trades')}`;
+}
+
 export function getDayValueColor(ds: DayStat, metric: CalMetric, C: ThemeColors): string {
   switch (metric) {
     case 'pips':    return ds.pips >= 0 ? C.win : C.loss;

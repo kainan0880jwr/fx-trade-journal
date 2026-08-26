@@ -508,6 +508,7 @@ export const de: LangStrings = {
   a11y_bookmark_add: "Lesezeichen hinzufügen",
   a11y_bookmark_remove: "Lesezeichen entfernen",
   a11y_view_image: "Bild anzeigen",
+  a11y_remove_image: "Bild entfernen",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'Alle Analyse-Tabs (Tageszeit, Risiko-Rendite-Verhältnis, Equity-Kurve usw.)',

@@ -508,6 +508,7 @@ export const vi: LangStrings = {
   a11y_bookmark_add: "Thêm đánh dấu",
   a11y_bookmark_remove: "Bỏ đánh dấu",
   a11y_view_image: "Xem hình ảnh",
+  a11y_remove_image: "Xóa hình ảnh",
 
   // Paywall features (compact list)
   paywall_feature_analytics: 'Tất cả tab phân tích (khung giờ, tỷ lệ rủi ro/lợi nhuận, đường cong vốn, v.v.)',

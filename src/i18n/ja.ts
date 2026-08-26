@@ -506,6 +506,7 @@ export const ja = {
   a11y_bookmark_add: "ブックマークに追加",
   a11y_bookmark_remove: "ブックマークを解除",
   a11y_view_image: "画像を表示",
+  a11y_remove_image: "画像を削除",
 
   // ペイウォール機能リスト（圧縮版）
   paywall_feature_analytics: '全分析タブ（時間帯別・リスクリワード比・資産推移など）',
