@@ -124,6 +124,25 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
   return encDb;
 }
 
+// 既存DBへのカラム追加マイグレーション一覧。SCHEMA_VERSIONは常にこの配列長と
+// 一致する（バックアップファイルのschema値として使うため、backup.tsから参照する）。
+export const SCHEMA_MIGRATIONS = [
+  'ALTER TABLE trades ADD COLUMN stop_loss REAL',
+  'ALTER TABLE trades ADD COLUMN take_profit REAL',
+  'ALTER TABLE trades ADD COLUMN planned_r_r REAL',
+  "ALTER TABLE trades ADD COLUMN tags TEXT DEFAULT '[]'",
+  "ALTER TABLE trades ADD COLUMN image_uris TEXT DEFAULT '[]'",
+  'ALTER TABLE trades ADD COLUMN bookmarked INTEGER DEFAULT 0',
+  'ALTER TABLE trades ADD COLUMN mental_focus INTEGER',
+  'ALTER TABLE trades ADD COLUMN mental_calm INTEGER',
+  'ALTER TABLE trades ADD COLUMN mental_fear INTEGER',
+  "ALTER TABLE trades ADD COLUMN rule_checks TEXT DEFAULT '[]'",
+  "ALTER TABLE trades ADD COLUMN tf_weekly TEXT DEFAULT ''",
+  "ALTER TABLE trades ADD COLUMN tf_daily TEXT DEFAULT ''",
+  "ALTER TABLE trades ADD COLUMN tf_4h TEXT DEFAULT ''",
+  "ALTER TABLE trades ADD COLUMN tf_1h TEXT DEFAULT ''",
+];
+
 const DEFAULT_TAGS = JSON.stringify([
   'MAクロス', 'サポレジ反発', 'トレンドライン', 'チャートパターン',
   'ボリンジャー', 'RSI/MACD', 'フィボナッチ', '経済指標', 'ニュース', '感覚',
@@ -248,29 +267,22 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
     });
   }
 
-  // 既存DBへのカラム追加マイグレーション
-  const migrations = [
-    'ALTER TABLE trades ADD COLUMN stop_loss REAL',
-    'ALTER TABLE trades ADD COLUMN take_profit REAL',
-    'ALTER TABLE trades ADD COLUMN planned_r_r REAL',
-    "ALTER TABLE trades ADD COLUMN tags TEXT DEFAULT '[]'",
-    "ALTER TABLE trades ADD COLUMN image_uris TEXT DEFAULT '[]'",
-    'ALTER TABLE trades ADD COLUMN bookmarked INTEGER DEFAULT 0',
-    'ALTER TABLE trades ADD COLUMN mental_focus INTEGER',
-    'ALTER TABLE trades ADD COLUMN mental_calm INTEGER',
-    'ALTER TABLE trades ADD COLUMN mental_fear INTEGER',
-    "ALTER TABLE trades ADD COLUMN rule_checks TEXT DEFAULT '[]'",
-    "ALTER TABLE trades ADD COLUMN tf_weekly TEXT DEFAULT ''",
-    "ALTER TABLE trades ADD COLUMN tf_daily TEXT DEFAULT ''",
-    "ALTER TABLE trades ADD COLUMN tf_4h TEXT DEFAULT ''",
-    "ALTER TABLE trades ADD COLUMN tf_1h TEXT DEFAULT ''",
-  ];
-  for (const sql of migrations) {
-    try {
-      await database.execAsync(sql);
-    } catch (e) {
-      if (!(e instanceof Error && e.message.includes('duplicate column name'))) throw e;
+  // PRAGMA user_versionで適用済みマイグレーション数を記録し、未適用分だけ実行する
+  // （以前は毎起動全件try/catchしていて、フルスキーマの新規DBでも全件が
+  // 「duplicate column name」で失敗→握りつぶしを繰り返していた）。
+  // user_versionが未設定(0)の既存DBでも、duplicate column nameは引き続き無視するため
+  // 適用済み分の再実行は安全＝このバージョン導入前のDBからも問題なく移行できる。
+  const versionRow = await database.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
+  const dbVersion = versionRow?.user_version ?? 0;
+  if (dbVersion < SCHEMA_MIGRATIONS.length) {
+    for (const sql of SCHEMA_MIGRATIONS.slice(dbVersion)) {
+      try {
+        await database.execAsync(sql);
+      } catch (e) {
+        if (!(e instanceof Error && e.message.includes('duplicate column name'))) throw e;
+      }
     }
+    await database.execAsync(`PRAGMA user_version = ${SCHEMA_MIGRATIONS.length}`);
   }
 
   // 画像パスの相対化マイグレーション（絶対パス保存だとOSアップデート後にコンテナIDが変わり画像が失われるため）。

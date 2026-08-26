@@ -10,11 +10,11 @@ import {
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { getAllTrades, getCurrencyPairs } from '../db/queries';
-import { getDatabase } from '../db/database';
+import { getDatabase, SCHEMA_MIGRATIONS } from '../db/database';
 import { resolveImageUri } from './imageStorage';
 import type { Trade, CurrencyPair } from '../types';
 
-const SCHEMA_VERSION = 14; // migrationsの数と一致させる
+const SCHEMA_VERSION = SCHEMA_MIGRATIONS.length;
 const MAX_IMAGE_BASE64_TOTAL_BYTES = 200 * 1024 * 1024; // インポート時のメモリDoS防止（合計200MBまで）
 
 interface BackupTrade extends Trade {
