@@ -5,6 +5,7 @@ import {
   readAsStringAsync,
   makeDirectoryAsync,
   getInfoAsync,
+  deleteAsync,
 } from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
@@ -76,6 +77,9 @@ export async function exportBackup(): Promise<void> {
   const isAvailable = await Sharing.isAvailableAsync();
   if (!isAvailable) throw new Error('sharing_unavailable');
   await Sharing.shareAsync(filePath, { mimeType: 'application/json', dialogTitle: 'FXバックアップを保存' });
+
+  // 暗号化DBの投資を無にしないよう、共有後は平文の一時ファイルをキャッシュに残さない
+  await deleteAsync(filePath, { idempotent: true }).catch(() => {});
 }
 
 export async function importBackup(): Promise<number> {
@@ -272,6 +276,10 @@ export async function restorePreImportSnapshot(): Promise<number> {
       );
     }
   });
+
+  // 復元に使い終わったスナップショットは平文の全トレード記録を含むため、
+  // キャッシュに残さず削除する
+  await deleteAsync(snapshotPath, { idempotent: true }).catch(() => {});
 
   return data.trades.length;
 }

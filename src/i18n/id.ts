@@ -37,6 +37,8 @@ export const id: LangStrings = {
   delete_confirm: 'Konfirmasi Hapus',
   db_init_error_title: 'Gagal menginisialisasi database',
   db_init_error_msg: 'Silakan mulai ulang aplikasi, atau coba lagi menggunakan tombol di bawah.',
+  db_key_lost_title: "Tidak dapat mendekripsi data Anda",
+  db_key_lost_msg: "Kunci enkripsi perangkat Anda hilang, sehingga catatan transaksi tersimpan tidak dapat dibuka lagi. Jika Anda sebelumnya pernah membuat cadangan (Pengaturan → Cadangan JSON), atur ulang data Anda menggunakan tombol di bawah lalu pulihkan dari cadangan tersebut. Tanpa cadangan, data ini tidak dapat dipulihkan.",
   db_reset_link: 'Masih belum berhasil? Reset data dan mulai dari awal',
   db_reset_confirm_title: 'Reset semua data?',
   db_reset_confirm_msg: 'Ini akan menghapus permanen semua catatan trade yang tersimpan dan tidak dapat dibatalkan. Aplikasi akan dimulai ulang dari kondisi kosong.',

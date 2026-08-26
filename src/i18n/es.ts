@@ -37,6 +37,8 @@ export const es: LangStrings = {
   delete_confirm: "Confirmar eliminación",
   db_init_error_title: "No se pudo inicializar la base de datos",
   db_init_error_msg: "Reinicia la aplicación o inténtalo de nuevo con el botón de abajo.",
+  db_key_lost_title: "No se pueden descifrar tus datos",
+  db_key_lost_msg: "Se perdió la clave de cifrado de tu dispositivo, por lo que tus operaciones guardadas ya no se pueden abrir. Si habías hecho una copia de seguridad (Ajustes → Copia de seguridad JSON), restablece tus datos con el botón de abajo y luego restaura desde esa copia. Sin una copia de seguridad, estos registros no se pueden recuperar.",
   db_reset_link: "¿Sigue sin funcionar? Restablecer datos y empezar de nuevo",
   db_reset_confirm_title: "¿Restablecer todos los datos?",
   db_reset_confirm_msg: "Esto eliminará permanentemente todos los registros de operaciones guardados y no se podrá deshacer. La app se reiniciará desde cero.",

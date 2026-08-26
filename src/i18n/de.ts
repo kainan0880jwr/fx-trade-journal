@@ -37,6 +37,8 @@ export const de: LangStrings = {
   delete_confirm: 'Löschen bestätigen',
   db_init_error_title: 'Datenbank konnte nicht initialisiert werden',
   db_init_error_msg: 'Bitte starte die App neu oder versuche es erneut über die Schaltfläche unten.',
+  db_key_lost_title: "Deine Daten können nicht entschlüsselt werden",
+  db_key_lost_msg: "Der Verschlüsselungscode deines Geräts ist verloren gegangen, sodass deine gespeicherten Trade-Aufzeichnungen nicht mehr geöffnet werden können. Falls du zuvor ein Backup erstellt hast (Einstellungen → JSON-Backup), setze deine Daten mit der Schaltfläche unten zurück und stelle sie dann aus diesem Backup wieder her. Ohne Backup können diese Aufzeichnungen nicht wiederhergestellt werden.",
   db_reset_link: 'Funktioniert es weiterhin nicht? Daten zurücksetzen und neu starten',
   db_reset_confirm_title: 'Alle Daten zurücksetzen?',
   db_reset_confirm_msg: 'Dadurch werden alle gespeicherten Trade-Aufzeichnungen dauerhaft gelöscht und können nicht wiederhergestellt werden. Die App startet danach im Ausgangszustand.',

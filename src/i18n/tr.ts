@@ -37,6 +37,8 @@ export const tr: LangStrings = {
   delete_confirm: 'Silmeyi Onayla',
   db_init_error_title: 'Veritabanı başlatılamadı',
   db_init_error_msg: 'Lütfen uygulamayı yeniden başlatın veya aşağıdaki düğmeyi kullanarak tekrar deneyin.',
+  db_key_lost_title: "Verileriniz şifresi çözülemiyor",
+  db_key_lost_msg: "Cihazınızın şifreleme anahtarı kayboldu, bu nedenle kaydedilen işlem kayıtlarınız artık açılamıyor. Daha önce bir yedekleme yaptıysanız (Ayarlar → JSON Yedekleme), aşağıdaki düğmeyi kullanarak verilerinizi sıfırlayın ve ardından o yedekten geri yükleyin. Yedekleme yoksa bu kayıtlar kurtarılamaz.",
   db_reset_link: 'Hâlâ çalışmıyor mu? Verileri sıfırlayıp yeniden başlayın',
   db_reset_confirm_title: 'Tüm veriler sıfırlansın mı?',
   db_reset_confirm_msg: 'Bu, kayıtlı tüm işlem kayıtlarını kalıcı olarak siler ve geri alınamaz. Uygulama boş bir durumdan yeniden başlayacak.',
