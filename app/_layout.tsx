@@ -166,6 +166,14 @@ function RootLayoutContent() {
           name="paywall"
           options={{ title: '', presentation: 'modal', headerShown: false }}
         />
+        <Stack.Screen
+          name="calculator"
+          options={{ headerShown: false, presentation: 'modal' }}
+        />
+        <Stack.Screen
+          name="badges"
+          options={{ headerShown: false, presentation: 'modal' }}
+        />
       </Stack>
     </AppLockGate>
   );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { useTradeStore } from '../src/store/tradeStore';
 import { calcBadges, type UnlockedBadge } from '../src/utils/badges';
 import PremiumGate from '../src/components/PremiumGate';
@@ -33,7 +34,7 @@ export default function BadgesScreen() {
 
   return (
     <PremiumGate feature={t('settings_badges')}>
-    <SafeAreaView style={s.container} edges={['bottom']}>
+    <SafeAreaView style={s.container} edges={['top', 'bottom']}>
       <View style={s.header}>
         <Ionicons name="trophy-outline" size={28} color={C.yellow} />
         <View style={{ marginLeft: 12 }}>
@@ -45,6 +46,15 @@ export default function BadgesScreen() {
             <View style={[s.headerProgFill, { width: `${badges.length > 0 ? unlocked / badges.length * 100 : 0}%` }]} />
           </View>
         </View>
+        <TouchableOpacity
+          style={s.closeBtn}
+          onPress={() => router.back()}
+          accessibilityLabel={t('cancel')}
+          accessibilityRole="button"
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
+          <Ionicons name="close" size={22} color={C.text2} />
+        </TouchableOpacity>
       </View>
 
       <View style={s.filterRow}>
@@ -113,6 +123,7 @@ function makeStyles(C: ThemeColors) {
     headerTitle: { fontSize: 18, fontWeight: '800', color: C.text },
     headerSub: { fontSize: 12, color: C.text2, marginTop: 2 },
     headerProg: { flex: 1, marginLeft: 16 },
+    closeBtn: { padding: 4, marginLeft: 12 },
     headerProgBg: { height: 6, backgroundColor: C.border, borderRadius: 3, overflow: 'hidden' },
     headerProgFill: { height: '100%', backgroundColor: C.yellow, borderRadius: 3 },
     filterRow: { flexDirection: 'row', padding: 10, gap: 6, backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border },
