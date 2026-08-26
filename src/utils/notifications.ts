@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { getRecordStreak, getSetting } from '../db/queries';
+import { t } from '../i18n';
 
 const ID_DAILY   = 'daily-reminder';
 const ID_WEEKLY  = 'weekly-summary';
@@ -19,7 +20,7 @@ Notifications.setNotificationHandler({
 async function ensureAndroidChannel(): Promise<void> {
   if (Platform.OS !== 'android') return;
   await Notifications.setNotificationChannelAsync(ANDROID_CHANNEL_ID, {
-    name: 'リマインダー',
+    name: t('notif_channel_reminders'),
     importance: Notifications.AndroidImportance.DEFAULT,
     sound: 'default',
   });
@@ -42,13 +43,13 @@ export async function scheduleReminder(hour: number, minute: number): Promise<bo
   try {
     const streak = await getRecordStreak();
     const body = streak >= 2
-      ? `${streak}日連続記録中！今日のトレードを記録しましょう`
-      : '今日のトレードを記録しましょう！';
+      ? t('notif_daily_streak').replace('{n}', String(streak))
+      : t('notif_daily_default');
 
     await Notifications.cancelScheduledNotificationAsync(ID_DAILY).catch(() => {});
     await Notifications.scheduleNotificationAsync({
       identifier: ID_DAILY,
-      content: { title: 'FXトレード日記', body, sound: true },
+      content: { title: t('app_name'), body, sound: true },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.DAILY,
         channelId: ANDROID_CHANNEL_ID,
@@ -78,8 +79,8 @@ export async function scheduleWeeklySummary(
     await Notifications.scheduleNotificationAsync({
       identifier: ID_WEEKLY,
       content: {
-        title: '📊 先週の成績を振り返ろう',
-        body: '月次タブで勝率・pipsをチェック！今週も頑張りましょう 🔥',
+        title: t('notif_weekly_title'),
+        body: t('notif_weekly_body'),
         sound: true,
       },
       trigger: {

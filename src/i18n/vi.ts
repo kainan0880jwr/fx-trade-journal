@@ -371,6 +371,30 @@ export const vi: LangStrings = {
 
   // Day of week
   day_labels: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+  hour_label: '{h} giờ',
+  day_suffix: '',
+  insight_best_pair_title: "{pair} là cặp mạnh của bạn",
+  insight_best_pair_body: "Tỷ lệ thắng {rate}% ({count} giao dịch). Lịch sử của bạn cho thấy kết quả tốt với cặp này.",
+  insight_worst_pair_title: "Hãy cẩn thận với {pair}",
+  insight_worst_pair_body: "Tỷ lệ thắng thấp, {rate}% ({count} giao dịch), dựa trên lịch sử giao dịch của bạn.",
+  insight_best_time_title: "{time} là khung giờ tốt nhất của bạn",
+  insight_best_time_body: "Tỷ lệ thắng của bạn trong khung giờ này là {rate}%, dựa trên lịch sử giao dịch.",
+  insight_worst_day_title: "Hãy cẩn thận vào {day}",
+  insight_worst_day_body: "Tỷ lệ thắng của bạn vào {day} thường thấp, ở mức {rate}%.",
+  insight_win_streak_title: "Chuỗi {count} giao dịch thắng liên tiếp!",
+  insight_win_streak_body: "Bạn đang có phong độ tốt. Hãy giữ kỷ luật và tiếp tục tuân thủ quy tắc.",
+  insight_loss_streak_title: "Chuỗi {count} giao dịch thua liên tiếp",
+  insight_loss_streak_body: "Hãy lùi lại một bước và điều chỉnh lại chiến lược cũng như tâm lý. Nghỉ ngơi cũng là một chiến lược.",
+  insight_mental_focus_title: "Tập trung cao hơn, tỷ lệ thắng cao hơn",
+  insight_mental_focus_body: "Tập trung cao: {high}% so với thấp: {low}% — chênh lệch {diff} điểm.",
+  insight_no_sl_title: "Hãy đặt stop-loss",
+  insight_no_sl_body: "{count} giao dịch ({pct}%) chưa đặt stop-loss.",
+  insight_goal_pips_title: "Còn {rem} pips nữa để đạt mục tiêu",
+  insight_goal_pips_body: "Bạn đã đạt {pct}% mục tiêu. Tiếp tục cố gắng nhé!",
+  insight_goal_pips_done_title: "Đã đạt mục tiêu pips hàng tháng!",
+  insight_goal_pips_done_body: "Bạn đã vượt mục tiêu {goal} pips. Làm tốt lắm!",
+  insight_goal_wr_done_title: "Đã đạt mục tiêu tỷ lệ thắng!",
+  insight_goal_wr_done_body: "Mục tiêu của bạn là {goal}% — hiện tại bạn đang ở mức {rate}%.",
 
   // Insights
   insights_min_trades: 'Ghi lại 3+ giao dịch để xem thông tin chi tiết',
@@ -449,6 +473,16 @@ export const vi: LangStrings = {
 
   // App name
   app_name: 'FX Trade Log',
+  notif_daily_streak: "{n} ngày liên tiếp! Hãy ghi lại giao dịch hôm nay",
+  notif_daily_default: "Đã đến lúc ghi lại giao dịch hôm nay!",
+  notif_weekly_title: "📊 Xem lại kết quả tuần trước",
+  notif_weekly_body: "Kiểm tra tỷ lệ thắng và pips trong tab Hàng tháng! Tiếp tục cố gắng trong tuần này nhé 🔥",
+  notif_channel_reminders: "Nhắc nhở",
+  eg_prefix: "VD: ",
+  calc_formula_yen: "Stop-loss {sl}pips × Đơn vị lot {lotUnit} / 10 = {value}{currency}/lot",
+  calc_formula_nonyen: "Stop-loss {sl}pips × Đơn vị lot {lotUnit} × 0.0001 × USD/JPY{usd} = {value}{currency}/lot",
+  locale_tag: "vi-VN",
+  csv_header: "ID,Ngày,Cặp,Hướng,Giá vào,Giá ra,SL,TP,RR dự kiến,Lot,Phong cách,Thẻ,pips,Lãi/Lỗ,Kết quả,Đánh giá,Ghi chú,Tập trung,Bình tĩnh,Lo lắng,Quy tắc đã tuân thủ",
 
   // Accessibility labels
   a11y_settings: 'Mở cài đặt',

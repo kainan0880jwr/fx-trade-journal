@@ -371,6 +371,30 @@ export const de: LangStrings = {
 
   // Day of week
   day_labels: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+  hour_label: '{h} Uhr',
+  day_suffix: '',
+  insight_best_pair_title: "{pair} ist dein starkes Paar",
+  insight_best_pair_body: "Trefferquote {rate}% ({count} Trades). Deine bisherige Bilanz zeigt starke Ergebnisse bei diesem Paar.",
+  insight_worst_pair_title: "Vorsicht bei {pair}",
+  insight_worst_pair_body: "Die Trefferquote ist mit {rate}% ({count} Trades) niedrig, basierend auf deiner Handelshistorie.",
+  insight_best_time_title: "{time} ist dein bestes Zeitfenster",
+  insight_best_time_body: "Deine Trefferquote in diesem Zeitfenster liegt bei {rate}%, basierend auf deiner Handelshistorie.",
+  insight_worst_day_title: "Vorsicht am {day}",
+  insight_worst_day_body: "Deine Trefferquote am {day} ist mit {rate}% tendenziell niedrig.",
+  insight_win_streak_title: "{count} Trades in Folge gewonnen!",
+  insight_win_streak_body: "Du bist auf einem guten Weg. Bleib diszipliniert und halte dich weiter an deine Regeln.",
+  insight_loss_streak_title: "{count} Trades in Folge verloren",
+  insight_loss_streak_body: "Mach einen Schritt zurück und überdenke deine Strategie und Verfassung. Eine Pause ist auch eine Strategie.",
+  insight_mental_focus_title: "Höhere Konzentration, höhere Trefferquote",
+  insight_mental_focus_body: "Hohe Konzentration: {high}% vs. niedrige Konzentration: {low}% — ein Unterschied von {diff} Punkten.",
+  insight_no_sl_title: "Setze einen Stop-Loss",
+  insight_no_sl_body: "{count} Trades ({pct}%) haben keinen Stop-Loss.",
+  insight_goal_pips_title: "Noch {rem} Pips bis zum Ziel",
+  insight_goal_pips_body: "Du hast {pct}% deines Ziels erreicht. Weiter so!",
+  insight_goal_pips_done_title: "Monatliches Pip-Ziel erreicht!",
+  insight_goal_pips_done_body: "Du hast dein Ziel von {goal} Pips übertroffen. Starke Leistung!",
+  insight_goal_wr_done_title: "Trefferquoten-Ziel erreicht!",
+  insight_goal_wr_done_body: "Dein Ziel war {goal}% — aktuell liegst du bei {rate}%.",
 
   // Insights
   insights_min_trades: 'Erfasse 3+ Trades, um Insights zu sehen',
@@ -449,6 +473,16 @@ export const de: LangStrings = {
 
   // App name
   app_name: 'FX Trade Log',
+  notif_daily_streak: "{n} Tage in Folge! Trage deinen heutigen Trade ein",
+  notif_daily_default: "Zeit, deinen heutigen Trade einzutragen!",
+  notif_weekly_title: "📊 Ergebnisse der letzten Woche ansehen",
+  notif_weekly_body: "Sieh dir Trefferquote und Pips im Tab Monatlich an! Weiter so diese Woche 🔥",
+  notif_channel_reminders: "Erinnerungen",
+  eg_prefix: "z. B. ",
+  calc_formula_yen: "Stop-Loss {sl}pips × Lot-Einheit {lotUnit} / 10 = {value}{currency}/Lot",
+  calc_formula_nonyen: "Stop-Loss {sl}pips × Lot-Einheit {lotUnit} × 0,0001 × USD/JPY{usd} = {value}{currency}/Lot",
+  locale_tag: "de-DE",
+  csv_header: "ID,Datum,Paar,Richtung,Einstiegskurs,Ausstiegskurs,SL,TP,Geplantes RR,Lot,Stil,Tags,pips,G&V,Ergebnis,Bewertung,Notiz,Konzentration,Ruhe,Angst,Befolgte Regeln",
 
   // Accessibility labels
   a11y_settings: 'Einstellungen öffnen',

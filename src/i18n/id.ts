@@ -371,6 +371,30 @@ export const id: LangStrings = {
 
   // Day of week
   day_labels: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+  hour_label: 'Jam {h}',
+  day_suffix: '',
+  insight_best_pair_title: "{pair} adalah pasangan terkuat Anda",
+  insight_best_pair_body: "Tingkat kemenangan {rate}% ({count} transaksi). Riwayat Anda menunjukkan hasil yang baik pada pasangan ini.",
+  insight_worst_pair_title: "Waspadai {pair}",
+  insight_worst_pair_body: "Tingkat kemenangan rendah, {rate}% ({count} transaksi), berdasarkan riwayat Anda.",
+  insight_best_time_title: "{time} adalah waktu terbaik Anda",
+  insight_best_time_body: "Tingkat kemenangan Anda pada jam ini adalah {rate}%, berdasarkan riwayat Anda.",
+  insight_worst_day_title: "Waspada pada {day}",
+  insight_worst_day_body: "Tingkat kemenangan Anda pada {day} cenderung rendah, yaitu {rate}%.",
+  insight_win_streak_title: "{count} kemenangan beruntun!",
+  insight_win_streak_body: "Anda sedang on fire. Tetap disiplin dan ikuti aturan Anda.",
+  insight_loss_streak_title: "{count} kekalahan beruntun",
+  insight_loss_streak_body: "Ambil jeda dan tata ulang strategi serta kondisi mental Anda. Istirahat juga merupakan strategi.",
+  insight_mental_focus_title: "Fokus lebih tinggi, kemenangan lebih tinggi",
+  insight_mental_focus_body: "Fokus tinggi: {high}% vs rendah: {low}% — selisih {diff} poin.",
+  insight_no_sl_title: "Tetapkan stop-loss",
+  insight_no_sl_body: "{count} transaksi ({pct}%) tidak memiliki stop-loss.",
+  insight_goal_pips_title: "Kurang {rem} pips lagi menuju target",
+  insight_goal_pips_body: "Anda sudah mencapai {pct}% dari target. Terus semangat!",
+  insight_goal_pips_done_title: "Target pips bulanan tercapai!",
+  insight_goal_pips_done_body: "Anda telah melampaui target {goal} pips. Kerja bagus!",
+  insight_goal_wr_done_title: "Target tingkat kemenangan tercapai!",
+  insight_goal_wr_done_body: "Target Anda adalah {goal}% — saat ini Anda berada di {rate}%.",
 
   // Insights
   insights_min_trades: 'Catat 3+ trade untuk melihat insight',
@@ -449,6 +473,16 @@ export const id: LangStrings = {
 
   // App name
   app_name: 'FX Trade Log',
+  notif_daily_streak: "{n} hari beruntun! Catat transaksi Anda hari ini",
+  notif_daily_default: "Saatnya mencatat transaksi Anda hari ini!",
+  notif_weekly_title: "📊 Tinjau hasil minggu lalu",
+  notif_weekly_body: "Cek tingkat kemenangan dan pips di tab Bulanan! Semangat terus minggu ini 🔥",
+  notif_channel_reminders: "Pengingat",
+  eg_prefix: "mis. ",
+  calc_formula_yen: "Stop-loss {sl}pips × Unit lot {lotUnit} / 10 = {value}{currency}/lot",
+  calc_formula_nonyen: "Stop-loss {sl}pips × Unit lot {lotUnit} × 0.0001 × USD/JPY{usd} = {value}{currency}/lot",
+  locale_tag: "id-ID",
+  csv_header: "ID,Tanggal,Pasangan,Arah,Harga Masuk,Harga Keluar,SL,TP,RR Rencana,Lot,Gaya,Tag,pips,P&L,Hasil,Penilaian,Catatan,Fokus,Tenang,Takut,Aturan Diikuti",
 
   // Accessibility labels
   a11y_settings: 'Buka pengaturan',

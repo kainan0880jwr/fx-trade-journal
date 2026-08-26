@@ -580,7 +580,7 @@ export default function NewTradeScreen() {
                     mode={pickerMode}
                     display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                     onChange={handlePickerChange}
-                    locale="ja-JP"
+                    locale={t('locale_tag')}
                   />
                   {Platform.OS === 'ios' && (
                     <TouchableOpacity style={styles.pickerDoneBtn} onPress={() => setPickerMode(null)}>

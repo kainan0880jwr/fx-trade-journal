@@ -1,5 +1,5 @@
 import type { Trade, DailyStats } from '../types';
-import { tArr } from '../i18n';
+import { t, tArr } from '../i18n';
 
 export function calcStats(trades: Trade[]): DailyStats {
   const totalTrades = trades.length;
@@ -99,7 +99,7 @@ export function calcMonthlyBreakdown(trades: Trade[], year: string) {
   }
   return Object.entries(months).map(([month, ts]) => {
     const s = calcStats(ts);
-    return { month, label: `${parseInt(month.slice(5))}月`, ...s };
+    return { month, label: tArr('month_names')[parseInt(month.slice(5)) - 1], ...s };
   });
 }
 
@@ -142,7 +142,7 @@ export function calcTimeAnalysis(trades: Trade[]) {
     .filter(([, d]) => d.total > 0)
     .map(([hour, d]) => ({
       hour: parseInt(hour),
-      label: `${hour}時`,
+      label: t('hour_label').replace('{h}', hour),
       total: d.total,
       wins: d.wins,
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
@@ -166,7 +166,7 @@ export function calcDayAnalysis(trades: Trade[]) {
     .filter(([, d]) => d.total > 0)
     .map(([day, d]) => ({
       day: parseInt(day),
-      label: `${DOW_LABELS[parseInt(day)]}曜`,
+      label: `${DOW_LABELS[parseInt(day)]}${t('day_suffix')}`,
       total: d.total,
       wins: d.wins,
       winRate: Math.round((d.wins / d.total) * 1000) / 10,

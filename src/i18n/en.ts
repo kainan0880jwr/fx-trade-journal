@@ -371,6 +371,30 @@ export const en: LangStrings = {
 
   // Day of week
   day_labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  hour_label: '{h}:00',
+  day_suffix: '',
+  insight_best_pair_title: "{pair} is your strong pair",
+  insight_best_pair_body: "Win rate {rate}% ({count} trades). Your track record shows strong results on this pair.",
+  insight_worst_pair_title: "Watch out for {pair}",
+  insight_worst_pair_body: "Win rate is low at {rate}% ({count} trades), based on your trade history.",
+  insight_best_time_title: "{time} is your best time window",
+  insight_best_time_body: "Your win rate during this window is {rate}%, based on your trade history.",
+  insight_worst_day_title: "Be careful on {day}",
+  insight_worst_day_body: "Your win rate on {day} tends to be low, at {rate}%.",
+  insight_win_streak_title: "{count}-trade win streak!",
+  insight_win_streak_body: "You're on a roll. Stay disciplined and keep following your rules.",
+  insight_loss_streak_title: "{count}-trade losing streak",
+  insight_loss_streak_body: "Take a step back and reset your strategy and mindset. Taking a break is a strategy too.",
+  insight_mental_focus_title: "Higher focus, higher win rate",
+  insight_mental_focus_body: "High focus: {high}% vs low focus: {low}% — a {diff}pt difference.",
+  insight_no_sl_title: "Set a stop-loss",
+  insight_no_sl_body: "{count} trades ({pct}%) have no stop-loss set.",
+  insight_goal_pips_title: "{rem} pips to go",
+  insight_goal_pips_body: "You're at {pct}% of your goal. Keep it up!",
+  insight_goal_pips_done_title: "Monthly pips goal reached!",
+  insight_goal_pips_done_body: "You've exceeded your goal of {goal} pips. Great work!",
+  insight_goal_wr_done_title: "Win rate goal reached!",
+  insight_goal_wr_done_body: "Your goal was {goal}% — you're currently at {rate}%.",
 
   // Insights
   insights_min_trades: 'Log 3+ trades to see insights',
@@ -449,6 +473,16 @@ export const en: LangStrings = {
 
   // App name
   app_name: 'FX Trade Log',
+  notif_daily_streak: "{n}-day streak! Log today's trade to keep it going",
+  notif_daily_default: "Time to log today's trade!",
+  notif_weekly_title: "📊 Review last week's results",
+  notif_weekly_body: "Check your win rate and pips in the Monthly tab! Keep it up this week 🔥",
+  notif_channel_reminders: "Reminders",
+  eg_prefix: "e.g. ",
+  calc_formula_yen: "Stop-loss {sl}pips × Lot unit {lotUnit} / 10 = {value}{currency}/lot",
+  calc_formula_nonyen: "Stop-loss {sl}pips × Lot unit {lotUnit} × 0.0001 × USD/JPY{usd} = {value}{currency}/lot",
+  locale_tag: "en-US",
+  csv_header: "ID,Date,Pair,Direction,Entry Rate,Exit Rate,SL,TP,Planned RR,Lot,Style,Tags,pips,P&L,Result,Rating,Reflection,Focus,Calm,Fear,Rules Followed",
 
   // Accessibility labels
   a11y_settings: 'Open settings',

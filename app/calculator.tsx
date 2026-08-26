@@ -43,15 +43,15 @@ export default function CalculatorScreen() {
     if (isYenPair) {
       const pipValue = lotUnit / 10;
       lotSize = Math.floor((riskAmount / (sl * pipValue)) * 100) / 100;
-      explanation = lang === 'ja'
-        ? `損切りpips ${sl}pips × ロット単位${lotUnit}通貨 / 10 = ${sl * pipValue}円/lot`
-        : `Stop-loss ${sl}pips × Lot unit ${lotUnit} / 10 = ${sl * pipValue}${currencySuffix}/lot`;
+      explanation = t('calc_formula_yen')
+        .replace('{sl}', String(sl)).replace('{lotUnit}', String(lotUnit))
+        .replace('{value}', String(sl * pipValue)).replace('{currency}', currencySuffix);
     } else {
       const pipValue = lotUnit * 0.0001 * usd;
       lotSize = Math.floor((riskAmount / (sl * pipValue)) * 100) / 100;
-      explanation = lang === 'ja'
-        ? `損切りpips ${sl}pips × ロット単位${lotUnit}通貨 × 0.0001 × USD/JPY${usd} = ${Math.round(sl * pipValue)}円/lot`
-        : `Stop-loss ${sl}pips × Lot unit ${lotUnit} × 0.0001 × USD/JPY${usd} = ${Math.round(sl * pipValue)}${currencySuffix}/lot`;
+      explanation = t('calc_formula_nonyen')
+        .replace('{sl}', String(sl)).replace('{lotUnit}', String(lotUnit)).replace('{usd}', String(usd))
+        .replace('{value}', String(Math.round(sl * pipValue))).replace('{currency}', currencySuffix);
     }
     lotSize = Math.max(0.01, lotSize);
   }
@@ -70,7 +70,7 @@ export default function CalculatorScreen() {
 
           <Label>{t('calc_balance')}</Label>
           <TextInput style={styles.input} value={balance} onChangeText={setBalance}
-            keyboardType="number-pad" placeholder="例: 500000" placeholderTextColor={C.text3} />
+            keyboardType="number-pad" placeholder={`${t('eg_prefix')}500000`} placeholderTextColor={C.text3} />
 
           <Label>{t('calc_risk_pct')}</Label>
           <View style={styles.chipRow}>
@@ -87,7 +87,7 @@ export default function CalculatorScreen() {
 
           <Label>{t('calc_sl_pips')}</Label>
           <TextInput style={styles.input} value={slPips} onChangeText={setSlPips}
-            keyboardType="decimal-pad" placeholder="例: 20" placeholderTextColor={C.text3} />
+            keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}20`} placeholderTextColor={C.text3} />
 
           <Label>{t('calc_pair_type')}</Label>
           <View style={styles.segRow}>
