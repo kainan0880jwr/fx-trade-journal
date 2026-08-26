@@ -89,6 +89,7 @@ export const de: LangStrings = {
 
   // Journal tab (index)
   today: 'HEUTE',
+  home_streak_days: ' Tage in Folge',
   empty_month: 'Keine Trades in diesem Monat',
   empty_month_sub: 'Tippe unten auf +, um einen Trade hinzuzufügen',
   add_trade: 'Trade hinzufügen',

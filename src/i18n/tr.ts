@@ -89,6 +89,7 @@ export const tr: LangStrings = {
 
   // Journal tab (index)
   today: 'BUGÜN',
+  home_streak_days: ' gün üst üste',
   empty_month: 'Bu ay işlem yok',
   empty_month_sub: 'İşlem eklemek için aşağıdaki + öğesine dokunun',
   add_trade: 'İşlem Ekle',

@@ -87,6 +87,7 @@ export const ja = {
 
   // 記録タブ (index)
   today: 'TODAY',
+  home_streak_days: '日連続',
   empty_month: 'この月のトレードはありません',
   empty_month_sub: '下の＋ボタンで記録しましょう',
   add_trade: '記録する',

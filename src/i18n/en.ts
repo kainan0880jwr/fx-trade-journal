@@ -89,6 +89,7 @@ export const en: LangStrings = {
 
   // Journal tab (index)
   today: 'TODAY',
+  home_streak_days: ' day streak',
   empty_month: 'No trades this month',
   empty_month_sub: 'Tap + below to add a trade',
   add_trade: 'Add Trade',
