@@ -5,10 +5,12 @@ import {
 import CountUp from '../../src/components/CountUp';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { router } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTradeStore } from '../../src/store/tradeStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
+import { getRecordStreak } from '../../src/db/queries';
 import TradeCard from '../../src/components/TradeCard';
 import MonthSelector from '../../src/components/MonthSelector';
 import CalendarModal from '../../src/components/CalendarModal';
@@ -36,10 +38,18 @@ export default function RecordScreen() {
   const isPremium = usePurchaseStore(s => s.isPremium);
   const [styleFilter, setStyleFilter] = useState('');
   const [calendarVisible, setCalendarVisible] = useState(false);
+  const [recordStreak, setRecordStreak] = useState(0);
 
   useEffect(() => {
     loadTradesByMonth(currentMonth);
   }, [currentMonth, loadTradesByMonth]);
+
+  // フォーカス毎に再取得（記録タブへ戻るたびに最新の連続記録日数を反映する）
+  useFocusEffect(
+    useCallback(() => {
+      getRecordStreak().then(setRecordStreak).catch(() => setRecordStreak(0));
+    }, [])
+  );
 
   // toISOString()はUTC基準のため、JST等UTCより進んだタイムゾーンでは早朝時間帯に
   // 前日の日付になってしまう。ローカル日付から組み立てる。
@@ -90,6 +100,11 @@ export default function RecordScreen() {
           <View style={styles.todayHeader}>
             <View style={styles.todayDot} />
             <Text style={styles.todayLabel}>{t('today')}</Text>
+            {recordStreak >= 2 && (
+              <View style={styles.streakPill}>
+                <Text style={styles.streakPillText}>🔥 {recordStreak}{t('home_streak_days')}</Text>
+              </View>
+            )}
           </View>
           <View style={styles.todayRow}>
             <MiniStat label={t('trades')} numericValue={todayTrades.length > 0 ? todayTrades.length : undefined} suffix={lang === 'ja' ? '件' : ''} isTablet={isTablet} />
@@ -258,6 +273,11 @@ function makeStyles(C: ThemeColors, isTablet: boolean) {
     todayHeader: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 },
     todayDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: C.win },
     todayLabel: { fontSize: isTablet ? 12 : 10, fontWeight: '800', color: C.text3, letterSpacing: 1.5 },
+    streakPill: {
+      marginLeft: 'auto', backgroundColor: C.primary + '18',
+      paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10,
+    },
+    streakPillText: { fontSize: isTablet ? 12 : 11, fontWeight: '800', color: C.primary },
     todayRow: { flexDirection: 'row', alignItems: 'center' },
     miniSep: { width: 1, height: 28, backgroundColor: C.border },
 

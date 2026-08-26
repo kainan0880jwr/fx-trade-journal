@@ -89,6 +89,7 @@ export const id: LangStrings = {
 
   // Journal tab (index)
   today: 'HARI INI',
+  home_streak_days: ' hari berturut-turut',
   empty_month: 'Belum ada trade bulan ini',
   empty_month_sub: 'Ketuk + di bawah untuk menambah trade',
   add_trade: 'Tambah Trade',

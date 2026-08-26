@@ -89,6 +89,7 @@ export const fr: LangStrings = {
 
   // Journal tab (index)
   today: "AUJOURD'HUI",
+  home_streak_days: " jours d'affilée",
   empty_month: "Aucun trade ce mois-ci",
   empty_month_sub: "Appuyez sur + ci-dessous pour ajouter un trade",
   add_trade: "Ajouter un trade",

@@ -89,6 +89,7 @@ export const es: LangStrings = {
 
   // Journal tab (index)
   today: "HOY",
+  home_streak_days: ' días seguidos',
   empty_month: "Sin operaciones este mes",
   empty_month_sub: "Toca + abajo para añadir una operación",
   add_trade: "Añadir operación",

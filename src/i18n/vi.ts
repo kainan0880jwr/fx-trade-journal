@@ -89,6 +89,7 @@ export const vi: LangStrings = {
 
   // Journal tab (index)
   today: 'HÔM NAY',
+  home_streak_days: ' ngày liên tiếp',
   empty_month: 'Không có giao dịch trong tháng này',
   empty_month_sub: 'Chạm + bên dưới để thêm giao dịch',
   add_trade: 'Thêm giao dịch',
