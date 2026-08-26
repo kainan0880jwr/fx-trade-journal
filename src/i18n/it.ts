@@ -183,6 +183,8 @@ export const it: LangStrings = {
   no_time_trades: "Nessuna operazione con orario registrato",
   time_analysis_title: "Per fascia oraria (numero di operazioni)",
   day_analysis_title: "Per giorno della settimana",
+  heatmap_title: "Mappa di calore giorno × ora",
+  heatmap_hint: "Le celle più scure indicano più operazioni; il verde/rosso mostra il guadagno/perdita medio in pips",
   tag_analysis_perf: "Performance per base di ingresso",
   no_tag_trades: "Nessuna operazione con tag",
   rr_recorded: "Operazioni con R:R",

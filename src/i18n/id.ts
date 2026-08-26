@@ -183,6 +183,8 @@ export const id: LangStrings = {
   no_time_trades: 'Tidak ada trade dengan waktu tercatat',
   time_analysis_title: 'Per Slot Waktu (Jumlah Trade)',
   day_analysis_title: 'Per Hari dalam Seminggu',
+  heatmap_title: 'Peta Panas Hari × Jam',
+  heatmap_hint: 'Sel yang lebih gelap berarti lebih banyak transaksi; hijau/merah menunjukkan rata-rata untung/rugi pips',
   tag_analysis_perf: 'Performa Berdasarkan Dasar Entry',
   no_tag_trades: 'Tidak ada trade dengan tag',
   rr_recorded: 'Trade dengan R:R',

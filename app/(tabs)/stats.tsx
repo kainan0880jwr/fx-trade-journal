@@ -14,6 +14,7 @@ import {
   calcEquityCurve, calcMentalStats, calcRuleStats,
 } from '../../src/utils/statsCalc';
 import PremiumGate from '../../src/components/PremiumGate';
+import HourDayHeatmap from '../../src/components/HourDayHeatmap';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { useTheme } from '../../src/theme/useTheme';
 import { useIsTablet, useContentWidth } from '../../src/hooks/useIsTablet';
@@ -205,6 +206,8 @@ export default function AnalysisScreen() {
                   <Text style={styles.emptyText}>{t('no_time_trades')}</Text>
                 ) : (
                   <>
+                    <HourDayHeatmap trades={trades} />
+
                     <Text style={styles.sectionTitle}>{t('time_analysis_title')}</Text>
                     <View style={styles.tableCard}>
                       <TableHeader cols={[t('col_time'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.8,1,1,1]} />
