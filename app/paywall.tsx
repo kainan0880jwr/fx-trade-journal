@@ -14,6 +14,7 @@ import { usePurchaseStore } from '../src/store/purchaseStore';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t } from '../src/i18n';
+import { PRIVACY_POLICY_URL, TERMS_URL, TOKUSHOHO_URL } from '../src/utils/legalLinks';
 import { monthlyEquivalent, annualDiscountPct, trialLabel } from '../src/utils/paywallCalc';
 
 // 機能リスト（5項目に圧縮・i18n化）。propsやstateに依存しないためモジュールレベルの定数にする
@@ -293,7 +294,7 @@ export default function PaywallScreen() {
         </Text>
         <View style={s.legalLinks}>
           <TouchableOpacity
-            onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/privacy-policy.html')}
+            onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
             accessibilityRole="link"
             hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
           >
@@ -301,20 +302,24 @@ export default function PaywallScreen() {
           </TouchableOpacity>
           <Text style={s.legalSep}>・</Text>
           <TouchableOpacity
-            onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/terms.html')}
+            onPress={() => Linking.openURL(TERMS_URL)}
             accessibilityRole="link"
             hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
           >
             <Text style={s.legalLink} maxFontSizeMultiplier={1.5}>{t('settings_terms')}</Text>
           </TouchableOpacity>
-          <Text style={s.legalSep}>・</Text>
-          <TouchableOpacity
-            onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/tokushoho.html')}
-            accessibilityRole="link"
-            hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
-          >
-            <Text style={s.legalLink} maxFontSizeMultiplier={1.5}>{t('settings_tokushoho')}</Text>
-          </TouchableOpacity>
+          {TOKUSHOHO_URL && (
+            <>
+              <Text style={s.legalSep}>・</Text>
+              <TouchableOpacity
+                onPress={() => Linking.openURL(TOKUSHOHO_URL as string)}
+                accessibilityRole="link"
+                hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
+              >
+                <Text style={s.legalLink} maxFontSizeMultiplier={1.5}>{t('settings_tokushoho')}</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
 
         {/* 解約導線: ストアの購読管理画面へ直接遷移できるようにする */}

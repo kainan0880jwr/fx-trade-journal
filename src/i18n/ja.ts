@@ -98,6 +98,7 @@ export const ja = {
 
   // 月次タブ (monthly)
   insight_disclaimer: '※ 以下はご自身のトレード記録に基づく統計情報です。投資助言ではありません。',
+  share_disclaimer: '個人の記録に基づく実績です。将来の成果を保証しません。投資助言ではありません。',
   monthly_wl: '勝敗',
   monthly_pips_tab: 'pips',
   monthly_stats: '集計',

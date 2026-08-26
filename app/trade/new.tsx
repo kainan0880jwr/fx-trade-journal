@@ -142,8 +142,17 @@ export default function NewTradeScreen() {
   // ──────────────────────────────────────────────
   const isDirty = useMemo(() => {
     if (mode === 'quick') return quickPips !== '' || quickResult !== null;
-    return entryRate !== '' || exitRate !== '' || reflection !== '' || imageUris.length > 0;
-  }, [mode, quickPips, quickResult, entryRate, exitRate, reflection, imageUris]);
+    return (
+      entryRate !== '' || exitRate !== '' || reflection !== '' || imageUris.length > 0 ||
+      stopLossStr !== '' || takeProfitStr !== '' || selectedTags.length > 0 ||
+      selfRating !== 3 || mentalFocus !== null || mentalCalm !== null || mentalFear !== null ||
+      ruleChecks.length > 0 || tfWeekly !== '' || tfDaily !== '' || tf4h !== '' || tf1h !== ''
+    );
+  }, [
+    mode, quickPips, quickResult, entryRate, exitRate, reflection, imageUris,
+    stopLossStr, takeProfitStr, selectedTags, selfRating, mentalFocus, mentalCalm, mentalFear,
+    ruleChecks, tfWeekly, tfDaily, tf4h, tf1h,
+  ]);
 
   // 保存成功後、OKタップ→router.back()までの間にsavingがfalseへ戻るため、
   // isDirty判定だけに頼ると保存済みでも破棄確認が誤って出てしまう。そのためのフラグ。

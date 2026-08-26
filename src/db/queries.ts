@@ -1,6 +1,23 @@
 import { getDatabase } from './database';
 import type { Trade, CurrencyPair, AppSettings, ReflectionTemplate } from '../types';
 
+// SQLiteのLIKEはデフォルトでASCII大文字小文字を区別しないためBINARY照合のインデックスを
+// 使わずフルスキャンになる。範囲比較(>= AND <)ならidx_trades_dateが効くため、
+// 「YYYY-MM」「YYYY-MM-DD」「YYYY」の前方一致条件はすべて範囲比較に変換する。
+function nextYearMonth(yearMonth: string): string {
+  const [y, m] = yearMonth.split('-').map(Number);
+  return m === 12 ? `${y + 1}-01` : `${y}-${String(m + 1).padStart(2, '0')}`;
+}
+function nextDateString(date: string): string {
+  const [y, m, d] = date.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + 1);
+  return `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, '0')}-${String(dt.getUTCDate()).padStart(2, '0')}`;
+}
+function nextYearString(year: string): string {
+  return String(Number(year) + 1);
+}
+
 function rowToTrade(row: any): Trade {
   return {
     id: row.id,
@@ -95,8 +112,8 @@ export async function toggleBookmark(id: string, bookmarked: boolean): Promise<v
 export async function getTradesByMonth(yearMonth: string): Promise<Trade[]> {
   const db = await getDatabase();
   const rows = await db.getAllAsync<any>(
-    `SELECT * FROM trades WHERE date LIKE ? ORDER BY date DESC`,
-    [`${yearMonth}%`]
+    `SELECT * FROM trades WHERE date >= ? AND date < ? ORDER BY date DESC`,
+    [yearMonth, nextYearMonth(yearMonth)]
   );
   return rows.map(rowToTrade);
 }
@@ -118,8 +135,8 @@ export async function getTotalTradeCount(): Promise<number> {
 export async function getTradesByDate(date: string): Promise<Trade[]> {
   const db = await getDatabase();
   const rows = await db.getAllAsync<any>(
-    `SELECT * FROM trades WHERE date LIKE ? ORDER BY date DESC`,
-    [`${date}%`]
+    `SELECT * FROM trades WHERE date >= ? AND date < ? ORDER BY date DESC`,
+    [date, nextDateString(date)]
   );
   return rows.map(rowToTrade);
 }
@@ -133,8 +150,8 @@ export async function getTradeById(id: string): Promise<Trade | null> {
 export async function getTradesForYear(year: string): Promise<Trade[]> {
   const db = await getDatabase();
   const rows = await db.getAllAsync<any>(
-    `SELECT * FROM trades WHERE date LIKE ? ORDER BY date ASC`,
-    [`${year}%`]
+    `SELECT * FROM trades WHERE date >= ? AND date < ? ORDER BY date ASC`,
+    [year, nextYearString(year)]
   );
   return rows.map(rowToTrade);
 }

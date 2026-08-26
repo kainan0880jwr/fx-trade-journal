@@ -18,7 +18,14 @@ const RC_API_KEY = Platform.OS === 'ios'
 // 過去に'premium'という前提でハードコードされていたが、実際の設定は'FXトレード日記 Pro'で
 // 一致しておらず、購入が成功してもhasPremium()が常にfalseを返す状態になっていた
 // （2026-08-21、RevenueCatダッシュボードを直接確認して発覚・修正）。
-export const ENTITLEMENT_ID = 'FXトレード日記 Pro';
+//
+// 日本語の表示名一致に依存する単一障害点だったため、ASCIIの新ID 'premium' を
+// RevenueCatダッシュボード側にも併設し、新旧どちらのIDでも有効判定できるようにする。
+// 'premium'をダッシュボードに追加し、既存ユーザーの復元でも正しく検知できることを
+// 確認できたら、ENTITLEMENT_IDS からレガシー表示名を削除してよい。
+export const ENTITLEMENT_ID = 'premium';
+const LEGACY_ENTITLEMENT_ID = 'FXトレード日記 Pro';
+export const ENTITLEMENT_IDS = [ENTITLEMENT_ID, LEGACY_ENTITLEMENT_ID];
 
 // プレースホルダー（appl_xxxx.../goog_xxxx...）を含む未設定キーを弾く
 const isPlaceholderKey = (key: string) => !key || /xxxx/i.test(key);
@@ -49,7 +56,7 @@ interface PurchaseStore {
 }
 
 function hasPremium(info: CustomerInfo): boolean {
-  return !!info.entitlements.active[ENTITLEMENT_ID];
+  return ENTITLEMENT_IDS.some((id) => !!info.entitlements.active[id]);
 }
 
 // StrictModeの二重マウントやuseEffectの多重発火でも configure/リスナー登録が

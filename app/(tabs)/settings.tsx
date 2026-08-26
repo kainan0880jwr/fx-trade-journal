@@ -24,6 +24,7 @@ import {
 import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
+import { PRIVACY_POLICY_URL, TERMS_URL, TOKUSHOHO_URL } from '../../src/utils/legalLinks';
 import type { CurrencyPair, AppSettings } from '../../src/types';
 
 type ThemeMode = AppSettings['themeMode'];
@@ -861,18 +862,20 @@ export default function SettingsScreen() {
             <Text style={styles.pairName}>{t('settings_contact')}</Text>
             <Ionicons name="chevron-forward" size={16} color={C.text3} />
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/privacy-policy.html')}>
+          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}>
             <Text style={styles.pairName}>{t('settings_privacy')}</Text>
             <Ionicons name="chevron-forward" size={16} color={C.text3} />
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/terms.html')}>
+          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL(TERMS_URL)}>
             <Text style={styles.pairName}>{t('settings_terms')}</Text>
             <Ionicons name="chevron-forward" size={16} color={C.text3} />
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL('https://kainan0880jwr.github.io/fx-trade-journal/tokushoho.html')}>
-            <Text style={styles.pairName}>{t('settings_tokushoho')}</Text>
-            <Ionicons name="chevron-forward" size={16} color={C.text3} />
-          </TouchableOpacity>
+          {TOKUSHOHO_URL && (
+            <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL(TOKUSHOHO_URL as string)}>
+              <Text style={styles.pairName}>{t('settings_tokushoho')}</Text>
+              <Ionicons name="chevron-forward" size={16} color={C.text3} />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={styles.pairRow}
             onPress={() => Linking.openURL(

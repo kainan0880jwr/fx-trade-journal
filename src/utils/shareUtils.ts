@@ -1,7 +1,7 @@
 import { Share } from 'react-native';
 import * as Sharing from 'expo-sharing';
 import { writeAsStringAsync, cacheDirectory } from 'expo-file-system/legacy';
-import { lang } from '../i18n';
+import { lang, t } from '../i18n';
 import type { DailyStats } from '../types';
 
 export interface ShareStatsOptions {
@@ -64,7 +64,7 @@ export function buildShareText(opts: ShareStatsOptions): string {
         BORDER_BOT,
       ];
 
-  return lines.join('\n');
+  return lines.join('\n') + '\n\n' + t('share_disclaimer');
 }
 
 // ── HTMLシェアカード ───────────────────────────────────────────
@@ -116,6 +116,10 @@ function buildShareHTML(opts: ShareStatsOptions): string {
     <span class="wm-cta">${isJa ? 'PRO版にアップグレード ›' : 'Upgrade to PRO ›'}</span>
   </div>` : `
   <div class="footer">${isJa ? 'FXトレードログ PRO' : 'FX Trade Log PRO'}</div>`;
+
+  // 個人の記録に基づく実績であり投資助言ではない旨の免責。ウォーターマークとは異なり、
+  // プレミアム版でも除去対象にしない（法務レビュー: シェア成果物にのみ免責がなかった穴を埋める）。
+  const disclaimerHTML = `<div class="disclaimer">${t('share_disclaimer')}</div>`;
 
   return `<!DOCTYPE html>
 <html>
@@ -181,6 +185,10 @@ body {
   background: rgba(0,0,0,0.2); border-radius: 20px;
   padding: 3px 10px; white-space: nowrap;
 }
+.disclaimer {
+  margin-top: 14px; text-align: center;
+  font-size: 10px; line-height: 1.5; color: rgba(255,255,255,0.38);
+}
 </style>
 </head>
 <body>
@@ -197,6 +205,7 @@ body {
   ${rowsHTML}
 
   ${watermarkHTML}
+  ${disclaimerHTML}
 </div>
 </body>
 </html>`;

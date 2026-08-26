@@ -100,6 +100,7 @@ export const hi: LangStrings = {
 
   // Monthly tab
   insight_disclaimer: '* निम्नलिखित आपके अपने ट्रेड रिकॉर्ड पर आधारित आंकड़े हैं। यह निवेश सलाह नहीं है।',
+  share_disclaimer: 'व्यक्तिगत ट्रेडिंग रिकॉर्ड। पिछले परिणाम भविष्य के प्रदर्शन की गारंटी नहीं देते। यह निवेश सलाह नहीं है।',
   monthly_wl: 'ज/हा',
   monthly_pips_tab: 'पिप्स',
   monthly_stats: 'आंकड़े',
