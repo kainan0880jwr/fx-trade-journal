@@ -22,6 +22,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.fxtradejournal.ios",
+      "appleTeamId": "Z5S5Y76XDS",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleLocalizations": [
@@ -38,6 +39,9 @@
           "pt"
         ],
         "CFBundleDevelopmentRegion": "ja"
+      },
+      "entitlements": {
+        "com.apple.security.application-groups": ["group.com.fxtradejournal.ios"]
       }
     },
     "android": {
@@ -100,7 +104,8 @@
           "organization": "photomachi",
           "project": "fx-trade-journal"
         }
-      ]
+      ],
+      "@bacons/apple-targets"
     ],
     "runtimeVersion": {
       "policy": "appVersion"

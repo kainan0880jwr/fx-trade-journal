@@ -6,6 +6,7 @@ import {
   getBookmarkedTrades, toggleBookmark, getAllTrades,
 } from '../db/queries';
 import { t } from '../i18n';
+import { syncWidgetData } from '../utils/widgetSync';
 
 interface TradeStore {
   trades: Trade[];
@@ -77,6 +78,7 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
     try {
       await insertTrade(trade);
       await get().loadTradesByMonth(get().currentMonth);
+      syncWidgetData();
     } catch (e) {
       set({ error: e instanceof Error ? e.message : t('trade_save_error') });
       throw e;
@@ -87,6 +89,7 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
     try {
       await updateTrade(trade);
       await get().loadTradesByMonth(get().currentMonth);
+      syncWidgetData();
     } catch (e) {
       set({ error: e instanceof Error ? e.message : t('trade_update_error') });
       throw e;
@@ -97,6 +100,7 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
     try {
       await deleteTrade(id);
       set(state => ({ trades: state.trades.filter(tr => tr.id !== id) }));
+      syncWidgetData();
     } catch (e) {
       set({ error: e instanceof Error ? e.message : t('trade_delete_error') });
       throw e;
