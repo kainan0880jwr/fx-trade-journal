@@ -610,6 +610,9 @@ export const ja = {
   error_boundary_title: '問題が発生しました',
   error_boundary_message: '予期しないエラーが発生しました。お手数ですが、アプリを再起動してください。',
   error_boundary_restart_button: 'アプリを再起動',
+  // リンクを開けなかったときのフォールバック
+  link_open_failed_title: "リンクを開けませんでした",
+  link_open_failed_message: "お使いの端末でこのリンクを開けませんでした。お手数ですが、下記に直接アクセスしてください。\n\n{target}",
 };
 
 export type LangStrings = typeof ja;

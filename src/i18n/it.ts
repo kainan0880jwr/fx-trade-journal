@@ -612,4 +612,7 @@ export const it: LangStrings = {
   error_boundary_title: 'Si è verificato un errore',
   error_boundary_message: "Si è verificato un errore imprevisto. Riavvia l'app.",
   error_boundary_restart_button: "Riavvia l'app",
+  // Fallback quando un link non può essere aperto
+  link_open_failed_title: "Impossibile aprire il link",
+  link_open_failed_message: "Non è stato possibile aprire questo link sul tuo dispositivo. Accedi direttamente:\n\n{target}",
 };

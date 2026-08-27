@@ -612,4 +612,7 @@ export const pt: LangStrings = {
   error_boundary_title: 'Ocorreu um erro',
   error_boundary_message: 'Ocorreu um erro inesperado. Reinicie o aplicativo.',
   error_boundary_restart_button: 'Reiniciar o aplicativo',
+  // Alternativa quando um link não pode ser aberto
+  link_open_failed_title: "Não foi possível abrir o link",
+  link_open_failed_message: "Não foi possível abrir este link no seu dispositivo. Acesse diretamente:\n\n{target}",
 };

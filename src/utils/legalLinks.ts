@@ -1,6 +1,17 @@
+import { Platform } from 'react-native';
 import { lang } from '../i18n';
 
 const BASE_URL = 'https://kainan0880jwr.github.io/fx-trade-journal/';
+
+// 問い合わせ先。mailto: リンクとフォールバック表示の両方で使うため定数化する。
+export const CONTACT_EMAIL = 'kainan0880jwr@gmail.com';
+export const CONTACT_MAILTO_URL = `mailto:${CONTACT_EMAIL}`;
+
+// 解約導線（ストアの購読管理画面）。設定画面とペイウォールの2箇所で使う。
+export const SUBSCRIPTIONS_URL =
+  Platform.OS === 'ios'
+    ? 'https://apps.apple.com/account/subscriptions'
+    : 'https://play.google.com/store/account/subscriptions';
 
 // 日本語版のみサフィックスなし(privacy-policy.html)。他10言語は
 // -en / -de / -fr / -es / -it / -id / -tr / -hi / -vi / -pt のファイルが存在する。
