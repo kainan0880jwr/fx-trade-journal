@@ -612,4 +612,7 @@ export const tr: LangStrings = {
   error_boundary_title: 'Bir sorun oluştu',
   error_boundary_message: 'Beklenmeyen bir hata oluştu. Lütfen uygulamayı yeniden başlatın.',
   error_boundary_restart_button: 'Uygulamayı yeniden başlat',
+  // Bağlantı açılamadığında yedek
+  link_open_failed_title: "Bağlantı açılamadı",
+  link_open_failed_message: "Bu bağlantı cihazınızda açılamadı. Lütfen doğrudan erişin:\n\n{target}",
 };

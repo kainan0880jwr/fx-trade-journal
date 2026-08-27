@@ -24,12 +24,23 @@ const APP_STORE_ID = '6786188634';
 // 何件目に促進するか（10件・30件・100件）
 const MILESTONES = [10, 30, 100];
 
-function buildReviewURL(): string {
+// 第1候補（ストアアプリを直接起動するカスタムスキーム）と、
+// それが開けなかった場合のhttpsフォールバックを返す。
+// iOSではカスタムスキームに対する canOpenURL() が Info.plist の
+// LSApplicationQueriesSchemes に宣言されていないと常に false を返すため、
+// 宣言前のビルドではフォールバック側が使われる。
+function buildReviewURLs(): string[] {
   if (Platform.OS === 'ios') {
-    return `itms-apps://itunes.apple.com/app/id${APP_STORE_ID}?action=write-review`;
+    return [
+      `itms-apps://itunes.apple.com/app/id${APP_STORE_ID}?action=write-review`,
+      `https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`,
+    ];
   }
   // Android（将来対応）
-  return `market://details?id=com.fxtradejournal.app`;
+  return [
+    `market://details?id=com.fxtradejournal.app`,
+    `https://play.google.com/store/apps/details?id=com.fxtradejournal.app`,
+  ];
 }
 
 export function useReviewPrompt() {
@@ -59,10 +70,16 @@ export function useReviewPrompt() {
             text: t('review_prompt_yes'),
             onPress: async () => {
               await setSetting('review_asked', '1');
-              const url = buildReviewURL();
-              const canOpen = await Linking.canOpenURL(url);
-              if (canOpen) {
-                await Linking.openURL(url);
+              // 順に試し、最初に開けたものを採用する。
+              // openURL() は失敗時に reject するので必ず catch する
+              // （未処理のPromise rejectionはSentryにエラーとして記録される）。
+              for (const url of buildReviewURLs()) {
+                try {
+                  await Linking.openURL(url);
+                  break;
+                } catch {
+                  // 次の候補へ
+                }
               }
             },
           },

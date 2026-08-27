@@ -612,4 +612,7 @@ export const en: LangStrings = {
   error_boundary_title: 'Something went wrong',
   error_boundary_message: 'An unexpected error occurred. Please restart the app.',
   error_boundary_restart_button: 'Restart app',
+  // Fallback when a link cannot be opened
+  link_open_failed_title: "Could not open the link",
+  link_open_failed_message: "This link could not be opened on your device. Please access it directly:\n\n{target}",
 };

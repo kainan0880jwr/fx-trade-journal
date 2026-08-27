@@ -612,4 +612,7 @@ export const fr: LangStrings = {
   error_boundary_title: "Une erreur s'est produite",
   error_boundary_message: "Une erreur inattendue s'est produite. Veuillez redémarrer l'application.",
   error_boundary_restart_button: "Redémarrer l'application",
+  // Repli lorsque le lien ne peut pas être ouvert
+  link_open_failed_title: "Impossible d’ouvrir le lien",
+  link_open_failed_message: "Ce lien n’a pas pu être ouvert sur votre appareil. Veuillez y accéder directement :\n\n{target}",
 };

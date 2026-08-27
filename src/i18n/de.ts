@@ -612,4 +612,7 @@ export const de: LangStrings = {
   error_boundary_title: 'Ein Fehler ist aufgetreten',
   error_boundary_message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte starte die App neu.',
   error_boundary_restart_button: 'App neu starten',
+  // Fallback, wenn ein Link nicht geöffnet werden kann
+  link_open_failed_title: "Link konnte nicht geöffnet werden",
+  link_open_failed_message: "Dieser Link konnte auf deinem Gerät nicht geöffnet werden. Bitte rufe ihn direkt auf:\n\n{target}",
 };

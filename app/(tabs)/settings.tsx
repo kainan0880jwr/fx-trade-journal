@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
-  StyleSheet, Alert, Switch, Platform, ActivityIndicator, Linking
+  StyleSheet, Alert, Switch, Platform, ActivityIndicator
 } from 'react-native';
 import Constants from 'expo-constants';
 import { cacheDirectory, writeAsStringAsync, deleteAsync } from 'expo-file-system/legacy';
@@ -25,7 +25,11 @@ import {
 import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
-import { PRIVACY_POLICY_URL, TERMS_URL, TOKUSHOHO_URL } from '../../src/utils/legalLinks';
+import {
+  PRIVACY_POLICY_URL, TERMS_URL, TOKUSHOHO_URL,
+  CONTACT_EMAIL, CONTACT_MAILTO_URL, SUBSCRIPTIONS_URL,
+} from '../../src/utils/legalLinks';
+import { openExternalUrl } from '../../src/utils/openExternalUrl';
 import type { CurrencyPair, AppSettings } from '../../src/types';
 
 type ThemeMode = AppSettings['themeMode'];
@@ -875,31 +879,27 @@ export default function SettingsScreen() {
         {/* サポート・法的情報 */}
         <SectionTitle>{t('settings_about')}</SectionTitle>
         <View style={styles.listCard}>
-          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL('mailto:kainan0880jwr@gmail.com')}>
+          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => openExternalUrl(CONTACT_MAILTO_URL, CONTACT_EMAIL)}>
             <Text style={styles.pairName}>{t('settings_contact')}</Text>
             <Ionicons name="chevron-forward" size={16} color={C.text3} />
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}>
+          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => openExternalUrl(PRIVACY_POLICY_URL)}>
             <Text style={styles.pairName}>{t('settings_privacy')}</Text>
             <Ionicons name="chevron-forward" size={16} color={C.text3} />
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL(TERMS_URL)}>
+          <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => openExternalUrl(TERMS_URL)}>
             <Text style={styles.pairName}>{t('settings_terms')}</Text>
             <Ionicons name="chevron-forward" size={16} color={C.text3} />
           </TouchableOpacity>
           {TOKUSHOHO_URL && (
-            <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => Linking.openURL(TOKUSHOHO_URL as string)}>
+            <TouchableOpacity style={[styles.pairRow, styles.pairBorder]} onPress={() => openExternalUrl(TOKUSHOHO_URL as string)}>
               <Text style={styles.pairName}>{t('settings_tokushoho')}</Text>
               <Ionicons name="chevron-forward" size={16} color={C.text3} />
             </TouchableOpacity>
           )}
           <TouchableOpacity
             style={styles.pairRow}
-            onPress={() => Linking.openURL(
-              Platform.OS === 'ios'
-                ? 'https://apps.apple.com/account/subscriptions'
-                : 'https://play.google.com/store/account/subscriptions'
-            )}
+            onPress={() => openExternalUrl(SUBSCRIPTIONS_URL)}
           >
             <Text style={styles.pairName}>{t('settings_manage_subscription')}</Text>
             <Ionicons name="chevron-forward" size={16} color={C.text3} />

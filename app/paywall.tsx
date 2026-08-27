@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  ScrollView, ActivityIndicator, Alert, Linking, Platform,
+  ScrollView, ActivityIndicator, Alert, Platform,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,7 +14,8 @@ import { usePurchaseStore } from '../src/store/purchaseStore';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t } from '../src/i18n';
-import { PRIVACY_POLICY_URL, TERMS_URL, TOKUSHOHO_URL } from '../src/utils/legalLinks';
+import { PRIVACY_POLICY_URL, TERMS_URL, TOKUSHOHO_URL, SUBSCRIPTIONS_URL } from '../src/utils/legalLinks';
+import { openExternalUrl } from '../src/utils/openExternalUrl';
 import { monthlyEquivalent, annualDiscountPct, trialLabel } from '../src/utils/paywallCalc';
 
 // 機能リスト（5項目に圧縮・i18n化）。propsやstateに依存しないためモジュールレベルの定数にする
@@ -294,7 +295,7 @@ export default function PaywallScreen() {
         </Text>
         <View style={s.legalLinks}>
           <TouchableOpacity
-            onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
+            onPress={() => openExternalUrl(PRIVACY_POLICY_URL)}
             accessibilityRole="link"
             hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
           >
@@ -302,7 +303,7 @@ export default function PaywallScreen() {
           </TouchableOpacity>
           <Text style={s.legalSep}>・</Text>
           <TouchableOpacity
-            onPress={() => Linking.openURL(TERMS_URL)}
+            onPress={() => openExternalUrl(TERMS_URL)}
             accessibilityRole="link"
             hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
           >
@@ -312,7 +313,7 @@ export default function PaywallScreen() {
             <>
               <Text style={s.legalSep}>・</Text>
               <TouchableOpacity
-                onPress={() => Linking.openURL(TOKUSHOHO_URL as string)}
+                onPress={() => openExternalUrl(TOKUSHOHO_URL as string)}
                 accessibilityRole="link"
                 hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
               >
@@ -324,11 +325,7 @@ export default function PaywallScreen() {
 
         {/* 解約導線: ストアの購読管理画面へ直接遷移できるようにする */}
         <TouchableOpacity
-          onPress={() => Linking.openURL(
-            Platform.OS === 'ios'
-              ? 'https://apps.apple.com/account/subscriptions'
-              : 'https://play.google.com/store/account/subscriptions'
-          )}
+          onPress={() => openExternalUrl(SUBSCRIPTIONS_URL)}
           accessibilityRole="link"
           hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
         >

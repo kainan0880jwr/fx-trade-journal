@@ -612,4 +612,7 @@ export const id: LangStrings = {
   error_boundary_title: 'Terjadi kesalahan',
   error_boundary_message: 'Terjadi kesalahan tak terduga. Silakan mulai ulang aplikasi.',
   error_boundary_restart_button: 'Mulai ulang aplikasi',
+  // Cadangan saat tautan tidak dapat dibuka
+  link_open_failed_title: "Tidak dapat membuka tautan",
+  link_open_failed_message: "Tautan ini tidak dapat dibuka di perangkat Anda. Silakan akses langsung:\n\n{target}",
 };

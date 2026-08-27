@@ -612,4 +612,7 @@ export const hi: LangStrings = {
   error_boundary_title: 'कुछ गड़बड़ हो गई',
   error_boundary_message: 'एक अनपेक्षित त्रुटि हुई। कृपया ऐप को पुनरारंभ करें।',
   error_boundary_restart_button: 'ऐप पुनरारंभ करें',
+  // जब लिंक न खुले तब का विकल्प
+  link_open_failed_title: "लिंक नहीं खोला जा सका",
+  link_open_failed_message: "यह लिंक आपके डिवाइस पर नहीं खोला जा सका। कृपया इसे सीधे खोलें:\n\n{target}",
 };

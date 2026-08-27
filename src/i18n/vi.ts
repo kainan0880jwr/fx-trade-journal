@@ -612,4 +612,7 @@ export const vi: LangStrings = {
   error_boundary_title: 'Đã xảy ra sự cố',
   error_boundary_message: 'Đã xảy ra lỗi không mong muốn. Vui lòng khởi động lại ứng dụng.',
   error_boundary_restart_button: 'Khởi động lại ứng dụng',
+  // Dự phòng khi không mở được liên kết
+  link_open_failed_title: "Không thể mở liên kết",
+  link_open_failed_message: "Không thể mở liên kết này trên thiết bị của bạn. Vui lòng truy cập trực tiếp:\n\n{target}",
 };
