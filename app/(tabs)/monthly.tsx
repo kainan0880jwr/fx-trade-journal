@@ -368,21 +368,33 @@ function GoalGauge({ label, current, goal, unit }: { label: string; current: num
   );
 }
 
+// 日〜土の暦週で月内を分割する（day_labelsが全11言語とも日曜始まりで統一されており、
+// カレンダー画面のグリッドも日曜始まりのため、それに合わせる）。以前は単純に
+// 1-7/8-14/15-21/22-31の固定4分割で、実際の曜日とは無関係な「週」だった上、
+// 月の長さによって最終週が7〜10日とバラついていた。
+function getCalendarWeekRanges(yearMonth: string): { start: number; end: number }[] {
+  const [year, month] = yearMonth.split('-').map(Number);
+  const firstWeekday = new Date(year, month - 1, 1).getDay(); // 0=日曜
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const ranges: { start: number; end: number }[] = [];
+  let day = 1;
+  while (day <= daysInMonth) {
+    const offsetInWeek = (day - 1 + firstWeekday) % 7;
+    const end = Math.min(day + (6 - offsetInWeek), daysInMonth);
+    ranges.push({ start: day, end });
+    day = end + 1;
+  }
+  return ranges;
+}
+
 function WeeklyTab({ trades, yearMonth }: { trades: import('../../src/types').Trade[]; yearMonth: string }) {
   const C = useTheme();
   const styles = makeStyles(C);
 
-  const WEEKS = [
-    { label: 'Week 1', range: [1, 7] as [number, number] },
-    { label: 'Week 2', range: [8, 14] as [number, number] },
-    { label: 'Week 3', range: [15, 21] as [number, number] },
-    { label: 'Week 4', range: [22, 31] as [number, number] },
-  ];
-
-  const weekStats = WEEKS.map(w => {
+  const weekStats = getCalendarWeekRanges(yearMonth).map(w => {
     const weekTrades = trades.filter(tr => {
       const d = new Date(tr.date).getDate();
-      return d >= w.range[0] && d <= w.range[1];
+      return d >= w.start && d <= w.end;
     });
     const wins = weekTrades.filter(tr => tr.result === 'win').length;
     const losses = weekTrades.filter(tr => tr.result === 'loss').length;
@@ -398,7 +410,7 @@ function WeeklyTab({ trades, yearMonth }: { trades: import('../../src/types').Tr
       {weekStats.map((w, i) => (
         <View key={i} style={styles.weekCard}>
           <View style={styles.weekHeader}>
-            <Text style={styles.weekLabel}>{w.label}</Text>
+            <Text style={styles.weekLabel}>{w.start === w.end ? `${w.start}` : `${w.start}–${w.end}`}</Text>
             <Text style={[styles.weekPips, { color: w.totalPips >= 0 ? C.win : C.loss }]}>
               {w.totalPips > 0 ? '+' : ''}{w.totalPips} pips
             </Text>
