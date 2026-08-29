@@ -1,3 +1,4 @@
+import { parseDecimal } from './parseDecimal';
 /**
  * pips計算
  * pipDigits=2: ドル円・クロス円（小数点2桁が1pip）
@@ -39,9 +40,8 @@ export function signedQuickPips(
   raw: string,
   result: 'win' | 'loss' | 'even' | null
 ): number | null {
-  if (!raw.trim()) return null;
-  const n = parseFloat(raw);
-  if (!Number.isFinite(n)) return null;
+  const n = parseDecimal(raw);
+  if (n == null) return null;
   if (result === 'loss') return -Math.abs(n);
   if (result === 'win') return Math.abs(n);
   // 引き分けは入力値をそのまま尊重する（0以外を入れる運用を妨げない）

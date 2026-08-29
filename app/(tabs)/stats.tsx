@@ -286,7 +286,12 @@ export default function AnalysisScreen() {
                   <View style={[styles.rrItem, { borderTopWidth: 1, borderTopColor: C.border }]}>
                     <Text style={styles.rrLabel}>{t('rr_actual_avg')}</Text>
                     <Text style={[styles.rrValue, { color: rrStats.avgActualRR >= 1 ? C.win : C.loss }]}>
-                      {rrStats.avgActualRR !== 0 ? `1:${Math.abs(rrStats.avgActualRR)}` : '-'}
+                      {rrStats.avgActualRR === 0 ? '-'
+                : rrStats.avgActualRR > 0 ? `1:${rrStats.avgActualRR}`
+                // 実際R/Rの平均は「1トレードあたり何Rの損益か」で、負になり得る。
+                // Math.abs で符号を捨てて `1:2.5` と出すと、2.5R負けているのに
+                // 利益が出ているように読めてしまうため、負値は明示する。
+                : `${rrStats.avgActualRR}R`}
                     </Text>
                   </View>
                 </View>
@@ -522,14 +527,16 @@ function EqItem({ label, value, color }: { label: string; value: string; color?:
 }
 
 function MentalRow({ label, avg, high, low, positiveHigh, last }: {
-  label: string; avg: number; high: number | null; low: number | null; positiveHigh: boolean; last?: boolean;
+  // avg は「その項目を1件も記録していない」場合に null になる。
+  // 以前は未入力を0として平均に混ぜていたため、実際より低い値が出ていた。
+  label: string; avg: number | null; high: number | null; low: number | null; positiveHigh: boolean; last?: boolean;
 }) {
   const C = useTheme();
   const styles = makeStyles(C);
   return (
     <View style={[styles.tableRow, !last && styles.rowBorder]}>
       <Text style={[styles.cell, { flex: 1.2, color: C.text, textAlign: 'left' }]}>{label}</Text>
-      <Text style={[styles.cell, { flex: 0.8 }]}>{avg}</Text>
+      <Text style={[styles.cell, { flex: 0.8 }]}>{avg ?? '-'}</Text>
       <Text style={[styles.cell, { flex: 1, color: high == null ? C.text2 : (positiveHigh ? (high >= 50 ? C.win : C.loss) : (high >= 50 ? C.loss : C.win)) }]}>
         {high != null ? `${high}%` : '-'}
       </Text>

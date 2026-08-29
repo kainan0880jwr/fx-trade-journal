@@ -1,5 +1,6 @@
+import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, AppState, type AppStateStatus, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, AppState, type AppStateStatus, StyleSheet, Alert } from 'react-native';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../store/settingsStore';
@@ -37,8 +38,17 @@ export default function AppLockGate({ children }: Props) {
         cancelLabel: t('cancel'),
       });
       if (result.success) setUnlocked(true);
-    } catch {
-      // 認証自体が失敗した場合はロックしたまま留める
+      else if (result.error && result.error !== 'user_cancel' && result.error !== 'system_cancel') {
+        // 生体認証のロックアウト等。何も表示しないと「ボタンを押しても無反応」に
+        // 見え、設定画面にも行けないためアプリから締め出されたのと同じになる。
+        Alert.alert(t('app_lock_failed_title'), t('app_lock_failed_msg'));
+      }
+    } catch (e) {
+      // 例外時も同様に無言にしない
+      try {
+        Sentry.captureException(e, { tags: { area: 'app_lock' } });
+      } catch { /* 計装の失敗は無視 */ }
+      Alert.alert(t('app_lock_failed_title'), t('app_lock_failed_msg'));
     } finally {
       isAuthenticatingRef.current = false;
     }

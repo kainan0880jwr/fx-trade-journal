@@ -25,6 +25,7 @@ import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
 import type { Trade, Direction, TradeStyle, TradeResult } from '../../src/types';
+import { parseDecimal } from '../../src/utils/parseDecimal';
 
 type InputMode = 'quick' | 'full';
 
@@ -62,6 +63,8 @@ export default function NewTradeScreen() {
   const { id: editId } = useLocalSearchParams<{ id?: string }>();
   const isEditMode = !!editId;
   const [loadingExisting, setLoadingExisting] = useState(isEditMode);
+  // 編集対象が見つからない/読めなかった場合。編集を続行させると重複レコードを生む。
+  const [loadFailed, setLoadFailed] = useState(false);
   // 編集元トレードのスナップショット。id/createdAt/bookmarkedの保持と、
   // 編集モードでのisDirty判定（初期値との比較）に使う。
   const originalTradeRef = useRef<Trade | null>(null);
@@ -127,7 +130,14 @@ export default function NewTradeScreen() {
     if (!editId) return;
     let cancelled = false;
     getTradeById(editId).then(tr => {
-      if (cancelled || !tr) return;
+      if (cancelled) return;
+      if (!tr) {
+        // 以前はここで return して setLoadingExisting(false) に到達せず、
+        // 編集画面がスピナーのまま永久に固まっていた（戻る以外に操作不能）。
+        setLoadingExisting(false);
+        setLoadFailed(true);
+        return;
+      }
       originalTradeRef.current = tr;
       setMode(tr.entryMethod === 'quick' ? 'quick' : 'full');
       setPair(tr.pair);
@@ -158,7 +168,13 @@ export default function NewTradeScreen() {
       setTf4h(tr.tf4h ?? '');
       setTf1h(tr.tf1h ?? '');
       setLoadingExisting(false);
-    }).catch(() => setLoadingExisting(false));
+    }).catch(() => {
+      // 読み込みに失敗したまま編集を続けると originalTradeRef が null のため
+      // 保存時に新しいIDが振られ、**元のトレードはそのままに別レコードが増える**。
+      // 月間集計が二重計上になるので、編集を続けさせない。
+      setLoadingExisting(false);
+      setLoadFailed(true);
+    });
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editId]);
@@ -176,13 +192,13 @@ export default function NewTradeScreen() {
   const selectedPair = pairs.find(p => p.name === pair);
   const pipDigits = selectedPair?.pipDigits ?? 2;
   const isYenPair = selectedPair?.isYenPair ?? false;
-  const entry = parseFloat(entryRate);
-  const exit = parseFloat(exitRate);
-  const _sl = parseFloat(stopLossStr);
+  const entry = parseDecimal(entryRate) ?? NaN;
+  const exit = parseDecimal(exitRate) ?? NaN;
+  const _sl = parseDecimal(stopLossStr) ?? NaN;
   const sl = stopLossStr.trim() && !isNaN(_sl) ? _sl : null;
-  const _tp = parseFloat(takeProfitStr);
+  const _tp = parseDecimal(takeProfitStr) ?? NaN;
   const tp = takeProfitStr.trim() && !isNaN(_tp) ? _tp : null;
-  const lot = parseFloat(lotSize);
+  const lot = parseDecimal(lotSize) ?? NaN;
   const canCalc = !isNaN(entry) && !isNaN(exit) && entry > 0 && exit > 0;
   const pips = canCalc ? calcPips(direction, entry, exit, pipDigits) : null;
   const profitLoss = (canCalc && pips != null && isYenPair && !isNaN(lot) && lot > 0)
@@ -286,8 +302,17 @@ export default function NewTradeScreen() {
   };
 
   const saveAndClose = async (trade: Trade) => {
+    // 保存本体と付帯処理（ストリーク更新・計測・各種プロンプト）を分けて扱う。
+    // 以前は同じ try に入っており、addTrade が成功した後に updateRecordStreak 等が
+    // 失敗すると「保存に失敗しました」と表示されていた。ユーザーは同じトレードを
+    // もう一度入力するため、**同一の取引が2件記録されて勝率とpipsが狂う**。
     try {
       await addTrade(trade);
+    } catch {
+      Alert.alert(t('save_error'), t('save_error_msg'));
+      return;
+    }
+    try {
       justSavedRef.current = true;
       recordFirstTradeSaved(); // リテンション自前計測、結果は待たない
       const streak = await updateRecordStreak();
@@ -301,7 +326,9 @@ export default function NewTradeScreen() {
       await promptAppLockIfNeeded();
       await promptReviewIfNeeded();
     } catch {
-      Alert.alert(t('save_error'), t('save_error_msg'));
+      // ここまで来ていれば保存自体は成功している。付帯処理の失敗で
+      // 「保存に失敗」と誤解させないよう、画面を閉じるだけにする。
+      closeScreen();
     }
   };
 
@@ -420,6 +447,27 @@ export default function NewTradeScreen() {
       <SafeAreaView style={styles.container} edges={['bottom']}>
         <View style={styles.loadingBox}>
           <ActivityIndicator size="large" color={C.primary} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // 編集対象を読めなかった場合。空のフォームを見せると、ユーザーは編集のつもりで
+  // 入力し、保存時に新規レコードが増えて集計が二重計上になる。編集させずに閉じる。
+  if (loadFailed) {
+    return (
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <View style={styles.loadingBox}>
+          <Text style={{ color: C.text2, textAlign: 'center', marginBottom: 16 }}>
+            {t('not_found')}
+          </Text>
+          <TouchableOpacity
+            onPress={closeScreen}
+            accessibilityRole="button"
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Text style={{ color: C.primary, fontWeight: '600' }}>{t('cancel')}</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );

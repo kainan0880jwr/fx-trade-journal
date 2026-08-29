@@ -1,3 +1,4 @@
+import { formatPF } from './formatStats';
 import { Share } from 'react-native';
 import * as Sharing from 'expo-sharing';
 import { writeAsStringAsync, deleteAsync, cacheDirectory } from 'expo-file-system/legacy';
@@ -35,7 +36,7 @@ export function buildShareText(opts: ShareStatsOptions): string {
         BORDER_DIV,
         row('✅', '勝率',   `${stats.winRate}%`),
         row('📈', 'pips',   `${sign(stats.totalPips)}${stats.totalPips}`),
-        row('📉', 'PF',     `${stats.profitFactor}`),
+        row('📉', 'PF',     formatPF(stats.profitFactor, stats.totalTrades > 0)),
         row('📋', '取引',   `${stats.totalTrades}回`),
         row('🏆', '勝/負',  `${stats.wins}勝 / ${stats.losses}敗`),
         ...(includeFinancials && stats.totalProfitLoss !== 0
@@ -52,7 +53,7 @@ export function buildShareText(opts: ShareStatsOptions): string {
         BORDER_DIV,
         row('✅', 'Win Rate', `${stats.winRate}%`),
         row('📈', 'Pips',     `${sign(stats.totalPips)}${stats.totalPips}`),
-        row('📉', 'PF',       `${stats.profitFactor}`),
+        row('📉', 'PF',       formatPF(stats.profitFactor, stats.totalTrades > 0)),
         row('📋', 'Trades',   `${stats.totalTrades}`),
         row('🏆', 'W / L',   `${stats.wins}W / ${stats.losses}L`),
         ...(includeFinancials && stats.totalProfitLoss !== 0
@@ -77,7 +78,7 @@ function buildShareHTML(opts: ShareStatsOptions): string {
 
   const rows: { icon: string; label: string; value: string }[] = [
     { icon: '📈', label: isJa ? 'pips'  : 'Pips',       value: `${stats.totalPips > 0 ? '+' : ''}${stats.totalPips}` },
-    { icon: '📉', label: 'PF',                            value: String(stats.profitFactor) },
+    { icon: '📉', label: 'PF',                            value: formatPF(stats.profitFactor, stats.totalTrades > 0) },
     { icon: '📋', label: isJa ? '取引回数' : 'Trades',   value: isJa ? `${stats.totalTrades}回` : String(stats.totalTrades) },
     { icon: '🏆', label: isJa ? '勝/負' : 'W / L',       value: isJa ? `${stats.wins}勝 / ${stats.losses}敗` : `${stats.wins}W / ${stats.losses}L` },
   ];

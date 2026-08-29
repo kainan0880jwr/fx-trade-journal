@@ -157,7 +157,11 @@ export function calcDayAnalysis(trades: Trade[]) {
   const byDay: Record<number, { wins: number; total: number; pips: number }> = {};
   for (let d = 0; d < 7; d++) byDay[d] = { wins: 0, total: 0, pips: 0 };
   for (const t of trades) {
-    const dow = new Date(t.date.slice(0, 10)).getDay();
+    // `new Date('2026-08-29')` は**UTC深夜**として解釈されるのに getDay() は
+    // ローカル基準で評価するため、UTCより西（南北アメリカ全域）では曜日が1日ずれる。
+    // 保存されている日付はローカル時刻なので、T00:00:00 を付けてローカル解釈に揃える
+    // （calendarMetrics.ts は元からこの形式）。
+    const dow = new Date(`${t.date.slice(0, 10)}T00:00:00`).getDay();
     byDay[dow].total++;
     if (t.result === 'win') byDay[dow].wins++;
     byDay[dow].pips += t.pips ?? 0;
@@ -193,7 +197,7 @@ export function calcHourDayHeatmap(trades: Trade[]): HeatmapCell[][] {
     if (!timeStr) continue;
     const hour = parseInt(timeStr, 10);
     if (isNaN(hour)) continue;
-    const dow = new Date(tr.date.slice(0, 10)).getDay();
+    const dow = new Date(`${tr.date.slice(0, 10)}T00:00:00`).getDay();
     const cell = grid[dow][hour];
     cell.total++;
     if (tr.result === 'win') cell.wins++;
@@ -281,18 +285,26 @@ export function calcMentalStats(trades: Trade[]) {
   const withMental = trades.filter(t => t.mentalFocus != null);
   if (withMental.length === 0) return null;
 
+  // 集中度・冷静さ・焦り度は独立した入力で、片方だけ記録できる。
+  // 以前は withMental（集中度が入っている行）を全項目の母数にしたうえで
+  // `?? 0` を掛けていたため、**未入力の項目が「スコア0＝低」として集計**され、
+  // 「冷静さが低い時の勝率」に冷静さを記録していない行が混入していた。
+  // 項目ごとに、その項目が実際に記録されている行だけを母数にする。
   const buckets = (key: 'mentalFocus' | 'mentalCalm' | 'mentalFear') => {
-    const high = withMental.filter(t => (t[key] ?? 0) >= 4);
-    const mid = withMental.filter(t => (t[key] ?? 0) === 3);
-    const low = withMental.filter(t => (t[key] ?? 0) <= 2);
+    const rated = withMental.filter(t => t[key] != null);
+    const high = rated.filter(t => (t[key] as number) >= 4);
+    const mid = rated.filter(t => (t[key] as number) === 3);
+    const low = rated.filter(t => (t[key] as number) <= 2);
     const wr = (arr: Trade[]) =>
       arr.length === 0 ? null : Math.round(arr.filter(t => t.result === 'win').length / arr.length * 1000) / 10;
     return { high: wr(high), mid: wr(mid), low: wr(low), highCount: high.length, lowCount: low.length };
   };
 
   const avgScore = (key: 'mentalFocus' | 'mentalCalm' | 'mentalFear') => {
-    const vals = withMental.map(t => t[key] ?? 0);
-    return Math.round(vals.reduce((s, v) => s + v, 0) / vals.length * 10) / 10;
+    // 未入力を0として平均に混ぜると、実際の入力値より大きく下振れする
+    const vals = withMental.filter(t => t[key] != null).map(t => t[key] as number);
+    if (vals.length === 0) return null;
+    return Math.round(vals.reduce((a, v) => a + v, 0) / vals.length * 10) / 10;
   };
 
   return {

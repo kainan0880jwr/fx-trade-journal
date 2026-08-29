@@ -55,7 +55,13 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       ]);
       set({ pairs, settings, entryTags, tradeRules, isLoaded: true, error: null });
     } catch (e) {
+      // 以前はここで握り潰しており、_layout.tsx の `await loadAll()` は成功扱いに
+      // なっていた。中身は既定値（pairs=[] / accountBalance=0 / lotUnit=10000）のため、
+      // 通貨ペアが空でトレードを記録できない・損益が別の数字になる・テーマが戻る、
+      // といった状態のままアプリが通常起動していた。他のメソッドと同様に throw して
+      // DBエラー画面（再試行あり）へ落とす。
       set({ error: e instanceof Error ? e.message : '設定の読み込みに失敗しました' });
+      throw e;
     }
   },
 
