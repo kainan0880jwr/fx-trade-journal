@@ -11,7 +11,7 @@ import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { getAllTrades, getCurrencyPairs } from '../db/queries';
 import { getDatabase, SCHEMA_MIGRATIONS } from '../db/database';
-import { resolveImageUri } from './imageStorage';
+import { resolveImageUri, isSafeChartPath } from './imageStorage';
 import type { Trade, CurrencyPair } from '../types';
 
 const SCHEMA_VERSION = SCHEMA_MIGRATIONS.length;
@@ -45,6 +45,9 @@ export async function exportBackup(): Promise<void> {
   for (const trade of trades) {
     const imageBase64: Record<string, string> = {};
     for (const uri of trade.imageUris) {
+      // 万一DBに不正なパスが入っていても、バックアップJSONに他ファイルを
+      // 取り込まないようにする
+      if (!uri.includes('://') && !isSafeChartPath(uri)) continue;
       try {
         const resolved = resolveImageUri(uri);
         const info = await getInfoAsync(resolved);
@@ -178,9 +181,11 @@ export async function importBackup(): Promise<number> {
     }
 
     for (const trade of data.trades) {
-      // URIを新しいパスに置換。マッピングにない値は相対パス形式でなければ破棄する（任意ローカルURI注入の防止）
+      // URIを新しいパスに置換。マッピングに無い値は charts/ 配下の相対パスだけを通す。
+      // 「'://' を含まなければ通す」だけだと、"SQLite/fx_journal_v2.db" のような
+      // 普通の相対パスが素通りし、そのトレードの削除で稼働中のDBが消せてしまう。
       const newImageUris = (trade.imageUris ?? [])
-        .map(u => uriMap[u] ?? (typeof u === 'string' && !u.includes('://') ? u : null))
+        .map(u => uriMap[u] ?? (isSafeChartPath(u) ? u : null))
         .filter((u): u is string => u !== null);
       await db.runAsync(
         `INSERT OR REPLACE INTO trades
@@ -245,9 +250,11 @@ export async function importBackup(): Promise<number> {
     //   - 修正前のバックアップ → フラグ無し → ここで修復して フラグを立てる
     //   - 修正後のバックアップ → フラグ有り → 既に正しい値なので何もしない
     // CSVインポート行（id が 'mt4_' で始まる）は証券会社が出した実際の金額なので常に除外。
-    const scaleFixed = await db.getFirstAsync<{ value: string }>(
-      `SELECT value FROM settings WHERE key='profit_loss_scale_fixed_v1'`
-    );
+    // 判定はDBのsettingsではなく「バックアップJSONに入っていたフラグ」で行う。
+    // importBackup は settings テーブルを削除しないため、起動時マイグレーションが
+    // 立てたフラグが必ず残っており、DB側を見ると常に「修復済み」と判定されて
+    // この修復が一度も実行されなかった（10倍のまま復元されていた）。
+    const scaleFixed = data.settings?.['profit_loss_scale_fixed_v1'] === '1';
     if (!scaleFixed) {
       await db.runAsync(
         `UPDATE trades SET profit_loss = ROUND(profit_loss / 10.0)
@@ -282,12 +289,38 @@ function snapshotPath(): string | null {
   return documentDirectory ? `${documentDirectory}${SNAPSHOT_FILENAME}` : null;
 }
 
-/** 直前のバックアップインポート前のスナップショットが存在するか確認する */
-export async function hasPreImportSnapshot(): Promise<boolean> {
+/**
+ * インポート直前のスナップショットの有効期限（日）。
+ *
+ * 期限を設けないと、3か月前のインポート時に作られたスナップショットに対して
+ * 「元に戻す」ボタンが今日も表示され続け、押すとその間の記録が全部消える。
+ * このスナップショットは全トレードの平文JSONでもあるため、
+ * 用が済んだら残しておかないほうがよい。
+ */
+const SNAPSHOT_TTL_DAYS = 7;
+
+/**
+ * 直前のインポート前スナップショットを返す。期限切れなら削除して null。
+ * いつの時点に戻るのかを呼び出し側が必ず提示できるよう、日時を返す。
+ */
+export async function getPreImportSnapshot(): Promise<{ exportedAt: string } | null> {
   const p = snapshotPath();
-  if (!p) return false;
+  if (!p) return null;
   const info = await getInfoAsync(p);
-  return info.exists;
+  if (!info.exists) return null;
+  try {
+    const raw = await readAsStringAsync(p, { encoding: 'utf8' });
+    const data = JSON.parse(raw) as SnapshotData;
+    const at = Date.parse(data.exportedAt);
+    if (!Number.isFinite(at)) return null;
+    if (Date.now() - at > SNAPSHOT_TTL_DAYS * 86400000) {
+      await deleteAsync(p, { idempotent: true }).catch(() => {});
+      return null;
+    }
+    return { exportedAt: data.exportedAt };
+  } catch {
+    return null;
+  }
 }
 
 /**
