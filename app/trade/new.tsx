@@ -861,7 +861,10 @@ export default function NewTradeScreen() {
               )}
 
               {!isPremium && (
-                <TouchableOpacity style={styles.premiumHint} onPress={() => router.push('/paywall')}>
+                <TouchableOpacity
+                  style={styles.premiumHint}
+                  onPress={() => router.push({ pathname: '/paywall', params: { source: 'trade_form_hint' } })}
+                >
                   <Ionicons name="star" size={14} color={C.yellow} />
                   <Text style={styles.premiumHintText}>{t('form_premium_hint')}</Text>
                   <Ionicons name="chevron-forward" size={14} color={C.primary} />

@@ -42,7 +42,7 @@ export default function YearlyScreen() {
   const maxPips = Math.max(...monthlyData.map(m => Math.abs(m.totalPips)), 1);
 
   return (
-    <PremiumGate feature={t('tab_yearly')}>
+    <PremiumGate feature={t('tab_yearly')} featureKey="yearly">
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <View style={styles.yearSelector}>
         <TouchableOpacity onPress={() => setYear(y => y - 1)} style={styles.yearBtn}>

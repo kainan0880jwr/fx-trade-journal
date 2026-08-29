@@ -171,7 +171,7 @@ export default function MonthlyScreen() {
       </View>
 
       {!isPremium && (activeTab === 'weekly' || activeTab === 'insights') ? (
-        <PremiumGate feature={SUB_TABS().find(tb => tb.key === activeTab)?.label ?? ''}><View /></PremiumGate>
+        <PremiumGate feature={SUB_TABS().find(tb => tb.key === activeTab)?.label ?? ''} featureKey={`monthly_${activeTab}`}><View /></PremiumGate>
       ) : (
       <ScrollView contentContainerStyle={styles.scroll}>
         {trades.length === 0 ? (
@@ -537,7 +537,7 @@ function YearlyView() {
   const maxPips = Math.max(...monthlyData.map(m => Math.abs(m.totalPips)), 1);
 
   return (
-    <PremiumGate feature={t('tab_yearly')}>
+    <PremiumGate feature={t('tab_yearly')} featureKey="yearly">
       <View style={styles.yearSelector}>
         <TouchableOpacity onPress={() => setYear(y => y - 1)} style={styles.yearBtn}>
           <Ionicons name="chevron-back" size={22} color={C.primary} />

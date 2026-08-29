@@ -26,7 +26,7 @@ export default function BookmarksScreen() {
   useFocusEffect(useCallback(() => { load(); }, []));
 
   return (
-    <PremiumGate feature={t('tab_saved')}>
+    <PremiumGate feature={t('tab_saved')} featureKey="bookmarks">
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <FlatList
         data={bookmarks}

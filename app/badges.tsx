@@ -33,7 +33,7 @@ export default function BadgesScreen() {
   const filtered = filter === 'all' ? badges : badges.filter(b => b.category === filter);
 
   return (
-    <PremiumGate feature={t('settings_badges')}>
+    <PremiumGate feature={t('settings_badges')} featureKey="badges">
     <SafeAreaView style={s.container} edges={['top', 'bottom']}>
       <View style={s.header}>
         <Ionicons name="trophy-outline" size={28} color={C.yellow} />
