@@ -44,12 +44,16 @@ export function calcDailyCumulativePips(trades: Trade[], yearMonth: string) {
 }
 
 export function calcStatsByPair(trades: Trade[]) {
-  const map: Record<string, { wins: number; total: number; pips: number }> = {};
+  // pl は損益の合計、plCount は損益が記録されている件数。
+  // 平均を出すときは total ではなく plCount で割る（損益が無い行を
+  // 母数に入れると平均が0方向へ薄まるため）。
+  const map: Record<string, { wins: number; total: number; pips: number; pl: number; plCount: number }> = {};
   for (const t of trades) {
-    if (!map[t.pair]) map[t.pair] = { wins: 0, total: 0, pips: 0 };
+    if (!map[t.pair]) map[t.pair] = { wins: 0, total: 0, pips: 0, pl: 0, plCount: 0 };
     map[t.pair].total++;
     if (t.result === 'win') map[t.pair].wins++;
     map[t.pair].pips += t.pips ?? 0;
+    if (t.profitLoss != null) { map[t.pair].pl += t.profitLoss; map[t.pair].plCount++; }
   }
   return Object.entries(map)
     .map(([pair, d]) => ({
@@ -57,17 +61,24 @@ export function calcStatsByPair(trades: Trade[]) {
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
       totalTrades: d.total,
       avgPips: Math.round((d.pips / d.total) * 10) / 10,
+      totalPL: Math.round(d.pl),
+      avgPL: d.plCount > 0 ? Math.round(d.pl / d.plCount) : null,
+      plCount: d.plCount,
     }))
     .sort((a, b) => b.totalTrades - a.totalTrades);
 }
 
 export function calcStatsByStyle(trades: Trade[]) {
-  const map: Record<string, { wins: number; total: number; pips: number }> = {};
+  // pl は損益の合計、plCount は損益が記録されている件数。
+  // 平均を出すときは total ではなく plCount で割る（損益が無い行を
+  // 母数に入れると平均が0方向へ薄まるため）。
+  const map: Record<string, { wins: number; total: number; pips: number; pl: number; plCount: number }> = {};
   for (const t of trades) {
-    if (!map[t.style]) map[t.style] = { wins: 0, total: 0, pips: 0 };
+    if (!map[t.style]) map[t.style] = { wins: 0, total: 0, pips: 0, pl: 0, plCount: 0 };
     map[t.style].total++;
     if (t.result === 'win') map[t.style].wins++;
     map[t.style].pips += t.pips ?? 0;
+    if (t.profitLoss != null) { map[t.style].pl += t.profitLoss; map[t.style].plCount++; }
   }
   return Object.entries(map)
     .map(([style, d]) => ({
@@ -75,6 +86,9 @@ export function calcStatsByStyle(trades: Trade[]) {
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
       totalTrades: d.total,
       avgPips: Math.round((d.pips / d.total) * 10) / 10,
+      totalPL: Math.round(d.pl),
+      avgPL: d.plCount > 0 ? Math.round(d.pl / d.plCount) : null,
+      plCount: d.plCount,
     }))
     .sort((a, b) => b.totalTrades - a.totalTrades);
 }
@@ -127,8 +141,8 @@ export function getWorstTrade(trades: Trade[]): Trade | null {
 
 // 機能3: 時間帯別分析
 export function calcTimeAnalysis(trades: Trade[]) {
-  const byHour: Record<number, { wins: number; total: number; pips: number }> = {};
-  for (let h = 0; h < 24; h++) byHour[h] = { wins: 0, total: 0, pips: 0 };
+  const byHour: Record<number, { wins: number; total: number; pips: number; pl: number; plCount: number }> = {};
+  for (let h = 0; h < 24; h++) byHour[h] = { wins: 0, total: 0, pips: 0, pl: 0, plCount: 0 };
   for (const t of trades) {
     const timeStr = t.date.slice(11, 13);
     if (!timeStr) continue;
@@ -137,6 +151,7 @@ export function calcTimeAnalysis(trades: Trade[]) {
     byHour[h].total++;
     if (t.result === 'win') byHour[h].wins++;
     byHour[h].pips += t.pips ?? 0;
+    if (t.profitLoss != null) { byHour[h].pl += t.profitLoss; byHour[h].plCount++; }
   }
   return Object.entries(byHour)
     .filter(([, d]) => d.total > 0)
@@ -147,6 +162,9 @@ export function calcTimeAnalysis(trades: Trade[]) {
       wins: d.wins,
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
       avgPips: Math.round((d.pips / d.total) * 10) / 10,
+      totalPL: Math.round(d.pl),
+      avgPL: d.plCount > 0 ? Math.round(d.pl / d.plCount) : null,
+      plCount: d.plCount,
     }))
     .sort((a, b) => a.hour - b.hour);
 }
@@ -154,8 +172,8 @@ export function calcTimeAnalysis(trades: Trade[]) {
 // 機能3: 曜日別分析
 export function calcDayAnalysis(trades: Trade[]) {
   const DOW_LABELS = tArr('day_labels');
-  const byDay: Record<number, { wins: number; total: number; pips: number }> = {};
-  for (let d = 0; d < 7; d++) byDay[d] = { wins: 0, total: 0, pips: 0 };
+  const byDay: Record<number, { wins: number; total: number; pips: number; pl: number; plCount: number }> = {};
+  for (let d = 0; d < 7; d++) byDay[d] = { wins: 0, total: 0, pips: 0, pl: 0, plCount: 0 };
   for (const t of trades) {
     // `new Date('2026-08-29')` は**UTC深夜**として解釈されるのに getDay() は
     // ローカル基準で評価するため、UTCより西（南北アメリカ全域）では曜日が1日ずれる。
@@ -165,6 +183,7 @@ export function calcDayAnalysis(trades: Trade[]) {
     byDay[dow].total++;
     if (t.result === 'win') byDay[dow].wins++;
     byDay[dow].pips += t.pips ?? 0;
+    if (t.profitLoss != null) { byDay[dow].pl += t.profitLoss; byDay[dow].plCount++; }
   }
   return Object.entries(byDay)
     .filter(([, d]) => d.total > 0)
@@ -175,6 +194,9 @@ export function calcDayAnalysis(trades: Trade[]) {
       wins: d.wins,
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
       avgPips: Math.round((d.pips / d.total) * 10) / 10,
+      totalPL: Math.round(d.pl),
+      avgPL: d.plCount > 0 ? Math.round(d.pl / d.plCount) : null,
+      plCount: d.plCount,
     }))
     .sort((a, b) => a.day - b.day);
 }
@@ -242,13 +264,17 @@ export function calcRRStats(trades: Trade[]) {
 
 // 機能2: タグ統計
 export function calcTagStats(trades: Trade[]) {
-  const map: Record<string, { wins: number; total: number; pips: number }> = {};
+  // pl は損益の合計、plCount は損益が記録されている件数。
+  // 平均を出すときは total ではなく plCount で割る（損益が無い行を
+  // 母数に入れると平均が0方向へ薄まるため）。
+  const map: Record<string, { wins: number; total: number; pips: number; pl: number; plCount: number }> = {};
   for (const t of trades) {
     for (const tag of (t.tags ?? [])) {
-      if (!map[tag]) map[tag] = { wins: 0, total: 0, pips: 0 };
+      if (!map[tag]) map[tag] = { wins: 0, total: 0, pips: 0, pl: 0, plCount: 0 };
       map[tag].total++;
       if (t.result === 'win') map[tag].wins++;
       map[tag].pips += t.pips ?? 0;
+      if (t.profitLoss != null) { map[tag].pl += t.profitLoss; map[tag].plCount++; }
     }
   }
   return Object.entries(map)
@@ -258,6 +284,9 @@ export function calcTagStats(trades: Trade[]) {
       wins: d.wins,
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
       avgPips: Math.round((d.pips / d.total) * 10) / 10,
+      totalPL: Math.round(d.pl),
+      avgPL: d.plCount > 0 ? Math.round(d.pl / d.plCount) : null,
+      plCount: d.plCount,
     }))
     .sort((a, b) => b.total - a.total);
 }
@@ -338,4 +367,86 @@ export function generateId(): string {
     const r = Math.random() * 16 | 0;
     return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
   });
+}
+
+/**
+ * 金額ベースの成績指標。
+ *
+ * これまで統計はすべて pips 基準だった。pips はロットに依存しないので
+ * 手法の良し悪しを見るには適しているが、**「結局いくら儲かったのか」**は
+ * 分からない。トレーダーが最も知りたい期待値・リスクは金額で決まる。
+ *
+ * profitLoss が入っていないトレードは母数から除外し、カバー率を併せて返す。
+ * 母数が異なる数値を「合計」として並べると、合計pipsがマイナスなのに
+ * 損益合計がプラス、といった矛盾が生じるため（実際に発生していた）。
+ */
+export interface MoneyStats {
+  /** 損益が記録されている件数 */
+  covered: number;
+  /** 全件数（カバー率の分母） */
+  total: number;
+  /** 損益の合計 */
+  totalPL: number;
+  /** 勝ちトレードの平均利益（正の値） */
+  avgWin: number | null;
+  /** 負けトレードの平均損失（正の値で返す） */
+  avgLoss: number | null;
+  /** リスクリワード = 平均利益 ÷ 平均損失。損失0なら Infinity */
+  riskReward: number | null;
+  /** 金額ベースのプロフィットファクター = 総利益 ÷ 総損失 */
+  profitFactor: number | null;
+  /** 最大ドローダウン（正の値）。損益の累積が直近の最高値からどれだけ落ちたか */
+  maxDrawdown: number;
+  /** 1トレードあたりの期待値 */
+  expectancy: number | null;
+}
+
+export function calcMoneyStats(trades: Trade[]): MoneyStats {
+  const withPL = trades.filter(t => t.profitLoss != null);
+  const total = trades.length;
+  const covered = withPL.length;
+
+  if (covered === 0) {
+    return {
+      covered: 0, total, totalPL: 0,
+      avgWin: null, avgLoss: null, riskReward: null,
+      profitFactor: null, maxDrawdown: 0, expectancy: null,
+    };
+  }
+
+  const vals = withPL.map(t => t.profitLoss as number);
+  const totalPL = Math.round(vals.reduce((s, v) => s + v, 0));
+
+  const wins = vals.filter(v => v > 0);
+  const losses = vals.filter(v => v < 0);
+  const grossProfit = wins.reduce((s, v) => s + v, 0);
+  const grossLoss = Math.abs(losses.reduce((s, v) => s + v, 0));
+
+  const avgWin = wins.length > 0 ? Math.round(grossProfit / wins.length) : null;
+  const avgLoss = losses.length > 0 ? Math.round(grossLoss / losses.length) : null;
+
+  const riskReward = (avgWin != null && avgLoss != null && avgLoss > 0)
+    ? Math.round((avgWin / avgLoss) * 100) / 100
+    : (avgWin != null && (avgLoss == null || avgLoss === 0)) ? Infinity : null;
+
+  const profitFactor = grossLoss > 0
+    ? Math.round((grossProfit / grossLoss) * 100) / 100
+    : grossProfit > 0 ? Infinity : 0;
+
+  // 最大ドローダウン: 日付順に累積し、直近の最高値からの落ち幅の最大
+  const sorted = [...withPL].sort((a, b) => a.date.localeCompare(b.date));
+  let cum = 0, peak = 0, maxDD = 0;
+  for (const t of sorted) {
+    cum += t.profitLoss as number;
+    if (cum > peak) peak = cum;
+    const dd = peak - cum;
+    if (dd > maxDD) maxDD = dd;
+  }
+
+  return {
+    covered, total, totalPL,
+    avgWin, avgLoss, riskReward, profitFactor,
+    maxDrawdown: Math.round(maxDD),
+    expectancy: Math.round(totalPL / covered),
+  };
 }
