@@ -74,7 +74,7 @@
       "name": "मेरा ट्रेड डेटा कहां स्टोर होता है?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "आपके ट्रेड रिकॉर्ड एन्क्रिप्टेड हैं और सिर्फ आपके डिवाइस पर स्टोर होते हैं (संलग्न चार्ट इमेज बिना एन्क्रिप्शन के डिवाइस पर सहेजी जाती हैं)। कोई क्लाउड सिंक नहीं है, और ऐप बिना इंटरनेट कनेक्शन के भी काम करता है।"
+        "text": "आपके ट्रेड रिकॉर्ड एन्क्रिप्टेड हैं और सिर्फ आपके डिवाइस पर स्टोर होते हैं (संलग्न चार्ट इमेज बिना एन्क्रिप्शन के डिवाइस पर सहेजी जाती हैं)। कोई क्लाउड सिंक नहीं है; रिकॉर्डिंग और विश्लेषण बिना इंटरनेट कनेक्शन के काम करते हैं। कनेक्शन केवल प्रीमियम खरीदने या पुनर्स्थापित करने के लिए आवश्यक है।"
       }
     },
     {
@@ -147,16 +147,23 @@
   </div>
 </header>
 
+<div class="region-notice">
+  <div class="wrap">
+    <p>सूचना: यह ऐप वर्तमान में EU, EEA या यूनाइटेड किंगडम के App Store पर उपलब्ध नहीं है।</p>
+  </div>
+</div>
+
 <div class="ticker" aria-hidden="true" title="उदाहरणात्मक करेंसी पेयर डिस्प्ले (वास्तविक मार्केट डेटा नहीं)">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
+  <p class="ticker-note">उदाहरण मुद्रा जोड़े। वास्तविक बाज़ार डेटा नहीं।</p>
 <p class="sr-only">समर्थित पेयर (आंशिक सूची): USD/JPY, EUR/JPY, GBP/JPY, EUR/USD, AUD/JPY, USD/CHF, NZD/USD, GBP/USD और अन्य</p>
 
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">ट्रेडिंग जर्नल और एनालिटिक्स ऐप</p>
-      <h1>हर ट्रेड बनाए<br>अगली <em>win rate</em>।</h1>
+      <h1>हर ट्रेड बने<br>अगला <em>विश्लेषण आधार</em>।</h1>
       <p class="hero-sub">
         बस एक ट्रेड लॉग करें और आपकी win rate, pips और profit factor अपने आप सामने आ जाते हैं।
         आपके नतीजे एक ऐसे शेयर करने लायक कार्ड में बदल जाते हैं जो आपको मोटिवेटेड रखता है। सब कुछ आपके फोन या टैबलेट पर ही चलता है।
@@ -196,6 +203,7 @@
           </div>
           <div class="stat-strip">
             <div><span class="k">ट्रेड्स</span><span class="v">9</span></div>
+          <p class="sample-note">नमूना स्क्रीन। वास्तविक ट्रेडिंग परिणाम नहीं।</p>
             <div><span class="k">Win rate</span><span class="v text-accent">78%</span></div>
             <div><span class="k">Pips</span><span class="v text-profit">+138</span></div>
             <div><span class="k">PF</span><span class="v">7.75</span></div>
@@ -264,6 +272,7 @@
           </div>
           <div class="bw-row">
             <div class="bw-card"><span class="bwk">सर्वश्रेष्ठ (USD/JPY)</span><span class="bwv">+32.5 pips</span></div>
+          <p class="sample-note">नमूना स्क्रीन। वास्तविक ट्रेडिंग परिणाम नहीं।</p>
             <div class="bw-card worst"><span class="bwk">सबसे खराब (GBP/JPY)</span><span class="bwv">−12 pips</span></div>
           </div>
         </div>
@@ -290,6 +299,7 @@
               <span>PF 7.75</span><span>+138 pips</span><span>9 trades</span>
             </div>
             <div class="watermark-chip">FX Trade Journal</div>
+            <p class="sample-note">नमूना स्क्रीन। वास्तविक ट्रेडिंग परिणाम नहीं।</p>
           </div>
         </div>
       </div>
@@ -355,7 +365,7 @@
           </div>
           <div class="sec-note">Settings में कभी भी ऑन/ऑफ करें (डिफ़ॉल्ट रूप से ऑफ)</div>
           <div class="sec-note">SQLCipher के ज़रिए डेटाबेस एन्क्रिप्शन (डिवाइस-ओनली की, iCloud से बाहर)</div>
-          <div class="sec-note">कोई क्लाउड सिंक नहीं, इंटरनेट कनेक्शन की भी ज़रूरत नहीं</div>
+          <div class="sec-note">कोई क्लाउड सिंक नहीं। रिकॉर्डिंग और विश्लेषण ऑफ़लाइन काम करते हैं</div>
           <div class="sec-note">किसी अकाउंट की ज़रूरत नहीं, आपके ट्रेड रिकॉर्ड कभी डिवाइस से बाहर नहीं जाते</div>
           <div class="sec-note sec-note-disclosure">* समस्याओं का पता लगाने और गुणवत्ता सुधारने के लिए हम क्रैश रिपोर्ट और अनाम उपयोग आँकड़े भेजते हैं, जो न आपकी न आपके ट्रेड की पहचान करते हैं। विवरण के लिए <a href="privacy-policy-hi.html">गोपनीयता नीति</a> देखें।</div>
         </div>
@@ -377,7 +387,7 @@
   <div class="wrap">
     <div class="stat-band-grid reveal">
       <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">भाषाएं (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
-      <div class="stat-band-item"><span class="num" data-count="175">0</span><span class="lbl">देशों और क्षेत्रों में उपलब्ध</span></div>
+      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">डिवाइस पर डेटा एन्क्रिप्शन</span></div>
       <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">ट्रेड हिस्ट्री इम्पोर्ट सपोर्ट</span></div>
       <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">क्लाउड पर भेजे गए ट्रेड रिकॉर्ड</span></div>
     </div>
@@ -441,7 +451,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>मेरा ट्रेड डेटा कहां स्टोर होता है?</summary>
-        <div class="faq-a">आपके ट्रेड रिकॉर्ड एन्क्रिप्टेड हैं और सिर्फ आपके डिवाइस पर स्टोर होते हैं (संलग्न चार्ट इमेज बिना एन्क्रिप्शन के डिवाइस पर सहेजी जाती हैं)। कोई क्लाउड सिंक नहीं है, और ऐप बिना इंटरनेट कनेक्शन के भी काम करता है।</div>
+        <div class="faq-a">आपके ट्रेड रिकॉर्ड एन्क्रिप्टेड हैं और सिर्फ आपके डिवाइस पर स्टोर होते हैं (संलग्न चार्ट इमेज बिना एन्क्रिप्शन के डिवाइस पर सहेजी जाती हैं)। कोई क्लाउड सिंक नहीं है; रिकॉर्डिंग और विश्लेषण बिना इंटरनेट कनेक्शन के काम करते हैं। कनेक्शन केवल प्रीमियम खरीदने या पुनर्स्थापित करने के लिए आवश्यक है।</div>
       </details>
       <details class="faq-item">
         <summary>क्या मैं MT4/MT5 के अलावा किसी और ब्रोकर के साथ इसे इस्तेमाल कर सकता हूं?</summary>
@@ -462,7 +472,7 @@
 <section class="final-cta">
   <canvas id="ctaChart" aria-hidden="true"></canvas>
   <div class="wrap inner reveal">
-    <h2>आपका अगला लॉग बनेगा<br>आपकी अगली win rate।</h2>
+    <h2>आपका अगला लॉग बनेगा<br>आपका अगला विश्लेषण आधार।</h2>
     <p>आज ही, अपने अगले ट्रेड से रिव्यू करना शुरू करें।</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://apps.apple.com/in/app/id6786188634">App Store से मुफ़्त डाउनलोड करें</a>
@@ -482,7 +492,7 @@
           </svg>
           FX Trade Journal
         </div>
-        <p class="foot-tag">एक ट्रेडिंग जर्नल जो पूरी तरह आपके फोन या टैबलेट पर चलता है। लॉग करें, एनालाइज़ करें, और बनाएं अपनी अगली win rate।</p>
+        <p class="foot-tag">एक ट्रेडिंग जर्नल जो पूरी तरह आपके फोन या टैबलेट पर चलता है। लॉग करें, एनालाइज़ करें, और देखें कि आपका रिकॉर्ड क्या दिखाता है।</p>
       </div>
       <div class="foot-col">
         <h4>प्रोडक्ट</h4>
@@ -515,6 +525,7 @@
       <a lang="pt" href="index-pt.html">Português</a>
     </nav>
     <div class="foot-legal">
+      MetaTrader, MT4 और MT5, MetaQuotes Software Corp. के ट्रेडमार्क हैं। यह ऐप MetaQuotes से संबद्ध नहीं है और न ही उसके द्वारा अनुमोदित है।<br>
       इस ऐप के एनालिटिक्स फीचर्स का मकसद निवेश सलाह देना या किसी खास फाइनेंशियल प्रोडक्ट को बढ़ावा देना नहीं है। कृपया अपने ट्रेडिंग फैसले खुद, अपने जोखिम पर लें।<br>
       © 2026 Daiki Ikebata
     </div>
