@@ -16,7 +16,7 @@ import { useTradeStore } from '../../src/store/tradeStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { generateId } from '../../src/utils/statsCalc';
 import { getAllTrades, getSetting, setSetting } from '../../src/db/queries';
-import { exportBackup, importBackup, hasPreImportSnapshot, restorePreImportSnapshot } from '../../src/utils/backup';
+import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot } from '../../src/utils/backup';
 import { importMT4CSV } from '../../src/utils/mt4Import';
 import {
   isNotificationsAvailable, requestNotificationPermission,
@@ -75,10 +75,12 @@ export default function SettingsScreen() {
   const [newTag, setNewTag] = useState('');
   const [newRule, setNewRule] = useState('');
   const [backupLoading, setBackupLoading] = useState(false);
-  const [hasSnapshot, setHasSnapshot] = useState(false);
+  // 「いつの時点に戻るのか」を提示できるよう、有無ではなく日時を持つ
+  const [snapshotAt, setSnapshotAt] = useState<string | null>(null);
+  const hasSnapshot = snapshotAt != null;
 
   useEffect(() => {
-    hasPreImportSnapshot().then(setHasSnapshot);
+    getPreImportSnapshot().then(snap => setSnapshotAt(snap?.exportedAt ?? null));
   }, []);
   const [mt4Loading, setMt4Loading] = useState(false);
   const [notifEnabled, setNotifEnabled] = useState(false);
@@ -198,7 +200,7 @@ export default function SettingsScreen() {
                 // 巻き戻る**。必ず読み直す。
                 await loadAll();
                 Alert.alert(t('saved'), t('backup_import_success').replace('{n}', String(count)));
-                setHasSnapshot(true);
+                setSnapshotAt(new Date().toISOString());
               }
             } catch (e) {
               const msg = e instanceof Error && e.message === 'empty_backup'
@@ -215,9 +217,15 @@ export default function SettingsScreen() {
   };
 
   const handleRestoreSnapshot = () => {
+    // どの時点に戻るのかを必ず示す。示さないと「今日までの記録が消える」
+    // ことに気づけないまま実行されてしまう。
+    const when = snapshotAt ? new Date(snapshotAt).toLocaleString() : '';
+    const body = when
+      ? `${t('backup_restore_confirm')}\n\n${t('backup_restore_snapshot_date').replace('{date}', when)}`
+      : t('backup_restore_confirm');
     Alert.alert(
       t('backup_restore_snapshot'),
-      t('backup_restore_confirm'),
+      body,
       [
         { text: t('cancel'), style: 'cancel' },
         {
@@ -227,6 +235,7 @@ export default function SettingsScreen() {
             setBackupLoading(true);
             try {
               const count = await restorePreImportSnapshot();
+              setSnapshotAt(null);  // 復元でスナップショットは消えるのでボタンも消す
               Alert.alert(t('saved'), t('backup_restore_success').replace('{n}', String(count)));
             } catch {
               Alert.alert(t('error'), t('backup_restore_error'));
