@@ -16,6 +16,16 @@ import AppLockGate from '../src/components/AppLockGate';
 import ErrorBoundary from '../src/components/ErrorBoundary';
 import { t } from '../src/i18n';
 
+/**
+ * ディープリンクで直接開かれた画面の「下」に必ず (tabs) を積むための指定。
+ *
+ * これが無いと、ホーム画面ウィジェットから fx-trade-journal://trade/new を開いたとき
+ * /trade/new がスタックの唯一の画面になり、保存後の router.back() が黙って
+ * 何もしなくなる（画面が閉じず「保存ボタンが効かない」ように見える）。
+ * expo-router v6は anchor を、後方互換で initialRouteName も受け付ける。
+ */
+export const unstable_settings = { anchor: '(tabs)' };
+
 const SENTRY_DSN = process.env.EXPO_PUBLIC_SENTRY_DSN ?? '';
 // プレースホルダー（未設定）のDSNでinit()を呼ぶと通信エラーが出続けるため弾く。
 // purchaseStore.tsのisPlaceholderKeyと同じ考え方。
