@@ -9,6 +9,10 @@
 #     （@bacons/apple-targets のフォルダ同期に依存しており、保証されていない）
 #   - App Group の entitlement が署名後も残っているか
 #     （ローカルの ad-hoc 署名では空になることが判明している）
+#   - ExtensionStorage のネイティブモジュールが本体バイナリにリンクされているか
+#     （podspecの最低iOS要求がアプリ本体を上回ると、autolinkingが無言で除外する。
+#      JS側はダミー関数にフォールバックして例外も出さないため、ウィジェットは
+#      表示されるのに永久に --% のまま。v1.3.0で実際に発生した）
 #   - URLスキームが本体アプリに登録されているか（ウィジェットのタップ先）
 #
 # 使い方:
@@ -74,7 +78,26 @@ else
 fi
 
 echo
-echo "── 4. タップ先のURLスキーム ──"
+echo "── 4. ExtensionStorage ネイティブモジュール ──"
+# 本日(2026-08-29)いちばん見つけにくかった不具合の検査。
+# podspecが要求する最低iOS(16.4)がアプリ本体(15.1)を上回ると、Expoのautolinkingは
+# そのpodをエラーも警告も出さずに除外する。JS側は例外を投げず「何もしないダミー関数」に
+# フォールバックするため、書き込みも更新通知も成功したふりをして、App Groupには
+# 何も届かず、ウィジェットは永久にプレースホルダー(--%)を表示する。
+# 上の1〜3が全て合格でもこれだけが欠けうるので、独立して確認する。
+BIN="$APP/$(basename "$APP" .app)"
+COUNT=$(strings "$BIN" 2>/dev/null | grep -c "ExtensionStorage")
+CONTROL=$(strings "$BIN" 2>/dev/null | grep -c "SecureStore")
+if [ "$CONTROL" -eq 0 ]; then
+  bad "検査不能（対照モジュールも検出できずstringsが機能していない）"
+elif [ "$COUNT" -gt 0 ]; then
+  ok "本体バイナリにリンク済み（${COUNT}件）"
+else
+  bad "本体バイナリに無い。ウィジェットはデータを受け取れず --% のままになる"
+fi
+
+echo
+echo "── 5. タップ先のURLスキーム ──"
 if plutil -p "$APP/Info.plist" 2>/dev/null | grep -q "fx-trade-journal"; then
   ok "fx-trade-journal スキームが登録済み"
 else
@@ -82,7 +105,7 @@ else
 fi
 
 echo
-echo "── 5. バージョン ──"
+echo "── 6. バージョン ──"
 plutil -p "$APP/Info.plist" 2>/dev/null \
   | grep -E "CFBundleShortVersionString|CFBundleVersion" | sed 's/^/  /'
 
