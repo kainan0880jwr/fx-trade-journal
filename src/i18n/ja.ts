@@ -181,6 +181,7 @@ export const ja = {
   col_pair: 'ペア',
   col_count_h: '回数',
   col_avg_pips: '平均pips',
+  col_total_pl: "損益",
   col_style: 'スタイル',
   col_time: '時間帯',
   col_day: '曜日',

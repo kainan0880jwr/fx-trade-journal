@@ -183,6 +183,7 @@ export const vi: LangStrings = {
   col_pair: 'Cặp Tiền',
   col_count_h: 'Số Lượng',
   col_avg_pips: 'Pips TB',
+  col_total_pl: "Lãi/lỗ",
   col_style: 'Phong Cách',
   col_time: 'Thời Gian',
   col_day: 'Ngày',

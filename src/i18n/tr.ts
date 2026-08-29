@@ -183,6 +183,7 @@ export const tr: LangStrings = {
   col_pair: 'Parite',
   col_count_h: 'Adet',
   col_avg_pips: 'Ort. Pip',
+  col_total_pl: "K/Z",
   col_style: 'Stil',
   col_time: 'Saat',
   col_day: 'Gün',

@@ -183,6 +183,7 @@ export const it: LangStrings = {
   col_pair: "Coppia",
   col_count_h: "Numero",
   col_avg_pips: "Pips medi",
+  col_total_pl: "P/L",
   col_style: "Stile",
   col_time: "Ora",
   col_day: "Giorno",

@@ -183,6 +183,7 @@ export const de: LangStrings = {
   col_pair: 'Paar',
   col_count_h: 'Anzahl',
   col_avg_pips: 'Ø Pips',
+  col_total_pl: "G/V",
   col_style: 'Stil',
   col_time: 'Zeit',
   col_day: 'Tag',

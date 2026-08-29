@@ -183,6 +183,7 @@ export const id: LangStrings = {
   col_pair: 'Pair',
   col_count_h: 'Jumlah',
   col_avg_pips: 'Rata-rata Pips',
+  col_total_pl: "P/L",
   col_style: 'Gaya',
   col_time: 'Waktu',
   col_day: 'Hari',
