@@ -58,7 +58,7 @@ export default function CalculatorScreen() {
   }
 
   return (
-    <PremiumGate feature={t('calculator_title')}>
+    <PremiumGate feature={t('calculator_title')} featureKey="calculator">
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">

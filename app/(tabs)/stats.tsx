@@ -113,7 +113,7 @@ export default function AnalysisScreen() {
       </View>
 
       {!isPremium && activeTab !== 'performance' ? (
-        <PremiumGate feature={ANALYSIS_TABS().find(tb => tb.key === activeTab)?.label ?? ''}><View /></PremiumGate>
+        <PremiumGate feature={ANALYSIS_TABS().find(tb => tb.key === activeTab)?.label ?? ''} featureKey={`analysis_${activeTab}`}><View /></PremiumGate>
       ) : (
       <ScrollView contentContainerStyle={styles.scroll}>
         {trades.length === 0 ? (

@@ -7,16 +7,30 @@ import { usePurchaseStore } from '../store/purchaseStore';
 import { useTheme } from '../theme/useTheme';
 import type { ThemeColors } from '../theme/colors';
 import { t } from '../i18n';
+import { recordPremiumGateShown } from '../utils/paywallEvents';
 
 interface Props {
   children: React.ReactNode;
+  /** ロック画面に表示する機能名（翻訳済み文字列） */
   feature: string;
+  /**
+   * 計測用の安定キー。`feature`は翻訳文字列のため言語ごとに値が変わってしまい、
+   * 集計に使えない（既存の「翻訳文字列を状態値にしない」方針と同じ理由）。
+   * 未指定の場合は 'unknown' として計上される。
+   */
+  featureKey?: string;
 }
 
-export default function PremiumGate({ children, feature }: Props) {
+export default function PremiumGate({ children, feature, featureKey }: Props) {
   const isPremium = usePurchaseStore(s => s.isPremium);
   const C = useTheme();
   const s = makeStyles(C);
+
+  // ロック画面が実際に表示されたときだけ計上する（プレミアムユーザーでは発火しない）。
+  // 機能ごとにセッション内1回へ間引く処理は recordPremiumGateShown 側が持つ。
+  React.useEffect(() => {
+    if (!isPremium) recordPremiumGateShown(featureKey);
+  }, [isPremium, featureKey]);
 
   if (isPremium) return <>{children}</>;
 
@@ -47,7 +61,10 @@ export default function PremiumGate({ children, feature }: Props) {
           <Text style={s.msg}>{t('premium_gate_msg')}</Text>
           <TouchableOpacity
             style={s.btn}
-            onPress={() => router.push('/paywall')}
+            onPress={() => router.push({
+              pathname: '/paywall',
+              params: { source: 'gate', feature: featureKey ?? 'unknown' },
+            })}
             activeOpacity={0.85}
             accessibilityRole="button"
             accessibilityLabel={t('premium_gate_btn')}

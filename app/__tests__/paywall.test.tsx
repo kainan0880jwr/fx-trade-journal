@@ -9,6 +9,9 @@ import PaywallScreen from '../paywall';
 
 jest.mock('expo-router', () => ({
   router: { back: jest.fn() },
+  // ペイウォールは流入元(source/feature)をクエリパラメータで受け取り計測に使う。
+  // テストでは直接遷移した場合（パラメータなし）を再現する。
+  useLocalSearchParams: () => ({}),
 }));
 
 jest.mock('expo-linear-gradient', () => {

@@ -6,7 +6,7 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import Purchases, {
   type PurchasesPackage, PACKAGE_TYPE, INTRO_ELIGIBILITY_STATUS,
 } from 'react-native-purchases';
@@ -17,6 +17,10 @@ import { t } from '../src/i18n';
 import { PRIVACY_POLICY_URL, TERMS_URL, TOKUSHOHO_URL, SUBSCRIPTIONS_URL } from '../src/utils/legalLinks';
 import { openExternalUrl } from '../src/utils/openExternalUrl';
 import { monthlyEquivalent, annualDiscountPct, trialLabel } from '../src/utils/paywallCalc';
+import {
+  recordPaywallViewed, recordPaywallNoPackages, recordPurchaseTapped,
+  recordPurchaseResult, recordPaywallDismissed,
+} from '../src/utils/paywallEvents';
 
 // 機能リスト（5項目に圧縮・i18n化）。propsやstateに依存しないためモジュールレベルの定数にする
 const FEATURES = [
@@ -44,6 +48,9 @@ export default function PaywallScreen() {
   const C = useTheme();
   const s = useMemo(() => makeStyles(C), [C]);
   const insets = useSafeAreaInsets();
+  // 流入元。PremiumGate経由なら 'gate' + どの機能でロックに当たったか、
+  // 記録画面のヒント経由なら 'trade_form_hint' が入る（未指定なら 'unknown'）
+  const { source, feature } = useLocalSearchParams<{ source?: string; feature?: string }>();
   const { getOfferings, purchase, restore, isPremium } = usePurchaseStore();
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
   const [selected, setSelected] = useState<PurchasesPackage | null>(null);
@@ -62,6 +69,13 @@ export default function PaywallScreen() {
     return () => { isMounted.current = false; };
   }, []);
 
+  // 到達計測。マウント時に1度だけ送る（依存配列を空にしているのは、
+  // paramsの再生成でイベントが重複送信されるのを防ぐため）
+  useEffect(() => {
+    recordPaywallViewed(source, feature);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const loadOfferings = () => {
     const myRequestId = ++requestId.current;
     setLoadingPkgs(true);
@@ -74,6 +88,10 @@ export default function PaywallScreen() {
       const yearly = pkgs.find(p => p.packageType === PACKAGE_TYPE.ANNUAL);
       setSelected(yearly ?? pkgs[0] ?? null);
       setLoadingPkgs(false);
+
+      // 「ペイウォールは開いたが購入ボタンが1つも出ていない」状態は
+      // ユーザーからは無言の失敗にしか見えず、これまで観測できていなかった
+      if (pkgs.length === 0) recordPaywallNoPackages(source);
 
       // トライアル資格は「不明」なら誤解を招くため非表示側に倒す（ELIGIBLEのみ表示）
       const trialProductIds = pkgs.filter(p => p.product.introPrice).map(p => p.product.identifier);
@@ -109,10 +127,17 @@ export default function PaywallScreen() {
 
   const handlePurchase = async () => {
     if (!selected || purchasingRef.current) return;
+    // 計測用のプラン種別。RevenueCat側のプラン内訳と突き合わせられるようにする
+    const plan = selected.packageType === PACKAGE_TYPE.ANNUAL ? 'annual'
+      : selected.packageType === PACKAGE_TYPE.MONTHLY ? 'monthly' : 'other';
+    const withTrial = eligibleTrialIds.has(selected.product.identifier);
+    recordPurchaseTapped(plan, withTrial);
     purchasingRef.current = true;
     setLoading(true);
     const result = await purchase(selected);
     purchasingRef.current = false;
+    // アンマウント後でも結果自体は計上する（UI更新のみスキップ）
+    recordPurchaseResult(result, plan, withTrial);
     if (!isMounted.current) return;
     setLoading(false);
     switch (result) {
@@ -156,6 +181,9 @@ export default function PaywallScreen() {
   const handleClose = () => {
     if (closingRef.current) return;
     closingRef.current = true;
+    // 購入せずに閉じた回数。viewed との差分が「見たが買わなかった」割合になる。
+    // sawPackagesがfalseなら、そもそも買う手段が表示されていなかったことを意味する
+    recordPaywallDismissed(source, packages.length > 0);
     router.back();
   };
 
