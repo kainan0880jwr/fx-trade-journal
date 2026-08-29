@@ -257,7 +257,9 @@ export default function NewTradeScreen() {
         return (
           pair !== orig.pair || direction !== orig.direction ||
           quickResult !== orig.result ||
-          quickPips !== (orig.pips != null ? String(Math.abs(orig.pips)) : '')
+          quickPips !== (orig.pips != null ? String(Math.abs(orig.pips)) : '') ||
+          quickLot !== String(orig.lotSize) ||
+          quickPL !== (orig.profitLoss != null ? String(Math.abs(orig.profitLoss)) : '')
         );
       }
       return (
@@ -423,7 +425,16 @@ export default function NewTradeScreen() {
       const parsedPips = signedQuickPips(quickPips, quickResult);
       const orig = originalTradeRef.current;
       if (isEditMode && orig) {
-        const trade: Trade = { ...orig, pair, direction, pips: parsedPips, result: quickResult };
+        const quickLotNum = parseDecimal(quickLot) ?? orig.lotSize;
+        const trade: Trade = {
+          ...orig, pair, direction, pips: parsedPips, result: quickResult,
+          lotSize: quickLotNum,
+          // 新規記録と同じ組み立てを通す。ここを省くと、勝ち→負けに直しても
+          // 損益が正のまま残り、pipsと符号が食い違ったまま保存される。
+          profitLoss: quickIsYenPair && parsedPips != null
+            ? calcProfitLoss(parsedPips, quickLotNum, settings.lotUnit)
+            : signedByResult(quickPL, quickResult),
+        };
         await saveEditAndClose(trade);
         return;
       }

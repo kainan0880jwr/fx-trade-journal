@@ -44,9 +44,19 @@ interface RawRow {
 // ヘルパー
 // ───────────────────────────────────────────────
 
-/** 文字列 → 数値。パース失敗、あるいはInfinity・現実的にありえない桁数の場合は 0 */
-const num = (s: string): number => {
-  const v = parseFloat(s.replace(/,/g, '').trim());
+/**
+ * 文字列 → 数値。パース失敗、あるいはInfinity・現実的にありえない桁数の場合は 0。
+ *
+ * decimalComma は「カンマが小数点」のCSV（欧州系ブローカー）向け。
+ * これらは区切り文字に ';' を使うため、呼び出し側が sep === ';' で判定して渡す。
+ * 取り違えると "0,5" ロットが 5 に、"-1.234,56" が -1.23456 になり、
+ * 損益・ロット・レートが静かに壊れたまま保存される。
+ */
+export const num = (s: string, decimalComma = false): number => {
+  const cleaned = decimalComma
+    ? s.replace(/\./g, '').replace(',', '.')   // 1.234,56 → 1234.56
+    : s.replace(/,/g, '');                     // 1,234.56 → 1234.56
+  const v = parseFloat(cleaned.trim());
   // isNaNのみのチェックだと "1e999" 等がInfinityとして通過し、統計（合計pips・平均等）を
   // NaN/Infinityで汚染してしまう。為替レート・ロット・損益としてありえない桁数も弾く。
   if (!Number.isFinite(v) || Math.abs(v) > 1e9) return 0;
@@ -54,7 +64,7 @@ const num = (s: string): number => {
 };
 
 /** "2024.01.15 10:23" または "2024-01-15T10:23:00" → ISO日付部分 "YYYY-MM-DD" */
-function parseDate(s: string): string | null {
+export function parseDate(s: string): string | null {
   // MT4形式: 2024.01.15 10:23:00
   const mt4 = s.trim().match(/^(\d{4})\.(\d{2})\.(\d{2})/);
   if (mt4) return `${mt4[1]}-${mt4[2]}-${mt4[3]}`;
@@ -94,7 +104,7 @@ function parseCSVLine(line: string, sep: string): string[] {
 }
 
 /** ヘッダー行から区切り文字を推定 */
-function detectSep(header: string): string {
+export function detectSep(header: string): string {
   if (header.includes('\t')) return '\t';
   if (header.includes(';')) return ';';
   return ',';
@@ -103,22 +113,34 @@ function detectSep(header: string): string {
 /** 通貨ペア名を正規化 ("USDJPY" / "USD/JPY" → "USD/JPY") */
 // 通貨ペア表記としてありえない文字・長さの値（壊れたCSVや悪意あるファイル由来）を
 // 弾く。正規化後に英数字・スラッシュ・ハイフン・アンダースコアのみ、20文字以内のみ許可。
-function normalizePair(raw: string): string {
+export function normalizePair(raw: string): string {
   const s = raw.trim().toUpperCase();
   const normalized = s.includes('/') ? s : s.length >= 6 ? `${s.slice(0, 3)}/${s.slice(3, 6)}` : s;
   return /^[A-Z0-9/_-]{1,20}$/.test(normalized) ? normalized : '';
 }
 
-/** pip数を計算（/JPY ペアは2桁、その他4桁） */
-function calcPips(pair: string, open: number, close: number, dir: Direction): number {
-  const isJpy = pair.toUpperCase().includes('JPY');
-  const mult = isJpy ? 100 : 10000;
+/**
+ * pip の刻みが為替と同じだと分かっている通貨だけを対象にする。
+ * MT5のDealsには金(XAUUSD)や指数(US30)が普通に混ざり、これらに 10000 を掛けると
+ * 1件で合計pips・平均pips・PFが破壊される（XAUUSD 10ドル幅で 100,000 pips）。
+ */
+const FX_CURRENCIES = new Set([
+  'USD', 'EUR', 'JPY', 'GBP', 'AUD', 'NZD', 'CAD', 'CHF',
+  'SEK', 'NOK', 'DKK', 'PLN', 'HUF', 'CZK', 'TRY', 'ZAR',
+  'MXN', 'SGD', 'HKD', 'CNH', 'RUB', 'ILS', 'THB',
+]);
+
+/** pip数を計算（/JPY ペアは2桁、その他4桁）。為替ペアと判定できない銘柄は null */
+export function calcPips(pair: string, open: number, close: number, dir: Direction): number | null {
+  const [base, quote] = pair.toUpperCase().split('/');
+  if (!FX_CURRENCIES.has(base) || !FX_CURRENCIES.has(quote)) return null;
+  const mult = quote === 'JPY' ? 100 : 10000;
   const rawPips = (close - open) * mult;
   return Math.round((dir === 'buy' ? rawPips : -rawPips) * 10) / 10;
 }
 
 /** 損益から勝敗を判定 */
-function resultFromProfit(profit: number): TradeResult {
+export function resultFromProfit(profit: number): TradeResult {
   if (profit > 0) return 'win';
   if (profit < 0) return 'loss';
   return 'even';
@@ -133,7 +155,9 @@ function resultFromProfit(profit: number): TradeResult {
  * または
  * Ticket,Open Time,Type,Size,Symbol,Price,S/L,T/P,Close Time,Price,Commission,Taxes,Swap,Profit
  */
-function parseMT4(lines: string[], sep: string): RawRow[] {
+export function parseMT4(lines: string[], sep: string): RawRow[] {
+  // ';' 区切りのCSVはカンマを小数点として扱う（欧州系ブローカー）
+  const dc = sep === ';';
   const rows: RawRow[] = [];
   // ヘッダー行を探す
   let dataStart = 0;
@@ -197,14 +221,14 @@ function parseMT4(lines: string[], sep: string): RawRow[] {
       closeTime: f[closeTimeIdx] ?? '',
       symbol,
       direction,
-      size:       num(f[sizeIdx]       ?? '0'),
-      openPrice:  num(f[openPriceIdx]  ?? '0'),
-      closePrice: num(f[closePriceIdx] ?? '0'),
-      sl:         num(f[slIdx]         ?? '0'),
-      tp:         num(f[tpIdx]         ?? '0'),
-      profit:     num(f[profitIdx]     ?? '0'),
-      swap:       num(f[swapIdx]       ?? '0'),
-      commission: num(f[commIdx]       ?? '0'),
+      size:       num(f[sizeIdx]       ?? '0', dc),
+      openPrice:  num(f[openPriceIdx]  ?? '0', dc),
+      closePrice: num(f[closePriceIdx] ?? '0', dc),
+      sl:         num(f[slIdx]         ?? '0', dc),
+      tp:         num(f[tpIdx]         ?? '0', dc),
+      profit:     num(f[profitIdx]     ?? '0', dc),
+      swap:       num(f[swapIdx]       ?? '0', dc),
+      commission: num(f[commIdx]       ?? '0', dc),
     });
   }
   return rows;
@@ -217,7 +241,9 @@ function parseMT4(lines: string[], sep: string): RawRow[] {
  * MT5 Deals CSV ヘッダー例:
  * Time,Deal,Symbol,Type,Direction,Volume,Price,Order,Commission,Fee,Swap,Profit,Balance,Comment
  */
-function parseMT5(lines: string[], sep: string): RawRow[] {
+export function parseMT5(lines: string[], sep: string): RawRow[] {
+  // ';' 区切りのCSVはカンマを小数点として扱う（欧州系ブローカー）
+  const dc = sep === ';';
   const rows: RawRow[] = [];
   let dataStart = 0;
   for (let i = 0; i < Math.min(lines.length, 10); i++) {
@@ -283,11 +309,11 @@ function parseMT5(lines: string[], sep: string): RawRow[] {
       symbol,
       dir,
       type:       rawType,
-      volume:     num(f[volumeIdx]    ?? '0'),
-      price:      num(f[priceIdx]     ?? '0'),
-      commission: num(f[commIdx]      ?? '0'),
-      swap:       num(f[swapIdx]      ?? '0'),
-      profit:     num(f[profitIdx]    ?? '0'),
+      volume:     num(f[volumeIdx]    ?? '0', dc),
+      price:      num(f[priceIdx]     ?? '0', dc),
+      commission: num(f[commIdx]      ?? '0', dc),
+      swap:       num(f[swapIdx]      ?? '0', dc),
+      profit:     num(f[profitIdx]    ?? '0', dc),
       position:   positionIdx !== -1 ? (f[positionIdx] ?? '') : '',
     });
   }
@@ -377,14 +403,17 @@ function parseMT5(lines: string[], sep: string): RawRow[] {
 // ───────────────────────────────────────────────
 // RawRow → Trade 変換
 // ───────────────────────────────────────────────
-function rawToTrade(row: RawRow): Trade | null {
+export function rawToTrade(row: RawRow): Trade | null {
   // 日付が読めない行は取り込まない（以前は全行が「今日」になっていた）。
   // 呼び出し側で skipped としてカウントし、件数をユーザーに提示する。
   const parsedDate = parseDate(row.openTime);
   if (!parsedDate) return null;
   const pips = calcPips(row.symbol, row.openPrice, row.closePrice, row.direction);
-  const result = resultFromProfit(row.profit);
+  // 勝敗は保存する金額と同じ基準で決める。row.profit（手数料前）で判定すると、
+  // 手数料負けの薄利決済が「勝ち」なのに profit_loss は負、という行ができ、
+  // 勝率と損益が同じトレードを別扱いしてしまう。
   const totalPL = row.profit + row.swap + row.commission;
+  const result = resultFromProfit(totalPL);
   const id = `mt4_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   const now = new Date().toISOString();
 
@@ -403,7 +432,7 @@ function rawToTrade(row: RawRow): Trade | null {
     style:       'other' as TradeStyle,
     tags:        [],
     imageUris:   [],
-    pips:        Math.round(pips * 10) / 10,
+    pips,
     profitLoss:  Number.isFinite(totalPL) ? Math.round(totalPL * 100) / 100 : null,
     result,
     reflection:  '',

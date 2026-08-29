@@ -9,6 +9,7 @@ import { useTheme } from '../../src/theme/useTheme';
 import { useIsTablet } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t, lang } from '../../src/i18n';
+import { formatWinRate, formatPips } from '../../src/utils/formatStats';
 import {
   METRICS, CalMetric, buildDayMap, getDayValue, getDayBg, getDayValueColor,
   calcMonthPF, formatPF, buildDayCellA11yLabel,
@@ -36,7 +37,8 @@ export default function CalendarScreen() {
     Math.round(trades.reduce((sum, tr) => sum + (tr.profitLoss ?? 0), 0)), [trades]);
   const wins = trades.filter(tr => tr.result === 'win').length;
   const losses = trades.filter(tr => tr.result === 'loss').length;
-  const winRate = trades.length > 0 ? Math.round(wins / trades.length * 100) : 0;
+  // 刻みは calcStats に合わせる（整数丸めだと同じ月が 67% と 66.7% に割れる）
+  const winRate = trades.length > 0 ? Math.round(wins / trades.length * 1000) / 10 : 0;
   const plCount = trades.filter(tr => tr.profitLoss != null).length;
   const hasPL = plCount > 0;
   const profitFactor = useMemo(() => calcMonthPF(trades), [trades]);
@@ -60,7 +62,7 @@ export default function CalendarScreen() {
           <SCard
             isTablet={isTablet}
             label={t('win_rate')}
-            value={`${winRate}%`}
+            value={formatWinRate(winRate)}
             color={trades.length === 0 ? C.text : winRate >= 50 ? C.win : C.loss}
           />
           <SCard
@@ -205,11 +207,13 @@ export default function CalendarScreen() {
                   return (
                     <View style={s.daySum}>
                       <Text style={s.daySumLabel}>{t('cal_daily_total')}</Text>
-                      <Text style={[s.daySumPips, { color: ds.pips >= 0 ? C.win : C.loss }]}>
-                        {ds.pips > 0 ? '+' : ''}{ds.pips} pips
+                      <Text style={[s.daySumPips, { color: ds.pips > 0 ? C.win : ds.pips < 0 ? C.loss : C.even }]}>
+                        {formatPips(ds.pips)} pips
                       </Text>
-                      {ds.pl !== 0 && (
-                        <Text style={[s.daySumPL, { color: ds.pl >= 0 ? C.win : C.loss }]}>
+                      {/* 0円ちょうどの日でも合計行を出す。件数で判定しないと、
+                          個別行に 0円 があるのに合計だけ消える */}
+                      {ds.plCount > 0 && (
+                        <Text style={[s.daySumPL, { color: ds.pl > 0 ? C.win : ds.pl < 0 ? C.loss : C.even }]}>
                           {formatMoney(ds.pl)}
                         </Text>
                       )}
