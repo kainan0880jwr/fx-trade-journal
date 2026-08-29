@@ -345,7 +345,7 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
   );
   if (!pipsSignFixed) {
     await database.runAsync(
-      `UPDATE trades SET pips = -pips WHERE result = 'loss' AND pips IS NOT NULL AND pips > 0`
+      `UPDATE trades SET pips = -pips WHERE entry_method = 'quick' AND result = 'loss' AND pips IS NOT NULL AND pips > 0`
     );
     await database.runAsync(
       `INSERT OR REPLACE INTO settings (key, value) VALUES ('loss_pips_sign_fixed_v1', '1')`

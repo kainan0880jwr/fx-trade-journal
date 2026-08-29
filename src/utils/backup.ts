@@ -214,7 +214,7 @@ export async function importBackup(): Promise<number> {
     // 条件は database.ts のマイグレーションと同一（詳細入力由来の行は
     // 負けなら必ずpipsも負のため巻き込まない）。
     await db.runAsync(
-      `UPDATE trades SET pips = -pips WHERE result = 'loss' AND pips IS NOT NULL AND pips > 0`
+      `UPDATE trades SET pips = -pips WHERE entry_method = 'quick' AND result = 'loss' AND pips IS NOT NULL AND pips > 0`
     );
     await db.runAsync(
       `INSERT OR REPLACE INTO settings (key, value) VALUES ('loss_pips_sign_fixed_v1', '1')`
@@ -294,7 +294,7 @@ export async function restorePreImportSnapshot(): Promise<number> {
     // インポート前スナップショットは修正前に取られている可能性があるため、
     // 復元後にも負けpipsの符号を正す（database.tsのマイグレーションと同条件）。
     await db.runAsync(
-      `UPDATE trades SET pips = -pips WHERE result = 'loss' AND pips IS NOT NULL AND pips > 0`
+      `UPDATE trades SET pips = -pips WHERE entry_method = 'quick' AND result = 'loss' AND pips IS NOT NULL AND pips > 0`
     );
   });
 
