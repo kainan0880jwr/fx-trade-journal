@@ -99,6 +99,9 @@ export default function CalendarScreen() {
                 metric === m.key && { backgroundColor: C.primary, borderColor: C.primary },
               ]}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityState={{ selected: metric === m.key }}
+              hitSlop={{ top: 10, bottom: 10, left: 6, right: 6 }}
             >
               <Text style={[s.metricChipLabel, { color: metric === m.key ? '#fff' : C.text2 }]}>
                 {t(m.labelKey as any)}

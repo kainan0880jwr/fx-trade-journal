@@ -390,7 +390,11 @@ function getCalendarWeekRanges(yearMonth: string): { start: number; end: number 
 
 function WeeklyTab({ trades, yearMonth }: { trades: import('../../src/types').Trade[]; yearMonth: string }) {
   const C = useTheme();
-  const styles = makeStyles(C);
+  // 親は makeStyles(C, isTablet) を使っているのに、ここだけ既定(false)で
+  // 生成していたため、タブレットでヘッダー行と本文行の左右パディングが
+  // 食い違い（14pt vs 18pt）列がずれていた。
+  const isTablet = useIsTablet();
+  const styles = makeStyles(C, isTablet);
 
   const weekStats = getCalendarWeekRanges(yearMonth).map(w => {
     const weekTrades = trades.filter(tr => {
@@ -447,7 +451,10 @@ function InsightsTab({ trades, pipsGoal, winRateGoal }: {
   winRateGoal: number;
 }) {
   const C = useTheme();
-  const styles = makeStyles(C);
+  // 親は makeStyles(C, isTablet) を使うので、ここだけ既定(false)だと
+  // タブレットで文字サイズと余白が食い違う。
+  const isTablet = useIsTablet();
+  const styles = makeStyles(C, isTablet);
   const insights = generateInsights(trades, pipsGoal, winRateGoal);
 
   const INSIGHT_COLORS = {
@@ -483,7 +490,11 @@ function InsightsTab({ trades, pipsGoal, winRateGoal }: {
 
 function TableRow({ label, value, color, last }: { label: string; value: string; color?: string; last?: boolean }) {
   const C = useTheme();
-  const styles = makeStyles(C);
+  // 親は makeStyles(C, isTablet) を使っているのに、ここだけ既定(false)で
+  // 生成していたため、タブレットでヘッダー行と本文行の左右パディングが
+  // 食い違い（14pt vs 18pt）列がずれていた。
+  const isTablet = useIsTablet();
+  const styles = makeStyles(C, isTablet);
   return (
     <View style={[styles.tableRow, !last && styles.tableRowBorder]}>
       <Text style={styles.tableLabel}>{label}</Text>

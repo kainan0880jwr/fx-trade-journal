@@ -538,7 +538,10 @@ function MentalRow({ label, avg, high, low, positiveHigh, last }: {
   label: string; avg: number | null; high: number | null; low: number | null; positiveHigh: boolean; last?: boolean;
 }) {
   const C = useTheme();
-  const styles = makeStyles(C);
+  // 親は makeStyles(C, isTablet) を使うので、ここだけ既定(false)だと
+  // タブレットで文字サイズと余白が食い違う。
+  const isTablet = useIsTablet();
+  const styles = makeStyles(C, isTablet);
   return (
     <View style={[styles.tableRow, !last && styles.rowBorder]}>
       <Text style={[styles.cell, { flex: 1.2, color: C.text, textAlign: 'left' }]}>{label}</Text>
@@ -555,7 +558,11 @@ function MentalRow({ label, avg, high, low, positiveHigh, last }: {
 
 function TableHeader({ cols, widths }: { cols: string[]; widths: number[] }) {
   const C = useTheme();
-  const styles = makeStyles(C);
+  // 親は makeStyles(C, isTablet) を使っているのに、ここだけ既定(false)で
+  // 生成していたため、タブレットでヘッダー行と本文行の左右パディングが
+  // 食い違い（14pt vs 18pt）列がずれていた。
+  const isTablet = useIsTablet();
+  const styles = makeStyles(C, isTablet);
   return (
     <View style={[styles.tableRow, { borderBottomWidth: 1, borderBottomColor: C.border }]}>
       {cols.map((c, i) => (

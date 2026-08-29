@@ -56,7 +56,15 @@ export default function PremiumGate({ children, feature, featureKey }: Props) {
   return (
     <View style={s.container}>
       {/* ── ぼかしプレビュー（childrenを薄く表示して価値を示す）── */}
-      <View style={StyleSheet.absoluteFill} pointerEvents="none">
+      {/* pointerEvents はタッチだけを遮断する。VoiceOver/TalkBack には
+          ロック対象の数値がそのまま読み上げられてしまうため、
+          アクセシビリティツリーからも隠す。 */}
+      <View
+        style={StyleSheet.absoluteFill}
+        pointerEvents="none"
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
         <View style={s.previewContent}>
           {children}
         </View>

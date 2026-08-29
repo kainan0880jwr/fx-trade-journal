@@ -55,7 +55,7 @@ export default function ShareModal({ visible, onClose, stats, yearMonth, streak 
 
         <View style={styles.header}>
           <Text style={styles.title}>{t('share_monthly_stats')}</Text>
-          <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
+          <TouchableOpacity onPress={onClose} style={styles.closeBtn} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
             <Ionicons name="close" size={20} color={C.text2} />
           </TouchableOpacity>
         </View>

@@ -1,3 +1,19 @@
+/**
+ * ⚠️ この画面は現在どこからも遷移されない（デッドコード）。
+ *
+ * _layout.tsx で `href: null` として登録されているだけで、
+ * `/(tabs)/yearly` へ push/replace するコードはリポジトリ内に存在しない
+ * （2026-08-29 時点で grep 済み）。実際に表示されている年間ビューは
+ * monthly.tsx の YearlyView。
+ *
+ * 両者は同等の実装が重複しており、**片方だけ直すと表示が食い違う**。
+ * 実際、監査で見つかった不具合（PFの書式、ゼロ基準線の欠如など）は
+ * 両方に存在した。修正時は必ず monthly.tsx 側も確認すること。
+ *
+ * 削除するにはこのファイルと _layout.tsx の Tabs.Screen 登録の両方を
+ * 変更する必要があり、ルーティングに影響するため単独では行わない。
+ */
+
 import React, { useEffect, useState, useMemo } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
