@@ -49,6 +49,7 @@ export const en: LangStrings = {
   db_reset_confirm_title: 'Reset all data?',
   db_reset_confirm_msg: 'This will permanently delete all saved trade records and cannot be undone. The app will restart from a blank state.',
   db_reset_confirm_button: 'Reset and start over',
+  db_reset_failed_msg: "Could not delete the data. Please restart your device and try again. For safety, the encryption key was left intact.",
   retry: 'Retry',
   error: 'Error',
 
@@ -605,6 +606,7 @@ export const en: LangStrings = {
   backup_restore_success: 'Restored {n} trades',
   backup_restore_error: 'Restore failed',
   backup_import_error: 'Failed to read backup. Please select a valid backup file',
+  backup_import_empty: "This backup contains no trades. The restore was cancelled so your existing data was not deleted.",
   backup_exporting: 'Creating backup...',
   backup_importing: 'Restoring...',
 

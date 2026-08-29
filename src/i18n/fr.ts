@@ -49,6 +49,7 @@ export const fr: LangStrings = {
   db_reset_confirm_title: "Réinitialiser toutes les données ?",
   db_reset_confirm_msg: "Cette action supprimera définitivement tous les enregistrements de trades et ne pourra pas être annulée. L'application redémarrera à zéro.",
   db_reset_confirm_button: "Réinitialiser et recommencer",
+  db_reset_failed_msg: "Impossible de supprimer les données. Redémarrez votre appareil et réessayez. Par sécurité, la clé de chiffrement a été conservée.",
   retry: "Réessayer",
   error: "Erreur",
 
@@ -605,6 +606,7 @@ export const fr: LangStrings = {
   backup_restore_success: "{n} trades restaurés",
   backup_restore_error: "Échec de la restauration",
   backup_import_error: "Échec de la lecture de la sauvegarde. Veuillez sélectionner un fichier de sauvegarde valide",
+  backup_import_empty: "Cette sauvegarde ne contient aucun trade. La restauration a été annulée afin de ne pas supprimer vos données existantes.",
   backup_exporting: "Création de la sauvegarde...",
   backup_importing: "Restauration en cours...",
 

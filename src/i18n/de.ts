@@ -49,6 +49,7 @@ export const de: LangStrings = {
   db_reset_confirm_title: 'Alle Daten zurücksetzen?',
   db_reset_confirm_msg: 'Dadurch werden alle gespeicherten Trade-Aufzeichnungen dauerhaft gelöscht und können nicht wiederhergestellt werden. Die App startet danach im Ausgangszustand.',
   db_reset_confirm_button: 'Zurücksetzen und neu starten',
+  db_reset_failed_msg: "Die Daten konnten nicht gelöscht werden. Bitte starte das Gerät neu und versuche es erneut. Der Verschlüsselungsschlüssel wurde sicherheitshalber nicht gelöscht.",
   retry: 'Erneut versuchen',
   error: 'Fehler',
 
@@ -605,6 +606,7 @@ export const de: LangStrings = {
   backup_restore_success: '{n} Trades wiederhergestellt',
   backup_restore_error: 'Wiederherstellung fehlgeschlagen',
   backup_import_error: 'Backup konnte nicht gelesen werden. Bitte wähle eine gültige Backup-Datei',
+  backup_import_empty: "Diese Sicherung enthält keine Trades. Die Wiederherstellung wurde abgebrochen, deine vorhandenen Daten bleiben erhalten.",
   backup_exporting: 'Backup wird erstellt...',
   backup_importing: 'Wird wiederhergestellt...',
 

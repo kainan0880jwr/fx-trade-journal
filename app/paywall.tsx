@@ -393,6 +393,16 @@ export default function PaywallScreen() {
             </Text>
           )}
 
+        </View>
+      )}
+
+      {/* 復元ボタンは商品取得の成否から独立させる。
+          以前はフッター全体が packages.length > 0 の中にあったため、
+          getOfferings() が失敗・タイムアウトすると購入CTAと一緒に復元ボタンも消えていた。
+          「課金済みなのに購入状態を取得できずロックされる」状況ではまさに復元が必要で、
+          商品が取れないときこそ表示されていなければならない。 */}
+      {!loadingPkgs && (
+        <View style={packages.length > 0 ? s.restoreOnlyInFooter : s.restoreOnly}>
           <TouchableOpacity
             style={s.restoreBtn}
             onPress={handleRestore}
@@ -493,7 +503,9 @@ function makeStyles(C: ThemeColors) {
       marginBottom: 12, paddingHorizontal: 16, lineHeight: 16,
     },
 
-    restoreBtn: { alignItems: 'center', paddingVertical: 10, marginBottom: 20, minHeight: 34, justifyContent: 'center' },
+    restoreOnly: { paddingHorizontal: 20, paddingBottom: 12 },
+  restoreOnlyInFooter: { paddingHorizontal: 20, paddingBottom: 12, backgroundColor: C.bg },
+  restoreBtn: { alignItems: 'center', paddingVertical: 10, marginBottom: 20, minHeight: 34, justifyContent: 'center' },
     restoreBtnText: { fontSize: 13, color: C.text2 },
 
     featureCard: {

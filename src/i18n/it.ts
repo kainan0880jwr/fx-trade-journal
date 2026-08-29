@@ -49,6 +49,7 @@ export const it: LangStrings = {
   db_reset_confirm_title: "Ripristinare tutti i dati?",
   db_reset_confirm_msg: "Questa operazione eliminerà definitivamente tutte le registrazioni delle operazioni salvate e non potrà essere annullata. L'app ripartirà da uno stato iniziale.",
   db_reset_confirm_button: "Ripristina e ricomincia",
+  db_reset_failed_msg: "Impossibile eliminare i dati. Riavvia il dispositivo e riprova. Per sicurezza la chiave di cifratura non è stata eliminata.",
   retry: "Riprova",
   error: "Errore",
 
@@ -605,6 +606,7 @@ export const it: LangStrings = {
   backup_restore_success: "{n} operazioni ripristinate",
   backup_restore_error: "Ripristino non riuscito",
   backup_import_error: "Impossibile leggere il backup. Seleziona un file di backup valido",
+  backup_import_empty: "Questo backup non contiene operazioni. Il ripristino è stato annullato per non eliminare i dati esistenti.",
   backup_exporting: "Creazione backup...",
   backup_importing: "Ripristino in corso...",
 

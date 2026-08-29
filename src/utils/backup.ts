@@ -98,6 +98,12 @@ export async function importBackup(): Promise<number> {
 
   // バリデーション
   if (!data.version || !Array.isArray(data.trades)) throw new Error('invalid_format');
+  // 0件のバックアップは、DELETE FROM trades だけ実行されて 0 が返る。
+  // 呼び出し側は count > 0 のときしかアラートを出さないため、ユーザーには
+  // 「何も起きていないのに全トレードが消えた」ように見え、しかも復旧用の
+  // 「元に戻す」ボタンも表示されないという最悪の結果になっていた。
+  // 破壊的処理に入る前に明示的に拒否する。
+  if (data.trades.length === 0) throw new Error('empty_backup');
   if (data.trades.length > 50000) throw new Error('file_too_large');
   let imageBytesTotal = 0;
   for (const trade of data.trades) {
@@ -219,6 +225,26 @@ export async function importBackup(): Promise<number> {
     await db.runAsync(
       `INSERT OR REPLACE INTO settings (key, value) VALUES ('loss_pips_sign_fixed_v1', '1')`
     );
+
+    // 損益10倍の修復も復元後にあて直す。ただし pips の符号反転と違い
+    // 「÷10」は**冪等ではない**（二度あてると1/100になる）ので、無条件に実行しては
+    // ならない。復元された settings にフラグが含まれているか＝そのバックアップが
+    // 修正後に取られたものかで判定する。
+    //   - 修正前のバックアップ → フラグ無し → ここで修復して フラグを立てる
+    //   - 修正後のバックアップ → フラグ有り → 既に正しい値なので何もしない
+    // CSVインポート行（id が 'mt4_' で始まる）は証券会社が出した実際の金額なので常に除外。
+    const scaleFixed = await db.getFirstAsync<{ value: string }>(
+      `SELECT value FROM settings WHERE key='profit_loss_scale_fixed_v1'`
+    );
+    if (!scaleFixed) {
+      await db.runAsync(
+        `UPDATE trades SET profit_loss = ROUND(profit_loss / 10.0)
+          WHERE profit_loss IS NOT NULL AND profit_loss != 0 AND id NOT LIKE 'mt4_%'`
+      );
+      await db.runAsync(
+        `INSERT OR REPLACE INTO settings (key, value) VALUES ('profit_loss_scale_fixed_v1', '1')`
+      );
+    }
   });
 
   return data.trades.length;

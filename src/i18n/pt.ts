@@ -49,6 +49,7 @@ export const pt: LangStrings = {
   db_reset_confirm_title: 'Redefinir todos os dados?',
   db_reset_confirm_msg: 'Isso excluirá permanentemente todos os registros de operações salvos e não pode ser desfeito. O aplicativo será reiniciado do zero.',
   db_reset_confirm_button: 'Redefinir e começar do zero',
+  db_reset_failed_msg: "Não foi possível excluir os dados. Reinicie o dispositivo e tente novamente. Por segurança, a chave de criptografia foi mantida.",
   retry: 'Tentar Novamente',
   error: 'Erro',
 
@@ -605,6 +606,7 @@ export const pt: LangStrings = {
   backup_restore_success: '{n} operações restauradas',
   backup_restore_error: 'Falha na restauração',
   backup_import_error: 'Falha ao ler o backup. Selecione um arquivo de backup válido',
+  backup_import_empty: "Este backup não contém operações. A restauração foi cancelada para não excluir seus dados atuais.",
   backup_exporting: 'Criando backup...',
   backup_importing: 'Restaurando...',
 

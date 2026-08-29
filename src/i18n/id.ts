@@ -49,6 +49,7 @@ export const id: LangStrings = {
   db_reset_confirm_title: 'Reset semua data?',
   db_reset_confirm_msg: 'Ini akan menghapus permanen semua catatan trade yang tersimpan dan tidak dapat dibatalkan. Aplikasi akan dimulai ulang dari kondisi kosong.',
   db_reset_confirm_button: 'Reset dan mulai dari awal',
+  db_reset_failed_msg: "Tidak dapat menghapus data. Mulai ulang perangkat lalu coba lagi. Demi keamanan, kunci enkripsi tidak dihapus.",
   retry: 'Coba Lagi',
   error: 'Error',
 
@@ -605,6 +606,7 @@ export const id: LangStrings = {
   backup_restore_success: '{n} trade berhasil dipulihkan',
   backup_restore_error: 'Pemulihan gagal',
   backup_import_error: 'Gagal membaca backup. Silakan pilih file backup yang valid',
+  backup_import_empty: "Cadangan ini tidak berisi transaksi. Pemulihan dibatalkan agar data Anda tidak terhapus.",
   backup_exporting: 'Membuat backup...',
   backup_importing: 'Memulihkan...',
 

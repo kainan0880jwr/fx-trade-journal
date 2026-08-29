@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { saveTradeImages } from '../../src/utils/imageStorage';
+import { saveTradeImages, resolveImageUri } from '../../src/utils/imageStorage';
 import { useTradeStore } from '../../src/store/tradeStore';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
@@ -745,7 +745,10 @@ export default function NewTradeScreen() {
                   <View style={styles.imageRow}>
                     {imageUris.map((uri, i) => (
                       <View key={i} style={styles.thumbWrap}>
-                        <Image source={{ uri }} style={styles.thumb} />
+                        {/* DBには相対パス(charts/xxx.jpg)で保存されているため、
+                            そのまま渡すと編集画面でサムネイルが表示されない。
+                            詳細画面と同様に絶対URIへ解決してから渡す。 */}
+                        <Image source={{ uri: resolveImageUri(uri) }} style={styles.thumb} />
                         <TouchableOpacity
                           style={styles.thumbRemove}
                           onPress={() => setImageUris(prev => prev.filter((_, j) => j !== i))}

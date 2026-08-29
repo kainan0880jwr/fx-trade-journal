@@ -34,8 +34,17 @@ export async function saveTradeImages(tempUris: string[], tradeId: string): Prom
       results.push(uri); // 既に相対パス（保存済み画像の再利用）
       continue;
     }
-    const ext = uri.split('.').pop()?.split('?')[0]?.toLowerCase() ?? 'jpg';
-    const relPath = `charts/${tradeId}_${i}.${ext}`;
+    const rawExt = uri.split('.').pop()?.split('?')[0]?.toLowerCase() ?? 'jpg';
+    const ext = /^[a-z0-9]{1,5}$/.test(rawExt) ? rawExt : 'jpg';
+    // ファイル名は配列位置ではなく一意な値にする。
+    //
+    // 以前は `${tradeId}_${i}` で、i はその時点の配列内位置だった。既存の相対パスは
+    // 上の分岐で素通しされるため、編集で「1枚目を削除して新しい画像を追加」すると
+    // 新画像の保存先が、残したはずの既存画像と同じファイル名になり **上書き破壊** した。
+    // copyAsync は既存ファイルを黙って置き換えるため、警告もエラーも出ずに
+    // 過去のチャート画像が復旧不能な形で失われていた。
+    const unique = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+    const relPath = `charts/${tradeId}_${unique}.${ext}`;
     await copyAsync({ from: uri, to: `${documentDirectory}${relPath}` });
     results.push(relPath);
   }

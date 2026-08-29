@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import {
-  View, Text, FlatList, TouchableOpacity, StyleSheet
-} from 'react-native';
+  View, Text, FlatList, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import CountUp from '../../src/components/CountUp';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { router } from 'expo-router';
@@ -152,6 +151,10 @@ export default function RecordScreen() {
       />
 
       <View style={styles.bottomRow}>
+        {/* CalendarModal は Platform.OS !== 'ios' で null を返すため、Androidでは
+            このボタンを押しても**何も起きない**（エラーもトーストも出ない完全な無反応）。
+            モーダル側をAndroid対応させるまでは、押せてしまうボタン自体を出さない。 */}
+        {Platform.OS === 'ios' && (
         <TouchableOpacity
           style={styles.calBtn}
           onPress={() => setCalendarVisible(true)}
@@ -162,6 +165,7 @@ export default function RecordScreen() {
           <Ionicons name="calendar-outline" size={18} color={C.primary} />
           <Text style={styles.calBtnText}>{t('calendar_btn')}</Text>
         </TouchableOpacity>
+        )}
         <TouchableOpacity
           style={styles.bookmarkBtn}
           onPress={() => router.push('/(tabs)/bookmarks')}
