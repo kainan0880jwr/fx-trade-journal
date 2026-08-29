@@ -16,7 +16,7 @@ import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { calcPips, signedQuickPips } from '../../src/utils/pipsCalc';
 import { calcProfitLoss, determineResult } from '../../src/utils/profitCalc';
 import { generateId } from '../../src/utils/statsCalc';
-import { getTradeById, updateRecordStreak } from '../../src/db/queries';
+import { getTradeById, updateRecordStreak, getAllCurrencyPairs } from '../../src/db/queries';
 import { useReviewPrompt } from '../../src/hooks/useReviewPrompt';
 import { useAppLockPrompt } from '../../src/hooks/useAppLockPrompt';
 import { recordFirstTradeSaved } from '../../src/utils/retentionEvents';
@@ -189,8 +189,23 @@ export default function NewTradeScreen() {
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [showTF, setShowTF] = useState(false);
 
+  // 削除済み（is_active=0）の通貨ペアを持つ既存トレードを編集する場合、
+  // settingsStore の pairs（アクティブのみ）では解決できず pipDigits が
+  // 既定値2へフォールバックし、何も変更せず保存し直すだけで pips が
+  // 1/100 になっていた。編集時は非アクティブを含む全ペアから解決する。
+  const [allPairs, setAllPairs] = useState<typeof pairs>([]);
+  useEffect(() => {
+    if (!isEditMode) return;
+    let cancelled = false;
+    getAllCurrencyPairs()
+      .then(ps => { if (!cancelled) setAllPairs(ps); })
+      .catch(() => { /* 解決できなければ従来どおり pairs にフォールバック */ });
+    return () => { cancelled = true; };
+  }, [isEditMode]);
+
   // フルモード計算
-  const selectedPair = pairs.find(p => p.name === pair);
+  const selectedPair = (allPairs.length > 0 ? allPairs : pairs).find(p => p.name === pair)
+    ?? pairs.find(p => p.name === pair);
   const pipDigits = selectedPair?.pipDigits ?? 2;
   const isYenPair = selectedPair?.isYenPair ?? false;
   const entry = parseDecimal(entryRate) ?? NaN;
@@ -345,6 +360,35 @@ export default function NewTradeScreen() {
     }
   };
 
+  /**
+   * 入力モードの切り替え。
+   *
+   * クイック保存は entryRate/tags/imageUris/reflection/ruleChecks を固定値で
+   * 書き込むため、詳細入力で入れた内容は保存時にすべて捨てられる。
+   * 破棄確認ダイアログ（beforeRemove）は保存操作では発火しないので、
+   * 数分かけた入力が無警告で消えていた。切り替え時点で確認する。
+   */
+  const hasFullOnlyInput = () =>
+    entryRate.trim() !== '' || exitRate.trim() !== '' || reflection.trim() !== '' ||
+    selectedTags.length > 0 || imageUris.length > 0 || ruleChecks.length > 0 ||
+    stopLossStr.trim() !== '' || takeProfitStr.trim() !== '';
+
+  const switchMode = (next: InputMode) => {
+    if (next === mode) return;
+    if (next === 'quick' && hasFullOnlyInput()) {
+      Alert.alert(
+        t('discard_title'),
+        t('form_mode_switch_discard_msg'),
+        [
+          { text: t('discard_cancel'), style: 'cancel' },
+          { text: t('discard_confirm'), style: 'destructive', onPress: () => setMode('quick') },
+        ]
+      );
+      return;
+    }
+    setMode(next);
+  };
+
   // ── クイック保存 ──
   const handleQuickSave = async () => {
     if (!quickResult) { Alert.alert(t('input_error'), t('form_result')); return; }
@@ -483,7 +527,7 @@ export default function NewTradeScreen() {
           <View style={styles.modeBar}>
             <TouchableOpacity
               style={[styles.modeBtn, mode === 'quick' && styles.modeBtnActive]}
-              onPress={() => setMode('quick')}
+              onPress={() => switchMode('quick')}
               accessibilityRole="button"
               accessibilityState={{ selected: mode === 'quick' }}
             >
@@ -494,7 +538,7 @@ export default function NewTradeScreen() {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.modeBtn, mode === 'full' && styles.modeBtnActive]}
-              onPress={() => setMode('full')}
+              onPress={() => switchMode('full')}
               accessibilityRole="button"
               accessibilityState={{ selected: mode === 'full' }}
             >

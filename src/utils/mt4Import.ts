@@ -424,11 +424,37 @@ function rawToTrade(row: RawRow): Trade | null {
 // ───────────────────────────────────────────────
 // フォーマット判定
 // ───────────────────────────────────────────────
+/**
+ * ヘッダー行から MT4 / MT5 を判定する。
+ *
+ * 以前は英語ヘッダーしか見ておらず、日本語UIのMT4/MT5が出力するCSV
+ * （「時間・タイプ・銘柄・約定」等）では常に unknown となり、
+ * 「取り込めるデータがありません」で終わっていた。日本が主要市場である以上、
+ * これは実質的にCSVインポートが使えないのと同じだった。
+ */
 function detectFormat(lines: string[], sep: string): 'mt4' | 'mt5' | 'unknown' {
   const header = lines.slice(0, 5).join('\n').toLowerCase();
+
+  // MT5（英語 / 日本語）
   if (header.includes('deal') || header.includes('direction')) return 'mt5';
+  if (header.includes('約定') || header.includes('方向')) return 'mt5';
+
+  // MT4（英語 / 日本語）
   if (header.includes('type') && (header.includes('symbol') || header.includes('item'))) return 'mt4';
+  if (header.includes('タイプ') && (header.includes('銘柄') || header.includes('通貨ペア'))) return 'mt4';
+
   return 'unknown';
+}
+
+/**
+ * Shift-JIS のファイルを UTF-8 として読むと日本語部分が置換文字（U+FFFD）に
+ * 化ける。そのまま処理すると normalizePair が全行を弾き「0件」で終わり、
+ * ユーザーには原因が分からない。文字化けを検知して専用のエラーにする。
+ */
+function looksMojibake(text: string): boolean {
+  const sample = text.slice(0, 4000);
+  const replacements = (sample.match(/\uFFFD/g) || []).length;
+  return replacements > 5;
 }
 
 // ───────────────────────────────────────────────
@@ -486,6 +512,13 @@ export async function importMT4CSV(): Promise<ImportResult> {
   }
 
   const sep    = detectSep(lines[0]);
+  if (looksMojibake(raw)) {
+    // Shift-JIS等のUTF-8以外で保存されたCSV。文字化けしたまま進めると
+    // 「0件」で終わり原因が分からないため、明示的に伝える。
+    result.errors.push(t('mt4_import_encoding_error'));
+    return result;
+  }
+
   const format = detectFormat(lines, sep);
 
   let rows: RawRow[] = [];

@@ -209,6 +209,26 @@ export async function upsertCurrencyPair(pair: CurrencyPair): Promise<void> {
   );
 }
 
+/**
+ * 非アクティブ（削除済み）を含む全通貨ペアを取得する。
+ *
+ * 削除は論理削除（is_active=0）なので設定は残っている。にもかかわらず
+ * トレード編集画面が is_active=1 のみを参照していたため、削除済みペアの
+ * 既存トレードを開くと pipDigits が既定値2へフォールバックし、
+ * **何も変更せず保存し直すだけで pips が 1/100 になっていた**
+ * （EUR/USD の +17.0pips が +0.2 になる）。編集時はこちらを使う。
+ */
+export async function getAllCurrencyPairs(): Promise<CurrencyPair[]> {
+  const db = await getDatabase();
+  const rows = await db.getAllAsync<any>(
+    `SELECT * FROM currency_pairs ORDER BY CAST(id AS INTEGER), name`
+  );
+  return rows.map(r => ({
+    id: r.id, name: r.name, pipDigits: r.pip_digits,
+    isYenPair: r.is_yen_pair === 1, isActive: r.is_active === 1,
+  }));
+}
+
 export async function deleteCurrencyPair(id: string): Promise<void> {
   const db = await getDatabase();
   await db.runAsync(`UPDATE currency_pairs SET is_active=0 WHERE id=?`, [id]);
