@@ -22,6 +22,7 @@ import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
 import { formatPF } from '../../src/utils/calendarMetrics';
 import * as Sentry from '@sentry/react-native';
+import { formatMoney } from '../../src/utils/formatMoney';
 
 const STYLE_LABELS = () => ({
   scalping: t('card_style_scalp'), day: t('card_style_day'), swing: t('card_style_swing'), other: t('card_style_other'),
@@ -174,13 +175,17 @@ export default function AnalysisScreen() {
                   <>
                     <Text style={styles.sectionTitle}>{t('by_pair')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_pair'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.8,0.9,1,1.3]} />
+                      <TableHeader cols={[t('col_pair'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,0.9,1,1.3,1.4,1.4]} />
                       {byPair.map((item, i) => (
                         <View key={item.pair} style={[styles.tableRow, i < byPair.length - 1 && styles.rowBorder]}>
                           <Text style={[styles.cell, { flex: 1.8, color: C.text }]} numberOfLines={1}>{item.pair}</Text>
                           <Text style={[styles.cell, { flex: 0.9 }]}>{item.totalTrades}</Text>
                           <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
                           <Text style={[styles.cell, { flex: 1.3, color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          {/* 損益。記録が無い行は '-'（合計に含めない） */}
+                          <Text style={[styles.cell, { flex: 1.4, color: item.totalPL === 0 ? C.text3 : item.totalPL > 0 ? C.win : C.loss }]} numberOfLines={1}>
+                            {item.plCount > 0 ? formatMoney(item.totalPL) : '-'}
+                          </Text>
                         </View>
                       ))}
                     </View>
@@ -191,13 +196,17 @@ export default function AnalysisScreen() {
                   <>
                     <Text style={styles.sectionTitle}>{t('by_style')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_style'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.8,0.9,1,1.3]} />
+                      <TableHeader cols={[t('col_style'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,0.9,1,1.3,1.4,1.4]} />
                       {byStyle.map((item, i) => (
                         <View key={item.style} style={[styles.tableRow, i < byStyle.length - 1 && styles.rowBorder]}>
                           <Text style={[styles.cell, { flex: 1.8, color: C.text }]} numberOfLines={1}>{STYLE_LABELS()[item.style] ?? item.style}</Text>
                           <Text style={[styles.cell, { flex: 0.9 }]}>{item.totalTrades}</Text>
                           <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
                           <Text style={[styles.cell, { flex: 1.3, color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          {/* 損益。記録が無い行は '-'（合計に含めない） */}
+                          <Text style={[styles.cell, { flex: 1.4, color: item.totalPL === 0 ? C.text3 : item.totalPL > 0 ? C.win : C.loss }]} numberOfLines={1}>
+                            {item.plCount > 0 ? formatMoney(item.totalPL) : '-'}
+                          </Text>
                         </View>
                       ))}
                     </View>
@@ -216,7 +225,7 @@ export default function AnalysisScreen() {
 
                     <Text style={styles.sectionTitle}>{t('time_analysis_title')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_time'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.8,1,1,1]} />
+                      <TableHeader cols={[t('col_time'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,1,1,1]} />
                       {timeData.map((item, i) => (
                         <View key={item.hour} style={[styles.tableRow, i < timeData.length - 1 && styles.rowBorder]}>
                           <View style={[styles.cell, { flex: 1.8, flexDirection: 'row', alignItems: 'center', gap: 4 }]}>
@@ -226,13 +235,17 @@ export default function AnalysisScreen() {
                           <Text style={styles.cell}>{item.total}</Text>
                           <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
                           <Text style={[styles.cell, { color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          {/* 損益。記録が無い行は '-'（合計に含めない） */}
+                          <Text style={[styles.cell, { flex: 1.4, color: item.totalPL === 0 ? C.text3 : item.totalPL > 0 ? C.win : C.loss }]} numberOfLines={1}>
+                            {item.plCount > 0 ? formatMoney(item.totalPL) : '-'}
+                          </Text>
                         </View>
                       ))}
                     </View>
 
                     <Text style={styles.sectionTitle}>{t('day_analysis_title')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_day'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[1.8,1,1,1]} />
+                      <TableHeader cols={[t('col_day'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,1,1,1]} />
                       {dayData.map((item, i) => (
                         <View key={item.day} style={[styles.tableRow, i < dayData.length - 1 && styles.rowBorder]}>
                           <View style={[styles.cell, { flex: 1.8, flexDirection: 'row', alignItems: 'center', gap: 4 }]}>
@@ -242,6 +255,10 @@ export default function AnalysisScreen() {
                           <Text style={styles.cell}>{item.total}</Text>
                           <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
                           <Text style={[styles.cell, { color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          {/* 損益。記録が無い行は '-'（合計に含めない） */}
+                          <Text style={[styles.cell, { flex: 1.4, color: item.totalPL === 0 ? C.text3 : item.totalPL > 0 ? C.win : C.loss }]} numberOfLines={1}>
+                            {item.plCount > 0 ? formatMoney(item.totalPL) : '-'}
+                          </Text>
                         </View>
                       ))}
                     </View>
@@ -258,7 +275,7 @@ export default function AnalysisScreen() {
                   <>
                     <Text style={styles.sectionTitle}>{t('tag_analysis_perf')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_tag'), t('col_count_h'), t('win_rate'), t('col_avg_pips')]} widths={[2,1,1,1]} />
+                      <TableHeader cols={[t('col_tag'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[2,1,1,1]} />
                       {tagStats.map((item, i) => (
                         <View key={item.tag} style={[styles.tableRow, i < tagStats.length - 1 && styles.rowBorder]}>
                           <View style={[styles.cell, { flex: 2, flexDirection: 'row', alignItems: 'center', gap: 6 }]}>
@@ -268,6 +285,10 @@ export default function AnalysisScreen() {
                           <Text style={styles.cell}>{item.total}</Text>
                           <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
                           <Text style={[styles.cell, { color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          {/* 損益。記録が無い行は '-'（合計に含めない） */}
+                          <Text style={[styles.cell, { flex: 1.4, color: item.totalPL === 0 ? C.text3 : item.totalPL > 0 ? C.win : C.loss }]} numberOfLines={1}>
+                            {item.plCount > 0 ? formatMoney(item.totalPL) : '-'}
+                          </Text>
                         </View>
                       ))}
                     </View>

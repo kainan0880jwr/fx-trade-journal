@@ -183,6 +183,7 @@ export const hi: LangStrings = {
   col_pair: 'पेयर',
   col_count_h: 'संख्या',
   col_avg_pips: 'औसत पिप्स',
+  col_total_pl: "लाभ/हानि",
   col_style: 'स्टाइल',
   col_time: 'समय',
   col_day: 'दिन',

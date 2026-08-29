@@ -183,6 +183,7 @@ export const pt: LangStrings = {
   col_pair: 'Par',
   col_count_h: 'Contagem',
   col_avg_pips: 'Pips Médios',
+  col_total_pl: "L/P",
   col_style: 'Estilo',
   col_time: 'Horário',
   col_day: 'Dia',
