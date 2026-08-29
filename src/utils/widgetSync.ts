@@ -18,8 +18,50 @@ function todayYearMonth(): string {
 // ユーザーがアプリ内で別の月を閲覧中でも、ウィジェットには常に実際の「今月」の
 // 成績を出したいため、閲覧中の月(tradeStoreのcurrentMonth)とは独立に
 // DBから直接取得し直す。
+/**
+ * ExtensionStorageのネイティブモジュールが実際にリンクされているか。
+ *
+ * @bacons/apple-targets は、ネイティブモジュールが見つからないと**例外を投げずに
+ * 何もしないダミー関数**へ差し替える。そのため set() も reloadWidget() も
+ * 「成功したふり」をして、App Groupには何も書かれず、ウィジェットは永久に
+ * プレースホルダー（--%）のままになる。しかもcatchにも入らないので
+ * Sentryにも痕跡が残らない。
+ *
+ * 実際にv1.3.0で発生した。原因は @bacons/apple-targets が devDependencies に
+ * 入っていたことで、設定プラグイン（prebuild時に動く）はウィジェットの
+ * Xcodeターゲットを生成する一方、autolinkingがネイティブモジュールを拾わず、
+ * 生成されたExpoModulesProvider.swiftに登録されていなかった。
+ * 「ウィジェットは存在するのにデータだけ来ない」という切り分けにくい形になる。
+ *
+ * 二度と無言で壊れないよう、モジュールの有無を起動時に検出して報告する。
+ */
+function isNativeModuleLinked(): boolean {
+  // expo.modules は Expo Modules のネイティブ登録テーブル
+  const modules = (globalThis as any)?.expo?.modules;
+  return !!modules?.ExtensionStorage;
+}
+
+let linkageReported = false;
+
 export async function syncWidgetData(): Promise<void> {
   if (Platform.OS !== 'ios') return;
+
+  if (!isNativeModuleLinked()) {
+    // 毎回の保存で送ると量が増えるため、1セッションにつき1回だけ報告する
+    if (!linkageReported) {
+      linkageReported = true;
+      try {
+        Sentry.captureMessage(
+          'widget:extension_storage_not_linked',
+          { level: 'error', tags: { area: 'widget_sync' } },
+        );
+      } catch {
+        // 計装の失敗まで面倒は見ない
+      }
+    }
+    return;
+  }
+
   try {
     const trades = await getTradesByMonth(todayYearMonth());
     const stats = calcStats(trades);

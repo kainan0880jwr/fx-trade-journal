@@ -39,10 +39,14 @@
           "pt"
         ],
         "CFBundleDevelopmentRegion": "ja",
-        "LSApplicationQueriesSchemes": ["itms-apps"]
+        "LSApplicationQueriesSchemes": [
+          "itms-apps"
+        ]
       },
       "entitlements": {
-        "com.apple.security.application-groups": ["group.com.fxtradejournal.ios"]
+        "com.apple.security.application-groups": [
+          "group.com.fxtradejournal.ios"
+        ]
       }
     },
     "android": {
@@ -106,7 +110,13 @@
           "project": "fx-trade-journal"
         }
       ],
-      "@bacons/apple-targets"
+      "@bacons/apple-targets",
+      [
+        "./plugins/withExtensionStoragePlatform",
+        {
+          "deploymentTarget": "15.1"
+        }
+      ]
     ],
     "runtimeVersion": {
       "policy": "appVersion"
