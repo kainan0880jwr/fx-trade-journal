@@ -314,6 +314,7 @@ export const tr: LangStrings = {
   settings_notif_install: 'Bildirimleri etkinleştirmek için expo-notifications gereklidir.\nTerminalde çalıştırın:\n\nnpx expo install expo-notifications',
   settings_notif_permission: 'İzin Gerekli',
   settings_notif_permission_msg: 'Lütfen Ayarlar\'dan bildirimlere izin verin',
+  settings_notif_schedule_failed: "Bildirim sisteme kaydedilemedi. Lütfen cihazın bildirim ayarlarını kontrol edin.",
   settings_badges: 'Başarılar',
   settings_badges_sub: 'Trading\'iniz için rozet kazanın',
   settings_csv: 'CSV Dışa Aktar',

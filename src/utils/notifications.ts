@@ -95,8 +95,19 @@ export async function scheduleWeeklySummary(
   } catch { return false; }
 }
 
+/**
+ * 日次リマインダーだけを取り消す。
+ *
+ * 以前は cancelAllScheduledNotificationsAsync() で**全予約**を消していたため、
+ * 日次通知をOFFにすると週次サマリーまで黙って消えていた（週次のトグルは
+ * ONのまま表示され続けるので、ユーザーは気づけない）。
+ */
 export async function cancelAllReminders(): Promise<void> {
-  try { await Notifications.cancelAllScheduledNotificationsAsync(); } catch {}
+  try {
+    await Notifications.cancelScheduledNotificationAsync(ID_DAILY);
+  } catch {
+    // 予約が存在しない場合も投げるため握り潰す
+  }
 }
 
 /**

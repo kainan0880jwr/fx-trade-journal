@@ -314,6 +314,7 @@ export const id: LangStrings = {
   settings_notif_install: 'expo-notifications diperlukan untuk mengaktifkan notifikasi.\nJalankan di terminal:\n\nnpx expo install expo-notifications',
   settings_notif_permission: 'Izin Diperlukan',
   settings_notif_permission_msg: 'Silakan izinkan notifikasi di Pengaturan',
+  settings_notif_schedule_failed: "Tidak dapat mendaftarkan notifikasi ke sistem. Periksa pengaturan notifikasi perangkat Anda.",
   settings_badges: 'Pencapaian',
   settings_badges_sub: 'Dapatkan badge untuk trading Anda',
   settings_csv: 'Ekspor CSV',

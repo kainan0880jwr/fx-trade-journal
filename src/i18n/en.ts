@@ -314,6 +314,7 @@ export const en: LangStrings = {
   settings_notif_install: 'expo-notifications is required to enable notifications.\nRun in terminal:\n\nnpx expo install expo-notifications',
   settings_notif_permission: 'Permission Required',
   settings_notif_permission_msg: 'Please allow notifications in Settings',
+  settings_notif_schedule_failed: "Could not register the notification with the system. Please check your device notification settings.",
   settings_badges: 'Achievements',
   settings_badges_sub: 'Earn badges for your trading',
   settings_csv: 'Export CSV',

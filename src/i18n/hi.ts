@@ -314,6 +314,7 @@ export const hi: LangStrings = {
   settings_notif_install: 'नोटिफिकेशन सक्षम करने के लिए expo-notifications आवश्यक है।\nटर्मिनल में चलाएं:\n\nnpx expo install expo-notifications',
   settings_notif_permission: 'अनुमति आवश्यक',
   settings_notif_permission_msg: 'कृपया सेटिंग्स में नोटिफिकेशन की अनुमति दें',
+  settings_notif_schedule_failed: "सूचना को सिस्टम में पंजीकृत नहीं किया जा सका। कृपया डिवाइस की सूचना सेटिंग जाँचें।",
   settings_badges: 'उपलब्धियां',
   settings_badges_sub: 'अपने ट्रेडिंग के लिए बैज कमाएं',
   settings_csv: 'CSV एक्सपोर्ट करें',

@@ -21,6 +21,7 @@ import { useIsTablet, useContentWidth } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
 import { formatPF } from '../../src/utils/calendarMetrics';
+import * as Sentry from '@sentry/react-native';
 
 const STYLE_LABELS = () => ({
   scalping: t('card_style_scalp'), day: t('card_style_day'), swing: t('card_style_swing'), other: t('card_style_other'),
@@ -57,7 +58,12 @@ export default function AnalysisScreen() {
   useEffect(() => { loadTradesByMonth(currentMonth); }, [currentMonth, loadTradesByMonth]);
   useEffect(() => {
     if (activeTab === 'equity' && equityMode === 'all') {
-      loadAllTrades().then(setAllTrades);
+      // 失敗すると allTrades が [] のままで「データがありません」が固定表示になる
+      loadAllTrades()
+        .then(setAllTrades)
+        .catch(e => {
+          try { Sentry.captureException(e, { tags: { area: 'equity_load' } }); } catch { /* 無視 */ }
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, equityMode]);
