@@ -409,7 +409,12 @@ export default function SettingsScreen() {
       if (val) {
         const granted = await requestNotificationPermission();
         if (!granted) { Alert.alert(t('settings_notif_permission'), t('settings_notif_permission_msg')); return; }
-        await scheduleReminder(notifHour, notifMinute);
+        // scheduleReminder は失敗を boolean で返す設計だが、これまで戻り値を
+        // 見ておらず、OS側の予約に失敗しても「21:00に通知します」と保存完了を
+        // 表示してトグルもONのままだった。通知は永久に来ないのにユーザーは
+        // 設定できたと信じてしまう。
+        const ok = await scheduleReminder(notifHour, notifMinute);
+        if (!ok) { Alert.alert(t('error'), t('settings_notif_schedule_failed')); return; }
       } else {
         await cancelAllReminders();
       }
@@ -424,7 +429,10 @@ export default function SettingsScreen() {
     try {
       await setSetting('notif_hour', String(notifHour));
       await setSetting('notif_minute', String(notifMinute));
-      if (notifEnabled) await scheduleReminder(notifHour, notifMinute);
+      if (notifEnabled) {
+        const ok = await scheduleReminder(notifHour, notifMinute);
+        if (!ok) { Alert.alert(t('error'), t('settings_notif_schedule_failed')); return; }
+      }
       const timeStr = `${String(notifHour).padStart(2,'0')}:${String(notifMinute).padStart(2,'0')}`;
       Alert.alert(t('saved'), t('settings_notif_saved_msg').replace('{time}', timeStr));
     } catch {

@@ -312,6 +312,7 @@ export const ja = {
   settings_notif_install: '通知機能を有効にするには expo-notifications のインストールが必要です。\nターミナルで以下を実行してください:\n\nnpx expo install expo-notifications',
   settings_notif_permission: '通知許可が必要です',
   settings_notif_permission_msg: '設定から通知を許可してください',
+  settings_notif_schedule_failed: "通知をOSに登録できませんでした。端末の通知設定をご確認ください。",
   settings_badges: '実績バッジ',
   settings_badges_sub: 'トレードの成果でバッジを獲得',
   settings_csv: 'CSVエクスポート',

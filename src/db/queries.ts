@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native';
 import { getDatabase } from './database';
 import type { Trade, CurrencyPair, AppSettings, ReflectionTemplate } from '../types';
 
@@ -32,8 +33,13 @@ function rowToTrade(row: any): Trade {
     lotSize: row.lot_size,
     style: row.style,
     entryMethod: (row.entry_method === 'quick' ? 'quick' : 'full') as 'full' | 'quick',
-    tags: (() => { try { return JSON.parse(row.tags || '[]'); } catch { return []; } })(),
-    imageUris: (() => { try { return JSON.parse(row.image_uris || '[]'); } catch { return []; } })(),
+    // JSONが壊れている場合、以前は黙って [] にフォールバックしていた。
+    // 読み取りだけなら劣化で済むが、そのトレードを開いて保存し直すと
+    // updateTrade が JSON.stringify([]) を書き込み、**破損していた元データが
+    // 確定的に失われる**。破損を検知したらSentryに残し（値そのものは送らない）、
+    // 原因を追えるようにする。
+    tags: parseJsonArray(row.tags, 'tags'),
+    imageUris: parseJsonArray(row.image_uris, 'image_uris'),
     pips: row.pips,
     profitLoss: row.profit_loss,
     result: row.result,
@@ -43,13 +49,33 @@ function rowToTrade(row: any): Trade {
     mentalFocus: row.mental_focus ?? null,
     mentalCalm: row.mental_calm ?? null,
     mentalFear: row.mental_fear ?? null,
-    ruleChecks: (() => { try { return JSON.parse(row.rule_checks || '[]'); } catch { return []; } })(),
+    ruleChecks: parseJsonArray(row.rule_checks, 'rule_checks'),
     tfWeekly: row.tf_weekly ?? '',
     tfDaily: row.tf_daily ?? '',
     tf4h: row.tf_4h ?? '',
     tf1h: row.tf_1h ?? '',
     createdAt: row.created_at,
   };
+}
+
+
+/**
+ * トレード行のJSON配列カラムを読む。破損していたら空配列を返しつつSentryへ報告する。
+ * 値そのものは送らない（トレード内容はPIIとして扱う）。
+ */
+function parseJsonArray(raw: unknown, column: string): string[] {
+  try {
+    const v = JSON.parse((raw as string) || '[]');
+    return Array.isArray(v) ? v : [];
+  } catch {
+    try {
+      Sentry.captureMessage('db:corrupt_json_column', {
+        level: 'warning',
+        tags: { area: 'db_read', column },
+      });
+    } catch { /* 計装の失敗は無視 */ }
+    return [];
+  }
 }
 
 export async function insertTrade(trade: Trade): Promise<void> {

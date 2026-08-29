@@ -9,6 +9,7 @@ import PremiumGate from '../src/components/PremiumGate';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t } from '../src/i18n';
+import * as Sentry from '@sentry/react-native';
 
 const CATEGORIES = () => [
   { key: 'all',         label: t('all') },
@@ -26,7 +27,14 @@ export default function BadgesScreen() {
   const [filter, setFilter] = useState<string>('all');
 
   useEffect(() => {
-    loadAllTrades().then(trades => setBadges(calcBadges(trades)));
+    // catch が無いと読み込み失敗時に未処理rejectionになり、画面は
+    // 初期値のまま「0 / 0 解除」と表示される。有料機能なので、課金ユーザーが
+    // 「金を払ったのに空」を見ることになる。失敗はSentryに残す。
+    loadAllTrades()
+      .then(trades => setBadges(calcBadges(trades)))
+      .catch(e => {
+        try { Sentry.captureException(e, { tags: { area: 'badges_load' } }); } catch { /* 無視 */ }
+      });
   }, []);
 
   const unlocked = badges.filter(b => b.unlocked).length;

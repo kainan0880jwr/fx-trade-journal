@@ -11,6 +11,7 @@ import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t, lang } from '../../src/i18n';
 import type { Trade } from '../../src/types';
+import * as Sentry from '@sentry/react-native';
 
 export default function BookmarksScreen() {
   const C = useTheme();
@@ -19,7 +20,15 @@ export default function BookmarksScreen() {
   const [bookmarks, setBookmarks] = useState<Trade[]>([]);
 
   const load = async () => {
-    const ts = await loadBookmarked();
+    // try が無いと失敗時に未処理rejectionになり、「0件」がエラーではなく
+    // 正常な空状態として表示される
+    let ts;
+    try {
+      ts = await loadBookmarked();
+    } catch (e) {
+      try { Sentry.captureException(e, { tags: { area: 'bookmarks_load' } }); } catch { /* 無視 */ }
+      return;
+    }
     setBookmarks(ts);
   };
 

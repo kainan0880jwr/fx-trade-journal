@@ -126,10 +126,11 @@ export async function importBackup(): Promise<number> {
   // インポートで既存データを全置換する前に、直前の状態をキャッシュへ退避しておく（万一の復旧用）
   try {
     const [prevTrades, prevPairs] = await Promise.all([getAllTrades(), getCurrencyPairs()]);
-    if (prevTrades.length > 0 && cacheDirectory) {
-      const snapshotPath = `${cacheDirectory}fx-pre-import-snapshot.json`;
+    if (prevTrades.length > 0) {
+      const snapPath = snapshotPath();
+      if (!snapPath) throw new Error('no_document_directory');
       await writeAsStringAsync(
-        snapshotPath,
+        snapPath,
         JSON.stringify({ exportedAt: new Date().toISOString(), trades: prevTrades, pairs: prevPairs }),
         { encoding: 'utf8' }
       );
@@ -258,10 +259,23 @@ interface SnapshotData {
 
 const SNAPSHOT_FILENAME = 'fx-pre-import-snapshot.json';
 
+/**
+ * インポート前スナップショットの保存先。
+ *
+ * 以前は cacheDirectory に置いていたが、iOS/Android はストレージが逼迫すると
+ * キャッシュを**予告なく削除する**。全データを置き換えるインポートの唯一の
+ * 復旧手段がOSの都合で消えるのは危険なため、documentDirectory に置く。
+ * （復元後は削除するので永続的に残るわけではない）
+ */
+function snapshotPath(): string | null {
+  return documentDirectory ? `${documentDirectory}${SNAPSHOT_FILENAME}` : null;
+}
+
 /** 直前のバックアップインポート前のスナップショットが存在するか確認する */
 export async function hasPreImportSnapshot(): Promise<boolean> {
-  if (!cacheDirectory) return false;
-  const info = await getInfoAsync(`${cacheDirectory}${SNAPSHOT_FILENAME}`);
+  const p = snapshotPath();
+  if (!p) return false;
+  const info = await getInfoAsync(p);
   return info.exists;
 }
 
@@ -270,12 +284,12 @@ export async function hasPreImportSnapshot(): Promise<boolean> {
  * 画像ファイル自体はインポート時に上書き削除されないため、旧パスのままで復元できる。
  */
 export async function restorePreImportSnapshot(): Promise<number> {
-  if (!cacheDirectory) throw new Error('cacheDirectory unavailable');
-  const snapshotPath = `${cacheDirectory}${SNAPSHOT_FILENAME}`;
-  const info = await getInfoAsync(snapshotPath);
+  const snapPath = snapshotPath();
+  if (!snapPath) throw new Error('no_document_directory');
+  const info = await getInfoAsync(snapPath);
   if (!info.exists) throw new Error('no_snapshot');
 
-  const raw = await readAsStringAsync(snapshotPath, { encoding: 'utf8' });
+  const raw = await readAsStringAsync(snapPath, { encoding: 'utf8' });
   const data: SnapshotData = JSON.parse(raw);
   if (!Array.isArray(data.trades)) throw new Error('invalid_format');
 
@@ -326,7 +340,7 @@ export async function restorePreImportSnapshot(): Promise<number> {
 
   // 復元に使い終わったスナップショットは平文の全トレード記録を含むため、
   // キャッシュに残さず削除する
-  await deleteAsync(snapshotPath, { idempotent: true }).catch(() => {});
+  await deleteAsync(snapPath, { idempotent: true }).catch(() => {});
 
   return data.trades.length;
 }

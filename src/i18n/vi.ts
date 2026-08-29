@@ -314,6 +314,7 @@ export const vi: LangStrings = {
   settings_notif_install: 'Cần expo-notifications để bật thông báo.\nChạy trong terminal:\n\nnpx expo install expo-notifications',
   settings_notif_permission: 'Cần Quyền Truy Cập',
   settings_notif_permission_msg: 'Vui lòng cho phép thông báo trong Cài đặt',
+  settings_notif_schedule_failed: "Không thể đăng ký thông báo với hệ thống. Vui lòng kiểm tra cài đặt thông báo của thiết bị.",
   settings_badges: 'Thành Tích',
   settings_badges_sub: 'Nhận huy hiệu cho hoạt động giao dịch của bạn',
   settings_csv: 'Xuất CSV',
