@@ -41,7 +41,7 @@ export default function SettingsScreen() {
 
   const {
     pairs, settings, entryTags, tradeRules,
-    addPair, removePair, updateLotUnit,
+    addPair, removePair, updateLotUnit, updateDefaultLotSize,
     updateAccountBalance, updateDefaultRiskPct,
     updateMonthlyPipsGoal, updateMonthlyWinRateGoal,
     addEntryTag, removeEntryTag,
@@ -52,6 +52,7 @@ export default function SettingsScreen() {
   const isPremium = usePurchaseStore(s => s.isPremium);
 
   const [lotInput, setLotInput] = useState(String(settings.lotUnit));
+  const [defaultLotInput, setDefaultLotInput] = useState(String(settings.defaultLotSize));
   const [balanceInput, setBalanceInput] = useState(
     settings.accountBalance > 0 ? String(settings.accountBalance) : ''
   );
@@ -123,6 +124,17 @@ export default function SettingsScreen() {
     try {
       await updateLotUnit(val);
       Alert.alert(t('saved'));
+    } catch {
+      Alert.alert(t('error'), t('settings_save_error_msg'));
+    }
+  };
+
+  const handleSaveDefaultLot = async () => {
+    const val = parseDecimal(defaultLotInput);
+    if (val == null || val <= 0) { Alert.alert(t('input_error'), t('lot_error')); return; }
+    try {
+      await updateDefaultLotSize(val);
+      Alert.alert(t('saved'), '');
     } catch {
       Alert.alert(t('error'), t('settings_save_error_msg'));
     }
@@ -786,6 +798,20 @@ export default function SettingsScreen() {
               <Text style={styles.primaryBtnText}>{t('save')}</Text>
             </TouchableOpacity>
           </View>
+
+          {/* 既定ロット。クイック入力のロット欄の初期値になる。
+              これが入ることで、記録するたびに損益が計算されるようになる。 */}
+          <Text style={[styles.cardLabel, { marginTop: 16 }]}>{t('settings_default_lot')}</Text>
+          <View style={styles.row}>
+            <TextInput style={[styles.input, { flex: 1, marginRight: 8 }]}
+              value={defaultLotInput} onChangeText={setDefaultLotInput}
+              keyboardType="decimal-pad" placeholder="0.1" placeholderTextColor={C.text3}
+              accessibilityLabel={t('settings_default_lot')} />
+            <TouchableOpacity style={styles.primaryBtn} onPress={handleSaveDefaultLot}>
+              <Text style={styles.primaryBtnText}>{t('save')}</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.noteText}>{t('settings_default_lot_note')}</Text>
         </View>
 
         {/* トレードルール管理 */}
@@ -980,6 +1006,7 @@ function makeStyles(C: ThemeColors) {
     sectionRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20, marginBottom: 10 },
     card: { backgroundColor: C.card, borderRadius: 14, padding: 16, marginBottom: 8, borderWidth: 1, borderColor: C.border },
     cardLabel: { fontSize: 13, fontWeight: '600', color: C.text, marginBottom: 4 },
+    noteText: { color: C.text3, fontSize: 12, marginTop: 8, lineHeight: 17 },
     row: { flexDirection: 'row', alignItems: 'center' },
     input: { backgroundColor: C.cardAlt, borderWidth: 1, borderColor: C.border, borderRadius: 10, padding: 11, fontSize: 15, color: C.text },
     primaryBtn: { backgroundColor: C.primary, borderRadius: 10, paddingHorizontal: 16, paddingVertical: 11, alignItems: 'center' },
