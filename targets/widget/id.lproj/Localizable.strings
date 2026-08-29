@@ -1,0 +1,10 @@
+/* FXWidget — ウィジェットギャラリー(追加画面)に表示される名前と説明。
+   キーはSwift側のリテラルそのもの。.configurationDisplayName("...") は
+   文字列リテラルを LocalizedStringKey として解決するため、Swiftの変更は不要。
+   キーを日本語のままにしているのは、万一この.stringsがバンドルに含まれなかった
+   場合でも従来どおり日本語が出るだけで済み、キー文字列が露出しないため。
+   ウィジェット内の実データ(今月/勝率/pips)はRN側(widgetSync.ts)が翻訳済みの
+   文字列を書き込むので、ここでは扱わない。 */
+
+"今月の成績" = "Bulan Ini";
+"今月の勝率と合計pipsをホーム画面に表示します。" = "Tampilkan win rate dan total pips bulan ini di Layar Utama.";
