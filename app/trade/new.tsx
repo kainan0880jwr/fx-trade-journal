@@ -26,7 +26,7 @@ import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
 import type { Trade, Direction, TradeStyle, TradeResult } from '../../src/types';
 import { parseDecimal } from '../../src/utils/parseDecimal';
-import { formatMoney } from '../../src/utils/formatMoney';
+import { formatMoney, moneySuffix } from '../../src/utils/formatMoney';
 
 type InputMode = 'quick' | 'full';
 
@@ -80,6 +80,15 @@ export default function NewTradeScreen() {
   // クイックモード専用
   const [quickResult, setQuickResult] = useState<TradeResult | null>(null);
   const [quickPips, setQuickPips] = useState('');
+  // クイック入力でもロットを受け取り損益を計算する。
+  // 以前は lotSize が 0.1 固定・profitLoss が常に null だったため、
+  // 「合計pipsは全件、損益合計は詳細入力の数件だけ」という別母集団の
+  // 数値が並び、合計pipsがマイナスなのに損益合計がプラス、という
+  // 矛盾が実機で発生していた。
+  const [quickLot, setQuickLot] = useState('');
+  // クロス円以外は円換算できないため、証券会社の画面に出ている実額を
+  // そのまま入れてもらう。推定レートで換算すると静かに間違った金額になる。
+  const [quickPL, setQuickPL] = useState('');
 
   // フルモード専用
   const [dateObj, setDateObj] = useState(new Date());
@@ -146,6 +155,8 @@ export default function NewTradeScreen() {
       setQuickResult(tr.result);
       // 符号は結果セレクタが決めるため、入力欄には絶対値を出す
       setQuickPips(tr.pips != null ? String(Math.abs(tr.pips)) : '');
+      setQuickLot(String(tr.lotSize));
+      setQuickPL(tr.profitLoss != null ? String(tr.profitLoss) : '');
       if (tr.date) {
         const d = new Date(tr.date.length <= 10 ? `${tr.date}T00:00:00` : tr.date);
         if (!isNaN(d.getTime())) setDateObj(d);
@@ -180,6 +191,12 @@ export default function NewTradeScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editId]);
 
+  // 新規記録時はロット欄に既定ロットを入れておく（毎回入力させない）
+  useEffect(() => {
+    if (isEditMode) return;
+    setQuickLot(String(settings.defaultLotSize));
+  }, [isEditMode, settings.defaultLotSize]);
+
   useEffect(() => {
     if (isEditMode) navigation.setOptions({ title: t('screen_title_edit_trade') });
   }, [isEditMode, navigation]);
@@ -208,6 +225,8 @@ export default function NewTradeScreen() {
     ?? pairs.find(p => p.name === pair);
   const pipDigits = selectedPair?.pipDigits ?? 2;
   const isYenPair = selectedPair?.isYenPair ?? false;
+  // クイック入力でも通貨ペアの種別が必要（損益を自動計算できるか判定するため）
+  const quickIsYenPair = isYenPair;
   const entry = parseDecimal(entryRate) ?? NaN;
   const exit = parseDecimal(exitRate) ?? NaN;
   const _sl = parseDecimal(stopLossStr) ?? NaN;
@@ -392,6 +411,11 @@ export default function NewTradeScreen() {
   // ── クイック保存 ──
   const handleQuickSave = async () => {
     if (!quickResult) { Alert.alert(t('input_error'), t('form_result')); return; }
+    const quickLotNum = parseDecimal(quickLot);
+    if (quickLotNum == null || quickLotNum <= 0) {
+      Alert.alert(t('input_error'), t('lot_error'));
+      return;
+    }
     if (saving) return;
     setSaving(true);
     try {
@@ -411,12 +435,16 @@ export default function NewTradeScreen() {
         pair, direction,
         entryRate: null, exitRate: null,
         stopLoss: null, takeProfit: null, plannedRR: null,
-        lotSize: 0.1,
+        lotSize: quickLotNum,
         style: settings.defaultStyle as TradeStyle || 'day',
         tags: [], imageUris: [],
         entryMethod: 'quick',
         pips: parsedPips,
-        profitLoss: null,
+        // クロス円は pips とロットから自動計算。それ以外は円換算できないため
+        // 手入力された実額を使う（未入力なら null のまま＝カバー率に反映される）。
+        profitLoss: quickIsYenPair && parsedPips != null
+          ? calcProfitLoss(parsedPips, quickLotNum, settings.lotUnit)
+          : parseDecimal(quickPL),
         result: quickResult,
         reflection: '', selfRating: 3,
         bookmarked: false,
@@ -651,6 +679,47 @@ export default function NewTradeScreen() {
                 />
                 <Text style={styles.pipsUnit}>pips</Text>
               </View>
+
+              {/* ロット（必須）。損益を毎回計算できるようにするために必要。
+                  既定ロットが初期値として入るので、通常は触らなくてよい。 */}
+              <Label>{t('form_lot')}</Label>
+              <View style={styles.pipsRow}>
+                <TextInput
+                  style={[styles.input, { flex: 1 }]}
+                  value={quickLot}
+                  onChangeText={setQuickLot}
+                  keyboardType="decimal-pad"
+                  placeholder={String(settings.defaultLotSize)}
+                  placeholderTextColor={C.text3}
+                  accessibilityLabel={t('form_lot')}
+                />
+                <Text style={styles.pipsUnit}>lot</Text>
+              </View>
+
+              {/* 損益。クロス円は pips とロットから自動計算されるので入力欄を出さない。
+                  それ以外は円換算できないため、証券会社の実額を手入力してもらう。 */}
+              {quickIsYenPair ? (
+                <Text style={styles.quickPlHint}>
+                  {t('form_pl_auto_note')}
+                </Text>
+              ) : (
+                <>
+                  <Label>{t('form_pl_manual')}</Label>
+                  <View style={styles.pipsRow}>
+                    <TextInput
+                      style={[styles.input, { flex: 1 }]}
+                      value={quickPL}
+                      onChangeText={setQuickPL}
+                      keyboardType="decimal-pad"
+                      placeholder="0"
+                      placeholderTextColor={C.text3}
+                      accessibilityLabel={t('form_pl_manual')}
+                    />
+                    <Text style={styles.pipsUnit}>{moneySuffix()}</Text>
+                  </View>
+                  <Text style={styles.quickPlHint}>{t('form_pl_manual_note')}</Text>
+                </>
+              )}
 
               <TouchableOpacity
                 style={[styles.saveBtn, (!quickResult || saving) && styles.saveBtnDisabled]}
@@ -1066,7 +1135,8 @@ function makeStyles(C: ThemeColors) {
     resultBtnText: { fontSize: 16, fontWeight: '700', color: C.text2 },
 
     pipsRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-    pipsUnit: { fontSize: 14, color: C.text2, fontWeight: '600' },
+    quickPlHint: { color: C.text3, fontSize: 12, marginTop: 6, lineHeight: 17 },
+  pipsUnit: { fontSize: 14, color: C.text2, fontWeight: '600' },
 
     calcBox: { flexDirection: 'row', backgroundColor: C.cardAlt, borderRadius: 14, padding: 16, marginTop: 8, gap: 8, borderWidth: 1, borderColor: C.border },
     calcItem: { flex: 1, alignItems: 'center' },
