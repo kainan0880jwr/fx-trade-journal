@@ -101,8 +101,11 @@ export function generateInsights(
 
   // メンタル×勝率
   if (mental) {
+    // 低集中のトレードが1件も無いとき wr() は null を返す。`?? 0` で0%として
+    // 扱うと「集中している時70%、低い時0%」という**存在しない比較**を断定して
+    // しまうため、両側にデータがある場合だけ出す。
     const diff = (mental.focus.high ?? 0) - (mental.focus.low ?? 0);
-    if (diff >= 15 && mental.focus.high != null) {
+    if (diff >= 15 && mental.focus.high != null && mental.focus.low != null && mental.focus.lowCount > 0) {
       insights.push({
         id: 'mental_focus', type: 'positive',
         title: t('insight_mental_focus_title'),

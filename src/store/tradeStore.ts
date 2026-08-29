@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native';
 import { create } from 'zustand';
 import type { Trade } from '../types';
 import {
@@ -57,7 +58,13 @@ export const useTradeStore = create<TradeStore>((set, get) => ({
         const trades = await getTradesByMonth(yearMonth);
         set({ trades, isLoading: false });
       } catch (e) {
-        set({ isLoading: false, error: e instanceof Error ? e.message : t('trade_load_error') });
+        // trades をそのままにすると、月を切り替えたのに**前の月の一覧・勝率・
+        // 合計pipsが表示され続ける**（ヘッダの月表示だけ変わる）。
+        // ユーザーは別の月の数字を当月のものとして読んでしまうため、必ず空にする。
+        set({ trades: [], isLoading: false, error: e instanceof Error ? e.message : t('trade_load_error') });
+        try {
+          Sentry.captureException(e, { tags: { area: 'trade_load', month: yearMonth } });
+        } catch { /* 計装の失敗は無視 */ }
       } finally {
         if (inflightMonth === yearMonth) {
           inflightMonth = null;

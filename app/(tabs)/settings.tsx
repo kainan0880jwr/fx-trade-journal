@@ -31,6 +31,7 @@ import {
 } from '../../src/utils/legalLinks';
 import { openExternalUrl } from '../../src/utils/openExternalUrl';
 import type { CurrencyPair, AppSettings } from '../../src/types';
+import { parseDecimal } from '../../src/utils/parseDecimal';
 
 type ThemeMode = AppSettings['themeMode'];
 
@@ -46,6 +47,7 @@ export default function SettingsScreen() {
     addEntryTag, removeEntryTag,
     addTradeRule, removeTradeRule,
     updateThemeMode, updateAppLockEnabled,
+    loadAll,
   } = useSettingsStore();
   const isPremium = usePurchaseStore(s => s.isPremium);
 
@@ -127,11 +129,12 @@ export default function SettingsScreen() {
   };
 
   const handleSaveBalance = async () => {
-    const val = parseFloat(balanceInput);
+    const val = parseDecimal(balanceInput) ?? NaN;
     if (isNaN(val) || val < 0) { Alert.alert(t('input_error'), t('settings_valid_number')); return; }
     try {
       await updateAccountBalance(val);
-      await updateDefaultRiskPct(parseFloat(riskInput) || 2);
+      // `|| 2` だとリスク0%を設定できず、空欄も黙って2%になっていた
+      await updateDefaultRiskPct(parseDecimal(riskInput) ?? 2);
       Alert.alert(t('saved'));
     } catch {
       Alert.alert(t('error'), t('settings_save_error_msg'));
@@ -140,8 +143,8 @@ export default function SettingsScreen() {
 
   const handleSaveGoals = async () => {
     try {
-      await updateMonthlyPipsGoal(parseFloat(pipsGoalInput) || 0);
-      await updateMonthlyWinRateGoal(parseFloat(winRateGoalInput) || 0);
+      await updateMonthlyPipsGoal(parseDecimal(pipsGoalInput) ?? 0);
+      await updateMonthlyWinRateGoal(parseDecimal(winRateGoalInput) ?? 0);
       Alert.alert(t('settings_goals_saved'));
     } catch {
       Alert.alert(t('error'), t('settings_save_error_msg'));
@@ -173,6 +176,11 @@ export default function SettingsScreen() {
             try {
               const count = await importBackup();
               if (count > 0) {
+                // 復元は settings テーブルと currency_pairs を丸ごと入れ替えるが、
+                // zustand ストアには復元前の値が残る。この状態でタグを1つ足すと
+                // 各ミューテータが配列全体を書き戻すため、**復元した内容が丸ごと
+                // 巻き戻る**。必ず読み直す。
+                await loadAll();
                 Alert.alert(t('saved'), t('backup_import_success').replace('{n}', String(count)));
                 setHasSnapshot(true);
               }
@@ -239,7 +247,14 @@ export default function SettingsScreen() {
     try {
       const result = await importMT4CSV();
       if (result.imported > 0) {
-        Alert.alert(t('saved'), t('mt4_import_success').replace('{n}', String(result.imported)));
+        // skipped はこれまでどこにも表示されず、500行中480行が失敗しても
+        // 「20件インポートしました」としか出なかった。以後の統計が実態と
+        // 乖離したまま使われるため、必ずスキップ件数も伝える。
+        const msg = t('mt4_import_success').replace('{n}', String(result.imported))
+          + (result.skipped > 0
+              ? `\n${t('mt4_import_skipped').replace('{n}', String(result.skipped))}`
+              : '');
+        Alert.alert(t('saved'), msg);
       } else if (result.errors.length > 0) {
         Alert.alert(t('mt4_import_error'), result.errors.slice(0, 3).join('\n'));
       } else if (!result.imported) {

@@ -1,3 +1,4 @@
+import { formatPF as formatPFShared } from './formatStats';
 import type { Trade } from '../types';
 import type { ThemeColors } from '../theme/colors';
 import { t } from '../i18n';
@@ -56,12 +57,15 @@ export function calcMonthPF(trades: Trade[]): number {
   return Math.round(wp / lp * 100) / 100;
 }
 
-export function formatPF(pf: number): string {
-  if (pf === 0) return '-';
-  // 損失0のため無限大になるケース。数式記号の「∞」だけでは初心者に意味が伝わらないため、
-  // 「負けなし」等の自然文で表す
-  if (!isFinite(pf)) return t('pf_no_loss');
-  return String(pf);
+/**
+ * 後方互換のための薄いラッパー。実装は src/utils/formatStats.ts に集約した。
+ * 以前はここだけが `pf === 0 → '-'` としており、記録タブ（CountUp の decimals=2）が
+ * 同じ値を「0.00」と出すため、画面によって表示が割れていた。
+ * また 0 は「全敗」であって「データなし」ではないため、'-' に落とすのは誤り。
+ * 取引が無いことを表したい場合は hasTrades=false を渡すこと。
+ */
+export function formatPF(pf: number, hasTrades = true): string {
+  return formatPFShared(pf, hasTrades);
 }
 
 export function getDayValue(ds: DayStat, metric: CalMetric): string {

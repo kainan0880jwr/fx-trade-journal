@@ -11,6 +11,7 @@ import PremiumGate from '../src/components/PremiumGate';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t, lang } from '../src/i18n';
+import { parseDecimal } from '../src/utils/parseDecimal';
 
 const RISK_PRESETS = ['0.5', '1', '1.5', '2', '3', '5'];
 
@@ -26,10 +27,12 @@ export default function CalculatorScreen() {
   const [isYenPair, setIsYenPair] = useState(true);
   const [usdJpy, setUsdJpy] = useState('155');
 
-  const bal = parseFloat(balance);
-  const risk = parseFloat(riskPct);
-  const sl = parseFloat(slPips);
-  const usd = parseFloat(usdJpy);
+  // parseDecimal はカンマ小数点（対応11言語中8言語）と全角数字を吸収し、
+  // 変換できない入力は null を返す。NaN が下流の計算へ漏れるのを防ぐ。
+  const bal = parseDecimal(balance) ?? NaN;
+  const risk = parseDecimal(riskPct) ?? NaN;
+  const sl = parseDecimal(slPips) ?? NaN;
+  const usd = parseDecimal(usdJpy) ?? NaN;
   const lotUnit = settings.lotUnit;
 
   const canCalc = bal > 0 && risk > 0 && sl > 0;

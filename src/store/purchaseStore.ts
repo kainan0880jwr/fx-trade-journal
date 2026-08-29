@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native';
 import { create } from 'zustand';
 import { Platform } from 'react-native';
 import Purchases, {
@@ -82,7 +83,13 @@ export const usePurchaseStore = create<PurchaseStore>((set, get) => ({
     try {
       if (__DEV__) Purchases.setLogLevel(LOG_LEVEL.DEBUG);
       Purchases.configure({ apiKey: RC_API_KEY });
-    } catch {
+    } catch (e) {
+      // configure失敗は完全に無記録だった。これが起きると getOfferings/purchase/restore が
+      // すべて機能せず、課金済みユーザーは「復元」を押しても復旧できないまま
+      // 無料ユーザーとして扱われる。収益と評価に直結するため必ず観測する。
+      try {
+        Sentry.captureException(e, { tags: { area: 'purchase', kind: 'configure_failed' } });
+      } catch { /* 計装の失敗は無視 */ }
       hasStartedInit = false; // 一時的なエラーの可能性があるため再初期化できるようにする
       set({ isInitialized: true });
       return;
@@ -93,7 +100,14 @@ export const usePurchaseStore = create<PurchaseStore>((set, get) => ({
     // 起動をブロックしないよう非同期で購入状態を取得
     Purchases.getCustomerInfo()
       .then((info) => set({ isPremium: hasPremium(info), isInitialized: true }))
-      .catch(() => set({ isInitialized: true }));
+      .catch((e) => {
+        // 起動時オフライン等でここが失敗すると isPremium は false のままになり、
+        // 課金済みユーザーが全機能をロックされる。原因が追えるよう記録する。
+        try {
+          Sentry.captureException(e, { tags: { area: 'purchase', kind: 'customer_info_failed' } });
+        } catch { /* 計装の失敗は無視 */ }
+        set({ isInitialized: true });
+      });
 
     // 購入状態変更リスナー（他デバイスでの購入・復元を反映）
     Purchases.addCustomerInfoUpdateListener((info) => {

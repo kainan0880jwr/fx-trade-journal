@@ -58,7 +58,13 @@ export default function OnboardingScreen() {
   };
 
   const completeOnboarding = async () => {
-    await setSetting('onboarding_done', '1');
+    // setSetting が失敗すると未処理のPromise rejectionになり、後続の
+    // router.replace に到達せず**ボタンを押しても何も起きない**状態になっていた。
+    // しかもフラグが立たないため再起動しても毎回オンボーディングに戻る。
+    // フラグ保存は次回起動でやり直せるので、画面遷移だけは必ず通す。
+    try {
+      await setSetting('onboarding_done', '1');
+    } catch { /* 次回起動で再試行される */ }
     recordOnboardingCompleted();
   };
 

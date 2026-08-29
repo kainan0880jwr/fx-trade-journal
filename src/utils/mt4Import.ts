@@ -54,7 +54,7 @@ const num = (s: string): number => {
 };
 
 /** "2024.01.15 10:23" または "2024-01-15T10:23:00" → ISO日付部分 "YYYY-MM-DD" */
-function parseDate(s: string): string {
+function parseDate(s: string): string | null {
   // MT4形式: 2024.01.15 10:23:00
   const mt4 = s.trim().match(/^(\d{4})\.(\d{2})\.(\d{2})/);
   if (mt4) return `${mt4[1]}-${mt4[2]}-${mt4[3]}`;
@@ -64,7 +64,11 @@ function parseDate(s: string): string {
   // ISO
   const iso = s.trim().match(/^(\d{4}-\d{2}-\d{2})/);
   if (iso) return iso[1];
-  return new Date().toISOString().slice(0, 10);
+  // 以前はここで「今日」を返していた。ブローカー独自形式（15/01/2024 等）や
+  // Excelで開いて再保存したCSVでは全行が今日の日付として登録され、
+  // カレンダー・月次・年次が破壊されるうえ、成功件数しか表示されないため
+  // ユーザーは失敗に気づけなかった。読めない日付は呼び出し側でスキップさせる。
+  return null;
 }
 
 /** CSV行をフィールド配列に分解（クォート対応） */
@@ -373,7 +377,11 @@ function parseMT5(lines: string[], sep: string): RawRow[] {
 // ───────────────────────────────────────────────
 // RawRow → Trade 変換
 // ───────────────────────────────────────────────
-function rawToTrade(row: RawRow): Trade {
+function rawToTrade(row: RawRow): Trade | null {
+  // 日付が読めない行は取り込まない（以前は全行が「今日」になっていた）。
+  // 呼び出し側で skipped としてカウントし、件数をユーザーに提示する。
+  const parsedDate = parseDate(row.openTime);
+  if (!parsedDate) return null;
   const pips = calcPips(row.symbol, row.openPrice, row.closePrice, row.direction);
   const result = resultFromProfit(row.profit);
   const totalPL = row.profit + row.swap + row.commission;
@@ -382,7 +390,7 @@ function rawToTrade(row: RawRow): Trade {
 
   return {
     id,
-    date:        parseDate(row.openTime),
+    date:        parsedDate,
     pair:        row.symbol,
     direction:   row.direction,
     entryRate:   row.openPrice  || null,
@@ -501,6 +509,12 @@ export async function importMT4CSV(): Promise<ImportResult> {
     for (const row of rows) {
       try {
         const trade = rawToTrade(row);
+        if (!trade) {
+          // 日付が読めない行。取り込むと全期間の集計が壊れるためスキップする。
+          result.skipped++;
+          if (result.errors.length < 5) result.errors.push(t('mt4_import_row_error'));
+          continue;
+        }
         await insertTrade(trade);
         result.imported++;
       } catch {
