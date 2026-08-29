@@ -53,6 +53,7 @@ export interface AppSettings {
   defaultRiskPct: number;
   monthlyPipsGoal: number;      // 月次pips目標
   monthlyWinRateGoal: number;   // 月次勝率目標（%）
+  monthlyPLGoal: number;        // 月次損益目標（金額）
   themeMode: 'dark' | 'light' | 'system';
   appLockEnabled: boolean;      // 生体認証によるアプリロック
 }

@@ -19,7 +19,7 @@ import type { Trade } from '../../src/types';
 import { t, tArr, lang } from '../../src/i18n';
 import { Ionicons } from '@expo/vector-icons';
 import { formatPF } from '../../src/utils/calendarMetrics';
-import { formatMoney } from '../../src/utils/formatMoney';
+import { formatMoney, moneySuffix } from '../../src/utils/formatMoney';
 
 type Period = 'monthly' | 'yearly';
 
@@ -147,6 +147,16 @@ export default function MonthlyScreen() {
               current={stats.winRate}
               goal={settings.monthlyWinRateGoal}
               unit="%"
+            />
+          )}
+          {/* 金額目標。損益が記録されているトレードだけが母数になるため、
+              カバー率が低いうちは実態より低く出る点に注意が要る。 */}
+          {settings.monthlyPLGoal > 0 && money.covered > 0 && (
+            <GoalGauge
+              label={t('pl_goal')}
+              current={money.totalPL}
+              goal={settings.monthlyPLGoal}
+              unit={moneySuffix()}
             />
           )}
         </View>

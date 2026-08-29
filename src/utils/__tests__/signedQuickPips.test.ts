@@ -46,3 +46,25 @@ describe('signedQuickPips', () => {
     expect(total).toBe(0); // 修正前は +200 になっていた
   });
 });
+
+describe('signedByResult（損益にも同じ符号付けを適用する）', () => {
+  const { signedByResult } = require('../pipsCalc');
+
+  it('「負け」の損益は負に変換する（EUR/USDで +500¥ と記録された不具合の回帰）', () => {
+    // 実機で「負け・-20pips」なのに「+500¥」と表示された
+    expect(signedByResult('500', 'loss')).toBe(-500);
+  });
+
+  it('「勝ち」の損益は正のまま', () => {
+    expect(signedByResult('2000', 'win')).toBe(2000);
+  });
+
+  it('編集で絶対値を渡し直しても二重反転しない', () => {
+    expect(signedByResult('500', 'loss')).toBe(-500);
+    expect(signedByResult(String(Math.abs(-500)), 'loss')).toBe(-500);
+  });
+
+  it('カンマ小数点でも符号が付く', () => {
+    expect(signedByResult('1500,5', 'loss')).toBe(-1500.5);
+  });
+});

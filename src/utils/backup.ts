@@ -227,6 +227,17 @@ export async function importBackup(): Promise<number> {
       `INSERT OR REPLACE INTO settings (key, value) VALUES ('loss_pips_sign_fixed_v1', '1')`
     );
 
+    // 手入力損益の符号も同様に修復する。符号反転は冪等（一度直すと
+    // profit_loss<0 になり条件に再ヒットしない）ため無条件でよい。
+    await db.runAsync(
+      `UPDATE trades SET profit_loss = -profit_loss
+        WHERE entry_method = 'quick' AND result = 'loss'
+          AND profit_loss IS NOT NULL AND profit_loss > 0`
+    );
+    await db.runAsync(
+      `INSERT OR REPLACE INTO settings (key, value) VALUES ('manual_pl_sign_fixed_v1', '1')`
+    );
+
     // 損益10倍の修復も復元後にあて直す。ただし pips の符号反転と違い
     // 「÷10」は**冪等ではない**（二度あてると1/100になる）ので、無条件に実行しては
     // ならない。復元された settings にフラグが含まれているか＝そのバックアップが
