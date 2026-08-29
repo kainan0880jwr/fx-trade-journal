@@ -37,7 +37,12 @@ function TradeCard({ trade }: Props) {
   const dirLabel  = trade.direction === 'buy' ? `▲ ${t('buy')}` : `▼ ${t('sell')}`;
 
   return (
-    <TouchableOpacity style={styles.card} onPress={() => router.push(`/trade/${trade.id}`)} activeOpacity={0.72}>
+    <TouchableOpacity 
+      accessibilityRole="button"
+      // スクリーンリーダーでは中の全テキストが順に読まれるだけで、
+      // ボタンだと認識されなかった。一覧の主要な操作対象なのでラベルを付ける。
+      accessibilityLabel={`${trade.pair} ${trade.direction === 'buy' ? 'BUY' : 'SELL'} ${trade.pips ?? ''}pips`}
+style={styles.card} onPress={() => router.push(`/trade/${trade.id}`)} activeOpacity={0.72}>
       <View style={[styles.accent, { backgroundColor: resultColor }]} />
 
       <View style={styles.body}>

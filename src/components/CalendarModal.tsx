@@ -64,7 +64,7 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
       <SafeAreaView style={s.container}>
         <View style={s.header}>
           <Text style={s.title}>{t('calendar_btn')}</Text>
-          <TouchableOpacity onPress={onClose} style={s.closeBtn}>
+          <TouchableOpacity onPress={onClose} style={s.closeBtn} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
             <Ionicons name="close" size={24} color={C.text} />
           </TouchableOpacity>
         </View>
