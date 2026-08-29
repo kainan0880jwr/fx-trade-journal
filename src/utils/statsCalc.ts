@@ -47,12 +47,12 @@ export function calcStatsByPair(trades: Trade[]) {
   // pl は損益の合計、plCount は損益が記録されている件数。
   // 平均を出すときは total ではなく plCount で割る（損益が無い行を
   // 母数に入れると平均が0方向へ薄まるため）。
-  const map: Record<string, { wins: number; total: number; pips: number; pl: number; plCount: number }> = {};
+  const map: Record<string, { wins: number; total: number; pips: number; pipsCount: number; pl: number; plCount: number }> = {};
   for (const t of trades) {
-    if (!map[t.pair]) map[t.pair] = { wins: 0, total: 0, pips: 0, pl: 0, plCount: 0 };
+    if (!map[t.pair]) map[t.pair] = { wins: 0, total: 0, pips: 0, pipsCount: 0, pl: 0, plCount: 0 };
     map[t.pair].total++;
     if (t.result === 'win') map[t.pair].wins++;
-    map[t.pair].pips += t.pips ?? 0;
+    if (t.pips != null) { map[t.pair].pips += t.pips; map[t.pair].pipsCount++; }
     if (t.profitLoss != null) { map[t.pair].pl += t.profitLoss; map[t.pair].plCount++; }
   }
   return Object.entries(map)
@@ -60,9 +60,10 @@ export function calcStatsByPair(trades: Trade[]) {
       pair,
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
       totalTrades: d.total,
-      avgPips: Math.round((d.pips / d.total) * 10) / 10,
+      avgPips: d.pipsCount > 0 ? Math.round((d.pips / d.pipsCount) * 10) / 10 : null,
       totalPL: Math.round(d.pl),
       avgPL: d.plCount > 0 ? Math.round(d.pl / d.plCount) : null,
+      pipsCount: d.pipsCount,
       plCount: d.plCount,
     }))
     .sort((a, b) => b.totalTrades - a.totalTrades);
@@ -72,12 +73,12 @@ export function calcStatsByStyle(trades: Trade[]) {
   // pl は損益の合計、plCount は損益が記録されている件数。
   // 平均を出すときは total ではなく plCount で割る（損益が無い行を
   // 母数に入れると平均が0方向へ薄まるため）。
-  const map: Record<string, { wins: number; total: number; pips: number; pl: number; plCount: number }> = {};
+  const map: Record<string, { wins: number; total: number; pips: number; pipsCount: number; pl: number; plCount: number }> = {};
   for (const t of trades) {
-    if (!map[t.style]) map[t.style] = { wins: 0, total: 0, pips: 0, pl: 0, plCount: 0 };
+    if (!map[t.style]) map[t.style] = { wins: 0, total: 0, pips: 0, pipsCount: 0, pl: 0, plCount: 0 };
     map[t.style].total++;
     if (t.result === 'win') map[t.style].wins++;
-    map[t.style].pips += t.pips ?? 0;
+    if (t.pips != null) { map[t.style].pips += t.pips; map[t.style].pipsCount++; }
     if (t.profitLoss != null) { map[t.style].pl += t.profitLoss; map[t.style].plCount++; }
   }
   return Object.entries(map)
@@ -85,9 +86,10 @@ export function calcStatsByStyle(trades: Trade[]) {
       style,
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
       totalTrades: d.total,
-      avgPips: Math.round((d.pips / d.total) * 10) / 10,
+      avgPips: d.pipsCount > 0 ? Math.round((d.pips / d.pipsCount) * 10) / 10 : null,
       totalPL: Math.round(d.pl),
       avgPL: d.plCount > 0 ? Math.round(d.pl / d.plCount) : null,
+      pipsCount: d.pipsCount,
       plCount: d.plCount,
     }))
     .sort((a, b) => b.totalTrades - a.totalTrades);
@@ -141,8 +143,8 @@ export function getWorstTrade(trades: Trade[]): Trade | null {
 
 // 機能3: 時間帯別分析
 export function calcTimeAnalysis(trades: Trade[]) {
-  const byHour: Record<number, { wins: number; total: number; pips: number; pl: number; plCount: number }> = {};
-  for (let h = 0; h < 24; h++) byHour[h] = { wins: 0, total: 0, pips: 0, pl: 0, plCount: 0 };
+  const byHour: Record<number, { wins: number; total: number; pips: number; pipsCount: number; pl: number; plCount: number }> = {};
+  for (let h = 0; h < 24; h++) byHour[h] = { wins: 0, total: 0, pips: 0, pipsCount: 0, pl: 0, plCount: 0 };
   for (const t of trades) {
     const timeStr = t.date.slice(11, 13);
     if (!timeStr) continue;
@@ -150,7 +152,7 @@ export function calcTimeAnalysis(trades: Trade[]) {
     if (isNaN(h)) continue;
     byHour[h].total++;
     if (t.result === 'win') byHour[h].wins++;
-    byHour[h].pips += t.pips ?? 0;
+    if (t.pips != null) { byHour[h].pips += t.pips; byHour[h].pipsCount++; }
     if (t.profitLoss != null) { byHour[h].pl += t.profitLoss; byHour[h].plCount++; }
   }
   return Object.entries(byHour)
@@ -161,9 +163,10 @@ export function calcTimeAnalysis(trades: Trade[]) {
       total: d.total,
       wins: d.wins,
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
-      avgPips: Math.round((d.pips / d.total) * 10) / 10,
+      avgPips: d.pipsCount > 0 ? Math.round((d.pips / d.pipsCount) * 10) / 10 : null,
       totalPL: Math.round(d.pl),
       avgPL: d.plCount > 0 ? Math.round(d.pl / d.plCount) : null,
+      pipsCount: d.pipsCount,
       plCount: d.plCount,
     }))
     .sort((a, b) => a.hour - b.hour);
@@ -172,8 +175,8 @@ export function calcTimeAnalysis(trades: Trade[]) {
 // 機能3: 曜日別分析
 export function calcDayAnalysis(trades: Trade[]) {
   const DOW_LABELS = tArr('day_labels');
-  const byDay: Record<number, { wins: number; total: number; pips: number; pl: number; plCount: number }> = {};
-  for (let d = 0; d < 7; d++) byDay[d] = { wins: 0, total: 0, pips: 0, pl: 0, plCount: 0 };
+  const byDay: Record<number, { wins: number; total: number; pips: number; pipsCount: number; pl: number; plCount: number }> = {};
+  for (let d = 0; d < 7; d++) byDay[d] = { wins: 0, total: 0, pips: 0, pipsCount: 0, pl: 0, plCount: 0 };
   for (const t of trades) {
     // `new Date('2026-08-29')` は**UTC深夜**として解釈されるのに getDay() は
     // ローカル基準で評価するため、UTCより西（南北アメリカ全域）では曜日が1日ずれる。
@@ -182,7 +185,7 @@ export function calcDayAnalysis(trades: Trade[]) {
     const dow = new Date(`${t.date.slice(0, 10)}T00:00:00`).getDay();
     byDay[dow].total++;
     if (t.result === 'win') byDay[dow].wins++;
-    byDay[dow].pips += t.pips ?? 0;
+    if (t.pips != null) { byDay[dow].pips += t.pips; byDay[dow].pipsCount++; }
     if (t.profitLoss != null) { byDay[dow].pl += t.profitLoss; byDay[dow].plCount++; }
   }
   return Object.entries(byDay)
@@ -193,9 +196,10 @@ export function calcDayAnalysis(trades: Trade[]) {
       total: d.total,
       wins: d.wins,
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
-      avgPips: Math.round((d.pips / d.total) * 10) / 10,
+      avgPips: d.pipsCount > 0 ? Math.round((d.pips / d.pipsCount) * 10) / 10 : null,
       totalPL: Math.round(d.pl),
       avgPL: d.plCount > 0 ? Math.round(d.pl / d.plCount) : null,
+      pipsCount: d.pipsCount,
       plCount: d.plCount,
     }))
     .sort((a, b) => a.day - b.day);
@@ -267,13 +271,13 @@ export function calcTagStats(trades: Trade[]) {
   // pl は損益の合計、plCount は損益が記録されている件数。
   // 平均を出すときは total ではなく plCount で割る（損益が無い行を
   // 母数に入れると平均が0方向へ薄まるため）。
-  const map: Record<string, { wins: number; total: number; pips: number; pl: number; plCount: number }> = {};
+  const map: Record<string, { wins: number; total: number; pips: number; pipsCount: number; pl: number; plCount: number }> = {};
   for (const t of trades) {
     for (const tag of (t.tags ?? [])) {
-      if (!map[tag]) map[tag] = { wins: 0, total: 0, pips: 0, pl: 0, plCount: 0 };
+      if (!map[tag]) map[tag] = { wins: 0, total: 0, pips: 0, pipsCount: 0, pl: 0, plCount: 0 };
       map[tag].total++;
       if (t.result === 'win') map[tag].wins++;
-      map[tag].pips += t.pips ?? 0;
+      if (t.pips != null) { map[tag].pips += t.pips; map[tag].pipsCount++; }
       if (t.profitLoss != null) { map[tag].pl += t.profitLoss; map[tag].plCount++; }
     }
   }
@@ -283,9 +287,10 @@ export function calcTagStats(trades: Trade[]) {
       total: d.total,
       wins: d.wins,
       winRate: Math.round((d.wins / d.total) * 1000) / 10,
-      avgPips: Math.round((d.pips / d.total) * 10) / 10,
+      avgPips: d.pipsCount > 0 ? Math.round((d.pips / d.pipsCount) * 10) / 10 : null,
       totalPL: Math.round(d.pl),
       avgPL: d.plCount > 0 ? Math.round(d.pl / d.plCount) : null,
+      pipsCount: d.pipsCount,
       plCount: d.plCount,
     }))
     .sort((a, b) => b.total - a.total);

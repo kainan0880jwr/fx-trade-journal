@@ -110,9 +110,9 @@ export default function RecordScreen() {
           <View style={styles.todayRow}>
             <MiniStat label={t('trades')} numericValue={todayTrades.length > 0 ? todayTrades.length : undefined} suffix={lang === 'ja' ? '件' : ''} isTablet={isTablet} />
             <View style={styles.miniSep} />
-            <MiniStat label={t('win_rate')} numericValue={todayTrades.length > 0 ? todayStats.winRate : undefined} suffix="%" color={todayTrades.length > 0 ? C.primary : undefined} isTablet={isTablet} />
+            <MiniStat label={t('win_rate')} numericValue={todayTrades.length > 0 ? todayStats.winRate : undefined} decimals={1} trimZeros suffix="%" color={todayTrades.length > 0 ? C.primary : undefined} isTablet={isTablet} />
             <View style={styles.miniSep} />
-            <MiniStat label="pips" numericValue={todayTrades.length > 0 ? todayStats.totalPips : undefined} showSign color={todayTrades.length > 0 ? todayPipsColor : undefined} isTablet={isTablet} />
+            <MiniStat label="pips" numericValue={todayTrades.length > 0 ? todayStats.totalPips : undefined} decimals={1} trimZeros showSign color={todayTrades.length > 0 ? todayPipsColor : undefined} isTablet={isTablet} />
             <View style={styles.miniSep} />
             <MiniStat label="PF" numericValue={todayTrades.length > 0 ? todayStats.profitFactor : undefined} decimals={2} isTablet={isTablet} />
           </View>
@@ -121,9 +121,9 @@ export default function RecordScreen() {
         <View style={styles.monthBar}>
           <SummaryItem label={t('trade_count')} numericValue={stats.totalTrades} isTablet={isTablet} />
           <View style={styles.sep} />
-          <SummaryItem label={t('win_rate')} numericValue={stats.winRate} suffix="%" color={C.primary} isTablet={isTablet} />
+          <SummaryItem label={t('win_rate')} numericValue={stats.winRate} decimals={1} trimZeros suffix="%" color={C.primary} isTablet={isTablet} />
           <View style={styles.sep} />
-          <SummaryItem label={t('total_pips')} numericValue={stats.totalPips} showSign color={stats.totalPips >= 0 ? C.win : C.loss} isTablet={isTablet} />
+          <SummaryItem label={t('total_pips')} numericValue={stats.totalPips} decimals={1} trimZeros showSign color={stats.totalPips >= 0 ? C.win : C.loss} isTablet={isTablet} />
           <View style={styles.sep} />
           <SummaryItem label={t('pf')} numericValue={stats.profitFactor} decimals={2} isTablet={isTablet} />
           <View style={styles.sep} />
@@ -201,8 +201,8 @@ export default function RecordScreen() {
   );
 }
 
-function MiniStat({ label, numericValue, decimals, suffix, showSign, color, isTablet }: {
-  label: string; numericValue?: number; decimals?: number;
+function MiniStat({ label, numericValue, decimals, trimZeros, suffix, showSign, color, isTablet }: {
+  label: string; numericValue?: number; decimals?: number; trimZeros?: boolean;
   suffix?: string; showSign?: boolean; color?: string; isTablet: boolean;
 }) {
   const C = useTheme();
@@ -214,7 +214,7 @@ function MiniStat({ label, numericValue, decimals, suffix, showSign, color, isTa
           <Text style={{ fontSize: isTablet ? 17 : 14, fontWeight: '800', color: color ?? C.text, textAlign: 'center' }}>{t('pf_no_loss')}</Text>
         ) : (
           <CountUp
-            value={numericValue} decimals={decimals} suffix={suffix} showSign={showSign}
+            value={numericValue} decimals={decimals} trimZeros={trimZeros} suffix={suffix} showSign={showSign}
             style={{ fontSize: isTablet ? 17 : 14, fontWeight: '800', color: color ?? C.text, textAlign: 'center' }}
           />
         )
@@ -225,8 +225,8 @@ function MiniStat({ label, numericValue, decimals, suffix, showSign, color, isTa
   );
 }
 
-function SummaryItem({ label, numericValue, decimals, suffix, showSign, color, isTablet }: {
-  label: string; numericValue?: number; decimals?: number;
+function SummaryItem({ label, numericValue, decimals, trimZeros, suffix, showSign, color, isTablet }: {
+  label: string; numericValue?: number; decimals?: number; trimZeros?: boolean;
   suffix?: string; showSign?: boolean; color?: string; isTablet: boolean;
 }) {
   const C = useTheme();
@@ -238,7 +238,7 @@ function SummaryItem({ label, numericValue, decimals, suffix, showSign, color, i
           <Text style={{ fontSize: isTablet ? 15 : 13, fontWeight: '800', color: color ?? C.text, textAlign: 'center' }}>{t('pf_no_loss')}</Text>
         ) : (
           <CountUp
-            value={numericValue} decimals={decimals} suffix={suffix} showSign={showSign}
+            value={numericValue} decimals={decimals} trimZeros={trimZeros} suffix={suffix} showSign={showSign}
             style={{ fontSize: isTablet ? 15 : 13, fontWeight: '800', color: color ?? C.text, textAlign: 'center' }}
           />
         )

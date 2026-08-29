@@ -19,9 +19,9 @@ export function formatWinRate(rate: number): string {
   return Number.isInteger(r) ? `${r}%` : `${r.toFixed(1)}%`;
 }
 
-/** pips。符号を明示し、小数1桁までを保つ */
-export function formatPips(pips: number, withSign = true): string {
-  if (!Number.isFinite(pips)) return '-';
+/** pips。符号を明示し、小数1桁までを保つ。未記録(null)は '-' */
+export function formatPips(pips: number | null, withSign = true): string {
+  if (pips == null || !Number.isFinite(pips)) return '-';
   const p = Math.round(pips * 10) / 10;
   const body = Number.isInteger(p) ? String(p) : p.toFixed(1);
   return withSign && p > 0 ? `+${body}` : body;
