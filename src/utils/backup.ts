@@ -204,6 +204,21 @@ export async function importBackup(): Promise<number> {
     for (const [key, value] of Object.entries(data.settings ?? {})) {
       await db.runAsync('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)', [key, value]);
     }
+
+    // 負けpipsの符号修復を復元後にも必ず適用する。
+    //
+    // 修復済みかどうかは settings のフラグで管理しているが、そのsettings自体も
+    // バックアップに含まれる。不具合修正前に取ったバックアップを復元すると、
+    // 壊れたpipsと「修復済み」フラグが同時に戻り、起動時のマイグレーションが
+    // スキップされて二度と直らなくなる。ここで直接あて直すことでその穴を塞ぐ。
+    // 条件は database.ts のマイグレーションと同一（詳細入力由来の行は
+    // 負けなら必ずpipsも負のため巻き込まない）。
+    await db.runAsync(
+      `UPDATE trades SET pips = -pips WHERE result = 'loss' AND pips IS NOT NULL AND pips > 0`
+    );
+    await db.runAsync(
+      `INSERT OR REPLACE INTO settings (key, value) VALUES ('loss_pips_sign_fixed_v1', '1')`
+    );
   });
 
   return data.trades.length;
@@ -275,6 +290,12 @@ export async function restorePreImportSnapshot(): Promise<number> {
         ]
       );
     }
+
+    // インポート前スナップショットは修正前に取られている可能性があるため、
+    // 復元後にも負けpipsの符号を正す（database.tsのマイグレーションと同条件）。
+    await db.runAsync(
+      `UPDATE trades SET pips = -pips WHERE result = 'loss' AND pips IS NOT NULL AND pips > 0`
+    );
   });
 
   // 復元に使い終わったスナップショットは平文の全トレード記録を含むため、

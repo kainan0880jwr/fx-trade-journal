@@ -13,7 +13,7 @@ import { saveTradeImages } from '../../src/utils/imageStorage';
 import { useTradeStore } from '../../src/store/tradeStore';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
-import { calcPips } from '../../src/utils/pipsCalc';
+import { calcPips, signedQuickPips } from '../../src/utils/pipsCalc';
 import { calcProfitLoss, determineResult } from '../../src/utils/profitCalc';
 import { generateId } from '../../src/utils/statsCalc';
 import { getTradeById, updateRecordStreak } from '../../src/db/queries';
@@ -133,7 +133,8 @@ export default function NewTradeScreen() {
       setPair(tr.pair);
       setDirection(tr.direction);
       setQuickResult(tr.result);
-      setQuickPips(tr.pips != null ? String(tr.pips) : '');
+      // 符号は結果セレクタが決めるため、入力欄には絶対値を出す
+      setQuickPips(tr.pips != null ? String(Math.abs(tr.pips)) : '');
       if (tr.date) {
         const d = new Date(tr.date.length <= 10 ? `${tr.date}T00:00:00` : tr.date);
         if (!isNaN(d.getTime())) setDateObj(d);
@@ -204,7 +205,7 @@ export default function NewTradeScreen() {
         return (
           pair !== orig.pair || direction !== orig.direction ||
           quickResult !== orig.result ||
-          quickPips !== (orig.pips != null ? String(orig.pips) : '')
+          quickPips !== (orig.pips != null ? String(Math.abs(orig.pips)) : '')
         );
       }
       return (
@@ -322,7 +323,7 @@ export default function NewTradeScreen() {
     if (saving) return;
     setSaving(true);
     try {
-      const parsedPips = quickPips.trim() ? parseFloat(quickPips) : null;
+      const parsedPips = signedQuickPips(quickPips, quickResult);
       const orig = originalTradeRef.current;
       if (isEditMode && orig) {
         const trade: Trade = { ...orig, pair, direction, pips: parsedPips, result: quickResult };

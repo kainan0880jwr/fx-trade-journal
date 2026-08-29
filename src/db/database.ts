@@ -325,6 +325,33 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
     );
   }
 
+  // 負けトレードのpipsが正のまま保存されていた不具合の修復。
+  //
+  // クイック入力欄は keyboardType="decimal-pad" でマイナス記号のキーが無く、
+  // ユーザーは負の値を入力できない。それにもかかわらず入力値をそのまま保存して
+  // いたため、「負け」を選んで 50 と入れると +50 として記録されていた。
+  // 影響は合計pips・プロフィットファクター(grossLossが常に0のため永久に∞)・
+  // 分析タブのpips系指標・ホーム画面ウィジェットの全てに及ぶ。
+  // 2026-07-02から2026-08-29まで、App Store公開の全期間にわたって存在した。
+  //
+  // 詳細入力はレートから calcPips() で符号付きに算出し、結果もそこから
+  // determineResult() で導出するため、負けのpipsは必ず負になる。したがって
+  // 「result='loss' なのに pips>0」という組み合わせはクイック入力の本不具合
+  // でしか発生せず、この条件に限定すれば誤った行を巻き込まずに修復できる。
+  //
+  // pips=0 は引き分け相当で符号の概念が無いため対象外（> 0 のみ）。
+  const pipsSignFixed = await database.getFirstAsync<{ value: string }>(
+    `SELECT value FROM settings WHERE key='loss_pips_sign_fixed_v1'`
+  );
+  if (!pipsSignFixed) {
+    await database.runAsync(
+      `UPDATE trades SET pips = -pips WHERE result = 'loss' AND pips IS NOT NULL AND pips > 0`
+    );
+    await database.runAsync(
+      `INSERT OR REPLACE INTO settings (key, value) VALUES ('loss_pips_sign_fixed_v1', '1')`
+    );
+  }
+
   // 既存データのisYenPairフラグ修正（EUR/JPY, GBP/JPY, AUD/JPY が誤って0になっていた場合を修正）
   await database.execAsync(
     `UPDATE currency_pairs SET is_yen_pair = 1 WHERE name LIKE '%/JPY' AND is_yen_pair = 0;`
