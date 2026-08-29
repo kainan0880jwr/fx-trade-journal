@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useTradeStore } from '../src/store/tradeStore';
-import { calcBadges, type UnlockedBadge } from '../src/utils/badges';
+import { calcBadges, nearlyUnlocked, type UnlockedBadge } from '../src/utils/badges';
+import { useSettingsStore } from '../src/store/settingsStore';
 import PremiumGate from '../src/components/PremiumGate';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
@@ -17,27 +18,38 @@ const CATEGORIES = () => [
   { key: 'performance', label: t('cat_performance') },
   { key: 'habit',       label: t('cat_habit') },
   { key: 'analysis',    label: t('cat_analysis') },
+  { key: 'discipline',  label: t('cat_discipline') },
+  { key: 'goal',        label: t('cat_goal') },
 ];
 
 export default function BadgesScreen() {
   const C = useTheme();
   const s = makeStyles(C);
   const { loadAllTrades } = useTradeStore();
+  const settings = useSettingsStore(st => st.settings);
   const [badges, setBadges] = useState<UnlockedBadge[]>([]);
   const [filter, setFilter] = useState<string>('all');
+
+  const goals = {
+    monthlyPipsGoal: settings.monthlyPipsGoal,
+    monthlyWinRateGoal: settings.monthlyWinRateGoal,
+    monthlyPLGoal: settings.monthlyPLGoal,
+  };
 
   useEffect(() => {
     // catch が無いと読み込み失敗時に未処理rejectionになり、画面は
     // 初期値のまま「0 / 0 解除」と表示される。有料機能なので、課金ユーザーが
     // 「金を払ったのに空」を見ることになる。失敗はSentryに残す。
     loadAllTrades()
-      .then(trades => setBadges(calcBadges(trades)))
+      .then(trades => setBadges(calcBadges(trades, goals)))
       .catch(e => {
         try { Sentry.captureException(e, { tags: { area: 'badges_load' } }); } catch { /* 無視 */ }
       });
-  }, []);
+    // 目標を変えると達成判定が変わるので、目標の変更でも計算し直す
+  }, [settings.monthlyPipsGoal, settings.monthlyWinRateGoal, settings.monthlyPLGoal]);
 
   const unlocked = badges.filter(b => b.unlocked).length;
+  const nearly = nearlyUnlocked(badges);
   const filtered = filter === 'all' ? badges : badges.filter(b => b.category === filter);
 
   return (
@@ -65,7 +77,12 @@ export default function BadgesScreen() {
         </TouchableOpacity>
       </View>
 
-      <View style={s.filterRow}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={s.filterScroll}
+        contentContainerStyle={s.filterRow}
+      >
         {CATEGORIES().map(cat => (
           <TouchableOpacity key={cat.key}
             style={[s.filterBtn, filter === cat.key && s.filterBtnActive]}
@@ -75,9 +92,21 @@ export default function BadgesScreen() {
             </Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
 
       <ScrollView contentContainerStyle={s.scroll}>
+        {filter === 'all' && nearly.length > 0 && (
+          <View style={s.nearlyBox}>
+            <Text style={s.nearlyTitle}>{t('badge_nearly_title')}</Text>
+            {nearly.map(b => (
+              <View key={b.id} style={s.nearlyRow}>
+                <Ionicons name={b.icon as any} size={18} color={b.color} />
+                <Text style={s.nearlyLabel} numberOfLines={1}>{b.title}</Text>
+                <Text style={s.nearlyRemain}>{b.progress} / {b.target}</Text>
+              </View>
+            ))}
+          </View>
+        )}
         <View style={s.grid}>
           {filtered.map(badge => (
             <BadgeCard key={badge.id} badge={badge} />
@@ -109,7 +138,10 @@ function BadgeCard({ badge }: { badge: UnlockedBadge }) {
       </View>
       <Text style={[s.cardTitle, !badge.unlocked && { color: C.text3 }]}>{badge.title}</Text>
       <Text style={s.cardDesc} numberOfLines={2}>{badge.description}</Text>
-      {!badge.unlocked && (
+      {!badge.unlocked && badge.needsGoal && (
+        <Text style={s.needsGoal}>{t('badge_needs_goal')}</Text>
+      )}
+      {!badge.unlocked && !badge.needsGoal && (
         <>
           <View style={s.progBg}>
             <View style={[s.progFill, { width: `${pct}%`, backgroundColor: badge.color }]} />
@@ -134,12 +166,19 @@ function makeStyles(C: ThemeColors) {
     closeBtn: { padding: 4, marginLeft: 12 },
     headerProgBg: { height: 6, backgroundColor: C.border, borderRadius: 3, overflow: 'hidden' },
     headerProgFill: { height: '100%', backgroundColor: C.yellow, borderRadius: 3 },
-    filterRow: { flexDirection: 'row', padding: 10, gap: 6, backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border },
+    filterScroll: { flexGrow: 0, backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border },
+    filterRow: { flexDirection: 'row', padding: 10, gap: 6 },
     filterBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16, borderWidth: 1, borderColor: C.border },
     filterBtnActive: { backgroundColor: C.primary, borderColor: C.primary },
     filterLabel: { fontSize: 12, color: C.text2 },
     filterLabelActive: { color: '#FFF', fontWeight: '700' },
     scroll: { padding: 12 },
+    nearlyBox: { backgroundColor: C.card, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: C.border, marginBottom: 12 },
+    nearlyTitle: { fontSize: 13, fontWeight: '800', color: C.text, marginBottom: 8 },
+    nearlyRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 5 },
+    nearlyLabel: { flex: 1, fontSize: 12, color: C.text2 },
+    nearlyRemain: { fontSize: 12, fontWeight: '700', color: C.text, fontVariant: ['tabular-nums'] },
+    needsGoal: { fontSize: 10, color: C.text3, textAlign: 'center', lineHeight: 13, marginBottom: 4 },
     grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
     card: { width: '47%', backgroundColor: C.card, borderRadius: 14, padding: 14, alignItems: 'center', borderWidth: 1, borderColor: C.border },
     cardLocked: { opacity: 0.6 },
