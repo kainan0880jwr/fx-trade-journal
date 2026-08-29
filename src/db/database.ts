@@ -406,6 +406,32 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
     );
   }
 
+  // 手入力した損益の符号が付いていなかった不具合の修復。
+  //
+  // クイック入力に追加した損益の手入力欄（クロス円以外で使う）に、
+  // 結果から符号を付ける処理が抜けていた。decimal-pad にマイナスキーが
+  // 無いためユーザーは負の値を打てず、「負け」を選んで 500 と入れた損益が
+  // +500 として保存されていた（EUR/USDが「負け・-20pips」なのに
+  // 「+500¥」と表示される状態で実機報告された）。
+  //
+  // 対象はクイック入力の行に限定する。クロス円は pips とロットから
+  // 符号付きで計算しており、詳細入力とCSVインポートもこの経路を通らない。
+  // したがって「entry_method='quick' かつ result='loss' かつ profit_loss>0」は
+  // この不具合でしか発生しない。
+  const plSignFixed = await database.getFirstAsync<{ value: string }>(
+    `SELECT value FROM settings WHERE key='manual_pl_sign_fixed_v1'`
+  );
+  if (!plSignFixed) {
+    await database.runAsync(
+      `UPDATE trades SET profit_loss = -profit_loss
+        WHERE entry_method = 'quick' AND result = 'loss'
+          AND profit_loss IS NOT NULL AND profit_loss > 0`
+    );
+    await database.runAsync(
+      `INSERT OR REPLACE INTO settings (key, value) VALUES ('manual_pl_sign_fixed_v1', '1')`
+    );
+  }
+
   // 既存データのisYenPairフラグ修正（EUR/JPY, GBP/JPY, AUD/JPY が誤って0になっていた場合を修正）
   await database.execAsync(
     `UPDATE currency_pairs SET is_yen_pair = 1 WHERE name LIKE '%/JPY' AND is_yen_pair = 0;`

@@ -25,6 +25,7 @@ interface SettingsStore {
   updateDefaultRiskPct: (value: number) => Promise<void>;
   updateMonthlyPipsGoal: (value: number) => Promise<void>;
   updateMonthlyWinRateGoal: (value: number) => Promise<void>;
+  updateMonthlyPLGoal: (value: number) => Promise<void>;
   addEntryTag: (tag: string) => Promise<void>;
   removeEntryTag: (tag: string) => Promise<void>;
   addTradeRule: (rule: string) => Promise<void>;
@@ -36,7 +37,7 @@ interface SettingsStore {
 const defaultSettings: AppSettings = {
   lotUnit: 10000, defaultLotSize: 0.1, defaultStyle: 'day',
   accountBalance: 0, defaultRiskPct: 2,
-  monthlyPipsGoal: 0, monthlyWinRateGoal: 0,
+  monthlyPipsGoal: 0, monthlyWinRateGoal: 0, monthlyPLGoal: 0,
   themeMode: 'dark',
   appLockEnabled: false,
 };
@@ -154,6 +155,15 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     try {
       await setSetting('monthly_win_rate_goal', String(value));
       set(state => ({ settings: { ...state.settings, monthlyWinRateGoal: value }, error: null }));
+    } catch (e) {
+      set({ error: e instanceof Error ? e.message : '設定の保存に失敗しました' });
+      throw e;
+    }
+  },
+  updateMonthlyPLGoal: async (value) => {
+    try {
+      await setSetting('monthly_pl_goal', String(value));
+      set(state => ({ settings: { ...state.settings, monthlyPLGoal: value }, error: null }));
     } catch (e) {
       set({ error: e instanceof Error ? e.message : '設定の保存に失敗しました' });
       throw e;

@@ -43,7 +43,7 @@ export default function SettingsScreen() {
     pairs, settings, entryTags, tradeRules,
     addPair, removePair, updateLotUnit, updateDefaultLotSize,
     updateAccountBalance, updateDefaultRiskPct,
-    updateMonthlyPipsGoal, updateMonthlyWinRateGoal,
+    updateMonthlyPipsGoal, updateMonthlyWinRateGoal, updateMonthlyPLGoal,
     addEntryTag, removeEntryTag,
     addTradeRule, removeTradeRule,
     updateThemeMode, updateAppLockEnabled,
@@ -62,6 +62,9 @@ export default function SettingsScreen() {
   );
   const [winRateGoalInput, setWinRateGoalInput] = useState(
     settings.monthlyWinRateGoal > 0 ? String(settings.monthlyWinRateGoal) : ''
+  );
+  const [plGoalInput, setPlGoalInput] = useState(
+    settings.monthlyPLGoal > 0 ? String(settings.monthlyPLGoal) : ''
   );
   const [showAddPair, setShowAddPair] = useState(false);
   const [showAddTag, setShowAddTag] = useState(false);
@@ -157,6 +160,7 @@ export default function SettingsScreen() {
     try {
       await updateMonthlyPipsGoal(parseDecimal(pipsGoalInput) ?? 0);
       await updateMonthlyWinRateGoal(parseDecimal(winRateGoalInput) ?? 0);
+      await updateMonthlyPLGoal(parseDecimal(plGoalInput) ?? 0);
       Alert.alert(t('settings_goals_saved'));
     } catch {
       Alert.alert(t('error'), t('settings_save_error_msg'));
@@ -778,9 +782,16 @@ export default function SettingsScreen() {
             value={pipsGoalInput} onChangeText={setPipsGoalInput}
             keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}100`} placeholderTextColor={C.text3} />
           <Text style={styles.cardLabel}>{t('settings_winrate_goal')}</Text>
-          <TextInput style={[styles.input, { marginBottom: 14 }]}
+          <TextInput style={[styles.input, { marginBottom: 12 }]}
             value={winRateGoalInput} onChangeText={setWinRateGoalInput}
             keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}60`} placeholderTextColor={C.text3} />
+          {/* 金額目標。pips目標だけではロットの違いを吸収できず、
+              「結局いくら稼ぎたいのか」が表せなかった。 */}
+          <Text style={styles.cardLabel}>{t('settings_pl_goal')}</Text>
+          <TextInput style={[styles.input, { marginBottom: 14 }]}
+            value={plGoalInput} onChangeText={setPlGoalInput}
+            keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}50000`} placeholderTextColor={C.text3}
+            accessibilityLabel={t('settings_pl_goal')} />
           <TouchableOpacity style={styles.primaryBtn} onPress={handleSaveGoals}>
             <Text style={styles.primaryBtnText}>{t('save')}</Text>
           </TouchableOpacity>

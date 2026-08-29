@@ -40,6 +40,25 @@ export function signedQuickPips(
   raw: string,
   result: 'win' | 'loss' | 'even' | null
 ): number | null {
+  return signedByResult(raw, result);
+}
+
+/**
+ * 符号なしで入力された数値に、選択された結果から符号を与える。
+ *
+ * pips と損益の**両方**で必要になる。どちらの入力欄も
+ * `keyboardType="decimal-pad"` で、iOSにはマイナス記号のキーが無いため、
+ * ユーザーは負の値を打てない。にもかかわらず入力値をそのまま保存すると、
+ * 「負け」を選んで 500 と入れた損益が +500 として記録される。
+ *
+ * pips では一度これを修正したが、後から追加した損益の手入力欄で同じ
+ * 間違いを繰り返した（EUR/USD が「負け・-20pips」なのに「+500¥」と
+ * 表示される状態で実機報告された）。符号付けを1箇所に集約して再発を防ぐ。
+ */
+export function signedByResult(
+  raw: string,
+  result: 'win' | 'loss' | 'even' | null
+): number | null {
   const n = parseDecimal(raw);
   if (n == null) return null;
   if (result === 'loss') return -Math.abs(n);

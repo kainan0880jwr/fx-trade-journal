@@ -13,7 +13,7 @@ import { saveTradeImages, resolveImageUri } from '../../src/utils/imageStorage';
 import { useTradeStore } from '../../src/store/tradeStore';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
-import { calcPips, signedQuickPips } from '../../src/utils/pipsCalc';
+import { calcPips, signedQuickPips, signedByResult } from '../../src/utils/pipsCalc';
 import { calcProfitLoss, determineResult } from '../../src/utils/profitCalc';
 import { generateId } from '../../src/utils/statsCalc';
 import { getTradeById, updateRecordStreak, getAllCurrencyPairs } from '../../src/db/queries';
@@ -156,7 +156,8 @@ export default function NewTradeScreen() {
       // 符号は結果セレクタが決めるため、入力欄には絶対値を出す
       setQuickPips(tr.pips != null ? String(Math.abs(tr.pips)) : '');
       setQuickLot(String(tr.lotSize));
-      setQuickPL(tr.profitLoss != null ? String(tr.profitLoss) : '');
+      // 符号は結果セレクタが決めるため、入力欄には絶対値を出す（pipsと同じ扱い）
+      setQuickPL(tr.profitLoss != null ? String(Math.abs(tr.profitLoss)) : '');
       if (tr.date) {
         const d = new Date(tr.date.length <= 10 ? `${tr.date}T00:00:00` : tr.date);
         if (!isNaN(d.getTime())) setDateObj(d);
@@ -444,7 +445,9 @@ export default function NewTradeScreen() {
         // 手入力された実額を使う（未入力なら null のまま＝カバー率に反映される）。
         profitLoss: quickIsYenPair && parsedPips != null
           ? calcProfitLoss(parsedPips, quickLotNum, settings.lotUnit)
-          : parseDecimal(quickPL),
+          // 損益も pips と同様に、結果から符号を決める。
+          // decimal-pad にマイナスキーが無く、ユーザーは負の値を打てないため。
+          : signedByResult(quickPL, quickResult),
         result: quickResult,
         reflection: '', selfRating: 3,
         bookmarked: false,

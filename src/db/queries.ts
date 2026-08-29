@@ -257,11 +257,12 @@ function safeNumber(raw: string | null | undefined, fallback: number): number {
 }
 
 export async function getAllSettings(): Promise<AppSettings> {
-  const [lotUnit, defaultLotSize, defaultStyle, accountBalance, defaultRiskPct, monthlyPipsGoal, monthlyWinRateGoal, themeMode, appLockEnabled] =
+  const [lotUnit, defaultLotSize, defaultStyle, accountBalance, defaultRiskPct, monthlyPipsGoal, monthlyWinRateGoal, monthlyPLGoal, themeMode, appLockEnabled] =
     await Promise.all([
       getSetting('lot_unit'), getSetting('default_lot_size'), getSetting('default_style'),
       getSetting('account_balance'), getSetting('default_risk_pct'),
       getSetting('monthly_pips_goal'), getSetting('monthly_win_rate_goal'),
+      getSetting('monthly_pl_goal'),
       getSetting('theme_mode'), getSetting('app_lock_enabled'),
     ]);
   return {
@@ -273,6 +274,7 @@ export async function getAllSettings(): Promise<AppSettings> {
     defaultRiskPct: safeNumber(defaultRiskPct, 2),
     monthlyPipsGoal: safeNumber(monthlyPipsGoal, 0),
     monthlyWinRateGoal: safeNumber(monthlyWinRateGoal, 0),
+    monthlyPLGoal: safeNumber(monthlyPLGoal, 0),
     themeMode: (themeMode as AppSettings['themeMode']) ?? 'dark',
     appLockEnabled: appLockEnabled === '1',
   };
