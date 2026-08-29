@@ -176,8 +176,11 @@ export default function SettingsScreen() {
                 Alert.alert(t('saved'), t('backup_import_success').replace('{n}', String(count)));
                 setHasSnapshot(true);
               }
-            } catch {
-              Alert.alert(t('error'), t('backup_import_error'));
+            } catch (e) {
+              const msg = e instanceof Error && e.message === 'empty_backup'
+                ? t('backup_import_empty')
+                : t('backup_import_error');
+              Alert.alert(t('error'), msg);
             } finally {
               setBackupLoading(false);
             }

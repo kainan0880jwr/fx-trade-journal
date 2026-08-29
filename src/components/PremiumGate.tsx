@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -23,14 +23,32 @@ interface Props {
 
 export default function PremiumGate({ children, feature, featureKey }: Props) {
   const isPremium = usePurchaseStore(s => s.isPremium);
+  // 購入状態の判定が済むまでロック画面を出さない。
+  //
+  // isPremium の初期値は false で、RevenueCat の getCustomerInfo() は非同期。
+  // 待たずに描画すると、課金済みユーザーでも起動直後に必ず「ロックされています」が
+  // 一瞬表示される。さらにその表示で recordPremiumGateShown が発火するため、
+  // ペイウォール計測（現在ペイウォール改善の唯一の判断材料）に有料ユーザーが
+  // 混入して数字が歪む。
+  const isInitialized = usePurchaseStore(s => s.isInitialized);
   const C = useTheme();
   const s = makeStyles(C);
 
   // ロック画面が実際に表示されたときだけ計上する（プレミアムユーザーでは発火しない）。
   // 機能ごとにセッション内1回へ間引く処理は recordPremiumGateShown 側が持つ。
   React.useEffect(() => {
-    if (!isPremium) recordPremiumGateShown(featureKey);
-  }, [isPremium, featureKey]);
+    if (isInitialized && !isPremium) recordPremiumGateShown(featureKey);
+  }, [isInitialized, isPremium, featureKey]);
+
+  if (!isInitialized) {
+    return (
+      <View style={s.container}>
+        <View style={s.lockWrap}>
+          <ActivityIndicator size="large" color={C.primary} />
+        </View>
+      </View>
+    );
+  }
 
   if (isPremium) return <>{children}</>;
 

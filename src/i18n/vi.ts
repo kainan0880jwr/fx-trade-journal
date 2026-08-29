@@ -49,6 +49,7 @@ export const vi: LangStrings = {
   db_reset_confirm_title: 'Đặt lại tất cả dữ liệu?',
   db_reset_confirm_msg: 'Thao tác này sẽ xóa vĩnh viễn tất cả bản ghi giao dịch đã lưu và không thể hoàn tác. Ứng dụng sẽ khởi động lại từ trạng thái trống.',
   db_reset_confirm_button: 'Đặt lại và bắt đầu lại',
+  db_reset_failed_msg: "Không thể xóa dữ liệu. Vui lòng khởi động lại thiết bị và thử lại. Để an toàn, khóa mã hóa vẫn được giữ nguyên.",
   retry: 'Thử lại',
   error: 'Lỗi',
 
@@ -605,6 +606,7 @@ export const vi: LangStrings = {
   backup_restore_success: 'Đã khôi phục {n} giao dịch',
   backup_restore_error: 'Khôi phục thất bại',
   backup_import_error: 'Không thể đọc bản sao lưu. Vui lòng chọn file sao lưu hợp lệ',
+  backup_import_empty: "Bản sao lưu này không có lệnh nào. Đã hủy khôi phục để không xóa dữ liệu hiện có của bạn.",
   backup_exporting: 'Đang tạo bản sao lưu...',
   backup_importing: 'Đang khôi phục...',
 

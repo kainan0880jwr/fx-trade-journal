@@ -81,7 +81,19 @@ function RootLayoutContent() {
       }
     } catch (e) {
       console.error('DB init error:', e);
-      if (e instanceof EncryptionKeyLostError) {
+      // 本アプリで最も重大な失敗経路（全データにアクセスできない状態）なのに、
+      // これまで console.error だけで本番では誰も観測できなかった。
+      // 鍵喪失は復旧手段が全削除しか無いため、通常の初期化失敗とは別Issueに分ける。
+      const keyLost = e instanceof EncryptionKeyLostError;
+      try {
+        Sentry.captureException(e, {
+          level: keyLost ? 'fatal' : 'error',
+          tags: { area: 'db_init', kind: keyLost ? 'key_lost' : 'init_error' },
+        });
+      } catch {
+        // 計装の失敗まで面倒は見ない
+      }
+      if (keyLost) {
         setKeyLost(true);
       } else {
         setDbError(true);
@@ -107,7 +119,17 @@ function RootLayoutContent() {
           text: t('db_reset_confirm_button'),
           style: 'destructive',
           onPress: async () => {
-            await resetDatabase();
+            try {
+              await resetDatabase();
+            } catch (e) {
+              // DBファイルを削除できなかった場合、resetDatabaseは鍵を温存したまま
+              // throwする（鍵だけ消して復号不能にしないため）。ここで無言に握り潰すと
+              // ユーザーには「削除したのに同じエラーが出続ける」ようにしか見えないので、
+              // 失敗を明示し、Sentryにも残す。
+              Sentry.captureException(e, { tags: { area: 'db_reset' } });
+              Alert.alert(t('db_reset_confirm_title'), t('db_reset_failed_msg'));
+              return;
+            }
             setDbReady(false);
             initDb();
           },

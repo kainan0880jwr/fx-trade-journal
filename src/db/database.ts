@@ -38,8 +38,35 @@ export function getDatabase(): Promise<SQLite.SQLiteDatabase> {
  * まっさらな状態から作り直せるようにする（保存されていたトレード記録は失われる）。
  */
 export async function resetDatabase(): Promise<void> {
+  // 順序が重要。以前は「接続を閉じずに削除 → 失敗を握り潰す → 鍵とフラグは確実に削除」
+  // となっており、最後の復旧手段が自分でデータを復号不能にする経路になっていた。
+  //
+  // expo-sqlite は接続が開いたままのDBの削除を例外で拒否する
+  // （SQLiteModule.swift の deleteDatabase は findCachedDatabase にヒットすると throw）。
+  // したがって closeAsync せずに deleteDatabaseAsync を呼ぶと、DBファイルは残ったまま
+  // 鍵だけが消え、次回起動で新しい鍵が生成されて旧DBを永久に開けなくなる。
+  //
+  // 正しい順序は「接続を閉じる → DB削除 → 削除できたときだけ鍵を消す」。
+  const openDb = await dbPromise?.catch(() => null);
   dbPromise = null;
-  await SQLite.deleteDatabaseAsync(NEW_DB_NAME).catch(() => {});
+  await openDb?.closeAsync().catch(() => {});
+
+  let dbDeleted = true;
+  try {
+    await SQLite.deleteDatabaseAsync(NEW_DB_NAME);
+  } catch {
+    dbDeleted = false;
+  }
+  // 移行フラグが立ったまま旧・平文DBが残っていると、リセット後の起動で
+  // 「削除したはずの記録」が復活しうるため、旧DBも消しておく。
+  await SQLite.deleteDatabaseAsync(OLD_DB_NAME).catch(() => {});
+
+  if (!dbDeleted) {
+    // DBを消せていないのに鍵を消すと、二度と開けない組み合わせが残る。
+    // 鍵とフラグは温存し、失敗として呼び出し側に伝える（次回起動で再試行できる）。
+    throw new Error('db_reset_failed');
+  }
+
   await SecureStore.deleteItemAsync(MIGRATION_FLAG_KEY).catch(() => {});
   await deleteEncryptionKey().catch(() => {});
 }
@@ -349,6 +376,33 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
     );
     await database.runAsync(
       `INSERT OR REPLACE INTO settings (key, value) VALUES ('loss_pips_sign_fixed_v1', '1')`
+    );
+  }
+
+  // 損益が実際の10倍で保存されていた不具合の修復。
+  //
+  // calcProfitLoss が `pips × lotSize × lotUnit / 10` になっていたが、クロス円は
+  // pipDigits=2（1pip = 0.01円）なので正しくは `/ 100`。表示・保存される損益が
+  // すべて10倍だった（例: 実際500円のところ5,000円）。
+  //
+  // 対象の絞り込みが重要。profit_loss を書き込む経路は2つしかない。
+  //   - 詳細入力の保存（calcProfitLoss の戻り値。クロス円のときのみ非null）→ 10倍。修復対象
+  //   - MT4/MT5のCSVインポート（mt4Import.ts:399。証券会社が出力した**実際の金額**
+  //     をそのまま保存しており計算式を通っていない）→ 正しい値。**触ってはいけない**
+  // クイック入力は profit_loss を null で保存するため対象外。
+  //
+  // CSVインポート行は id が 'mt4_' で始まる（mt4Import.ts:380）ので、これで除外する。
+  // entry_method では区別できない（詳細入力もCSVインポートも 'full' のため）。
+  const profitScaleFixed = await database.getFirstAsync<{ value: string }>(
+    `SELECT value FROM settings WHERE key='profit_loss_scale_fixed_v1'`
+  );
+  if (!profitScaleFixed) {
+    await database.runAsync(
+      `UPDATE trades SET profit_loss = ROUND(profit_loss / 10.0)
+        WHERE profit_loss IS NOT NULL AND profit_loss != 0 AND id NOT LIKE 'mt4_%'`
+    );
+    await database.runAsync(
+      `INSERT OR REPLACE INTO settings (key, value) VALUES ('profit_loss_scale_fixed_v1', '1')`
     );
   }
 

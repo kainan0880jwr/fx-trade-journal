@@ -48,6 +48,7 @@ export const ja = {
   db_reset_confirm_title: 'データをリセットしますか？',
   db_reset_confirm_msg: 'この操作を行うと、保存されているすべてのトレード記録が削除され、復元できなくなります。アプリを初期状態から開始します。',
   db_reset_confirm_button: 'リセットして開始',
+  db_reset_failed_msg: "データの削除に失敗しました。端末を再起動してからもう一度お試しください。安全のため、暗号化キーは削除していません。",
   retry: '再試行',
 
   // トレード結果
@@ -603,6 +604,7 @@ export const ja = {
   backup_restore_success: '{n}件のトレードを復元しました',
   backup_restore_error: '復元に失敗しました',
   backup_import_error: '読み込みに失敗しました。有効なバックアップファイルを選択してください',
+  backup_import_empty: "このバックアップにはトレードが1件も含まれていません。既存のデータを消さないよう、復元を中止しました。",
   backup_exporting: 'バックアップを作成中...',
   backup_importing: '復元中...',
 

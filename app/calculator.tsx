@@ -42,7 +42,9 @@ export default function CalculatorScreen() {
     riskAmount = Math.round(bal * risk / 100);
     const currencySuffix = lang === 'ja' ? '円' : '¥';
     if (isYenPair) {
-      const pipValue = lotUnit / 10;
+      // クロス円は 1pip = 0.01円。非円側の lotUnit * 0.0001 * usd と同じ考え方。
+      // 以前は lotUnit/10 で pip価値が10倍になっており、推奨ロットが1/10になっていた。
+      const pipValue = lotUnit * 0.01;
       lotSize = Math.floor((riskAmount / (sl * pipValue)) * 100) / 100;
       explanation = t('calc_formula_yen')
         .replace('{sl}', String(sl)).replace('{lotUnit}', String(lotUnit))

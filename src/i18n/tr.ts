@@ -49,6 +49,7 @@ export const tr: LangStrings = {
   db_reset_confirm_title: 'Tüm veriler sıfırlansın mı?',
   db_reset_confirm_msg: 'Bu, kayıtlı tüm işlem kayıtlarını kalıcı olarak siler ve geri alınamaz. Uygulama boş bir durumdan yeniden başlayacak.',
   db_reset_confirm_button: 'Sıfırla ve yeniden başla',
+  db_reset_failed_msg: "Veriler silinemedi. Lütfen cihazı yeniden başlatıp tekrar deneyin. Güvenlik için şifreleme anahtarı silinmedi.",
   retry: 'Tekrar Dene',
   error: 'Hata',
 
@@ -605,6 +606,7 @@ export const tr: LangStrings = {
   backup_restore_success: '{n} işlem geri yüklendi',
   backup_restore_error: 'Geri yükleme başarısız',
   backup_import_error: 'Yedek okunamadı. Lütfen geçerli bir yedek dosyası seçin',
+  backup_import_empty: "Bu yedekte hiç işlem yok. Mevcut verileriniz silinmesin diye geri yükleme iptal edildi.",
   backup_exporting: 'Yedek oluşturuluyor...',
   backup_importing: 'Geri yükleniyor...',
 

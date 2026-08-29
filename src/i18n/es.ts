@@ -49,6 +49,7 @@ export const es: LangStrings = {
   db_reset_confirm_title: "¿Restablecer todos los datos?",
   db_reset_confirm_msg: "Esto eliminará permanentemente todos los registros de operaciones guardados y no se podrá deshacer. La app se reiniciará desde cero.",
   db_reset_confirm_button: "Restablecer y empezar de nuevo",
+  db_reset_failed_msg: "No se pudieron eliminar los datos. Reinicia el dispositivo e inténtalo de nuevo. Por seguridad, la clave de cifrado no se ha eliminado.",
   retry: "Reintentar",
   error: "Error",
 
@@ -605,6 +606,7 @@ export const es: LangStrings = {
   backup_restore_success: "{n} operaciones restauradas",
   backup_restore_error: "No se pudo restaurar",
   backup_import_error: "No se pudo leer la copia de seguridad. Selecciona un archivo de copia de seguridad válido",
+  backup_import_empty: "Esta copia de seguridad no contiene operaciones. Se canceló la restauración para no eliminar tus datos actuales.",
   backup_exporting: "Creando copia de seguridad...",
   backup_importing: "Restaurando...",
 
