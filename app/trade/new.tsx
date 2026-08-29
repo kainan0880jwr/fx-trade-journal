@@ -20,6 +20,7 @@ import { getTradeById, updateRecordStreak } from '../../src/db/queries';
 import { useReviewPrompt } from '../../src/hooks/useReviewPrompt';
 import { useAppLockPrompt } from '../../src/hooks/useAppLockPrompt';
 import { recordFirstTradeSaved } from '../../src/utils/retentionEvents';
+import { closeScreen } from '../../src/utils/closeScreen';
 import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
@@ -293,7 +294,7 @@ export default function NewTradeScreen() {
         ? t('form_quick_saved_first')
         : `${streak}${t('form_quick_saved_streak')}`;
       await new Promise<void>((resolve) => {
-        Alert.alert('', msg, [{ text: 'OK', onPress: () => { router.back(); resolve(); } }]);
+        Alert.alert('', msg, [{ text: 'OK', onPress: () => { closeScreen(); resolve(); } }]);
       });
       // 保存完了ダイアログを閉じた後、初回のみアプリロック提案 → レビュー促進チェック（10件・30件・100件マイルストーン）の順で確認
       await promptAppLockIfNeeded();
@@ -309,7 +310,7 @@ export default function NewTradeScreen() {
     try {
       await editTrade(trade);
       justSavedRef.current = true;
-      router.back();
+      closeScreen();
     } catch {
       Alert.alert(t('save_error'), t('save_error_msg'));
     }

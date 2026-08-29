@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import * as Sentry from '@sentry/react-native';
 import { ExtensionStorage } from '@bacons/apple-targets';
 import { getTradesByMonth, getRecordStreak } from '../db/queries';
 import { calcStats } from './statsCalc';
@@ -23,7 +24,15 @@ export async function syncWidgetData(): Promise<void> {
     const trades = await getTradesByMonth(todayYearMonth());
     const stats = calcStats(trades);
     const hasTrades = stats.totalTrades > 0;
-    const streak = await getRecordStreak();
+
+    // 連続記録日数は「あると嬉しい」程度の付加情報にすぎない。ここで throw させて
+    // 勝率やpipsの同期ごと巻き添えにするのは割に合わないため、単独で握り潰す。
+    let streak = 0;
+    try {
+      streak = await getRecordStreak();
+    } catch {
+      // 取得できなければ0扱い（中サイズで非表示になるだけ）
+    }
 
     // プロフィットファクターは grossLoss が 0 のとき Infinity になる。
     // JSONに載せられないうえウィジェット側で"∞"を出す必要があるため文字列化する
@@ -57,7 +66,15 @@ export async function syncWidgetData(): Promise<void> {
       hasData: hasTrades ? 1 : 0,
     });
     ExtensionStorage.reloadWidget();
-  } catch {
-    // ウィジェット同期の失敗はアプリ本体の動作に影響させない
+  } catch (e) {
+    // アプリ本体の動作は止めない。ただし黙って握り潰すと
+    // 「ウィジェットが更新されない」が原因不明のまま残るため、Sentryには残す。
+    // （実際にv1.3.0で、同期が失敗しているのか反映が遅れているだけなのかを
+    //   切り分ける手段が無く、調査が止まった）
+    try {
+      Sentry.captureException(e, { tags: { area: 'widget_sync' } });
+    } catch {
+      // 計装の失敗まで面倒は見ない
+    }
   }
 }
