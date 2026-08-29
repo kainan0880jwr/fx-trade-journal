@@ -19,6 +19,7 @@ import type { Trade } from '../../src/types';
 import { t, tArr, lang } from '../../src/i18n';
 import { Ionicons } from '@expo/vector-icons';
 import { formatPF } from '../../src/utils/calendarMetrics';
+import { formatMoney } from '../../src/utils/formatMoney';
 
 type Period = 'monthly' | 'yearly';
 
@@ -216,7 +217,7 @@ export default function MonthlyScreen() {
                   </Text>
                   {stats.totalProfitLoss !== 0 && (
                     <Text style={[styles.bigNumSub, { color: stats.totalProfitLoss >= 0 ? C.win : C.loss }]}>
-                      {stats.totalProfitLoss > 0 ? '+' : ''}{stats.totalProfitLoss.toLocaleString()}{lang === 'ja' ? '円' : '¥'}
+                      {formatMoney(stats.totalProfitLoss)}
                     </Text>
                   )}
                 </View>
@@ -251,7 +252,7 @@ export default function MonthlyScreen() {
                   <TableRow label={t('profit_factor_long')} value={formatPF(stats.profitFactor)} />
                   <TableRow label={t('total_pips')} value={`${stats.totalPips > 0 ? '+' : ''}${stats.totalPips}`} color={stats.totalPips >= 0 ? C.win : C.loss} />
                   {stats.totalProfitLoss !== 0 && (
-                    <TableRow label={t('total_pl_yen')} value={`${stats.totalProfitLoss > 0 ? '+' : ''}${stats.totalProfitLoss.toLocaleString()}¥`} color={stats.totalProfitLoss >= 0 ? C.win : C.loss} last />
+                    <TableRow label={t('total_pl_yen')} value={formatMoney(stats.totalProfitLoss)} color={stats.totalProfitLoss >= 0 ? C.win : C.loss} last />
                   )}
                 </View>
               </>

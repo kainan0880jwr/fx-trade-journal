@@ -11,6 +11,7 @@ import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
 import type { Trade } from '../../src/types';
+import { formatMoney } from '../../src/utils/formatMoney';
 
 const STYLE_LABELS = () => ({
   scalping: t('style_scalping'), day: t('style_day'), swing: t('style_swing'), other: t('style_other'),
@@ -68,7 +69,7 @@ export default function TradeDetailScreen() {
     const dateStr = trade.date.slice(0, 10);
     const stars = '⭐'.repeat(trade.selfRating ?? 3);
     const pl = trade.profitLoss != null && trade.profitLoss !== 0
-      ? `\n💴 ${trade.profitLoss > 0 ? '+' : ''}${trade.profitLoss.toLocaleString()}¥` : '';
+      ? `\n💴 ${formatMoney(trade.profitLoss)}` : '';
 
     const lines = [
       `📊 ${trade.pair}  ${dateStr}`,
@@ -109,7 +110,7 @@ export default function TradeDetailScreen() {
   const resultLabel = isWin ? t('win') : isLoss ? t('loss') : t('even');
   const pipsStr = trade.pips != null ? `${trade.pips > 0 ? '+' : ''}${trade.pips}` : '-';
   const plStr = trade.profitLoss != null
-    ? `${trade.profitLoss > 0 ? '+' : ''}${trade.profitLoss.toLocaleString()}¥` : null;
+    ? formatMoney(trade.profitLoss) : null;
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>

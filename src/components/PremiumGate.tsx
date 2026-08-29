@@ -8,6 +8,7 @@ import { useTheme } from '../theme/useTheme';
 import type { ThemeColors } from '../theme/colors';
 import { t } from '../i18n';
 import { recordPremiumGateShown } from '../utils/paywallEvents';
+import { closeScreen } from '../utils/closeScreen';
 
 interface Props {
   children: React.ReactNode;
@@ -89,6 +90,22 @@ export default function PremiumGate({ children, feature, featureKey }: Props) {
           >
             <Text style={s.btnText}>{t('premium_gate_btn')}</Text>
           </TouchableOpacity>
+
+          {/* 閉じる導線。
+              children は pointerEvents="none" の下に敷いてプレビュー表示している
+              ため、画面側（badges / calculator）が持つ閉じるボタンはロック中は
+              押せない。iOSの下スワイプやAndroidの戻るでは出られるが、
+              **表示されている閉じるボタンが機能しない**のは明確な不具合なので、
+              ロックカード自身に確実に押せる導線を置く。 */}
+          <TouchableOpacity
+            style={s.closeLink}
+            onPress={closeScreen}
+            accessibilityRole="button"
+            accessibilityLabel={t('cancel')}
+            hitSlop={{ top: 10, bottom: 10, left: 16, right: 16 }}
+          >
+            <Text style={s.closeLinkText}>{t('cancel')}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -102,6 +119,8 @@ function makeStyles(C: ThemeColors) {
       backgroundColor: C.bg,
     },
     // preview: childrenを薄く表示（opacity でぼかし感を演出）
+    closeLink: { marginTop: 14, paddingVertical: 6, alignItems: 'center' },
+    closeLinkText: { color: C.text3, fontSize: 14 },
     previewContent: {
       flex: 1,
       opacity: 0.13,
