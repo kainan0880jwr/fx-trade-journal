@@ -37,7 +37,8 @@ export default function CalendarScreen() {
   const wins = trades.filter(tr => tr.result === 'win').length;
   const losses = trades.filter(tr => tr.result === 'loss').length;
   const winRate = trades.length > 0 ? Math.round(wins / trades.length * 100) : 0;
-  const hasPL = trades.some(tr => tr.profitLoss != null);
+  const plCount = trades.filter(tr => tr.profitLoss != null).length;
+  const hasPL = plCount > 0;
   const profitFactor = useMemo(() => calcMonthPF(trades), [trades]);
 
   const dayTrades = selectedDay
@@ -80,6 +81,7 @@ export default function CalendarScreen() {
               label={t('cal_total_pl')}
               value={formatMoney(totalPL)}
               color={totalPL >= 0 ? C.win : C.loss}
+              note={plCount < trades.length ? t('pl_coverage').replace('{n}', String(plCount)).replace('{total}', String(trades.length)) : undefined}
             />
           )}
         </View>

@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { PieChart, LineChart } from 'react-native-chart-kit';
 import { useTradeStore } from '../../src/store/tradeStore';
 import MonthSelector from '../../src/components/MonthSelector';
-import { calcStats, calcDailyCumulativePips, calcRatingDistribution, calcMonthlyBreakdown } from '../../src/utils/statsCalc';
+import { calcMoneyStats, calcStats, calcDailyCumulativePips, calcRatingDistribution, calcMonthlyBreakdown } from '../../src/utils/statsCalc';
 import { getRecordStreak } from '../../src/db/queries';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { generateInsights, type Insight } from '../../src/utils/insights';
@@ -77,6 +77,7 @@ export default function MonthlyScreen() {
   useEffect(() => { loadTradesByMonth(currentMonth); }, [currentMonth, loadTradesByMonth]);
 
   const stats = useMemo(() => calcStats(trades), [trades]);
+  const money = useMemo(() => calcMoneyStats(trades), [trades]);
   const cumData = useMemo(() => calcDailyCumulativePips(trades, currentMonth), [trades, currentMonth]);
   const ratingDist = useMemo(() => calcRatingDistribution(trades), [trades]);
   const avgRating = useMemo(() =>
@@ -251,10 +252,36 @@ export default function MonthlyScreen() {
                   <TableRow label={t('win_rate')} value={`${stats.winRate}%`} color={C.primary} />
                   <TableRow label={t('profit_factor_long')} value={formatPF(stats.profitFactor)} />
                   <TableRow label={t('total_pips')} value={`${stats.totalPips > 0 ? '+' : ''}${stats.totalPips}`} color={stats.totalPips >= 0 ? C.win : C.loss} />
-                  {stats.totalProfitLoss !== 0 && (
-                    <TableRow label={t('total_pl_yen')} value={formatMoney(stats.totalProfitLoss)} color={stats.totalProfitLoss >= 0 ? C.win : C.loss} last />
-                  )}
+                  <TableRow
+                    label={t('total_pl_yen')}
+                    value={money.covered > 0 ? formatMoney(money.totalPL) : '-'}
+                    color={money.covered === 0 ? undefined : money.totalPL >= 0 ? C.win : C.loss}
+                    last
+                  />
                 </View>
+
+                {/* 金額ベースの指標。
+                    pips はロット非依存で手法の評価に向くが、期待値やリスクは
+                    金額でしか判断できない。損益が記録されている件数を母数とし、
+                    全件を網羅していない場合はカバー率を明示する。 */}
+                {money.covered > 0 && (
+                  <>
+                    <Text style={styles.sectionTitle}>{t('money_stats_title')}</Text>
+                    {money.covered < money.total && (
+                      <Text style={styles.sectionNote}>
+                        {t('pl_coverage').replace('{n}', String(money.covered)).replace('{total}', String(money.total))}
+                      </Text>
+                    )}
+                    <View style={styles.statsTable}>
+                      <TableRow label={t('avg_win')} value={money.avgWin != null ? formatMoney(money.avgWin, false) : '-'} color={C.win} />
+                      <TableRow label={t('avg_loss')} value={money.avgLoss != null ? formatMoney(money.avgLoss, false) : '-'} color={C.loss} />
+                      <TableRow label={t('risk_reward')} value={money.riskReward == null ? '-' : !isFinite(money.riskReward) ? t('pf_no_loss') : `1:${money.riskReward}`} />
+                      <TableRow label={t('pf_money')} value={money.profitFactor == null ? '-' : !isFinite(money.profitFactor) ? t('pf_no_loss') : money.profitFactor.toFixed(2)} />
+                      <TableRow label={t('expectancy')} value={money.expectancy != null ? formatMoney(money.expectancy) : '-'} color={(money.expectancy ?? 0) >= 0 ? C.win : C.loss} />
+                      <TableRow label={t('max_drawdown')} value={formatMoney(money.maxDrawdown, false)} color={C.loss} last />
+                    </View>
+                  </>
+                )}
               </>
             )}
 
