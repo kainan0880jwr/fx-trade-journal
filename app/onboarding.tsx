@@ -186,6 +186,9 @@ export default function OnboardingScreen() {
           </Text>
           {!isLast && <Ionicons name="arrow-forward" size={18} color="#FFF" />}
         </TouchableOpacity>
+        {/* 初回起動で最も強い訴求が出る画面なのに、免責がどこにも無かった。
+            既存の文言を流用するので新規翻訳は不要。 */}
+        <Text style={s.disclaimer}>{t('paywall_disclaimer')}</Text>
       </View>
     </SafeAreaView>
   );
@@ -193,6 +196,7 @@ export default function OnboardingScreen() {
 
 function makeStyles(C: ThemeColors) {
   return StyleSheet.create({
+    disclaimer: { fontSize: 10, lineHeight: 14, color: C.text3, textAlign: 'center', marginTop: 12, paddingHorizontal: 8 },
     container: { flex: 1, backgroundColor: C.bg },
     skipBtn: {
       alignSelf: 'flex-end', paddingHorizontal: 20, paddingVertical: 14,
