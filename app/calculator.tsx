@@ -12,6 +12,7 @@ import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t, lang } from '../src/i18n';
 import { parseDecimal } from '../src/utils/parseDecimal';
+import { formatMoney, moneySuffix } from '../src/utils/formatMoney';
 
 const RISK_PRESETS = ['0.5', '1', '1.5', '2', '3', '5'];
 
@@ -43,7 +44,7 @@ export default function CalculatorScreen() {
 
   if (canCalc) {
     riskAmount = Math.round(bal * risk / 100);
-    const currencySuffix = lang === 'ja' ? '円' : '¥';
+    const currencySuffix = moneySuffix();
     if (isYenPair) {
       // クロス円は 1pip = 0.01円。非円側の lotUnit * 0.0001 * usd と同じ考え方。
       // 以前は lotUnit/10 で pip価値が10倍になっており、推奨ロットが1/10になっていた。
@@ -132,7 +133,7 @@ export default function CalculatorScreen() {
                 <View style={styles.resultDivider} />
                 <View style={styles.resultRow}>
                   <Text style={styles.resultSubLabel}>{t('calc_risk_amount')}</Text>
-                  <Text style={styles.resultSubValue}>{riskAmount.toLocaleString()}¥</Text>
+                  <Text style={styles.resultSubValue}>{formatMoney(riskAmount, false)}</Text>
                 </View>
                 <View style={styles.resultRow}>
                   <Text style={styles.resultSubLabel}>{t('calc_risk_pct')}</Text>

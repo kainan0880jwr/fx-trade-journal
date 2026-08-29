@@ -261,8 +261,45 @@ export async function updateRecordStreak(): Promise<number> {
   return newStreak;
 }
 
+/**
+ * 現在の連続記録日数。
+ *
+ * 保存値をそのまま返すと、記録が途切れても数字が残り続ける。
+ * 実際、10日連続のあと1か月放置してもホーム画面・ウィジェット・シェアカード・
+ * リマインダー通知のすべてが「10日連続」と表示し続け、次に保存した瞬間だけ
+ * 1に戻っていた。「継続の可視化」という機能の目的を満たしていない。
+ *
+ * 最後に記録した日が今日でも昨日でもなければ、その時点で連続は途切れている。
+ * 保存値は書き換えず（次の記録時に updateRecordStreak が正しく1から数え直す）、
+ * 読み出し時に判定する。
+ */
+/**
+ * 保存値と最終記録日から、表示すべき連続記録日数を求める純粋関数。
+ * DBに触れないためテストできる（実際の判定ロジックはこちらにある）。
+ */
+export function resolveStreak(
+  rawStreak: string | null | undefined,
+  lastDate: string | null | undefined,
+  today: string,
+  yesterday: string
+): number {
+  const streak = Number(rawStreak ?? '0');
+  if (!Number.isFinite(streak) || streak <= 0) return 0;
+  if (!lastDate) return 0;
+  return (lastDate === today || lastDate === yesterday) ? streak : 0;
+}
+
 export async function getRecordStreak(): Promise<number> {
-  return Number(await getSetting('record_streak') ?? '0');
+  const [rawStreak, lastDate] = await Promise.all([
+    getSetting('record_streak'),
+    getSetting('last_record_date'),
+  ]);
+  return resolveStreak(
+    rawStreak,
+    lastDate,
+    localDateStr(),
+    localDateStr(new Date(Date.now() - 86400000))
+  );
 }
 
 export async function getReflectionTemplates(): Promise<ReflectionTemplate[]> {

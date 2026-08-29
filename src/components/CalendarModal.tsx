@@ -13,6 +13,7 @@ import {
   calcMonthPF, formatPF, buildDayCellA11yLabel,
 } from '../utils/calendarMetrics';
 import { SCard, CalendarLegend } from './CalendarShared';
+import { formatMoney } from '../utils/formatMoney';
 
 const { Calendar: RNCalendar, LocaleConfig } = require('react-native-calendars');
 
@@ -89,7 +90,7 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
             {hasPL && (
               <SCard
                 label={t('cal_total_pl')}
-                value={`${totalPL >= 0 ? '+' : ''}${totalPL.toLocaleString()}¥`}
+                value={formatMoney(totalPL)}
                 color={totalPL >= 0 ? C.win : C.loss}
               />
             )}
@@ -122,6 +123,12 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
           {/* カレンダー */}
           <View style={s.calWrap}>
             <RNCalendar
+              // 月移動の矢印を隠す。trades は呼び出し元から当月分だけを受け取り、
+              // 上部のサマリー（件数・勝率・PF・合計pips）も当月固定のため、
+              // 他の月へ移動できると「グリッドは空なのにサマリーは当月の数値」
+              // という食い違いが起きる。カレンダータブ側は元から hideArrows。
+              hideArrows={true}
+              hideExtraDays={true}
               onDayPress={(day: { dateString: string }) => handleDayPress(day.dateString)}
               dayComponent={({ date, state }: { date: any; state: string }) => {
                 if (!date) return null;
@@ -197,7 +204,7 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
                       </Text>
                       {tr.profitLoss != null && (
                         <Text style={[s.tradePL, { color: tr.profitLoss >= 0 ? C.win : C.loss }]}>
-                          {tr.profitLoss >= 0 ? '+' : ''}{Math.round(tr.profitLoss).toLocaleString()}{lang === 'ja' ? '円' : '¥'}
+                          {formatMoney(tr.profitLoss)}
                         </Text>
                       )}
                     </View>

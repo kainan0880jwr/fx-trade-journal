@@ -4,6 +4,7 @@ import * as Sharing from 'expo-sharing';
 import { writeAsStringAsync, deleteAsync, cacheDirectory } from 'expo-file-system/legacy';
 import { lang, t } from '../i18n';
 import type { DailyStats } from '../types';
+import { formatMoney } from './formatMoney';
 
 export interface ShareStatsOptions {
   stats: DailyStats;
@@ -87,7 +88,7 @@ function buildShareHTML(opts: ShareStatsOptions): string {
     rows.push({
       icon: '💴',
       label: isJa ? '損益' : 'P&L',
-      value: `${stats.totalProfitLoss > 0 ? '+' : ''}${stats.totalProfitLoss.toLocaleString()}${isJa ? '円' : '¥'}`,
+      value: formatMoney(stats.totalProfitLoss),
     });
   }
 

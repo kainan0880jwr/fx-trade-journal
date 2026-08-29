@@ -26,6 +26,7 @@ import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
 import type { Trade, Direction, TradeStyle, TradeResult } from '../../src/types';
 import { parseDecimal } from '../../src/utils/parseDecimal';
+import { formatMoney } from '../../src/utils/formatMoney';
 
 type InputMode = 'quick' | 'full';
 
@@ -705,7 +706,7 @@ export default function NewTradeScreen() {
                   <View style={styles.calcItem}>
                     <Text style={styles.calcLabel}>{t('form_pl')}</Text>
                     <Text style={[styles.calcValue, { color: pipsColor }]}>
-                      {profitLoss != null ? `${profitLoss > 0 ? '+' : ''}${profitLoss.toLocaleString()}¥` : '-'}
+                      {profitLoss != null ? formatMoney(profitLoss) : '-'}
                     </Text>
                   </View>
                 ) : (

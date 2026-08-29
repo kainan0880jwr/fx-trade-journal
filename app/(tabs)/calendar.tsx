@@ -14,6 +14,7 @@ import {
   calcMonthPF, formatPF, buildDayCellA11yLabel,
 } from '../../src/utils/calendarMetrics';
 import { SCard, CalendarLegend } from '../../src/components/CalendarShared';
+import { formatMoney } from '../../src/utils/formatMoney';
 
 const Calendar = require('react-native-calendars').Calendar;
 
@@ -77,7 +78,7 @@ export default function CalendarScreen() {
             <SCard
               isTablet={isTablet}
               label={t('cal_total_pl')}
-              value={`${totalPL >= 0 ? '+' : ''}${totalPL.toLocaleString()}¥`}
+              value={formatMoney(totalPL)}
               color={totalPL >= 0 ? C.win : C.loss}
             />
           )}
@@ -111,7 +112,10 @@ export default function CalendarScreen() {
             current={currentMonth + '-01'}
             hideArrows={true}
             renderHeader={() => null}
-            hideExtraDays={false}
+            // 隣月の日を表示するとタップできてしまうが、trades は当月分しか
+            // 読み込んでいないため「この日の取引はありません」と誤表示され、
+            // データが消えたように見える。当月の日だけを表示する。
+            hideExtraDays={true}
             dayComponent={({ date, state }: { date: any; state: string }) => {
               if (!date) return null;
               const ds = dayMap[date.dateString];
@@ -184,7 +188,7 @@ export default function CalendarScreen() {
                     </Text>
                     {tr.profitLoss != null && (
                       <Text style={[s.tradePL, { color: tr.profitLoss >= 0 ? C.win : C.loss }]}>
-                        {tr.profitLoss >= 0 ? '+' : ''}{Math.round(tr.profitLoss).toLocaleString()}{lang === 'ja' ? '円' : '¥'}
+                        {formatMoney(tr.profitLoss)}
                       </Text>
                     )}
                   </View>
@@ -201,7 +205,7 @@ export default function CalendarScreen() {
                       </Text>
                       {ds.pl !== 0 && (
                         <Text style={[s.daySumPL, { color: ds.pl >= 0 ? C.win : C.loss }]}>
-                          {ds.pl >= 0 ? '+' : ''}{Math.round(ds.pl).toLocaleString()}¥
+                          {formatMoney(ds.pl)}
                         </Text>
                       )}
                     </View>
