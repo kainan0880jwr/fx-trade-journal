@@ -245,21 +245,34 @@ export async function setSetting(key: string, value: string): Promise<void> {
   await db.runAsync(`INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)`, [key, value]);
 }
 
+
+/**
+ * 設定値を数値へ。`?? 既定値` だけでは 'NaN' や非数値文字列を素通しし、
+ * Number() が NaN を返すため既定値へのフォールバックが効かなかった。
+ * NaN が入ると損益計算やリスク計算がすべて NaN 表示になる。
+ */
+function safeNumber(raw: string | null | undefined, fallback: number): number {
+  const n = Number(raw ?? fallback);
+  return Number.isFinite(n) ? n : fallback;
+}
+
 export async function getAllSettings(): Promise<AppSettings> {
-  const [lotUnit, defaultStyle, accountBalance, defaultRiskPct, monthlyPipsGoal, monthlyWinRateGoal, themeMode, appLockEnabled] =
+  const [lotUnit, defaultLotSize, defaultStyle, accountBalance, defaultRiskPct, monthlyPipsGoal, monthlyWinRateGoal, themeMode, appLockEnabled] =
     await Promise.all([
-      getSetting('lot_unit'), getSetting('default_style'),
+      getSetting('lot_unit'), getSetting('default_lot_size'), getSetting('default_style'),
       getSetting('account_balance'), getSetting('default_risk_pct'),
       getSetting('monthly_pips_goal'), getSetting('monthly_win_rate_goal'),
       getSetting('theme_mode'), getSetting('app_lock_enabled'),
     ]);
   return {
-    lotUnit: Number(lotUnit ?? 10000),
+    lotUnit: safeNumber(lotUnit, 10000),
+    // 既定ロット。クイック入力の初期値に使う（0以下は不正として既定へ）
+    defaultLotSize: (() => { const n = safeNumber(defaultLotSize, 0.1); return n > 0 ? n : 0.1; })(),
     defaultStyle: defaultStyle ?? 'day',
-    accountBalance: Number(accountBalance ?? 0),
-    defaultRiskPct: Number(defaultRiskPct ?? 2),
-    monthlyPipsGoal: Number(monthlyPipsGoal ?? 0),
-    monthlyWinRateGoal: Number(monthlyWinRateGoal ?? 0),
+    accountBalance: safeNumber(accountBalance, 0),
+    defaultRiskPct: safeNumber(defaultRiskPct, 2),
+    monthlyPipsGoal: safeNumber(monthlyPipsGoal, 0),
+    monthlyWinRateGoal: safeNumber(monthlyWinRateGoal, 0),
     themeMode: (themeMode as AppSettings['themeMode']) ?? 'dark',
     appLockEnabled: appLockEnabled === '1',
   };

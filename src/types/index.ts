@@ -46,6 +46,8 @@ export interface CurrencyPair {
 
 export interface AppSettings {
   lotUnit: number;
+  /** クイック入力のロット欄の初期値。損益を毎回計算できるようにするため */
+  defaultLotSize: number;
   defaultStyle: string;
   accountBalance: number;
   defaultRiskPct: number;

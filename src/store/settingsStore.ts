@@ -19,6 +19,7 @@ interface SettingsStore {
   updatePair: (pair: CurrencyPair) => Promise<void>;
   removePair: (id: string) => Promise<void>;
   updateLotUnit: (value: number) => Promise<void>;
+  updateDefaultLotSize: (value: number) => Promise<void>;
   updateDefaultStyle: (value: string) => Promise<void>;
   updateAccountBalance: (value: number) => Promise<void>;
   updateDefaultRiskPct: (value: number) => Promise<void>;
@@ -33,7 +34,7 @@ interface SettingsStore {
 }
 
 const defaultSettings: AppSettings = {
-  lotUnit: 10000, defaultStyle: 'day',
+  lotUnit: 10000, defaultLotSize: 0.1, defaultStyle: 'day',
   accountBalance: 0, defaultRiskPct: 2,
   monthlyPipsGoal: 0, monthlyWinRateGoal: 0,
   themeMode: 'dark',
@@ -99,6 +100,15 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     try {
       await setSetting('lot_unit', String(value));
       set(state => ({ settings: { ...state.settings, lotUnit: value }, error: null }));
+    } catch (e) {
+      set({ error: e instanceof Error ? e.message : '設定の保存に失敗しました' });
+      throw e;
+    }
+  },
+  updateDefaultLotSize: async (value) => {
+    try {
+      await setSetting('default_lot_size', String(value));
+      set(state => ({ settings: { ...state.settings, defaultLotSize: value }, error: null }));
     } catch (e) {
       set({ error: e instanceof Error ? e.message : '設定の保存に失敗しました' });
       throw e;
