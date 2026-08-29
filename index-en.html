@@ -74,7 +74,7 @@
       "name": "Where is my trade data stored?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Your trade records are encrypted and stored only on your device (attached chart images are stored on-device without encryption). There is no cloud sync, and the app works without an internet connection."
+        "text": "Your trade records are encrypted and stored only on your device (attached chart images are stored on-device without encryption). There is no cloud sync, and logging and analysis work without an internet connection. A connection is required only to purchase or restore Premium."
       }
     },
     {
@@ -156,13 +156,14 @@
 <div class="ticker" aria-hidden="true" title="Illustrative currency pair display (not real market data)">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
+  <p class="ticker-note">Illustrative currency pairs. Not live market data.</p>
 <p class="sr-only">Supported pairs (partial list): USD/JPY, EUR/JPY, GBP/JPY, EUR/USD, AUD/JPY, USD/CHF, NZD/USD, GBP/USD and more</p>
 
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">Trading journal &amp; analytics app</p>
-      <h1>One trade builds<br>the next <em>win rate</em>.</h1>
+      <h1>One trade becomes<br>your next <em>data point</em>.</h1>
       <p class="hero-sub">
         Just log a trade and your win rate, pips, and profit factor appear automatically.
         Your results become a shareable card that keeps you motivated. Everything works on your phone or tablet.
@@ -202,6 +203,7 @@
           </div>
           <div class="stat-strip">
             <div><span class="k">Trades</span><span class="v">9</span></div>
+          <p class="sample-note">Sample screen. Not actual trading results.</p>
             <div><span class="k">Win rate</span><span class="v text-accent">78%</span></div>
             <div><span class="k">Pips</span><span class="v text-profit">+138</span></div>
             <div><span class="k">PF</span><span class="v">7.75</span></div>
@@ -270,6 +272,7 @@
           </div>
           <div class="bw-row">
             <div class="bw-card"><span class="bwk">Best (USD/JPY)</span><span class="bwv">+32.5 pips</span></div>
+          <p class="sample-note">Sample screen. Not actual trading results.</p>
             <div class="bw-card worst"><span class="bwk">Worst (GBP/JPY)</span><span class="bwv">−12 pips</span></div>
           </div>
         </div>
@@ -296,6 +299,7 @@
               <span>PF 7.75</span><span>+138 pips</span><span>9 trades</span>
             </div>
             <div class="watermark-chip">FX Trade Journal</div>
+            <p class="sample-note">Sample screen. Not actual trading results.</p>
           </div>
         </div>
       </div>
@@ -361,7 +365,7 @@
           </div>
           <div class="sec-note">Toggle on/off anytime in Settings (off by default)</div>
           <div class="sec-note">Database encryption via SQLCipher (device-only key, excluded from iCloud)</div>
-          <div class="sec-note">No cloud sync, no internet connection required</div>
+          <div class="sec-note">No cloud sync. Logging and analysis work offline</div>
           <div class="sec-note">No account required, your trade records never leave your device</div>
           <div class="sec-note sec-note-disclosure">* To detect problems and improve quality, we send crash reports and anonymous usage statistics that do not identify you or your trades. See our <a href="privacy-policy-en.html">Privacy Policy</a> for details.</div>
         </div>
@@ -383,7 +387,7 @@
   <div class="wrap">
     <div class="stat-band-grid reveal">
       <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Languages (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
-      <div class="stat-band-item"><span class="num" data-count="175">0</span><span class="lbl">Countries &amp; regions available</span></div>
+      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">On-device data encryption</span></div>
       <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">Trade history import support</span></div>
       <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Trade records sent to the cloud</span></div>
     </div>
@@ -447,7 +451,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>Where is my trade data stored?</summary>
-        <div class="faq-a">Your trade records are encrypted and stored only on your device (attached chart images are stored on-device without encryption). There is no cloud sync, and the app works without an internet connection.</div>
+        <div class="faq-a">Your trade records are encrypted and stored only on your device (attached chart images are stored on-device without encryption). There is no cloud sync, and logging and analysis work without an internet connection. A connection is required only to purchase or restore Premium.</div>
       </details>
       <details class="faq-item">
         <summary>Can I use it with a broker other than MT4/MT5?</summary>
@@ -468,7 +472,7 @@
 <section class="final-cta">
   <canvas id="ctaChart" aria-hidden="true"></canvas>
   <div class="wrap inner reveal">
-    <h2>Your next log becomes<br>your next win rate.</h2>
+    <h2>Your next log becomes<br>your next data point.</h2>
     <p>Start reviewing today, with your very next trade.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://apps.apple.com/us/app/id6786188634">Download free on the App Store</a>
@@ -488,7 +492,7 @@
           </svg>
           FX Trade Journal
         </div>
-        <p class="foot-tag">A trading journal that works entirely on your phone or tablet. Log it, analyze it, and build your next win rate.</p>
+        <p class="foot-tag">A trading journal that works entirely on your phone or tablet. Log it, analyze it, and see what your record shows.</p>
       </div>
       <div class="foot-col">
         <h4>Product</h4>
@@ -521,6 +525,7 @@
       <a lang="pt" href="index-pt.html">Português</a>
     </nav>
     <div class="foot-legal">
+      MetaTrader, MT4 and MT5 are trademarks of MetaQuotes Software Corp. This app is not affiliated with or endorsed by MetaQuotes.<br>
       This app's analytics features are not intended to provide investment advice or solicit any specific financial product. Please make your own trading decisions at your own risk.<br>
       © 2026 Daiki Ikebata
     </div>

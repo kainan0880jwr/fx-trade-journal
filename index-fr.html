@@ -74,7 +74,7 @@
       "name": "Où sont stockées mes données de trading ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Vos enregistrements de trades sont chiffrés et stockés uniquement sur votre appareil (les images de graphiques jointes sont stockées sur l'appareil sans chiffrement). Il n'y a aucune synchronisation cloud, et l'app fonctionne sans connexion internet."
+        "text": "Vos enregistrements de trades sont chiffrés et stockés uniquement sur votre appareil (les images de graphiques jointes sont stockées sur l'appareil sans chiffrement). Il n'y a aucune synchronisation cloud ; la saisie et l'analyse fonctionnent sans connexion internet. Une connexion n'est requise que pour acheter ou restaurer Premium."
       }
     },
     {
@@ -156,13 +156,14 @@
 <div class="ticker" aria-hidden="true" title="Affichage illustratif des paires de devises (pas des données de marché réelles)">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
+  <p class="ticker-note">Paires de devises à titre d'exemple. Pas de données de marché réelles.</p>
 <p class="sr-only">Paires prises en charge (partiel) : USD/JPY, EUR/JPY, GBP/JPY, EUR/USD, AUD/JPY, USD/CHF, NZD/USD, GBP/USD et plus</p>
 
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">Journal de trading &amp; app d'analyse</p>
-      <h1>Un trade construit<br>le prochain <em>taux de réussite</em>.</h1>
+      <h1>Un trade devient<br>votre prochain <em>élément d'analyse</em>.</h1>
       <p class="hero-sub">
         Il suffit de noter un trade pour que le taux de réussite, les pips et le profit factor apparaissent automatiquement.
         Vos résultats deviennent une carte à partager qui vous garde motivé. Tout fonctionne sur smartphone ou tablette.
@@ -202,6 +203,7 @@
           </div>
           <div class="stat-strip">
             <div><span class="k">Trades</span><span class="v">9</span></div>
+          <p class="sample-note">Écran d'exemple. Ne représente pas des résultats réels.</p>
             <div><span class="k">Réussite</span><span class="v text-accent">78%</span></div>
             <div><span class="k">Pips</span><span class="v text-profit">+138</span></div>
             <div><span class="k">PF</span><span class="v">7.75</span></div>
@@ -270,6 +272,7 @@
           </div>
           <div class="bw-row">
             <div class="bw-card"><span class="bwk">Meilleur (USD/JPY)</span><span class="bwv">+32.5 pips</span></div>
+          <p class="sample-note">Écran d'exemple. Ne représente pas des résultats réels.</p>
             <div class="bw-card worst"><span class="bwk">Pire (GBP/JPY)</span><span class="bwv">−12 pips</span></div>
           </div>
         </div>
@@ -296,6 +299,7 @@
               <span>PF 7.75</span><span>+138 pips</span><span>9 trades</span>
             </div>
             <div class="watermark-chip">FX Trade Journal</div>
+            <p class="sample-note">Écran d'exemple. Ne représente pas des résultats réels.</p>
           </div>
         </div>
       </div>
@@ -361,7 +365,7 @@
           </div>
           <div class="sec-note">Activable/désactivable à tout moment dans les réglages (désactivé par défaut)</div>
           <div class="sec-note">Chiffrement de la base de données via SQLCipher (clé propre à l'appareil, exclue d'iCloud)</div>
-          <div class="sec-note">Aucune synchronisation cloud, aucune connexion internet requise</div>
+          <div class="sec-note">Aucune synchronisation cloud. La saisie et l'analyse fonctionnent hors ligne</div>
           <div class="sec-note">Aucun compte requis, vos enregistrements de trades ne quittent jamais votre appareil</div>
           <div class="sec-note sec-note-disclosure">* Pour détecter les problèmes et améliorer la qualité, nous envoyons des rapports de plantage et des statistiques d’usage anonymes qui ne vous identifient pas, ni vos trades. Voir notre <a href="privacy-policy-fr.html">politique de confidentialité</a>.</div>
         </div>
@@ -383,7 +387,7 @@
   <div class="wrap">
     <div class="stat-band-grid reveal">
       <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Langues (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
-      <div class="stat-band-item"><span class="num" data-count="175">0</span><span class="lbl">Pays et régions disponibles</span></div>
+      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">Chiffrement des données sur l'appareil</span></div>
       <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">Import d'historique de trading pris en charge</span></div>
       <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Enregistrements de trades envoyés au cloud</span></div>
     </div>
@@ -447,7 +451,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>Où sont stockées mes données de trading ?</summary>
-        <div class="faq-a">Vos enregistrements de trades sont chiffrés et stockés uniquement sur votre appareil (les images de graphiques jointes sont stockées sur l'appareil sans chiffrement). Il n'y a aucune synchronisation cloud, et l'app fonctionne sans connexion internet.</div>
+        <div class="faq-a">Vos enregistrements de trades sont chiffrés et stockés uniquement sur votre appareil (les images de graphiques jointes sont stockées sur l'appareil sans chiffrement). Il n'y a aucune synchronisation cloud ; la saisie et l'analyse fonctionnent sans connexion internet. Une connexion n'est requise que pour acheter ou restaurer Premium.</div>
       </details>
       <details class="faq-item">
         <summary>Puis-je l'utiliser avec un autre broker que MT4/MT5 ?</summary>
@@ -468,7 +472,7 @@
 <section class="final-cta">
   <canvas id="ctaChart" aria-hidden="true"></canvas>
   <div class="wrap inner reveal">
-    <h2>Votre prochaine note devient<br>votre prochain taux de réussite.</h2>
+    <h2>Votre prochaine note devient<br>votre prochain élément d'analyse.</h2>
     <p>Commencez le suivi dès aujourd'hui, dès votre prochain trade.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://apps.apple.com/fr/app/id6786188634">Télécharger gratuitement</a>
@@ -488,7 +492,7 @@
           </svg>
           FX Trade Journal
         </div>
-        <p class="foot-tag">Un journal de trading qui fonctionne entièrement sur smartphone ou tablette. Notez, analysez et construisez votre prochain taux de réussite.</p>
+        <p class="foot-tag">Un journal de trading qui fonctionne entièrement sur smartphone ou tablette. Notez, analysez et voyez ce que vos données révèlent.</p>
       </div>
       <div class="foot-col">
         <h4>Produit</h4>
@@ -521,6 +525,7 @@
       <a lang="pt" href="index-pt.html">Português</a>
     </nav>
     <div class="foot-legal">
+      MetaTrader, MT4 et MT5 sont des marques de MetaQuotes Software Corp. Cette application n'est ni affiliée à MetaQuotes ni approuvée par elle.<br>
       Les fonctionnalités d'analyse de cette app n'ont pas pour but de fournir des conseils en investissement ni de promouvoir un produit financier particulier. Prenez vos décisions de trading à vos propres risques.<br>
       © 2026 Daiki Ikebata
     </div>
