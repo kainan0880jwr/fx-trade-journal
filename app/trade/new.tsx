@@ -1001,6 +1001,17 @@ export default function NewTradeScreen() {
                     )}
                   </View>
 
+                  {/* ルール */}
+                  <RuleChecklist
+                    rules={tradeRules}
+                    checked={ruleChecks}
+                    onToggle={rule => setRuleChecks(prev =>
+                      prev.includes(rule) ? prev.filter(r => r !== rule) : [...prev, rule]
+                    )}
+                    C={C}
+                    styles={styles}
+                  />
+
                   {/* 反省 */}
                   <Label>{t('form_reflection')}</Label>
                   <TextInput style={[styles.input, styles.textArea]}
@@ -1074,16 +1085,6 @@ export default function NewTradeScreen() {
                     <MentalRow label={t('mental_fear')} value={mentalFear} onChange={setMentalFear} positiveHigh={false} />
                   </View>
 
-                  {/* ルール */}
-                  <RuleChecklist
-                    rules={tradeRules}
-                    checked={ruleChecks}
-                    onToggle={rule => setRuleChecks(prev =>
-                      prev.includes(rule) ? prev.filter(r => r !== rule) : [...prev, rule]
-                    )}
-                    C={C}
-                    styles={styles}
-                  />
                 </>
               )}
 
