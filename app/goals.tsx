@@ -14,6 +14,35 @@ import type { GoalField } from '../src/db/queries';
 /** 数値目標の入力欄。未設定は空欄で表し、0 を入れさせない */
 type NumField = Exclude<GoalField, 'dailyRuleGoal'>;
 
+/**
+ * 数値目標の入力行。
+ *
+ * この定義を GoalsScreen の内側に置くと、入力のたびに新しい関数として
+ * 作られるため React が別のコンポーネントとみなし、TextInput が
+ * unmount/remount されてフォーカスが外れる（1文字しか入力できなくなる）。
+ * 必ず画面の外に置くこと。
+ */
+function NumRow({ field, label, placeholder, suffix, value, onChange, C, s }: {
+  field: NumField; label: string; placeholder: string; suffix?: string;
+  value: string; onChange: (f: NumField, v: string) => void;
+  C: ThemeColors; s: ReturnType<typeof makeStyles>;
+}) {
+  return (
+    <View style={s.row}>
+      <Text style={s.rowLabel}>{label}{suffix ? ` (${suffix})` : ''}</Text>
+      <TextInput
+        style={s.input}
+        value={value}
+        onChangeText={v => onChange(field, v)}
+        keyboardType="decimal-pad"
+        placeholder={placeholder}
+        placeholderTextColor={C.text3}
+        accessibilityLabel={label}
+      />
+    </View>
+  );
+}
+
 export default function GoalsScreen() {
   const C = useTheme();
   const s = makeStyles(C);
@@ -60,23 +89,6 @@ export default function GoalsScreen() {
 
   const noRules = tradeRules.length === 0;
 
-  const NumRow = ({ field, label, placeholder, suffix }: {
-    field: NumField; label: string; placeholder: string; suffix?: string;
-  }) => (
-    <View style={s.row}>
-      <Text style={s.rowLabel}>{label}{suffix ? ` (${suffix})` : ''}</Text>
-      <TextInput
-        style={s.input}
-        value={inputs[field]}
-        onChangeText={v => setInput(field, v)}
-        keyboardType="decimal-pad"
-        placeholder={placeholder}
-        placeholderTextColor={C.text3}
-        accessibilityLabel={label}
-      />
-    </View>
-  );
-
   return (
     <SafeAreaView style={s.container} edges={['top', 'bottom']}>
       <View style={s.header}>
@@ -97,11 +109,18 @@ export default function GoalsScreen() {
         <ScrollView contentContainerStyle={s.scroll} keyboardShouldPersistTaps="handled">
           <Text style={s.intro}>{t('goal_intro')}</Text>
 
+          {/* 案内だけ出しても設定画面まで辿れないので、タップで戻れるようにする */}
           {noRules && (
-            <View style={s.noticeCard}>
+            <TouchableOpacity
+              style={s.noticeCard}
+              onPress={closeScreen}
+              accessibilityRole="button"
+              accessibilityLabel={t('goal_no_rules_note')}
+            >
               <Ionicons name="information-circle-outline" size={16} color={C.text2} />
               <Text style={s.noticeText}>{t('goal_no_rules_note')}</Text>
-            </View>
+              <Ionicons name="chevron-forward" size={16} color={C.text3} />
+            </TouchableOpacity>
           )}
 
           {/* ── 日 ── */}
@@ -116,8 +135,8 @@ export default function GoalsScreen() {
                 accessibilityLabel={t('goal_rule_daily')}
               />
             </View>
-            <NumRow field="dailyPipsGoal" label="pips" placeholder={`${t('eg_prefix')}20`} />
-            <NumRow field="dailyPLGoal" label={t('goal_pl')} placeholder={`${t('eg_prefix')}5000`} suffix={moneySuffix()} />
+            <NumRow field="dailyPipsGoal" label="pips" placeholder={`${t('eg_prefix')}20`} value={inputs.dailyPipsGoal} onChange={setInput} C={C} s={s} />
+            <NumRow field="dailyPLGoal" label={t('goal_pl')} placeholder={`${t('eg_prefix')}5000`} suffix={moneySuffix()} value={inputs.dailyPLGoal} onChange={setInput} C={C} s={s} />
             {/* 日単位の成果目標は、未達の日に無理に建てる理由を作りやすい。
                 設定できるようにはするが、なぜ既定でオフなのかは明示する。 */}
             <Text style={s.warn}>{t('goal_daily_outcome_note')}</Text>
@@ -126,27 +145,27 @@ export default function GoalsScreen() {
           {/* ── 週 ── */}
           <Text style={s.section}>{t('goal_period_week')}</Text>
           <View style={s.card}>
-            <NumRow field="weeklyRuleDaysGoal" label={t('goal_rule_days')} placeholder={`${t('eg_prefix')}4`} />
-            <NumRow field="weeklyPipsGoal" label="pips" placeholder={`${t('eg_prefix')}30`} />
-            <NumRow field="weeklyPLGoal" label={t('goal_pl')} placeholder={`${t('eg_prefix')}15000`} suffix={moneySuffix()} />
+            <NumRow field="weeklyRuleDaysGoal" label={t('goal_rule_days')} placeholder={`${t('eg_prefix')}4`} value={inputs.weeklyRuleDaysGoal} onChange={setInput} C={C} s={s} />
+            <NumRow field="weeklyPipsGoal" label="pips" placeholder={`${t('eg_prefix')}30`} value={inputs.weeklyPipsGoal} onChange={setInput} C={C} s={s} />
+            <NumRow field="weeklyPLGoal" label={t('goal_pl')} placeholder={`${t('eg_prefix')}15000`} suffix={moneySuffix()} value={inputs.weeklyPLGoal} onChange={setInput} C={C} s={s} />
           </View>
 
           {/* ── 月 ── */}
           <Text style={s.section}>{t('goal_period_month')}</Text>
           <View style={s.card}>
-            <NumRow field="monthlyRuleDaysGoal" label={t('goal_rule_days')} placeholder={`${t('eg_prefix')}15`} />
-            <NumRow field="monthlyPipsGoal" label="pips" placeholder={`${t('eg_prefix')}100`} />
-            <NumRow field="monthlyWinRateGoal" label={t('goal_winrate')} placeholder={`${t('eg_prefix')}60`} suffix="%" />
-            <NumRow field="monthlyPLGoal" label={t('goal_pl')} placeholder={`${t('eg_prefix')}50000`} suffix={moneySuffix()} />
+            <NumRow field="monthlyRuleDaysGoal" label={t('goal_rule_days')} placeholder={`${t('eg_prefix')}15`} value={inputs.monthlyRuleDaysGoal} onChange={setInput} C={C} s={s} />
+            <NumRow field="monthlyPipsGoal" label="pips" placeholder={`${t('eg_prefix')}100`} value={inputs.monthlyPipsGoal} onChange={setInput} C={C} s={s} />
+            <NumRow field="monthlyWinRateGoal" label={t('goal_winrate')} placeholder={`${t('eg_prefix')}60`} suffix="%" value={inputs.monthlyWinRateGoal} onChange={setInput} C={C} s={s} />
+            <NumRow field="monthlyPLGoal" label={t('goal_pl')} placeholder={`${t('eg_prefix')}50000`} suffix={moneySuffix()} value={inputs.monthlyPLGoal} onChange={setInput} C={C} s={s} />
           </View>
 
           {/* ── 年 ── */}
           <Text style={s.section}>{t('goal_period_year')}</Text>
           <View style={s.card}>
-            <NumRow field="yearlyRuleDaysGoal" label={t('goal_rule_days')} placeholder={`${t('eg_prefix')}180`} />
-            <NumRow field="yearlyPipsGoal" label="pips" placeholder={`${t('eg_prefix')}1200`} />
-            <NumRow field="yearlyWinRateGoal" label={t('goal_winrate')} placeholder={`${t('eg_prefix')}60`} suffix="%" />
-            <NumRow field="yearlyPLGoal" label={t('goal_pl')} placeholder={`${t('eg_prefix')}600000`} suffix={moneySuffix()} />
+            <NumRow field="yearlyRuleDaysGoal" label={t('goal_rule_days')} placeholder={`${t('eg_prefix')}180`} value={inputs.yearlyRuleDaysGoal} onChange={setInput} C={C} s={s} />
+            <NumRow field="yearlyPipsGoal" label="pips" placeholder={`${t('eg_prefix')}1200`} value={inputs.yearlyPipsGoal} onChange={setInput} C={C} s={s} />
+            <NumRow field="yearlyWinRateGoal" label={t('goal_winrate')} placeholder={`${t('eg_prefix')}60`} suffix="%" value={inputs.yearlyWinRateGoal} onChange={setInput} C={C} s={s} />
+            <NumRow field="yearlyPLGoal" label={t('goal_pl')} placeholder={`${t('eg_prefix')}600000`} suffix={moneySuffix()} value={inputs.yearlyPLGoal} onChange={setInput} C={C} s={s} />
           </View>
 
           <Text style={s.footNote}>{t('goal_mark_note')}</Text>
