@@ -74,7 +74,7 @@
       "name": "Di mana data transaksi saya disimpan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Catatan transaksi Anda dienkripsi dan hanya disimpan di perangkat Anda (gambar grafik yang dilampirkan disimpan di perangkat tanpa enkripsi). Tidak ada sinkronisasi cloud, dan aplikasi ini berfungsi tanpa koneksi internet."
+        "text": "Catatan transaksi Anda dienkripsi dan hanya disimpan di perangkat Anda (gambar grafik yang dilampirkan disimpan di perangkat tanpa enkripsi). Tidak ada sinkronisasi cloud; pencatatan dan analisis berfungsi tanpa koneksi internet. Koneksi hanya diperlukan untuk membeli atau memulihkan Premium."
       }
     },
     {
@@ -147,16 +147,23 @@
   </div>
 </header>
 
+<div class="region-notice">
+  <div class="wrap">
+    <p>Catatan: Aplikasi ini saat ini tidak tersedia di App Store di UE, EEA, atau Inggris.</p>
+  </div>
+</div>
+
 <div class="ticker" aria-hidden="true" title="Tampilan pasangan mata uang ilustratif (bukan data pasar riil)">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
+  <p class="ticker-note">Contoh pasangan mata uang. Bukan data pasar sebenarnya.</p>
 <p class="sr-only">Pasangan yang didukung (sebagian): USD/JPY, EUR/JPY, GBP/JPY, EUR/USD, AUD/JPY, USD/CHF, NZD/USD, GBP/USD dan lainnya</p>
 
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">Aplikasi jurnal trading &amp; analitik</p>
-      <h1>Setiap transaksi membangun<br><em>win rate</em> berikutnya.</h1>
+      <h1>Setiap transaksi menjadi<br><em>bahan analisis</em> berikutnya.</h1>
       <p class="hero-sub">
         Cukup catat satu transaksi, dan win rate, pips, serta profit factor Anda langsung muncul otomatis.
         Hasil Anda menjadi kartu yang bisa dibagikan untuk menjaga motivasi. Semuanya berjalan di ponsel atau tablet Anda.
@@ -196,6 +203,7 @@
           </div>
           <div class="stat-strip">
             <div><span class="k">Transaksi</span><span class="v">9</span></div>
+          <p class="sample-note">Tampilan contoh. Bukan hasil trading sebenarnya.</p>
             <div><span class="k">Win rate</span><span class="v text-accent">78%</span></div>
             <div><span class="k">Pips</span><span class="v text-profit">+138</span></div>
             <div><span class="k">PF</span><span class="v">7.75</span></div>
@@ -264,6 +272,7 @@
           </div>
           <div class="bw-row">
             <div class="bw-card"><span class="bwk">Terbaik (USD/JPY)</span><span class="bwv">+32.5 pips</span></div>
+          <p class="sample-note">Tampilan contoh. Bukan hasil trading sebenarnya.</p>
             <div class="bw-card worst"><span class="bwk">Terburuk (GBP/JPY)</span><span class="bwv">−12 pips</span></div>
           </div>
         </div>
@@ -290,6 +299,7 @@
               <span>PF 7.75</span><span>+138 pips</span><span>9 trades</span>
             </div>
             <div class="watermark-chip">FX Trade Journal</div>
+            <p class="sample-note">Tampilan contoh. Bukan hasil trading sebenarnya.</p>
           </div>
         </div>
       </div>
@@ -355,7 +365,7 @@
           </div>
           <div class="sec-note">Aktifkan/nonaktifkan kapan saja di Pengaturan (nonaktif secara default)</div>
           <div class="sec-note">Enkripsi database melalui SQLCipher (kunci hanya di perangkat, tidak disertakan dalam iCloud)</div>
-          <div class="sec-note">Tanpa sinkronisasi cloud, tidak memerlukan koneksi internet</div>
+          <div class="sec-note">Tanpa sinkronisasi cloud. Pencatatan dan analisis berjalan offline</div>
           <div class="sec-note">Tidak perlu akun, catatan transaksi Anda tidak pernah meninggalkan perangkat</div>
           <div class="sec-note sec-note-disclosure">* Untuk mendeteksi masalah dan meningkatkan kualitas, kami mengirim laporan kerusakan dan statistik penggunaan anonim yang tidak mengidentifikasi Anda maupun transaksi Anda. Lihat <a href="privacy-policy-id.html">kebijakan privasi</a> kami.</div>
         </div>
@@ -371,13 +381,38 @@
       </div>
     </div>
   </div>
+    <div class="feature-row reveal" id="widget">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Widget</span>
+          <div class="stat-strip">
+            <div><span class="k">Win rate</span><span class="v text-accent">62%</span></div>
+            <div><span class="k">Total pips</span><span class="v text-profit">+84</span></div>
+            <div><span class="k">PF</span><span class="v">1.50</span></div>
+            <div><span class="k">Beruntun</span><span class="v">12 hari</span></div>
+          </div>
+          <p class="sample-note">Tampilan contoh. Bukan hasil trading sebenarnya.</p>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Lihat bulan ini tanpa membuka aplikasi.</h3>
+        <p>Cukup letakkan di Layar Utama, dan bulan berjalan selalu terlihat. Angka yang terlihat menjadi alasan untuk terus mencatat.</p>
+        <ul class="feature-list">
+          <li>Widget Layar Utama menampilkan win rate dan total pips bulan ini sekilas (tersedia di paket gratis)</li>
+          <li>Tersedia juga widget Layar Kunci. Ketuk untuk langsung membuka pencatatan</li>
+          <li>Target harian, mingguan, bulanan, dan tahunan: hari yang tercapai ditandai di kalender (target bulanan gratis)</li>
+          <li>33 lencana pencapaian, terbuka dengan menaati aturan dan mencapai target (Premium)</li>
+        </ul>
+      </div>
+    </div>
+
 </section>
 
 <section class="stat-band">
   <div class="wrap">
     <div class="stat-band-grid reveal">
       <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Bahasa (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
-      <div class="stat-band-item"><span class="num" data-count="175">0</span><span class="lbl">Negara &amp; wilayah yang tersedia</span></div>
+      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">Enkripsi data di perangkat</span></div>
       <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">Dukungan impor riwayat transaksi</span></div>
       <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Catatan transaksi yang dikirim ke cloud</span></div>
     </div>
@@ -441,7 +476,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>Di mana data transaksi saya disimpan?</summary>
-        <div class="faq-a">Catatan transaksi Anda dienkripsi dan hanya disimpan di perangkat Anda (gambar grafik yang dilampirkan disimpan di perangkat tanpa enkripsi). Tidak ada sinkronisasi cloud, dan aplikasi ini berfungsi tanpa koneksi internet.</div>
+        <div class="faq-a">Catatan transaksi Anda dienkripsi dan hanya disimpan di perangkat Anda (gambar grafik yang dilampirkan disimpan di perangkat tanpa enkripsi). Tidak ada sinkronisasi cloud; pencatatan dan analisis berfungsi tanpa koneksi internet. Koneksi hanya diperlukan untuk membeli atau memulihkan Premium.</div>
       </details>
       <details class="faq-item">
         <summary>Bisakah saya menggunakannya dengan broker selain MT4/MT5?</summary>
@@ -462,7 +497,7 @@
 <section class="final-cta">
   <canvas id="ctaChart" aria-hidden="true"></canvas>
   <div class="wrap inner reveal">
-    <h2>Catatan berikutnya menjadi<br>win rate berikutnya.</h2>
+    <h2>Catatan berikutnya menjadi<br>bahan analisis berikutnya.</h2>
     <p>Mulai evaluasi hari ini, dari transaksi Anda berikutnya.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://apps.apple.com/id/app/id6786188634">Unduh gratis di App Store</a>
@@ -482,7 +517,7 @@
           </svg>
           FX Trade Journal
         </div>
-        <p class="foot-tag">Jurnal trading yang berjalan sepenuhnya di ponsel atau tablet Anda. Catat, analisis, dan bangun win rate berikutnya.</p>
+        <p class="foot-tag">Jurnal trading yang berjalan sepenuhnya di ponsel atau tablet Anda. Catat, analisis, dan lihat apa yang ditunjukkan data Anda.</p>
       </div>
       <div class="foot-col">
         <h4>Produk</h4>
@@ -515,6 +550,7 @@
       <a lang="pt" href="index-pt.html">Português</a>
     </nav>
     <div class="foot-legal">
+      MetaTrader, MT4, dan MT5 adalah merek dagang MetaQuotes Software Corp. Aplikasi ini tidak berafiliasi dengan maupun didukung oleh MetaQuotes.<br>
       Fitur analitik aplikasi ini tidak dimaksudkan untuk memberikan saran investasi atau menawarkan produk keuangan tertentu. Buatlah keputusan trading Anda sendiri dengan risiko Anda sendiri.<br>
       © 2026 Daiki Ikebata
     </div>

@@ -17,6 +17,20 @@ async function ensureChartsDir(): Promise<void> {
 
 // documentDirectory はアプリ再インストール・OSアップデートのたびにコンテナIDが変わり無効になるため、
 // DBには相対パス（例: charts/xxx.jpg）のみ保存し、使用時に現在のdocumentDirectoryで解決する。
+/**
+ * DBに保存してよい相対パスの形。
+ *
+ * 以前は「'://' を含まなければ相対パス」とだけ判定していたため、
+ * バックアップJSONに imageUris: ["SQLite/fx_journal_v2.db"] と書くだけで
+ * documentDirectory 配下の任意ファイルに到達できた（'..' すら不要）。
+ * そのトレードを削除すると稼働中の暗号化DBが消える。
+ */
+const SAFE_RELATIVE_CHART = /^charts\/[A-Za-z0-9_.-]{1,128}$/;
+
+export function isSafeChartPath(uri: string): boolean {
+  return typeof uri === 'string' && SAFE_RELATIVE_CHART.test(uri);
+}
+
 export function resolveImageUri(uri: string): string {
   if (!uri) return uri;
   if (uri.includes('://')) return uri; // 旧形式（絶対パス）はそのまま扱う。移行はDB側マイグレーションで実施
@@ -53,6 +67,10 @@ export async function saveTradeImages(tempUris: string[], tradeId: string): Prom
 
 export async function deleteTradeImages(imageUris: string[]): Promise<void> {
   for (const uri of imageUris) {
+    // 相対パスは charts/ 配下のみ許可する。旧形式の絶対パスは
+    // documentDirectory 配下であることだけを条件に、従来どおり扱う。
+    const isLegacyAbsolute = uri.includes('://');
+    if (!isLegacyAbsolute && !isSafeChartPath(uri)) continue;
     const resolved = resolveImageUri(uri);
     if (!documentDirectory || !resolved.startsWith(documentDirectory)) continue;
     await deleteAsync(resolved, { idempotent: true });

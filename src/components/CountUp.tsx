@@ -13,6 +13,12 @@ const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 interface Props {
   value: number;
   decimals?: number;
+  /**
+   * 末尾の .0 を落とす。勝率やpipsは formatWinRate / formatPips が
+   * 「67%」「66.7%」のように整数なら小数を出さない書式なので、
+   * カウントアップ表示もそれに揃えないと同じ値が画面ごとに違って見える。
+   */
+  trimZeros?: boolean;
   prefix?: string;
   suffix?: string;
   showSign?: boolean;
@@ -23,6 +29,7 @@ interface Props {
 export default function CountUp({
   value,
   decimals = 0,
+  trimZeros = false,
   prefix = '',
   suffix = '',
   showSign = false,
@@ -40,7 +47,8 @@ export default function CountUp({
 
   const animatedProps = useAnimatedProps(() => {
     const n = decimals > 0 ? sv.value : Math.round(sv.value);
-    const rounded = decimals > 0 ? n.toFixed(decimals) : n.toString();
+    let rounded = decimals > 0 ? n.toFixed(decimals) : n.toString();
+    if (decimals > 0 && trimZeros) rounded = rounded.replace(/\.0+$/, '');
     const sign = showSign && n > 0 ? '+' : '';
     return {
       text: `${prefix}${sign}${rounded}${suffix}`,

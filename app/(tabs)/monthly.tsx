@@ -8,6 +8,7 @@ import MonthSelector from '../../src/components/MonthSelector';
 import { calcMoneyStats, calcStats, calcDailyCumulativePips, calcRatingDistribution, calcMonthlyBreakdown } from '../../src/utils/statsCalc';
 import { getRecordStreak } from '../../src/db/queries';
 import { useSettingsStore } from '../../src/store/settingsStore';
+import { evaluatePeriod, ruleFollowedDays } from '../../src/utils/goals';
 import { generateInsights, type Insight } from '../../src/utils/insights';
 import PremiumGate from '../../src/components/PremiumGate';
 import ShareModal from '../../src/components/ShareModal';
@@ -17,9 +18,10 @@ import { useIsTablet, useContentWidth } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
 import type { Trade } from '../../src/types';
 import { t, tArr, lang } from '../../src/i18n';
+import { formatWinRate, formatPips } from '../../src/utils/formatStats';
 import { Ionicons } from '@expo/vector-icons';
 import { formatPF } from '../../src/utils/calendarMetrics';
-import { formatMoney, moneySuffix } from '../../src/utils/formatMoney';
+import { formatMoney } from '../../src/utils/formatMoney';
 
 type Period = 'monthly' | 'yearly';
 
@@ -45,6 +47,13 @@ export default function MonthlyScreen() {
   const styles = useMemo(() => makeStyles(C, isTablet), [C, isTablet]);
   const { trades, currentMonth, setCurrentMonth, loadTradesByMonth } = useTradeStore();
   const { settings } = useSettingsStore();
+  const tradeRules = useSettingsStore(st => st.tradeRules);
+  // カレンダーの印と同じ判定を使い、月次タブとカレンダーで結論がずれないようにする
+  const ruleDays = useMemo(() => ruleFollowedDays(trades, tradeRules), [trades, tradeRules]);
+  const monthGoals = useMemo(
+    () => evaluatePeriod('month', trades, settings, tradeRules),
+    [trades, settings, tradeRules]
+  );
   const isPremium = usePurchaseStore(s => s.isPremium);
   const [period, setPeriod] = useState<Period>('monthly');
   const [activeTab, setActiveTab] = useState<SubTab>('performance');
@@ -131,14 +140,16 @@ export default function MonthlyScreen() {
         isPremium={isPremium}
       />
 
-      {(settings.monthlyPipsGoal > 0 || settings.monthlyWinRateGoal > 0) && (
+      {(settings.monthlyPipsGoal > 0 || settings.monthlyWinRateGoal > 0 ||
+        (settings.monthlyPLGoal > 0 && money.covered > 0) ||
+        (settings.monthlyRuleDaysGoal > 0 && tradeRules.length > 0)) && (
         <View style={styles.goalBar}>
           {settings.monthlyPipsGoal > 0 && (
             <GoalGauge
               label={t('pips_goal')}
               current={stats.totalPips}
               goal={settings.monthlyPipsGoal}
-              unit="pips"
+              format={(n, withSign) => `${formatPips(n, withSign)} pips`}
             />
           )}
           {settings.monthlyWinRateGoal > 0 && (
@@ -146,7 +157,7 @@ export default function MonthlyScreen() {
               label={t('win_rate_goal')}
               current={stats.winRate}
               goal={settings.monthlyWinRateGoal}
-              unit="%"
+              format={n => formatWinRate(n)}
             />
           )}
           {/* 金額目標。損益が記録されているトレードだけが母数になるため、
@@ -156,8 +167,23 @@ export default function MonthlyScreen() {
               label={t('pl_goal')}
               current={money.totalPL}
               goal={settings.monthlyPLGoal}
-              unit={moneySuffix()}
+              format={(n, withSign) => formatMoney(n, withSign)}
             />
+          )}
+          {/* ルール遵守日数。カレンダーの印と同じ判定を使う。 */}
+          {settings.monthlyRuleDaysGoal > 0 && tradeRules.length > 0 && (
+            <GoalGauge
+              label={t('goal_rule_days')}
+              current={ruleDays}
+              goal={settings.monthlyRuleDaysGoal}
+              format={n => String(n)}
+            />
+          )}
+          {monthGoals.applicable && monthGoals.allAchieved && (
+            <View style={styles.goalDone}>
+              <Ionicons name="checkmark-circle" size={16} color={C.win} />
+              <Text style={[styles.goalDoneText, { color: C.win }]}>{t('goal_month_achieved')}</Text>
+            </View>
           )}
         </View>
       )}
@@ -202,7 +228,7 @@ export default function MonthlyScreen() {
                 </View>
                 <View style={styles.winRateBox}>
                   <Text style={styles.winRateLabel}>{t('win_rate')}</Text>
-                  <Text style={styles.winRateValue}>{stats.winRate}%</Text>
+                  <Text style={styles.winRateValue}>{formatWinRate(stats.winRate)}</Text>
                   <ProgressBar value={stats.winRate} color={C.primary} />
                 </View>
                 {pieData.length > 0 && (
@@ -259,7 +285,7 @@ export default function MonthlyScreen() {
                   <TableRow label={t('wins')} value={`${stats.wins}${t('times_unit')}`} color={C.win} />
                   <TableRow label={t('losses')} value={`${stats.losses}${t('times_unit')}`} color={C.loss} />
                   <TableRow label={t('evens')} value={`${stats.evens}${t('times_unit')}`} color={C.even} />
-                  <TableRow label={t('win_rate')} value={`${stats.winRate}%`} color={C.primary} />
+                  <TableRow label={t('win_rate')} value={`${formatWinRate(stats.winRate)}`} color={C.primary} />
                   <TableRow label={t('profit_factor_long')} value={formatPF(stats.profitFactor)} />
                   <TableRow label={t('total_pips')} value={`${stats.totalPips > 0 ? '+' : ''}${stats.totalPips}`} color={stats.totalPips >= 0 ? C.win : C.loss} />
                   <TableRow
@@ -384,7 +410,12 @@ function ProgressBar({ value, color }: { value: number; color: string }) {
   );
 }
 
-function GoalGauge({ label, current, goal, unit }: { label: string; current: number; goal: number; unit: string }) {
+// 表示は他画面と同じフォーマッタを通す。ここだけ自前で組み立てていたため、
+// 勝率に「+」が付き（+66.7%）、金額に桁区切りが無かった（+50000円）。
+function GoalGauge({ label, current, goal, format }: {
+  label: string; current: number; goal: number;
+  format: (n: number, withSign: boolean) => string;
+}) {
   const C = useTheme();
   const pct = goal > 0 ? Math.min(Math.max(current / goal * 100, 0), 100) : 0;
   const achieved = current >= goal;
@@ -394,7 +425,7 @@ function GoalGauge({ label, current, goal, unit }: { label: string; current: num
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 }}>
         <Text style={{ fontSize: 11, color: C.text2 }}>{label}</Text>
         <Text style={{ fontSize: 13, fontWeight: '700', flex: 1, color }}>
-          {current > 0 ? '+' : ''}{current}{unit} / {goal}{unit}
+          {format(current, true)} / {format(goal, false)}
         </Text>
         {achieved && <Ionicons name="checkmark-circle" size={16} color={C.win} />}
       </View>
@@ -435,7 +466,7 @@ function WeeklyTab({ trades, yearMonth }: { trades: import('../../src/types').Tr
 
   const weekStats = getCalendarWeekRanges(yearMonth).map(w => {
     const weekTrades = trades.filter(tr => {
-      const d = new Date(tr.date).getDate();
+      const d = new Date(`${tr.date.slice(0, 10)}T00:00:00`).getDate();
       return d >= w.start && d <= w.end;
     });
     const wins = weekTrades.filter(tr => tr.result === 'win').length;
@@ -461,7 +492,7 @@ function WeeklyTab({ trades, yearMonth }: { trades: import('../../src/types').Tr
             <WeekStat label={t('trade_count_times')} value={String(w.weekTrades)} />
             <WeekStat label={t('wins')}   value={String(w.wins)}  color={C.win} />
             <WeekStat label={t('losses')} value={String(w.losses)} color={C.loss} />
-            <WeekStat label={t('win_rate')} value={`${w.winRate}%`}  color={C.primary} />
+            <WeekStat label={t('win_rate')} value={`${formatWinRate(w.winRate)}`}  color={C.primary} />
           </View>
           <View style={styles.weekProgBg}>
             <View style={[styles.weekProgFill, { width: `${w.winRate}%` }]} />
@@ -583,6 +614,12 @@ function YearlyView() {
 
   const monthlyData = calcMonthlyBreakdown(trades, String(year));
   const yearStats = calcStats(trades);
+  const yearSettings = useSettingsStore(st => st.settings);
+  const yearRules = useSettingsStore(st => st.tradeRules);
+  const yearGoals = useMemo(
+    () => evaluatePeriod('year', trades, yearSettings, yearRules),
+    [trades, yearSettings, yearRules]
+  );
   const maxPips = Math.max(...monthlyData.map(m => Math.abs(m.totalPips)), 1);
 
   return (
@@ -592,6 +629,9 @@ function YearlyView() {
           <Ionicons name="chevron-back" size={22} color={C.primary} />
         </TouchableOpacity>
         <Text style={styles.yearLabel}>{year}{t('year_unit')}</Text>
+        {yearGoals.applicable && yearGoals.allAchieved && (
+          <Ionicons name="checkmark-circle" size={18} color={C.win} style={{ marginLeft: 6 }} />
+        )}
         <TouchableOpacity onPress={() => setYear(y => y + 1)} style={styles.yearBtn}>
           <Ionicons name="chevron-forward" size={22} color={C.primary} />
         </TouchableOpacity>
@@ -606,9 +646,9 @@ function YearlyView() {
             <Text style={styles.summaryTitle}>{year}{t('year_unit')} {t('yearly_summary')}</Text>
             <View style={styles.row4}>
               <YearStat label={t('total_trades')} value={`${yearStats.totalTrades}${t('times_unit')}`} />
-              <YearStat label={t('win_rate')} value={`${yearStats.winRate}%`} color={C.primary} />
-              <YearStat label={t('total_pips')} value={`${yearStats.totalPips > 0 ? '+' : ''}${yearStats.totalPips}`} color={yearStats.totalPips >= 0 ? C.win : C.loss} />
-              <YearStat label={t('pf')} value={formatPF(yearStats.profitFactor)} color={yearStats.profitFactor >= 1 ? C.win : C.loss} />
+              <YearStat label={t('win_rate')} value={`${formatWinRate(yearStats.winRate)}`} color={C.primary} />
+              <YearStat label={t('total_pips')} value={formatPips(yearStats.totalPips)} color={yearStats.totalPips > 0 ? C.win : yearStats.totalPips < 0 ? C.loss : C.even} />
+              <YearStat label={t('pf')} value={formatPF(yearStats.profitFactor, yearStats.totalTrades > 0)} color={yearStats.profitFactor >= 1 ? C.win : C.loss} />
             </View>
           </View>
 
@@ -645,7 +685,7 @@ function YearlyView() {
                 <Text style={[styles.cellY, { flex: 1.2 }]}>{tArr('month_labels')[i]}</Text>
                 <Text style={[styles.cellY, m.totalTrades === 0 && { color: C.text3 }]}>{m.totalTrades > 0 ? m.totalTrades : '-'}</Text>
                 <Text style={[styles.cellY, { color: m.totalTrades > 0 ? (m.winRate >= 50 ? C.win : C.loss) : C.text3 }]}>
-                  {m.totalTrades > 0 ? `${m.winRate}%` : '-'}
+                  {m.totalTrades > 0 ? `${formatWinRate(m.winRate)}` : '-'}
                 </Text>
                 <Text style={[styles.cellY, { color: m.totalTrades > 0 ? (m.totalPips >= 0 ? C.win : C.loss) : C.text3 }]}>
                   {m.totalTrades > 0 ? `${m.totalPips > 0 ? '+' : ''}${m.totalPips}` : '-'}
@@ -745,6 +785,8 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     ratingFill: { height: '100%', borderRadius: 4 },
     ratingCount: { fontSize: 13, color: C.text2, width: 28, textAlign: 'right' },
 
+    goalDone: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 },
+    goalDoneText: { fontSize: 11, fontWeight: '800' },
     goalBar: { paddingHorizontal: 12, paddingVertical: 8, backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border, gap: 8 },
 
     // 期間トグル

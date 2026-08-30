@@ -256,15 +256,42 @@ function safeNumber(raw: string | null | undefined, fallback: number): number {
   return Number.isFinite(n) ? n : fallback;
 }
 
+/** 期間別目標の設定キー。AppSettings のフィールド名 → settings テーブルのキー */
+export const GOAL_SETTING_KEYS = {
+  dailyRuleGoal:       'daily_rule_goal',
+  dailyPipsGoal:       'daily_pips_goal',
+  dailyPLGoal:         'daily_pl_goal',
+  weeklyRuleDaysGoal:  'weekly_rule_days_goal',
+  weeklyPipsGoal:      'weekly_pips_goal',
+  weeklyPLGoal:        'weekly_pl_goal',
+  monthlyRuleDaysGoal: 'monthly_rule_days_goal',
+  monthlyPipsGoal:     'monthly_pips_goal',
+  monthlyWinRateGoal:  'monthly_win_rate_goal',
+  monthlyPLGoal:       'monthly_pl_goal',
+  yearlyRuleDaysGoal:  'yearly_rule_days_goal',
+  yearlyPipsGoal:      'yearly_pips_goal',
+  yearlyPLGoal:        'yearly_pl_goal',
+  yearlyWinRateGoal:   'yearly_win_rate_goal',
+} as const;
+
+export type GoalField = keyof typeof GOAL_SETTING_KEYS;
+
 export async function getAllSettings(): Promise<AppSettings> {
-  const [lotUnit, defaultLotSize, defaultStyle, accountBalance, defaultRiskPct, monthlyPipsGoal, monthlyWinRateGoal, monthlyPLGoal, themeMode, appLockEnabled] =
-    await Promise.all([
+  const goalFields = Object.keys(GOAL_SETTING_KEYS) as GoalField[];
+  const [
+    [lotUnit, defaultLotSize, defaultStyle, accountBalance, defaultRiskPct, themeMode, appLockEnabled],
+    goalValues,
+  ] = await Promise.all([
+    Promise.all([
       getSetting('lot_unit'), getSetting('default_lot_size'), getSetting('default_style'),
       getSetting('account_balance'), getSetting('default_risk_pct'),
-      getSetting('monthly_pips_goal'), getSetting('monthly_win_rate_goal'),
-      getSetting('monthly_pl_goal'),
       getSetting('theme_mode'), getSetting('app_lock_enabled'),
-    ]);
+    ]),
+    Promise.all(goalFields.map(f => getSetting(GOAL_SETTING_KEYS[f]))),
+  ]);
+  const goals = Object.fromEntries(
+    goalFields.map((f, i) => [f, f === 'dailyRuleGoal' ? goalValues[i] === '1' : safeNumber(goalValues[i], 0)])
+  ) as Pick<AppSettings, GoalField>;
   return {
     lotUnit: safeNumber(lotUnit, 10000),
     // 既定ロット。クイック入力の初期値に使う（0以下は不正として既定へ）
@@ -272,9 +299,7 @@ export async function getAllSettings(): Promise<AppSettings> {
     defaultStyle: defaultStyle ?? 'day',
     accountBalance: safeNumber(accountBalance, 0),
     defaultRiskPct: safeNumber(defaultRiskPct, 2),
-    monthlyPipsGoal: safeNumber(monthlyPipsGoal, 0),
-    monthlyWinRateGoal: safeNumber(monthlyWinRateGoal, 0),
-    monthlyPLGoal: safeNumber(monthlyPLGoal, 0),
+    ...goals,
     themeMode: (themeMode as AppSettings['themeMode']) ?? 'dark',
     appLockEnabled: appLockEnabled === '1',
   };

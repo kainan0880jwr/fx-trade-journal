@@ -74,7 +74,7 @@
       "name": "İşlem verilerim nerede saklanır?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "İşlem kayıtlarınız şifrelenir ve yalnızca cihazınızda saklanır (eklenen grafik görselleri cihazda şifrelenmeden saklanır). Bulut senkronizasyonu yoktur ve uygulama internet bağlantısı olmadan da çalışır."
+        "text": "İşlem kayıtlarınız şifrelenir ve yalnızca cihazınızda saklanır (eklenen grafik görselleri cihazda şifrelenmeden saklanır). Bulut senkronizasyonu yoktur; kayıt ve analiz internet bağlantısı olmadan çalışır. Bağlantı yalnızca Premium satın alırken veya geri yüklerken gerekir."
       }
     },
     {
@@ -147,16 +147,23 @@
   </div>
 </header>
 
+<div class="region-notice">
+  <div class="wrap">
+    <p>Not: Bu uygulama şu anda AB, AEA ve Birleşik Krallık App Store'unda sunulmamaktadır.</p>
+  </div>
+</div>
+
 <div class="ticker" aria-hidden="true" title="Örnek döviz çifti gösterimi (gerçek piyasa verisi değildir)">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
+  <p class="ticker-note">Örnek pariteler. Canlı piyasa verisi değildir.</p>
 <p class="sr-only">Desteklenen paritler (kısmi liste): USD/JPY, EUR/JPY, GBP/JPY, EUR/USD, AUD/JPY, USD/CHF, NZD/USD, GBP/USD ve daha fazlası</p>
 
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">İşlem günlüğü ve analiz uygulaması</p>
-      <h1>Bir işlem,<br>bir sonraki <em>kazanma oranını</em> inşa eder.</h1>
+      <h1>Bir işlem,<br>bir sonraki <em>analiz verisi</em> olur.</h1>
       <p class="hero-sub">
         Sadece bir işlemi kaydedin; kazanma oranınız, pip'leriniz ve kâr faktörünüz otomatik olarak görünsün.
         Sonuçlarınız, sizi motive eden paylaşılabilir bir karta dönüşür. Her şey telefonunuzda veya tabletinizde çalışır.
@@ -196,6 +203,7 @@
           </div>
           <div class="stat-strip">
             <div><span class="k">İşlem</span><span class="v">9</span></div>
+          <p class="sample-note">Örnek ekran. Gerçek işlem sonuçları değildir.</p>
             <div><span class="k">Kazanma oranı</span><span class="v text-accent">78%</span></div>
             <div><span class="k">Pip</span><span class="v text-profit">+138</span></div>
             <div><span class="k">KF</span><span class="v">7.75</span></div>
@@ -264,6 +272,7 @@
           </div>
           <div class="bw-row">
             <div class="bw-card"><span class="bwk">En iyi (USD/JPY)</span><span class="bwv">+32.5 pips</span></div>
+          <p class="sample-note">Örnek ekran. Gerçek işlem sonuçları değildir.</p>
             <div class="bw-card worst"><span class="bwk">En kötü (GBP/JPY)</span><span class="bwv">−12 pips</span></div>
           </div>
         </div>
@@ -290,6 +299,7 @@
               <span>KF 7.75</span><span>+138 pips</span><span>9 işlem</span>
             </div>
             <div class="watermark-chip">FX Trade Journal</div>
+            <p class="sample-note">Örnek ekran. Gerçek işlem sonuçları değildir.</p>
           </div>
         </div>
       </div>
@@ -355,7 +365,7 @@
           </div>
           <div class="sec-note">Ayarlar'dan istediğiniz zaman açıp kapatın (varsayılan olarak kapalı)</div>
           <div class="sec-note">SQLCipher ile veritabanı şifreleme (yalnızca cihaza özel anahtar, iCloud'a dahil değil)</div>
-          <div class="sec-note">Bulut senkronizasyonu yok, internet bağlantısı gerekmez</div>
+          <div class="sec-note">Bulut senkronizasyonu yok. Kayıt ve analiz çevrimdışı çalışır</div>
           <div class="sec-note">Hesap gerekmez, işlem kayıtlarınız cihazınızdan asla çıkmaz</div>
           <div class="sec-note sec-note-disclosure">* Sorunları tespit etmek ve kaliteyi artırmak için, sizi veya işlemlerinizi tanımlamayan çökme raporları ve anonim kullanım istatistikleri gönderiyoruz. Ayrıntılar için <a href="privacy-policy-tr.html">gizlilik politikamıza</a> bakın.</div>
         </div>
@@ -371,13 +381,38 @@
       </div>
     </div>
   </div>
+    <div class="feature-row reveal" id="widget">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Widget’lar</span>
+          <div class="stat-strip">
+            <div><span class="k">Kazanma oranı</span><span class="v text-accent">62%</span></div>
+            <div><span class="k">Toplam pip</span><span class="v text-profit">+84</span></div>
+            <div><span class="k">PF</span><span class="v">1.50</span></div>
+            <div><span class="k">Seri</span><span class="v">12 gün</span></div>
+          </div>
+          <p class="sample-note">Örnek ekran. Gerçek işlem sonuçları değildir.</p>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Uygulamayı açmadan bu ayı görün.</h3>
+        <p>Ana ekrana koyun, içinde bulunduğunuz ay hep görüşte kalsın. Görünen sayılar, kaydetmeyi sürdürmek için bir neden olur.</p>
+        <ul class="feature-list">
+          <li>Ana Ekran widget’ı bu ayın kazanma oranını ve toplam pip’ini tek bakışta gösterir (ücretsiz planda da var)</li>
+          <li>Kilit Ekranı widget’ları da var. Dokununca doğrudan kayıt ekranı açılır</li>
+          <li>Günlük, haftalık, aylık ve yıllık hedefler: tutturulan günler takvimde işaretlenir (aylık hedefler ücretsiz)</li>
+          <li>33 başarı rozeti, kurallara uyarak ve hedefleri tutturarak açılır (Premium)</li>
+        </ul>
+      </div>
+    </div>
+
 </section>
 
 <section class="stat-band">
   <div class="wrap">
     <div class="stat-band-grid reveal">
       <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Dil (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
-      <div class="stat-band-item"><span class="num" data-count="175">0</span><span class="lbl">Kullanılabilen ülke ve bölge</span></div>
+      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">Cihazdaki verilerin şifrelenmesi</span></div>
       <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">İşlem geçmişi içe aktarma desteği</span></div>
       <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Buluta gönderilen işlem kaydı</span></div>
     </div>
@@ -441,7 +476,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>İşlem verilerim nerede saklanır?</summary>
-        <div class="faq-a">İşlem kayıtlarınız şifrelenir ve yalnızca cihazınızda saklanır (eklenen grafik görselleri cihazda şifrelenmeden saklanır). Bulut senkronizasyonu yoktur ve uygulama internet bağlantısı olmadan da çalışır.</div>
+        <div class="faq-a">İşlem kayıtlarınız şifrelenir ve yalnızca cihazınızda saklanır (eklenen grafik görselleri cihazda şifrelenmeden saklanır). Bulut senkronizasyonu yoktur; kayıt ve analiz internet bağlantısı olmadan çalışır. Bağlantı yalnızca Premium satın alırken veya geri yüklerken gerekir.</div>
       </details>
       <details class="faq-item">
         <summary>MT4/MT5 dışında bir brokerle kullanabilir miyim?</summary>
@@ -462,7 +497,7 @@
 <section class="final-cta">
   <canvas id="ctaChart" aria-hidden="true"></canvas>
   <div class="wrap inner reveal">
-    <h2>Bir sonraki kaydınız,<br>bir sonraki kazanma oranınız olur.</h2>
+    <h2>Bir sonraki kaydınız,<br>bir sonraki analiz veriniz olur.</h2>
     <p>İncelemeye bugün, bir sonraki işleminizle başlayın.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://apps.apple.com/tr/app/id6786188634">App Store'dan ücretsiz indirin</a>
@@ -482,7 +517,7 @@
           </svg>
           FX Trade Journal
         </div>
-        <p class="foot-tag">Tamamen telefonunuzda veya tabletinizde çalışan bir işlem günlüğü. Kaydedin, analiz edin ve bir sonraki kazanma oranınızı inşa edin.</p>
+        <p class="foot-tag">Tamamen telefonunuzda veya tabletinizde çalışan bir işlem günlüğü. Kaydedin, analiz edin ve verilerinizin ne gösterdiğini görün.</p>
       </div>
       <div class="foot-col">
         <h4>Ürün</h4>
@@ -515,6 +550,7 @@
       <a lang="pt" href="index-pt.html">Português</a>
     </nav>
     <div class="foot-legal">
+      MetaTrader, MT4 ve MT5, MetaQuotes Software Corp. şirketinin ticari markalarıdır. Bu uygulamanın MetaQuotes ile bağlantısı yoktur ve onun onayını taşımaz.<br>
       Bu uygulamanın analiz özellikleri, yatırım tavsiyesi vermek veya belirli bir finansal ürünü teşvik etmek amacıyla tasarlanmamıştır. Lütfen işlem kararlarınızı kendi sorumluluğunuzda alın.<br>
       © 2026 Daiki Ikebata
     </div>

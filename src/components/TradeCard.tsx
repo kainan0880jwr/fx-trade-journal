@@ -6,6 +6,8 @@ import { useTheme } from '../theme/useTheme';
 import { useIsTablet } from '../hooks/useIsTablet';
 import type { ThemeColors } from '../theme/colors';
 import { t } from '../i18n';
+import { formatMoney } from '../utils/formatMoney';
+import { formatPips } from '../utils/formatStats';
 import type { Trade } from '../types';
 
 interface Props {
@@ -26,11 +28,8 @@ function TradeCard({ trade }: Props) {
   const resultColor = isWin ? C.win : isLoss ? C.loss : C.even;
   const resultBg    = isWin ? C.winBg : isLoss ? C.lossBg : C.evenBg;
   const resultLabel = isWin ? t('win_short') : isLoss ? t('loss_short') : t('even_short');
-  const pipsSign  = (trade.pips ?? 0) > 0 ? '+' : '';
-  const pipsText  = trade.pips != null ? `${pipsSign}${trade.pips}` : '-';
-  const plText    = trade.profitLoss != null
-    ? `${trade.profitLoss > 0 ? '+' : ''}${trade.profitLoss.toLocaleString()}¥`
-    : null;
+  const pipsText  = formatPips(trade.pips);
+  const plText    = trade.profitLoss != null ? formatMoney(trade.profitLoss) : null;
   const dateStr   = trade.date.slice(0, 10);
   const timeStr   = trade.date.length >= 16 ? trade.date.slice(11, 16) : '';
   const dirColor  = trade.direction === 'buy' ? C.buy : C.sell;

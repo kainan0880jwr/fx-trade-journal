@@ -426,3 +426,25 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
 /* ============ Region unavailability notice ============ */
 .region-notice{background:var(--surface-2); border-bottom:1px solid var(--line-strong); padding:.9em 0; text-align:center;}
 .region-notice p{color:var(--ink-dim); font-size:.86rem; max-width:70ch; margin:0 auto;}
+
+/* モック画面の数値がサンプルであることを示す注記。
+   為替ティッカーには「実際の相場データではありません」と断りながら、
+   成績数値には注記が無い状態は優良誤認と受け取られうるため、
+   数値のすぐ隣に可視のラベルとして置く（title属性では読まれない）。 */
+.sample-note {
+  margin: 8px 0 0;
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--ink-faint);
+  opacity: .9;
+}
+
+/* 為替ティッカーの注記。以前は title 属性（ツールチップ）に置かれており、
+   通常の閲覧でもスクリーンリーダーでも読まれなかった。 */
+.ticker-note {
+  margin: 6px 0 0;
+  font-size: 10px;
+  text-align: center;
+  color: var(--ink-faint);
+}

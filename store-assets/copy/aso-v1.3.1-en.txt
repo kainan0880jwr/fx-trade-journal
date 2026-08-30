@@ -1,0 +1,145 @@
+================================================================
+ ASO Content Sheet (English / en-US locale) — FX Trade Journal v1.3.1
+ STATUS (2026-08-30): Not yet entered. The live en description is not
+ in the repo, so this sheet was written from scratch as "what it
+ should say". Compare against the live text before replacing it.
+================================================================
+
+【What this revision fixes】
+1. Free vs premium mismatch. The actual boundary in the code:
+     Free    = the "Performance" tab in Analysis (incl. by-pair and
+               by-style), monthly win rate / pips / PF / P&L, calendar,
+               MT4/MT5 import, widgets
+     Premium = weekly view, insights, time-of-day & weekday, tag
+               analysis, RR analysis, equity curve, mental tracking,
+               achievement badges, yearly tab, position calculator
+   Getting this wrong in the description is Guideline 2.3.1
+   (inaccurate metadata).
+2. "Works without an internet connection" contradicted purchase and
+   restore, which require network. Now qualified.
+3. "Improve your win rate" was an unsupported outcome promise. Replaced
+   with a description of what the app actually does.
+
+【Field entry gotchas hit before】
+・A run of 16+ identical divider characters (━ etc.) makes App Store
+  Connect reject the field with "invalid character". Use "■ Heading"
+  with no divider lines.
+・Do not append a hashtag list at the end of the description. Same
+  misleading "invalid character" error on save.
+
+================================================================
+★ Name (30 characters max)
+================================================================
+
+FX Trade Journal - Log
+
+================================================================
+★ Subtitle (30 characters max)
+================================================================
+
+Win Rate & Pips, MT4/MT5
+
+================================================================
+★ Keywords (100 characters max, comma-separated, no spaces after commas)
+================================================================
+
+forex,trading journal,trade log,metatrader,mt4,mt5,pips,win rate,csv,scalping,daytrading,swing
+
+================================================================
+★ Promotional Text (170 characters max, no review required, edit anytime)
+================================================================
+
+New: daily, weekly, monthly and yearly goals, plus achievement badges. Days where you meet every goal are marked on the calendar. Home Screen widgets included.
+
+================================================================
+★ Description (4000 characters max)
+================================================================
+
+Make your own trading visible
+
+Whether you are new to forex or have traded for years, a trading journal makes
+visible how you actually trade. FX Trade Journal is a serious trade-tracking app
+for traders who want to learn from their own history, with direct MT4/MT5 trade
+history import.
+
+■ Log
+
+・Log a trade in one tap: pair, result, pips, lot size and P&L
+・Attach chart screenshots to any trade
+・Reflection notes and tags to keep things organised
+・Bulk-import MT4/MT5 trade history CSV
+・Register your own rules and tick them off as you log
+
+■ Analyse
+
+・Monthly dashboard calculates win rate, pips, profit factor and P&L automatically
+・Breakdowns by currency pair and by trading style
+・Calendar view colour-codes each day by result
+・Daily streak tracking keeps the habit alive
+
+■ Set goals
+
+・Set goals for each day, week, month and year
+・Choose from rule adherence, pips, P&L or win rate
+・Days where you meet every goal you set are outlined on the calendar
+・Days with no trades are never marked, so a day off is not counted as a win
+
+■ Home Screen widgets
+
+・See this month's win rate and total pips at a glance
+・The medium size also shows profit factor, trade count and your logging streak
+・Lock Screen widgets included
+・Tap any widget to jump straight to the trade entry screen
+
+■ Share
+
+・Turn your monthly results into a clean, shareable stats card
+・PRO removes the watermark
+
+■ Who it is for
+
+・Beginners who want to build a logging habit
+・MT4/MT5 users tired of tracking trades in a spreadsheet
+・Anyone who wants a proper monthly read on win rate and pips
+・Traders who like sharing their results
+・Anyone who wants to keep a trading journal entirely on their phone
+
+■ FX Trade Journal PRO
+
+A monthly or yearly subscription unlocks the premium tier:
+
+・Weekly view and in-depth insight analysis
+・Time-of-day and weekday breakdowns
+・Tag analysis, risk-reward analysis, equity curve and mental tracking
+・Achievement badges (33 of them)
+・Yearly tab and position size calculator
+・Stats cards without the watermark
+・All future premium features
+
+The price is shown on the purchase confirmation screen.
+Subscriptions can be cancelled at any time from your device's Settings app.
+
+■ About your data
+
+・All data is stored locally on your device
+・Logging and analysis work offline. An internet connection is required only to
+  purchase or restore PRO
+・Trade records are stored encrypted
+・Built privacy-first
+
+■ Supported brokers and platforms
+
+Any broker that lets you export trade history as MT4/MT5-format CSV works with
+the app. Manual entry is fully supported for every broker and platform.
+
+■ Please note
+
+This app is a tool for recording and reviewing your own trades. It does not
+provide investment advice or solicit any specific financial product. Past
+records do not guarantee future results. Investment decisions are your own
+responsibility.
+
+■ Feedback and support
+
+Reach us any time from Settings -> Contact inside the app.
+We would love to hear which feature you want next.

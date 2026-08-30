@@ -14,6 +14,7 @@ import {
 } from '../utils/calendarMetrics';
 import { SCard, CalendarLegend } from './CalendarShared';
 import { formatMoney } from '../utils/formatMoney';
+import { formatPips } from '../utils/formatStats';
 
 const { Calendar: RNCalendar, LocaleConfig } = require('react-native-calendars');
 
@@ -217,12 +218,12 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
                     return (
                       <View style={s.daySum}>
                         <Text style={s.daySumLabel}>{t('cal_daily_total')}</Text>
-                        <Text style={[s.daySumPips, { color: ds.pips >= 0 ? C.win : C.loss }]}>
-                          {ds.pips > 0 ? '+' : ''}{ds.pips} pips
+                        <Text style={[s.daySumPips, { color: ds.pips > 0 ? C.win : ds.pips < 0 ? C.loss : C.even }]}>
+                          {formatPips(ds.pips)} pips
                         </Text>
-                        {ds.pl !== 0 && (
-                          <Text style={[s.daySumPL, { color: ds.pl >= 0 ? C.win : C.loss }]}>
-                            {ds.pl >= 0 ? '+' : ''}{Math.round(ds.pl).toLocaleString()}¥
+                        {ds.plCount > 0 && (
+                          <Text style={[s.daySumPL, { color: ds.pl > 0 ? C.win : ds.pl < 0 ? C.loss : C.even }]}>
+                            {formatMoney(ds.pl)}
                           </Text>
                         )}
                       </View>
