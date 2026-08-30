@@ -11,6 +11,7 @@ import type { ThemeColors } from '../../src/theme/colors';
 import { t, lang } from '../../src/i18n';
 import { formatWinRate, formatPips } from '../../src/utils/formatStats';
 import { useSettingsStore } from '../../src/store/settingsStore';
+import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { buildGoalMarks, weekStart } from '../../src/utils/goals';
 import {
   METRICS, CalMetric, buildDayMap, getDayValue, getDayBg, getDayValueColor,
@@ -36,9 +37,14 @@ export default function CalendarScreen() {
   // 目標を達成した日・週。目標が未設定なら空になり、印は一切出ない。
   const settings = useSettingsStore(st => st.settings);
   const tradeRules = useSettingsStore(st => st.tradeRules);
+  // 目標マークは有料機能。月次のpips・勝率・損益目標は無料のままだが、
+  // 日/週の達成マークは今回の新機能なのでプレミアムに含める。
+  const isPremium = usePurchaseStore(st => st.isPremium);
   const goalMarks = useMemo(
-    () => buildGoalMarks(trades, settings, tradeRules),
-    [trades, settings, tradeRules]
+    () => (isPremium
+      ? buildGoalMarks(trades, settings, tradeRules)
+      : { days: new Set<string>(), weeks: new Set<string>() }),
+    [trades, settings, tradeRules, isPremium]
   );
 
   const totalPips = useMemo(() =>

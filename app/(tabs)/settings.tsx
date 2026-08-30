@@ -49,6 +49,8 @@ export default function SettingsScreen() {
     loadAll,
   } = useSettingsStore();
   const isPremium = usePurchaseStore(s => s.isPremium);
+  const restore = usePurchaseStore(s => s.restore);
+  const [restoring, setRestoring] = useState(false);
 
   const [lotInput, setLotInput] = useState(String(settings.lotUnit));
   const [defaultLotInput, setDefaultLotInput] = useState(String(settings.defaultLotSize));
@@ -478,6 +480,21 @@ export default function SettingsScreen() {
     }
   };
 
+  // 購入の復元はペイウォールにしか無く、再インストールした課金済みユーザーは
+  // ロック機能を踏んでペイウォールに到達しないと復元できなかった。
+  const handleRestore = async () => {
+    if (restoring) return;
+    setRestoring(true);
+    try {
+      const result = await restore();
+      if (result === 'success') Alert.alert(t('restore_success_title'), t('restore_success_msg'));
+      else if (result === 'no_entitlement') Alert.alert(t('restore_fail_title'), t('restore_fail_msg'));
+      else Alert.alert(t('restore_error_title'), t('restore_error_msg'));
+    } finally {
+      setRestoring(false);
+    }
+  };
+
   const THEME_OPTIONS: { mode: ThemeMode; label: string; icon: string }[] = [
     { mode: 'dark',   label: t('settings_theme_dark'),   icon: 'moon-outline' },
     { mode: 'light',  label: t('settings_theme_light'),  icon: 'sunny-outline' },
@@ -487,6 +504,40 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView contentContainerStyle={styles.scroll}>
+
+        {/* PRO への導線。これが無いと「課金したい」と思ったユーザーが
+            自分から購読画面へ行けず、ロック機能を偶然踏むまで辿り着けない。 */}
+        {!isPremium ? (
+          <TouchableOpacity
+            style={styles.proBanner}
+            onPress={() => router.push({ pathname: '/paywall', params: { source: 'settings' } })}
+            accessibilityRole="button"
+            accessibilityLabel={t('settings_upgrade')}
+          >
+            <Ionicons name="star" size={22} color={C.yellow} />
+            <View style={{ flex: 1, marginLeft: 12 }}>
+              <Text style={styles.proBannerTitle}>{t('settings_upgrade')}</Text>
+              <Text style={styles.proBannerSub}>{t('settings_upgrade_sub')}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color={C.text3} />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.proBanner}>
+            <Ionicons name="checkmark-circle" size={22} color={C.win} />
+            <View style={{ flex: 1, marginLeft: 12 }}>
+              <Text style={styles.proBannerTitle}>{t('settings_premium_active')}</Text>
+            </View>
+            <TouchableOpacity
+              onPress={handleRestore}
+              disabled={restoring}
+              accessibilityRole="button"
+              accessibilityLabel={t('premium_restore')}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Text style={styles.proRestore}>{t('premium_restore')}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* 実績バッジ */}
         <TouchableOpacity style={styles.exportBtn} onPress={() => router.push('/badges')}>
@@ -985,6 +1036,14 @@ function makeStyles(C: ThemeColors) {
       backgroundColor: C.card, borderRadius: 14, padding: 16,
       borderWidth: 1.5, borderColor: C.yellow + '60', marginBottom: 8,
     },
+    proBanner: {
+      flexDirection: 'row', alignItems: 'center',
+      backgroundColor: C.card, borderRadius: 14, padding: 16,
+      borderWidth: 1.5, borderColor: C.yellow + '70', marginBottom: 12,
+    },
+    proBannerTitle: { fontSize: 15, fontWeight: '800', color: C.text },
+    proBannerSub: { fontSize: 12, color: C.text2, marginTop: 2 },
+    proRestore: { fontSize: 12, fontWeight: '700', color: C.primary },
     calcShortcut: {
       flexDirection: 'row', alignItems: 'center',
       backgroundColor: C.card, borderRadius: 14, padding: 16,
