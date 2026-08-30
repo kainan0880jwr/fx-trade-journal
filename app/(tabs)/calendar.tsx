@@ -10,6 +10,8 @@ import { useIsTablet } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t, lang } from '../../src/i18n';
 import { formatWinRate, formatPips } from '../../src/utils/formatStats';
+import { useSettingsStore } from '../../src/store/settingsStore';
+import { buildGoalMarks, weekStart } from '../../src/utils/goals';
 import {
   METRICS, CalMetric, buildDayMap, getDayValue, getDayBg, getDayValueColor,
   calcMonthPF, formatPF, buildDayCellA11yLabel,
@@ -30,6 +32,14 @@ export default function CalendarScreen() {
   useEffect(() => { loadTradesByMonth(currentMonth); }, [currentMonth]);
 
   const dayMap = useMemo(() => buildDayMap(trades), [trades]);
+
+  // 目標を達成した日・週。目標が未設定なら空になり、印は一切出ない。
+  const settings = useSettingsStore(st => st.settings);
+  const tradeRules = useSettingsStore(st => st.tradeRules);
+  const goalMarks = useMemo(
+    () => buildGoalMarks(trades, settings, tradeRules),
+    [trades, settings, tradeRules]
+  );
 
   const totalPips = useMemo(() =>
     Math.round(trades.reduce((sum, tr) => sum + (tr.pips ?? 0), 0) * 10) / 10, [trades]);
@@ -114,6 +124,24 @@ export default function CalendarScreen() {
           ))}
         </ScrollView>
 
+        {/* 印の意味が分からないと機能しないので、印が出るときだけ凡例を出す */}
+        {(goalMarks.days.size > 0 || goalMarks.weeks.size > 0) && (
+          <View style={s.legendRow}>
+            {goalMarks.days.size > 0 && (
+              <View style={s.legendItem}>
+                <View style={[s.legendBox, { borderColor: C.win }]} />
+                <Text style={s.legendLabel}>{t('goal_legend_day')}</Text>
+              </View>
+            )}
+            {goalMarks.weeks.size > 0 && (
+              <View style={s.legendItem}>
+                <View style={[s.legendBar, { backgroundColor: C.win }]} />
+                <Text style={s.legendLabel}>{t('goal_legend_week')}</Text>
+              </View>
+            )}
+          </View>
+        )}
+
         <View style={s.calWrap}>
           <Calendar
             current={currentMonth + '-01'}
@@ -133,6 +161,12 @@ export default function CalendarScreen() {
               if (ds) bg = getDayBg(ds, metric, C);
               if (isSelected) bg = C.primary + '45';
 
+              // 目標を達成した日は枠で示す。選択は背景色で分かるので、
+              // 枠は達成を優先して表示する（両方見えるようにする）。
+              const goalAchieved = goalMarks.days.has(date.dateString);
+              const weekAchieved = goalMarks.weeks.has(weekStart(date.dateString));
+              const borderColor = goalAchieved ? C.win : isSelected ? C.primary : 'transparent';
+
               const a11yLabel = buildDayCellA11yLabel(date.dateString, ds);
 
               return (
@@ -141,7 +175,7 @@ export default function CalendarScreen() {
                   onPress={() => setSelectedDay(isSelected ? null : date.dateString)}
                   style={[
                     s.dayCell,
-                    { backgroundColor: bg, borderColor: isSelected ? C.primary : 'transparent' },
+                    { backgroundColor: bg, borderColor },
                   ]}
                   accessibilityLabel={a11yLabel}
                   accessibilityRole="button"
@@ -159,6 +193,9 @@ export default function CalendarScreen() {
                       {getDayValue(ds, metric)}
                     </Text>
                   ) : null}
+                  {/* 週目標の達成は日セルの下端に細いバーで出す。日セルの中は
+                      既に数値で埋まっているので、内側に記号を足さない。 */}
+                  {weekAchieved && <View style={[s.weekMark, { backgroundColor: C.win }]} />}
                 </TouchableOpacity>
               );
             }}
@@ -254,6 +291,12 @@ function makeStyles(C: ThemeColors, isTablet = false) {
       alignItems: 'center', justifyContent: 'flex-start',
       paddingTop: 4, borderWidth: 1.5, margin: 1,
     },
+    legendRow: { flexDirection: 'row', gap: 16, paddingHorizontal: 16, paddingBottom: 8, alignItems: 'center' },
+    legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+    legendBox: { width: 12, height: 12, borderRadius: 3, borderWidth: 1.5 },
+    legendBar: { width: 12, height: 2, borderRadius: 1 },
+    legendLabel: { fontSize: 10, color: C.text2 },
+    weekMark: { position: 'absolute', left: 6, right: 6, bottom: 2, height: 2, borderRadius: 1, opacity: 0.8 },
     dayNum: { fontSize: isTablet ? 14 : 12, fontWeight: '700', lineHeight: isTablet ? 20 : 16 },
     dayValue: { fontSize: isTablet ? 11 : 9, fontWeight: '800', lineHeight: isTablet ? 15 : 13, width: '100%', textAlign: 'center', paddingHorizontal: 2 },
     dayDetail: {
