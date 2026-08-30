@@ -43,7 +43,6 @@ export default function SettingsScreen() {
     pairs, settings, entryTags, tradeRules,
     addPair, removePair, updateLotUnit, updateDefaultLotSize,
     updateAccountBalance, updateDefaultRiskPct,
-    updateMonthlyPipsGoal, updateMonthlyWinRateGoal, updateMonthlyPLGoal,
     addEntryTag, removeEntryTag,
     addTradeRule, removeTradeRule,
     updateThemeMode, updateAppLockEnabled,
@@ -57,15 +56,6 @@ export default function SettingsScreen() {
     settings.accountBalance > 0 ? String(settings.accountBalance) : ''
   );
   const [riskInput, setRiskInput] = useState(String(settings.defaultRiskPct));
-  const [pipsGoalInput, setPipsGoalInput] = useState(
-    settings.monthlyPipsGoal > 0 ? String(settings.monthlyPipsGoal) : ''
-  );
-  const [winRateGoalInput, setWinRateGoalInput] = useState(
-    settings.monthlyWinRateGoal > 0 ? String(settings.monthlyWinRateGoal) : ''
-  );
-  const [plGoalInput, setPlGoalInput] = useState(
-    settings.monthlyPLGoal > 0 ? String(settings.monthlyPLGoal) : ''
-  );
   const [showAddPair, setShowAddPair] = useState(false);
   const [showAddTag, setShowAddTag] = useState(false);
   const [showAddRule, setShowAddRule] = useState(false);
@@ -153,17 +143,6 @@ export default function SettingsScreen() {
       // `|| 2` だとリスク0%を設定できず、空欄も黙って2%になっていた
       await updateDefaultRiskPct(parseDecimal(riskInput) ?? 2);
       Alert.alert(t('saved'));
-    } catch {
-      Alert.alert(t('error'), t('settings_save_error_msg'));
-    }
-  };
-
-  const handleSaveGoals = async () => {
-    try {
-      await updateMonthlyPipsGoal(parseDecimal(pipsGoalInput) ?? 0);
-      await updateMonthlyWinRateGoal(parseDecimal(winRateGoalInput) ?? 0);
-      await updateMonthlyPLGoal(parseDecimal(plGoalInput) ?? 0);
-      Alert.alert(t('settings_goals_saved'));
     } catch {
       Alert.alert(t('error'), t('settings_save_error_msg'));
     }
@@ -783,28 +762,19 @@ export default function SettingsScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* 月次目標 */}
+        {/* 目標。日・週・月・年で14項目あり、設定画面に並べると探せなくなるため
+            専用画面に分けている。 */}
         <SectionTitle>{t('settings_goals')}</SectionTitle>
-        <View style={styles.card}>
-          <Text style={styles.cardLabel}>{t('settings_pips_goal')}</Text>
-          <TextInput style={[styles.input, { marginBottom: 12 }]}
-            value={pipsGoalInput} onChangeText={setPipsGoalInput}
-            keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}100`} placeholderTextColor={C.text3} />
-          <Text style={styles.cardLabel}>{t('settings_winrate_goal')}</Text>
-          <TextInput style={[styles.input, { marginBottom: 12 }]}
-            value={winRateGoalInput} onChangeText={setWinRateGoalInput}
-            keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}60`} placeholderTextColor={C.text3} />
-          {/* 金額目標。pips目標だけではロットの違いを吸収できず、
-              「結局いくら稼ぎたいのか」が表せなかった。 */}
-          <Text style={styles.cardLabel}>{t('settings_pl_goal')}</Text>
-          <TextInput style={[styles.input, { marginBottom: 14 }]}
-            value={plGoalInput} onChangeText={setPlGoalInput}
-            keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}50000`} placeholderTextColor={C.text3}
-            accessibilityLabel={t('settings_pl_goal')} />
-          <TouchableOpacity style={styles.primaryBtn} onPress={handleSaveGoals}>
-            <Text style={styles.primaryBtnText}>{t('save')}</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.calcShortcut}
+          onPress={() => router.push('/goals')}
+          accessibilityRole="button"
+          accessibilityLabel={t('settings_goals_link')}
+        >
+          <Ionicons name="flag-outline" size={20} color={C.primary} />
+          <Text style={[styles.calcTitle, { flex: 1, marginLeft: 12 }]}>{t('settings_goals_link')}</Text>
+          <Ionicons name="chevron-forward" size={18} color={C.text3} />
+        </TouchableOpacity>
 
         {/* ロット設定 */}
         <SectionTitle>{t('settings_lot_unit')}</SectionTitle>

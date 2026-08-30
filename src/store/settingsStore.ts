@@ -3,8 +3,9 @@ import type { CurrencyPair, AppSettings } from '../types';
 import {
   getCurrencyPairs, upsertCurrencyPair, deleteCurrencyPair,
   getAllSettings, setSetting, getEntryTags, saveEntryTags,
-  getTradeRules, saveTradeRules,
+  getTradeRules, saveTradeRules, GOAL_SETTING_KEYS,
 } from '../db/queries';
+import type { GoalField } from '../db/queries';
 
 interface SettingsStore {
   pairs: CurrencyPair[];
@@ -26,6 +27,7 @@ interface SettingsStore {
   updateMonthlyPipsGoal: (value: number) => Promise<void>;
   updateMonthlyWinRateGoal: (value: number) => Promise<void>;
   updateMonthlyPLGoal: (value: number) => Promise<void>;
+  updateGoal: (field: GoalField, value: number | boolean) => Promise<void>;
   addEntryTag: (tag: string) => Promise<void>;
   removeEntryTag: (tag: string) => Promise<void>;
   addTradeRule: (rule: string) => Promise<void>;
@@ -38,6 +40,12 @@ const defaultSettings: AppSettings = {
   lotUnit: 10000, defaultLotSize: 0.1, defaultStyle: 'day',
   accountBalance: 0, defaultRiskPct: 2,
   monthlyPipsGoal: 0, monthlyWinRateGoal: 0, monthlyPLGoal: 0,
+  // 期間別目標はすべて未設定で開始する。日単位のpips・損益は、
+  // 未達の日に無理なトレードを誘発しうるため既定でオフ。
+  dailyRuleGoal: false, dailyPipsGoal: 0, dailyPLGoal: 0,
+  weeklyRuleDaysGoal: 0, weeklyPipsGoal: 0, weeklyPLGoal: 0,
+  monthlyRuleDaysGoal: 0,
+  yearlyRuleDaysGoal: 0, yearlyPipsGoal: 0, yearlyPLGoal: 0, yearlyWinRateGoal: 0,
   themeMode: 'dark',
   appLockEnabled: false,
 };
@@ -164,6 +172,20 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     try {
       await setSetting('monthly_pl_goal', String(value));
       set(state => ({ settings: { ...state.settings, monthlyPLGoal: value }, error: null }));
+    } catch (e) {
+      set({ error: e instanceof Error ? e.message : '設定の保存に失敗しました' });
+      throw e;
+    }
+  },
+
+  /**
+   * 期間別目標をまとめて扱う汎用setter。
+   * 目標は14項目あり、1つずつsetterを書くと同じ定型が14回並ぶ。
+   */
+  updateGoal: async (field, value) => {
+    try {
+      await setSetting(GOAL_SETTING_KEYS[field], typeof value === 'boolean' ? (value ? '1' : '0') : String(value));
+      set(state => ({ settings: { ...state.settings, [field]: value } as AppSettings, error: null }));
     } catch (e) {
       set({ error: e instanceof Error ? e.message : '設定の保存に失敗しました' });
       throw e;

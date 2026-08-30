@@ -8,6 +8,7 @@ import MonthSelector from '../../src/components/MonthSelector';
 import { calcMoneyStats, calcStats, calcDailyCumulativePips, calcRatingDistribution, calcMonthlyBreakdown } from '../../src/utils/statsCalc';
 import { getRecordStreak } from '../../src/db/queries';
 import { useSettingsStore } from '../../src/store/settingsStore';
+import { evaluatePeriod, ruleFollowedDays } from '../../src/utils/goals';
 import { generateInsights, type Insight } from '../../src/utils/insights';
 import PremiumGate from '../../src/components/PremiumGate';
 import ShareModal from '../../src/components/ShareModal';
@@ -46,6 +47,13 @@ export default function MonthlyScreen() {
   const styles = useMemo(() => makeStyles(C, isTablet), [C, isTablet]);
   const { trades, currentMonth, setCurrentMonth, loadTradesByMonth } = useTradeStore();
   const { settings } = useSettingsStore();
+  const tradeRules = useSettingsStore(st => st.tradeRules);
+  // カレンダーの印と同じ判定を使い、月次タブとカレンダーで結論がずれないようにする
+  const ruleDays = useMemo(() => ruleFollowedDays(trades, tradeRules), [trades, tradeRules]);
+  const monthGoals = useMemo(
+    () => evaluatePeriod('month', trades, settings, tradeRules),
+    [trades, settings, tradeRules]
+  );
   const isPremium = usePurchaseStore(s => s.isPremium);
   const [period, setPeriod] = useState<Period>('monthly');
   const [activeTab, setActiveTab] = useState<SubTab>('performance');
@@ -133,7 +141,8 @@ export default function MonthlyScreen() {
       />
 
       {(settings.monthlyPipsGoal > 0 || settings.monthlyWinRateGoal > 0 ||
-        (settings.monthlyPLGoal > 0 && money.covered > 0)) && (
+        (settings.monthlyPLGoal > 0 && money.covered > 0) ||
+        (settings.monthlyRuleDaysGoal > 0 && tradeRules.length > 0)) && (
         <View style={styles.goalBar}>
           {settings.monthlyPipsGoal > 0 && (
             <GoalGauge
@@ -160,6 +169,21 @@ export default function MonthlyScreen() {
               goal={settings.monthlyPLGoal}
               format={(n, withSign) => formatMoney(n, withSign)}
             />
+          )}
+          {/* ルール遵守日数。カレンダーの印と同じ判定を使う。 */}
+          {settings.monthlyRuleDaysGoal > 0 && tradeRules.length > 0 && (
+            <GoalGauge
+              label={t('goal_rule_days')}
+              current={ruleDays}
+              goal={settings.monthlyRuleDaysGoal}
+              format={n => String(n)}
+            />
+          )}
+          {monthGoals.applicable && monthGoals.allAchieved && (
+            <View style={styles.goalDone}>
+              <Ionicons name="checkmark-circle" size={16} color={C.win} />
+              <Text style={[styles.goalDoneText, { color: C.win }]}>{t('goal_month_achieved')}</Text>
+            </View>
           )}
         </View>
       )}
@@ -590,6 +614,12 @@ function YearlyView() {
 
   const monthlyData = calcMonthlyBreakdown(trades, String(year));
   const yearStats = calcStats(trades);
+  const yearSettings = useSettingsStore(st => st.settings);
+  const yearRules = useSettingsStore(st => st.tradeRules);
+  const yearGoals = useMemo(
+    () => evaluatePeriod('year', trades, yearSettings, yearRules),
+    [trades, yearSettings, yearRules]
+  );
   const maxPips = Math.max(...monthlyData.map(m => Math.abs(m.totalPips)), 1);
 
   return (
@@ -599,6 +629,9 @@ function YearlyView() {
           <Ionicons name="chevron-back" size={22} color={C.primary} />
         </TouchableOpacity>
         <Text style={styles.yearLabel}>{year}{t('year_unit')}</Text>
+        {yearGoals.applicable && yearGoals.allAchieved && (
+          <Ionicons name="checkmark-circle" size={18} color={C.win} style={{ marginLeft: 6 }} />
+        )}
         <TouchableOpacity onPress={() => setYear(y => y + 1)} style={styles.yearBtn}>
           <Ionicons name="chevron-forward" size={22} color={C.primary} />
         </TouchableOpacity>
@@ -752,6 +785,8 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     ratingFill: { height: '100%', borderRadius: 4 },
     ratingCount: { fontSize: 13, color: C.text2, width: 28, textAlign: 'right' },
 
+    goalDone: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 },
+    goalDoneText: { fontSize: 11, fontWeight: '800' },
     goalBar: { paddingHorizontal: 12, paddingVertical: 8, backgroundColor: C.card, borderBottomWidth: 1, borderBottomColor: C.border, gap: 8 },
 
     // 期間トグル
