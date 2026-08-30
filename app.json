@@ -125,12 +125,7 @@
       "url": "https://u.expo.dev/8a7d7dbf-6b86-4ed9-bf69-54d253c4251d",
       "enabled": true,
       "checkAutomatically": "ON_LOAD",
-      "fallbackToCacheTimeout": 3000,
-      "codeSigningCertificate": "./certs/certificate.pem",
-      "codeSigningMetadata": {
-        "keyid": "main",
-        "alg": "rsa-v1_5-sha256"
-      }
+      "fallbackToCacheTimeout": 3000
     },
     "extra": {
       "router": {},
