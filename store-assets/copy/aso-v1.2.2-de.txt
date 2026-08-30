@@ -56,8 +56,7 @@ MT4/MT5-CSV-Import, Gewinnrate & Pips automatisch berechnet, teilbare Monatskart
 Verwandle deine Trading-Historie in echten Fortschritt
 
 Ob du gerade erst mit Forex anfängst oder schon seit Jahren tradest - ein
-Handelstagebuch zu führen ist einer der schnellsten Wege, deine
-Gewinnrate zu verbessern. FX Trade Journal ist eine ernsthafte
+Handelstagebuch macht sichtbar, wie du tatsächlich tradest. FX Trade Journal ist eine ernsthafte
 Trade-Tracking-App für Trader, die wirklich aus ihrer Historie lernen
 wollen - inklusive direktem MT4/MT5-Handelsverlauf-Import.
 
@@ -71,7 +70,7 @@ wollen - inklusive direktem MT4/MT5-Handelsverlauf-Import.
 ■ Analysieren
 
 ・Monats-Dashboard berechnet automatisch Gewinnrate, Pips, Profitfaktor und G/V
-・Wöchentliche, paarbezogene und tageszeitbezogene Performance-Auswertungen
+・Auswertung nach Währungspaar und Handelsstil
 ・Tägliches Streak-Tracking hält deine Erfassungs-Gewohnheit am Leben
 
 ■ Teilen
@@ -91,7 +90,9 @@ wollen - inklusive direktem MT4/MT5-Handelsverlauf-Import.
 
 Ein monatliches oder jährliches Abo schaltet die Premium-Stufe frei:
 
-・Wöchentliche und tiefgehende Insight-Analysen
+・Wochenansicht und vertiefende Insight-Analysen
+・Auswertung nach Tageszeit und Wochentag
+・Tag-Analyse, CRV-Analyse, Kapitalkurve und Mental-Tracking
 ・Statistik-Karten ohne Wasserzeichen
 ・Premium-exklusive Detailstatistiken
 ・Alle zukünftigen Premium-Funktionen
@@ -102,7 +103,7 @@ Abos können jederzeit über die Einstellungen-App deines Geräts gekündigt wer
 ■ Zu deinen Daten
 
 ・Alle Daten werden lokal auf deinem Gerät gespeichert
-・Keine Cloud-Synchronisierung nötig, keine Internetverbindung zur Nutzung erforderlich
+・Keine Cloud-Synchronisierung; Erfassen und Auswerten funktionieren offline (eine Internetverbindung wird nur zum Kauf oder zur Wiederherstellung von PRO benötigt)
 ・Mit Privacy-first-Design entwickelt
 
 ■ Unterstützte Broker/Plattformen

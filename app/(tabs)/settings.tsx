@@ -16,7 +16,7 @@ import { useTradeStore } from '../../src/store/tradeStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { generateId } from '../../src/utils/statsCalc';
 import { getAllTrades, getSetting, setSetting } from '../../src/db/queries';
-import { exportBackup, importBackup, hasPreImportSnapshot, restorePreImportSnapshot } from '../../src/utils/backup';
+import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot } from '../../src/utils/backup';
 import { importMT4CSV } from '../../src/utils/mt4Import';
 import {
   isNotificationsAvailable, requestNotificationPermission,
@@ -43,13 +43,14 @@ export default function SettingsScreen() {
     pairs, settings, entryTags, tradeRules,
     addPair, removePair, updateLotUnit, updateDefaultLotSize,
     updateAccountBalance, updateDefaultRiskPct,
-    updateMonthlyPipsGoal, updateMonthlyWinRateGoal, updateMonthlyPLGoal,
     addEntryTag, removeEntryTag,
     addTradeRule, removeTradeRule,
     updateThemeMode, updateAppLockEnabled,
     loadAll,
   } = useSettingsStore();
   const isPremium = usePurchaseStore(s => s.isPremium);
+  const restore = usePurchaseStore(s => s.restore);
+  const [restoring, setRestoring] = useState(false);
 
   const [lotInput, setLotInput] = useState(String(settings.lotUnit));
   const [defaultLotInput, setDefaultLotInput] = useState(String(settings.defaultLotSize));
@@ -57,15 +58,6 @@ export default function SettingsScreen() {
     settings.accountBalance > 0 ? String(settings.accountBalance) : ''
   );
   const [riskInput, setRiskInput] = useState(String(settings.defaultRiskPct));
-  const [pipsGoalInput, setPipsGoalInput] = useState(
-    settings.monthlyPipsGoal > 0 ? String(settings.monthlyPipsGoal) : ''
-  );
-  const [winRateGoalInput, setWinRateGoalInput] = useState(
-    settings.monthlyWinRateGoal > 0 ? String(settings.monthlyWinRateGoal) : ''
-  );
-  const [plGoalInput, setPlGoalInput] = useState(
-    settings.monthlyPLGoal > 0 ? String(settings.monthlyPLGoal) : ''
-  );
   const [showAddPair, setShowAddPair] = useState(false);
   const [showAddTag, setShowAddTag] = useState(false);
   const [showAddRule, setShowAddRule] = useState(false);
@@ -75,10 +67,12 @@ export default function SettingsScreen() {
   const [newTag, setNewTag] = useState('');
   const [newRule, setNewRule] = useState('');
   const [backupLoading, setBackupLoading] = useState(false);
-  const [hasSnapshot, setHasSnapshot] = useState(false);
+  // 「いつの時点に戻るのか」を提示できるよう、有無ではなく日時を持つ
+  const [snapshotAt, setSnapshotAt] = useState<string | null>(null);
+  const hasSnapshot = snapshotAt != null;
 
   useEffect(() => {
-    hasPreImportSnapshot().then(setHasSnapshot);
+    getPreImportSnapshot().then(snap => setSnapshotAt(snap?.exportedAt ?? null));
   }, []);
   const [mt4Loading, setMt4Loading] = useState(false);
   const [notifEnabled, setNotifEnabled] = useState(false);
@@ -156,17 +150,6 @@ export default function SettingsScreen() {
     }
   };
 
-  const handleSaveGoals = async () => {
-    try {
-      await updateMonthlyPipsGoal(parseDecimal(pipsGoalInput) ?? 0);
-      await updateMonthlyWinRateGoal(parseDecimal(winRateGoalInput) ?? 0);
-      await updateMonthlyPLGoal(parseDecimal(plGoalInput) ?? 0);
-      Alert.alert(t('settings_goals_saved'));
-    } catch {
-      Alert.alert(t('error'), t('settings_save_error_msg'));
-    }
-  };
-
   const handleExportBackup = async () => {
     setBackupLoading(true);
     try {
@@ -198,7 +181,7 @@ export default function SettingsScreen() {
                 // 巻き戻る**。必ず読み直す。
                 await loadAll();
                 Alert.alert(t('saved'), t('backup_import_success').replace('{n}', String(count)));
-                setHasSnapshot(true);
+                setSnapshotAt(new Date().toISOString());
               }
             } catch (e) {
               const msg = e instanceof Error && e.message === 'empty_backup'
@@ -215,9 +198,15 @@ export default function SettingsScreen() {
   };
 
   const handleRestoreSnapshot = () => {
+    // どの時点に戻るのかを必ず示す。示さないと「今日までの記録が消える」
+    // ことに気づけないまま実行されてしまう。
+    const when = snapshotAt ? new Date(snapshotAt).toLocaleString() : '';
+    const body = when
+      ? `${t('backup_restore_confirm')}\n\n${t('backup_restore_snapshot_date').replace('{date}', when)}`
+      : t('backup_restore_confirm');
     Alert.alert(
       t('backup_restore_snapshot'),
-      t('backup_restore_confirm'),
+      body,
       [
         { text: t('cancel'), style: 'cancel' },
         {
@@ -227,6 +216,7 @@ export default function SettingsScreen() {
             setBackupLoading(true);
             try {
               const count = await restorePreImportSnapshot();
+              setSnapshotAt(null);  // 復元でスナップショットは消えるのでボタンも消す
               Alert.alert(t('saved'), t('backup_restore_success').replace('{n}', String(count)));
             } catch {
               Alert.alert(t('error'), t('backup_restore_error'));
@@ -490,6 +480,21 @@ export default function SettingsScreen() {
     }
   };
 
+  // 購入の復元はペイウォールにしか無く、再インストールした課金済みユーザーは
+  // ロック機能を踏んでペイウォールに到達しないと復元できなかった。
+  const handleRestore = async () => {
+    if (restoring) return;
+    setRestoring(true);
+    try {
+      const result = await restore();
+      if (result === 'success') Alert.alert(t('restore_success_title'), t('restore_success_msg'));
+      else if (result === 'no_entitlement') Alert.alert(t('restore_fail_title'), t('restore_fail_msg'));
+      else Alert.alert(t('restore_error_title'), t('restore_error_msg'));
+    } finally {
+      setRestoring(false);
+    }
+  };
+
   const THEME_OPTIONS: { mode: ThemeMode; label: string; icon: string }[] = [
     { mode: 'dark',   label: t('settings_theme_dark'),   icon: 'moon-outline' },
     { mode: 'light',  label: t('settings_theme_light'),  icon: 'sunny-outline' },
@@ -499,6 +504,40 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView contentContainerStyle={styles.scroll}>
+
+        {/* PRO への導線。これが無いと「課金したい」と思ったユーザーが
+            自分から購読画面へ行けず、ロック機能を偶然踏むまで辿り着けない。 */}
+        {!isPremium ? (
+          <TouchableOpacity
+            style={styles.proBanner}
+            onPress={() => router.push({ pathname: '/paywall', params: { source: 'settings' } })}
+            accessibilityRole="button"
+            accessibilityLabel={t('settings_upgrade')}
+          >
+            <Ionicons name="star" size={22} color={C.yellow} />
+            <View style={{ flex: 1, marginLeft: 12 }}>
+              <Text style={styles.proBannerTitle}>{t('settings_upgrade')}</Text>
+              <Text style={styles.proBannerSub}>{t('settings_upgrade_sub')}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color={C.text3} />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.proBanner}>
+            <Ionicons name="checkmark-circle" size={22} color={C.win} />
+            <View style={{ flex: 1, marginLeft: 12 }}>
+              <Text style={styles.proBannerTitle}>{t('settings_premium_active')}</Text>
+            </View>
+            <TouchableOpacity
+              onPress={handleRestore}
+              disabled={restoring}
+              accessibilityRole="button"
+              accessibilityLabel={t('premium_restore')}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Text style={styles.proRestore}>{t('premium_restore')}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* 実績バッジ */}
         <TouchableOpacity style={styles.exportBtn} onPress={() => router.push('/badges')}>
@@ -774,28 +813,19 @@ export default function SettingsScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* 月次目標 */}
+        {/* 目標。日・週・月・年で14項目あり、設定画面に並べると探せなくなるため
+            専用画面に分けている。 */}
         <SectionTitle>{t('settings_goals')}</SectionTitle>
-        <View style={styles.card}>
-          <Text style={styles.cardLabel}>{t('settings_pips_goal')}</Text>
-          <TextInput style={[styles.input, { marginBottom: 12 }]}
-            value={pipsGoalInput} onChangeText={setPipsGoalInput}
-            keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}100`} placeholderTextColor={C.text3} />
-          <Text style={styles.cardLabel}>{t('settings_winrate_goal')}</Text>
-          <TextInput style={[styles.input, { marginBottom: 12 }]}
-            value={winRateGoalInput} onChangeText={setWinRateGoalInput}
-            keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}60`} placeholderTextColor={C.text3} />
-          {/* 金額目標。pips目標だけではロットの違いを吸収できず、
-              「結局いくら稼ぎたいのか」が表せなかった。 */}
-          <Text style={styles.cardLabel}>{t('settings_pl_goal')}</Text>
-          <TextInput style={[styles.input, { marginBottom: 14 }]}
-            value={plGoalInput} onChangeText={setPlGoalInput}
-            keyboardType="decimal-pad" placeholder={`${t('eg_prefix')}50000`} placeholderTextColor={C.text3}
-            accessibilityLabel={t('settings_pl_goal')} />
-          <TouchableOpacity style={styles.primaryBtn} onPress={handleSaveGoals}>
-            <Text style={styles.primaryBtnText}>{t('save')}</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.calcShortcut}
+          onPress={() => router.push('/goals')}
+          accessibilityRole="button"
+          accessibilityLabel={t('settings_goals_link')}
+        >
+          <Ionicons name="flag-outline" size={20} color={C.primary} />
+          <Text style={[styles.calcTitle, { flex: 1, marginLeft: 12 }]}>{t('settings_goals_link')}</Text>
+          <Ionicons name="chevron-forward" size={18} color={C.text3} />
+        </TouchableOpacity>
 
         {/* ロット設定 */}
         <SectionTitle>{t('settings_lot_unit')}</SectionTitle>
@@ -1006,6 +1036,14 @@ function makeStyles(C: ThemeColors) {
       backgroundColor: C.card, borderRadius: 14, padding: 16,
       borderWidth: 1.5, borderColor: C.yellow + '60', marginBottom: 8,
     },
+    proBanner: {
+      flexDirection: 'row', alignItems: 'center',
+      backgroundColor: C.card, borderRadius: 14, padding: 16,
+      borderWidth: 1.5, borderColor: C.yellow + '70', marginBottom: 12,
+    },
+    proBannerTitle: { fontSize: 15, fontWeight: '800', color: C.text },
+    proBannerSub: { fontSize: 12, color: C.text2, marginTop: 2 },
+    proRestore: { fontSize: 12, fontWeight: '700', color: C.primary },
     calcShortcut: {
       flexDirection: 'row', alignItems: 'center',
       backgroundColor: C.card, borderRadius: 14, padding: 16,

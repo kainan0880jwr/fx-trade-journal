@@ -46,3 +46,10 @@ yarn-error.*
 
 # downloaded build artifacts (.aab/.ipa)
 /build-artifacts
+
+# eas metadata:pull が取得する App Store のスクリーンショット（約27MB）。
+# ASC が正本で、`npx eas-cli metadata:pull --profile production` でいつでも
+# 取り直せる。store.config.json はこのパスを参照するので、metadata:push を
+# 実行する前に必ず pull しておくこと。
+/store/
+store.config.json.bak

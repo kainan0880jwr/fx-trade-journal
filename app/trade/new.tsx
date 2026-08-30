@@ -50,6 +50,50 @@ function calcPlannedRR(dir: Direction, entry: number, sl: number | null, tp: num
   return Math.round((tpPips / slPips) * 100) / 100;
 }
 
+/**
+ * ルール遵守のチェック欄。クイック・詳細の両方で同じものを使う。
+ *
+ * チェックは自動で入れない。守れたかは本人にしか判断できず、
+ * 自動で付けると「守っていないのに守ったことになる」記録が残ってしまう。
+ * 代わりに、いま何件守れているかをその場で返す。判定条件はカレンダーの
+ * 目標マークと同じ（全ルールにチェックがあれば遵守）。
+ */
+function RuleChecklist({ rules, checked, onToggle, C, styles }: {
+  rules: string[];
+  checked: string[];
+  onToggle: (rule: string) => void;
+  C: ThemeColors;
+  styles: any;
+}) {
+  if (rules.length === 0) return null;
+  const done = rules.filter(r => checked.includes(r)).length;
+  const allDone = done === rules.length;
+  return (
+    <>
+      <View style={styles.ruleHeader}>
+        <Label>{t('form_rules')}</Label>
+        <Text style={[styles.ruleCount, { color: allDone ? C.win : C.text3 }]}>
+          {done} / {rules.length}{allDone ? ' \u2713' : ''}
+        </Text>
+      </View>
+      <View style={styles.ruleList}>
+        {rules.map(rule => {
+          const isChecked = checked.includes(rule);
+          return (
+            <TouchableOpacity key={rule} style={styles.ruleRow}
+              onPress={() => onToggle(rule)}
+              accessibilityRole="checkbox" accessibilityState={{ checked: isChecked }}>
+              <Ionicons name={isChecked ? 'checkbox' : 'square-outline'} size={22}
+                color={isChecked ? C.win : C.text3} />
+              <Text style={[styles.ruleLabel, isChecked && { color: C.text }]}>{rule}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    </>
+  );
+}
+
 export default function NewTradeScreen() {
   const C = useTheme();
   const styles = makeStyles(C);
@@ -257,7 +301,10 @@ export default function NewTradeScreen() {
         return (
           pair !== orig.pair || direction !== orig.direction ||
           quickResult !== orig.result ||
-          quickPips !== (orig.pips != null ? String(Math.abs(orig.pips)) : '')
+          quickPips !== (orig.pips != null ? String(Math.abs(orig.pips)) : '') ||
+          quickLot !== String(orig.lotSize) ||
+          quickPL !== (orig.profitLoss != null ? String(Math.abs(orig.profitLoss)) : '') ||
+          JSON.stringify(ruleChecks) !== JSON.stringify(orig.ruleChecks ?? [])
         );
       }
       return (
@@ -390,7 +437,7 @@ export default function NewTradeScreen() {
    */
   const hasFullOnlyInput = () =>
     entryRate.trim() !== '' || exitRate.trim() !== '' || reflection.trim() !== '' ||
-    selectedTags.length > 0 || imageUris.length > 0 || ruleChecks.length > 0 ||
+    selectedTags.length > 0 || imageUris.length > 0 ||
     stopLossStr.trim() !== '' || takeProfitStr.trim() !== '';
 
   const switchMode = (next: InputMode) => {
@@ -423,7 +470,17 @@ export default function NewTradeScreen() {
       const parsedPips = signedQuickPips(quickPips, quickResult);
       const orig = originalTradeRef.current;
       if (isEditMode && orig) {
-        const trade: Trade = { ...orig, pair, direction, pips: parsedPips, result: quickResult };
+        const quickLotNum = parseDecimal(quickLot) ?? orig.lotSize;
+        const trade: Trade = {
+          ...orig, pair, direction, pips: parsedPips, result: quickResult,
+          lotSize: quickLotNum,
+          // 新規記録と同じ組み立てを通す。ここを省くと、勝ち→負けに直しても
+          // 損益が正のまま残り、pipsと符号が食い違ったまま保存される。
+          profitLoss: quickIsYenPair && parsedPips != null
+            ? calcProfitLoss(parsedPips, quickLotNum, settings.lotUnit)
+            : signedByResult(quickPL, quickResult),
+          ruleChecks,
+        };
         await saveEditAndClose(trade);
         return;
       }
@@ -452,7 +509,7 @@ export default function NewTradeScreen() {
         reflection: '', selfRating: 3,
         bookmarked: false,
         mentalFocus: null, mentalCalm: null, mentalFear: null,
-        ruleChecks: [], tfWeekly: '', tfDaily: '', tf4h: '', tf1h: '',
+        ruleChecks, tfWeekly: '', tfDaily: '', tf4h: '', tf1h: '',
         createdAt: now.toISOString(),
       };
       await saveAndClose(trade);
@@ -724,6 +781,18 @@ export default function NewTradeScreen() {
                 </>
               )}
 
+              {/* ルール。クイック保存が ruleChecks を空で固定していたため、
+                  クイックしか使わない人は「ルールを守る」目標を達成できなかった。 */}
+              <RuleChecklist
+                rules={tradeRules}
+                checked={ruleChecks}
+                onToggle={rule => setRuleChecks(prev =>
+                  prev.includes(rule) ? prev.filter(r => r !== rule) : [...prev, rule]
+                )}
+                C={C}
+                styles={styles}
+              />
+
               <TouchableOpacity
                 style={[styles.saveBtn, (!quickResult || saving) && styles.saveBtnDisabled]}
                 onPress={handleQuickSave}
@@ -932,6 +1001,17 @@ export default function NewTradeScreen() {
                     )}
                   </View>
 
+                  {/* ルール */}
+                  <RuleChecklist
+                    rules={tradeRules}
+                    checked={ruleChecks}
+                    onToggle={rule => setRuleChecks(prev =>
+                      prev.includes(rule) ? prev.filter(r => r !== rule) : [...prev, rule]
+                    )}
+                    C={C}
+                    styles={styles}
+                  />
+
                   {/* 反省 */}
                   <Label>{t('form_reflection')}</Label>
                   <TextInput style={[styles.input, styles.textArea]}
@@ -1005,28 +1085,6 @@ export default function NewTradeScreen() {
                     <MentalRow label={t('mental_fear')} value={mentalFear} onChange={setMentalFear} positiveHigh={false} />
                   </View>
 
-                  {/* ルール */}
-                  {tradeRules.length > 0 && (
-                    <>
-                      <Label>{t('form_rules')}</Label>
-                      <View style={styles.ruleList}>
-                        {tradeRules.map(rule => {
-                          const checked = ruleChecks.includes(rule);
-                          return (
-                            <TouchableOpacity key={rule} style={styles.ruleRow}
-                              onPress={() => setRuleChecks(prev =>
-                                prev.includes(rule) ? prev.filter(r => r !== rule) : [...prev, rule]
-                              )}
-                              accessibilityRole="checkbox" accessibilityState={{ checked }}>
-                              <Ionicons name={checked ? 'checkbox' : 'square-outline'} size={22}
-                                color={checked ? C.win : C.text3} />
-                              <Text style={[styles.ruleLabel, checked && { color: C.text }]}>{rule}</Text>
-                            </TouchableOpacity>
-                          );
-                        })}
-                      </View>
-                    </>
-                  )}
                 </>
               )}
 
@@ -1186,6 +1244,8 @@ function makeStyles(C: ThemeColors) {
     saveBtnText: { color: '#FFFFFF', fontSize: 16, fontWeight: '800', letterSpacing: 0.5 },
 
     mentalCard: { backgroundColor: C.card, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: C.border, gap: 12 },
+    ruleHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+    ruleCount: { fontSize: 12, fontWeight: '800' },
     ruleList: { backgroundColor: C.card, borderRadius: 14, paddingHorizontal: 4, borderWidth: 1, borderColor: C.border },
     ruleRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 12, paddingVertical: 13, borderBottomWidth: 1, borderBottomColor: C.border },
     ruleLabel: { fontSize: 14, color: C.text2, flex: 1 },

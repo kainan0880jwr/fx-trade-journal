@@ -74,7 +74,7 @@
       "name": "Dữ liệu giao dịch của tôi được lưu trữ ở đâu?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Nhật ký giao dịch của bạn được mã hóa và chỉ lưu trữ trên thiết bị (ảnh biểu đồ đính kèm được lưu trên thiết bị mà không mã hóa). Không có đồng bộ đám mây, và ứng dụng hoạt động ngay cả khi không có kết nối internet."
+        "text": "Nhật ký giao dịch của bạn được mã hóa và chỉ lưu trữ trên thiết bị (ảnh biểu đồ đính kèm được lưu trên thiết bị mà không mã hóa). Không có đồng bộ đám mây; việc ghi chép và phân tích hoạt động mà không cần kết nối internet. Chỉ cần kết nối khi mua hoặc khôi phục Premium."
       }
     },
     {
@@ -147,16 +147,23 @@
   </div>
 </header>
 
+<div class="region-notice">
+  <div class="wrap">
+    <p>Lưu ý: Ứng dụng hiện không có trên App Store tại EU, EEA hoặc Vương quốc Anh.</p>
+  </div>
+</div>
+
 <div class="ticker" aria-hidden="true" title="Hình minh họa các cặp tiền tệ (không phải dữ liệu thị trường thực)">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
+  <p class="ticker-note">Cặp tiền tệ minh họa. Không phải dữ liệu thị trường thực.</p>
 <p class="sr-only">Các cặp tiền tệ được hỗ trợ (danh sách một phần): USD/JPY, EUR/JPY, GBP/JPY, EUR/USD, AUD/JPY, USD/CHF, NZD/USD, GBP/USD và nhiều cặp khác</p>
 
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">Ứng dụng nhật ký &amp; phân tích giao dịch</p>
-      <h1>Mỗi giao dịch xây nên<br>một <em>tỷ lệ thắng</em> mới.</h1>
+      <h1>Mỗi giao dịch trở thành<br>một <em>dữ liệu phân tích</em> mới.</h1>
       <p class="hero-sub">
         Chỉ cần ghi lại một giao dịch, tỷ lệ thắng, số pip và profit factor sẽ tự động hiển thị.
         Kết quả của bạn trở thành một thẻ chia sẻ giúp bạn luôn giữ động lực. Mọi thứ đều hoạt động trên điện thoại hoặc máy tính bảng.
@@ -196,6 +203,7 @@
           </div>
           <div class="stat-strip">
             <div><span class="k">Giao dịch</span><span class="v">9</span></div>
+          <p class="sample-note">Màn hình mẫu. Không phải kết quả giao dịch thực tế.</p>
             <div><span class="k">Tỷ lệ thắng</span><span class="v text-accent">78%</span></div>
             <div><span class="k">Pips</span><span class="v text-profit">+138</span></div>
             <div><span class="k">PF</span><span class="v">7.75</span></div>
@@ -264,6 +272,7 @@
           </div>
           <div class="bw-row">
             <div class="bw-card"><span class="bwk">Tốt nhất (USD/JPY)</span><span class="bwv">+32.5 pips</span></div>
+          <p class="sample-note">Màn hình mẫu. Không phải kết quả giao dịch thực tế.</p>
             <div class="bw-card worst"><span class="bwk">Tệ nhất (GBP/JPY)</span><span class="bwv">−12 pips</span></div>
           </div>
         </div>
@@ -290,6 +299,7 @@
               <span>PF 7.75</span><span>+138 pips</span><span>9 giao dịch</span>
             </div>
             <div class="watermark-chip">FX Trade Journal</div>
+            <p class="sample-note">Màn hình mẫu. Không phải kết quả giao dịch thực tế.</p>
           </div>
         </div>
       </div>
@@ -355,7 +365,7 @@
           </div>
           <div class="sec-note">Bật/tắt bất cứ lúc nào trong Cài đặt (mặc định tắt)</div>
           <div class="sec-note">Mã hóa cơ sở dữ liệu bằng SQLCipher (khóa chỉ lưu trên thiết bị, không đồng bộ iCloud)</div>
-          <div class="sec-note">Không đồng bộ đám mây, không cần kết nối internet</div>
+          <div class="sec-note">Không đồng bộ đám mây. Ghi chép và phân tích hoạt động ngoại tuyến</div>
           <div class="sec-note">Không cần tài khoản, nhật ký giao dịch của bạn không bao giờ rời khỏi thiết bị</div>
           <div class="sec-note sec-note-disclosure">* Để phát hiện sự cố và cải thiện chất lượng, chúng tôi gửi báo cáo sự cố và thống kê sử dụng ẩn danh, không nhận dạng bạn hay các lệnh của bạn. Xem <a href="privacy-policy-vi.html">chính sách bảo mật</a> để biết chi tiết.</div>
         </div>
@@ -371,13 +381,38 @@
       </div>
     </div>
   </div>
+    <div class="feature-row reveal" id="widget">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Tiện ích</span>
+          <div class="stat-strip">
+            <div><span class="k">Tỷ lệ thắng</span><span class="v text-accent">62%</span></div>
+            <div><span class="k">Tổng pips</span><span class="v text-profit">+84</span></div>
+            <div><span class="k">PF</span><span class="v">1.50</span></div>
+            <div><span class="k">Liên tiếp</span><span class="v">12 ngày</span></div>
+          </div>
+          <p class="sample-note">Màn hình mẫu. Không phải kết quả giao dịch thực tế.</p>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Xem tháng này mà không cần mở ứng dụng.</h3>
+        <p>Đặt lên Màn hình chính, tháng đang chạy luôn nằm trong tầm mắt. Những con số nhìn thấy được chính là lý do để tiếp tục ghi chép.</p>
+        <ul class="feature-list">
+          <li>Tiện ích Màn hình chính hiển thị tỷ lệ thắng và tổng pips tháng này trong nháy mắt (có ở gói miễn phí)</li>
+          <li>Có cả tiện ích Màn hình khóa. Chạm vào là mở thẳng màn hình ghi lệnh</li>
+          <li>Mục tiêu theo ngày, tuần, tháng và năm: những ngày đạt được sẽ được đánh dấu trên lịch (mục tiêu tháng miễn phí)</li>
+          <li>33 huy hiệu thành tích, mở khóa bằng cách tuân thủ nguyên tắc và đạt mục tiêu (Premium)</li>
+        </ul>
+      </div>
+    </div>
+
 </section>
 
 <section class="stat-band">
   <div class="wrap">
     <div class="stat-band-grid reveal">
       <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Ngôn ngữ (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
-      <div class="stat-band-item"><span class="num" data-count="175">0</span><span class="lbl">Quốc gia &amp; khu vực có thể tải</span></div>
+      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">Mã hóa dữ liệu trên thiết bị</span></div>
       <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">Hỗ trợ nhập lịch sử giao dịch</span></div>
       <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Nhật ký giao dịch gửi lên đám mây</span></div>
     </div>
@@ -441,7 +476,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>Dữ liệu giao dịch của tôi được lưu trữ ở đâu?</summary>
-        <div class="faq-a">Nhật ký giao dịch của bạn được mã hóa và chỉ lưu trữ trên thiết bị (ảnh biểu đồ đính kèm được lưu trên thiết bị mà không mã hóa). Không có đồng bộ đám mây, và ứng dụng hoạt động ngay cả khi không có kết nối internet.</div>
+        <div class="faq-a">Nhật ký giao dịch của bạn được mã hóa và chỉ lưu trữ trên thiết bị (ảnh biểu đồ đính kèm được lưu trên thiết bị mà không mã hóa). Không có đồng bộ đám mây; việc ghi chép và phân tích hoạt động mà không cần kết nối internet. Chỉ cần kết nối khi mua hoặc khôi phục Premium.</div>
       </details>
       <details class="faq-item">
         <summary>Tôi có thể sử dụng với sàn giao dịch khác ngoài MT4/MT5 không?</summary>
@@ -462,7 +497,7 @@
 <section class="final-cta">
   <canvas id="ctaChart" aria-hidden="true"></canvas>
   <div class="wrap inner reveal">
-    <h2>Lệnh ghi tiếp theo của bạn<br>sẽ tạo nên tỷ lệ thắng tiếp theo.</h2>
+    <h2>Lệnh ghi tiếp theo của bạn<br>sẽ trở thành dữ liệu phân tích tiếp theo.</h2>
     <p>Hãy bắt đầu nhìn lại ngay hôm nay, với giao dịch tiếp theo của bạn.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://apps.apple.com/vn/app/id6786188634">Tải miễn phí trên App Store</a>
@@ -482,7 +517,7 @@
           </svg>
           FX Trade Journal
         </div>
-        <p class="foot-tag">Một nhật ký giao dịch hoạt động hoàn toàn trên điện thoại hoặc máy tính bảng của bạn. Ghi lại, phân tích và xây nên tỷ lệ thắng tiếp theo.</p>
+        <p class="foot-tag">Một nhật ký giao dịch hoạt động hoàn toàn trên điện thoại hoặc máy tính bảng của bạn. Ghi lại, phân tích và xem dữ liệu của bạn cho thấy điều gì.</p>
       </div>
       <div class="foot-col">
         <h4>Sản phẩm</h4>
@@ -515,6 +550,7 @@
       <a lang="pt" href="index-pt.html">Português</a>
     </nav>
     <div class="foot-legal">
+      MetaTrader, MT4 và MT5 là thương hiệu của MetaQuotes Software Corp. Ứng dụng này không liên kết với và không được MetaQuotes chứng thực.<br>
       Các tính năng phân tích của ứng dụng này không nhằm mục đích cung cấp lời khuyên đầu tư hay mời chào bất kỳ sản phẩm tài chính cụ thể nào. Vui lòng tự đưa ra quyết định giao dịch và tự chịu trách nhiệm với rủi ro của mình.<br>
       © 2026 Daiki Ikebata
     </div>

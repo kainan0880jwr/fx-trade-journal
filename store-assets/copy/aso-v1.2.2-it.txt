@@ -49,8 +49,7 @@ Importa CSV MT4/MT5, calcolo automatico di percentuale di vincita e pips, schede
 📊 Trasforma la tua storia di trading in un miglioramento reale
 
 Che tu sia alle prime armi con il forex o faccia trading da anni,
-tenere un diario di trading è uno dei modi più rapidi per aumentare
-la tua percentuale di vincita. FX Trade Journal è un'app seria per il
+un diario di trading rende visibile come operi davvero. FX Trade Journal è un'app seria per il
 tracciamento delle operazioni, pensata per i trader che vogliono
 davvero imparare dalla propria storia — con importazione diretta
 dello storico MT4/MT5.
@@ -65,7 +64,7 @@ dello storico MT4/MT5.
 ■ Analizza
 
 ・La dashboard mensile calcola automaticamente percentuale di vincita, pips, profit factor e P&L
-・Analisi delle performance settimanali, per coppia e per fascia oraria
+・Analisi per coppia valutaria e per stile di trading
 ・Monitoraggio delle serie giornaliere per mantenere viva l'abitudine di registrazione
 
 ■ Condividi
@@ -85,7 +84,9 @@ dello storico MT4/MT5.
 
 Un abbonamento mensile o annuale sblocca il livello premium:
 
-・Analisi settimanali e insights approfonditi
+・Vista settimanale e analisi di approfondimento
+・Analisi per fascia oraria e giorno della settimana
+・Analisi dei tag, analisi RR, curva del capitale e monitoraggio mentale
 ・Schede condivisibili senza filigrana
 ・Statistiche dettagliate esclusive Premium
 ・Tutte le future funzioni premium
@@ -96,7 +97,7 @@ Gli abbonamenti possono essere annullati in qualsiasi momento dall'app Impostazi
 ■ I tuoi dati
 
 ・Tutti i dati sono salvati localmente sul tuo dispositivo
-・Nessuna sincronizzazione cloud necessaria, nessuna connessione internet richiesta per usare l'app
+・Nessuna sincronizzazione cloud; registrazione e analisi funzionano offline (la connessione serve solo per acquistare o ripristinare PRO)
 ・Progettata con un approccio privacy-first
 
 ■ Broker e piattaforme supportati

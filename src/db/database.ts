@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native';
 import * as SQLite from 'expo-sqlite';
 import * as SecureStore from 'expo-secure-store';
 import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey } from './dbEncryption';
@@ -81,6 +82,32 @@ export async function resetDatabase(): Promise<void> {
 // 注: ネイティブの backupDatabaseAsync（sqlite3_backup、ページ単位の生コピー）は
 // 暗号化状態が異なるDB間の移行には使えない。SQLCipherは平文ページと暗号化ページで
 // フォーマットが異なるため、ページを生コピーすると宛先DBが読み取り不能になる。
+/**
+ * 既存の暗号化DBを、与えられた鍵で実際に開けるか試す。
+ * 開けて trades テーブルがあればそのハンドルを返し、駄目なら必ず閉じて null を返す。
+ * 「フラグが立っているか」ではなく「実際に読めるか」で移行済みを判定するためのもの。
+ */
+async function tryOpenExistingEncrypted(key: string): Promise<SQLite.SQLiteDatabase | null> {
+  let db: SQLite.SQLiteDatabase | null = null;
+  try {
+    db = await SQLite.openDatabaseAsync(NEW_DB_NAME);
+    await db.execAsync(`PRAGMA key = '${key}';`);
+    // 鍵が違う場合、PRAGMA key 自体は通り、最初の読み取りで
+    // "file is not a database" になる。ここで初めて判定できる。
+    const row = await db.getFirstAsync<{ name: string }>(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='trades'"
+    );
+    if (row) return db;
+    // ファイルが無かった場合、openDatabaseAsync は空DBを新規作成している。
+    // 移行対象の判定を狂わせないよう閉じて捨てる。
+    await db.closeAsync().catch(() => {});
+    return null;
+  } catch {
+    if (db) await db.closeAsync().catch(() => {});
+    return null;
+  }
+}
+
 async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
   const migrated = await SecureStore.getItemAsync(MIGRATION_FLAG_KEY);
 
@@ -96,11 +123,33 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
     return db;
   }
 
+  // ここに来たということは移行フラグが 'v1' ではない。だが「フラグが読めなかった」のか
+  // 「本当に未移行なのか」はこの時点では区別できない。フラグと鍵はSecureStoreの別項目で、
+  // 片方だけ読めないことがある（実際、鍵は THIS_DEVICE_ONLY・フラグは既定と設定が違う）。
+  // フラグの有無だけで判断して削除すると、キーチェーンの一時的な読み取り失敗だけで
+  // 全記録が消える。まず「既存の暗号化DBが実際に開けるか」で判断する。
+  const existingKey = await getEncryptionKey();
+  if (existingKey) {
+    const recovered = await tryOpenExistingEncrypted(existingKey);
+    if (recovered) {
+      // 開けた＝移行は完了していた。フラグを立て直して以後は通常経路に乗せる。
+      await SecureStore.setItemAsync(MIGRATION_FLAG_KEY, 'v1').catch(() => {});
+      try {
+        Sentry.captureMessage('db:migration_flag_recovered', { level: 'warning' });
+      } catch { /* 監視できないだけなので握り潰す */ }
+      return recovered;
+    }
+  }
+
   const key = await getOrCreateEncryptionKey();
 
-  // migrated !== 'v1' の場合、fx_journal_v2.db が存在していても正規の移行完了物ではない
-  // （旧バージョンのbackupDatabaseAsyncによる移行失敗で壊れたファイルが残っている可能性がある）。
-  // ATTACHが壊れたファイルにぶつかって失敗しないよう、移行前に必ず削除してから作り直す。
+  // ここまで来て初めて「開けない暗号化DBファイル」と判断できる。
+  // 旧バージョンのbackupDatabaseAsyncによる移行失敗で壊れたファイルが残っている場合で、
+  // ATTACHがそれにぶつかって失敗しないよう、移行前に削除してから作り直す。
+  // 消えるのは復号できないファイルだけだが、痕跡は残す。
+  try {
+    Sentry.captureMessage('db:deleting_unopenable_encrypted_db', { level: 'warning' });
+  } catch { /* 同上 */ }
   await SQLite.deleteDatabaseAsync(NEW_DB_NAME).catch(() => {});
 
   let plainDb: SQLite.SQLiteDatabase | null = null;
@@ -130,18 +179,29 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
 
   // 暗号化DBファイルを先に別コネクションで開くと同一ファイルへの二重ロックが起きうるため、
   // 平文DB側のコネクションからATTACH/sqlcipher_exportで新DBファイルを完成させてから開き直す。
-  const origCount = await plainDb.getFirstAsync<{ c: number }>('SELECT COUNT(*) as c FROM trades');
-  const newDbPath = `${SQLite.defaultDatabaseDirectory.replace(/\/+$/, '')}/${NEW_DB_NAME}`;
-  await plainDb.execAsync(`ATTACH DATABASE '${newDbPath}' AS encrypted KEY '${key}';`);
-  await plainDb.execAsync(`SELECT sqlcipher_export('encrypted');`);
-  await plainDb.execAsync('DETACH DATABASE encrypted;');
-  await plainDb.closeAsync();
+  let origCount: { c: number } | null = null;
+  try {
+    origCount = await plainDb.getFirstAsync<{ c: number }>('SELECT COUNT(*) as c FROM trades');
+    const newDbPath = `${SQLite.defaultDatabaseDirectory.replace(/\/+$/, '')}/${NEW_DB_NAME}`;
+    await plainDb.execAsync(`ATTACH DATABASE '${newDbPath}' AS encrypted KEY '${key}';`);
+    await plainDb.execAsync(`SELECT sqlcipher_export('encrypted');`);
+    await plainDb.execAsync('DETACH DATABASE encrypted;');
+  } finally {
+    // 失敗しても必ず閉じる。開いたまま残すと、以後の deleteDatabaseAsync が
+    // 「開いているDBは削除できない」で失敗し続け、リセットも再試行も効かなくなる。
+    await plainDb.closeAsync().catch(() => {});
+  }
 
   const encDb = await SQLite.openDatabaseAsync(NEW_DB_NAME);
-  await encDb.execAsync(`PRAGMA key = '${key}';`);
-  const newCount = await encDb.getFirstAsync<{ c: number }>('SELECT COUNT(*) as c FROM trades');
-  if ((origCount?.c ?? 0) !== (newCount?.c ?? 0)) {
-    throw new Error('db_migration_verify_failed');
+  try {
+    await encDb.execAsync(`PRAGMA key = '${key}';`);
+    const newCount = await encDb.getFirstAsync<{ c: number }>('SELECT COUNT(*) as c FROM trades');
+    if ((origCount?.c ?? 0) !== (newCount?.c ?? 0)) {
+      throw new Error('db_migration_verify_failed');
+    }
+  } catch (e) {
+    await encDb.closeAsync().catch(() => {});
+    throw e;
   }
 
   await SecureStore.setItemAsync(MIGRATION_FLAG_KEY, 'v1');

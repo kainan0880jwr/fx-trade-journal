@@ -22,24 +22,27 @@ export interface DayStat {
   pl: number;
   winPips: number;
   lossPips: number;
+  /** 損益が記録されている件数。0円の日と未記録の日を区別するために必要 */
+  plCount: number;
 }
 
 export function buildDayMap(trades: Trade[]): Record<string, DayStat> {
   const map: Record<string, DayStat> = {};
   for (const tr of trades) {
     const day = tr.date.slice(0, 10);
-    if (!map[day]) map[day] = { trades: 0, wins: 0, losses: 0, pips: 0, pl: 0, winPips: 0, lossPips: 0 };
+    if (!map[day]) map[day] = { trades: 0, wins: 0, losses: 0, pips: 0, pl: 0, winPips: 0, lossPips: 0, plCount: 0 };
     map[day].trades++;
-    if (tr.result === 'win') {
-      map[day].wins++;
-      map[day].winPips += tr.pips ?? 0;
-    }
-    if (tr.result === 'loss') {
-      map[day].losses++;
-      map[day].lossPips += tr.pips ?? 0;
+    if (tr.result === 'win') map[day].wins++;
+    if (tr.result === 'loss') map[day].losses++;
+    // 総利益・総損失は pips の符号で分ける（calcStats と同じ定義）。
+    // 勝敗ラベルで分けると、引き分け扱いのプラス pips が台帳から消えたり、
+    // 「勝ち」なのに pips が負の行が総利益をマイナスにしたりする。
+    if (tr.pips != null) {
+      if (tr.pips > 0) map[day].winPips += tr.pips;
+      else if (tr.pips < 0) map[day].lossPips += tr.pips;
     }
     map[day].pips = Math.round((map[day].pips + (tr.pips ?? 0)) * 10) / 10;
-    map[day].pl += tr.profitLoss ?? 0;
+    if (tr.profitLoss != null) { map[day].pl += tr.profitLoss; map[day].plCount++; }
   }
   return map;
 }
@@ -51,8 +54,10 @@ export function calcPF(ds: DayStat): number {
 }
 
 export function calcMonthPF(trades: Trade[]): number {
-  const wp = trades.filter(tr => tr.result === 'win').reduce((sum, tr) => sum + (tr.pips ?? 0), 0);
-  const lp = Math.abs(trades.filter(tr => tr.result === 'loss').reduce((sum, tr) => sum + (tr.pips ?? 0), 0));
+  // 定義は calcStats に揃える（pips の符号で分ける）
+  const withPips = trades.filter(tr => tr.pips != null);
+  const wp = withPips.filter(tr => (tr.pips as number) > 0).reduce((sum, tr) => sum + (tr.pips as number), 0);
+  const lp = Math.abs(withPips.filter(tr => (tr.pips as number) < 0).reduce((sum, tr) => sum + (tr.pips as number), 0));
   if (lp === 0) return wp > 0 ? Infinity : 0;
   return Math.round(wp / lp * 100) / 100;
 }

@@ -23,6 +23,7 @@ import { t } from '../../src/i18n';
 import { formatPF } from '../../src/utils/calendarMetrics';
 import * as Sentry from '@sentry/react-native';
 import { formatMoney } from '../../src/utils/formatMoney';
+import { formatPips, formatWinRate } from '../../src/utils/formatStats';
 
 const STYLE_LABELS = () => ({
   scalping: t('card_style_scalp'), day: t('card_style_day'), swing: t('card_style_swing'), other: t('card_style_other'),
@@ -180,8 +181,8 @@ export default function AnalysisScreen() {
                         <View key={item.pair} style={[styles.tableRow, i < byPair.length - 1 && styles.rowBorder]}>
                           <Text style={[styles.cell, { flex: 1.8, color: C.text }]} numberOfLines={1}>{item.pair}</Text>
                           <Text style={[styles.cell, { flex: 0.9 }]}>{item.totalTrades}</Text>
-                          <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
-                          <Text style={[styles.cell, { flex: 1.3, color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{formatWinRate(item.winRate)}</Text>
+                          <Text style={[styles.cell, { flex: 1.3, color: item.avgPips == null ? C.text2 : item.avgPips > 0 ? C.win : item.avgPips < 0 ? C.loss : C.even }]}>{formatPips(item.avgPips)}</Text>
                           {/* 損益。記録が無い行は '-'（合計に含めない） */}
                           <Text style={[styles.cell, { flex: 1.4, color: item.totalPL === 0 ? C.text3 : item.totalPL > 0 ? C.win : C.loss }]} numberOfLines={1}>
                             {item.plCount > 0 ? formatMoney(item.totalPL) : '-'}
@@ -201,8 +202,8 @@ export default function AnalysisScreen() {
                         <View key={item.style} style={[styles.tableRow, i < byStyle.length - 1 && styles.rowBorder]}>
                           <Text style={[styles.cell, { flex: 1.8, color: C.text }]} numberOfLines={1}>{STYLE_LABELS()[item.style] ?? item.style}</Text>
                           <Text style={[styles.cell, { flex: 0.9 }]}>{item.totalTrades}</Text>
-                          <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
-                          <Text style={[styles.cell, { flex: 1.3, color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{formatWinRate(item.winRate)}</Text>
+                          <Text style={[styles.cell, { flex: 1.3, color: item.avgPips == null ? C.text2 : item.avgPips > 0 ? C.win : item.avgPips < 0 ? C.loss : C.even }]}>{formatPips(item.avgPips)}</Text>
                           {/* 損益。記録が無い行は '-'（合計に含めない） */}
                           <Text style={[styles.cell, { flex: 1.4, color: item.totalPL === 0 ? C.text3 : item.totalPL > 0 ? C.win : C.loss }]} numberOfLines={1}>
                             {item.plCount > 0 ? formatMoney(item.totalPL) : '-'}
@@ -233,8 +234,8 @@ export default function AnalysisScreen() {
                             <Text style={{ fontSize: 13, color: C.text }} numberOfLines={1}>{item.label}</Text>
                           </View>
                           <Text style={styles.cell}>{item.total}</Text>
-                          <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
-                          <Text style={[styles.cell, { color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{formatWinRate(item.winRate)}</Text>
+                          <Text style={[styles.cell, { color: item.avgPips == null ? C.text2 : item.avgPips > 0 ? C.win : item.avgPips < 0 ? C.loss : C.even }]}>{formatPips(item.avgPips)}</Text>
                           {/* 損益。記録が無い行は '-'（合計に含めない） */}
                           <Text style={[styles.cell, { flex: 1.4, color: item.totalPL === 0 ? C.text3 : item.totalPL > 0 ? C.win : C.loss }]} numberOfLines={1}>
                             {item.plCount > 0 ? formatMoney(item.totalPL) : '-'}
@@ -253,8 +254,8 @@ export default function AnalysisScreen() {
                             <Text style={{ fontSize: 13, color: C.text }} numberOfLines={1}>{item.label}</Text>
                           </View>
                           <Text style={styles.cell}>{item.total}</Text>
-                          <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
-                          <Text style={[styles.cell, { color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{formatWinRate(item.winRate)}</Text>
+                          <Text style={[styles.cell, { color: item.avgPips == null ? C.text2 : item.avgPips > 0 ? C.win : item.avgPips < 0 ? C.loss : C.even }]}>{formatPips(item.avgPips)}</Text>
                           {/* 損益。記録が無い行は '-'（合計に含めない） */}
                           <Text style={[styles.cell, { flex: 1.4, color: item.totalPL === 0 ? C.text3 : item.totalPL > 0 ? C.win : C.loss }]} numberOfLines={1}>
                             {item.plCount > 0 ? formatMoney(item.totalPL) : '-'}
@@ -283,8 +284,8 @@ export default function AnalysisScreen() {
                             <Text style={{ fontSize: 12, color: C.text }} numberOfLines={1}>{item.tag}</Text>
                           </View>
                           <Text style={styles.cell}>{item.total}</Text>
-                          <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{item.winRate}%</Text>
-                          <Text style={[styles.cell, { color: item.avgPips >= 0 ? C.win : C.loss }]}>{item.avgPips > 0 ? '+' : ''}{item.avgPips}</Text>
+                          <Text style={[styles.cell, { color: item.winRate >= 50 ? C.win : C.loss }]}>{formatWinRate(item.winRate)}</Text>
+                          <Text style={[styles.cell, { color: item.avgPips == null ? C.text2 : item.avgPips > 0 ? C.win : item.avgPips < 0 ? C.loss : C.even }]}>{formatPips(item.avgPips)}</Text>
                           {/* 損益。記録が無い行は '-'（合計に含めない） */}
                           <Text style={[styles.cell, { flex: 1.4, color: item.totalPL === 0 ? C.text3 : item.totalPL > 0 ? C.win : C.loss }]} numberOfLines={1}>
                             {item.plCount > 0 ? formatMoney(item.totalPL) : '-'}

@@ -54,6 +54,23 @@ export interface AppSettings {
   monthlyPipsGoal: number;      // 月次pips目標
   monthlyWinRateGoal: number;   // 月次勝率目標（%）
   monthlyPLGoal: number;        // 月次損益目標（金額）
+
+  // 期間別の目標。0（またはfalse）は「未設定」で、判定にも表示にも使わない。
+  //
+  // 日単位のpips・損益目標は既定でオフにしてある。その日の目標に届いていないと
+  // 無理に建てる理由を作ってしまい、オーバートレードの入口になりやすいため、
+  // 日単位はルール遵守（プロセス目標）を既定にしている。
+  dailyRuleGoal: boolean;       // その日の全トレードで全ルールを守る
+  dailyPipsGoal: number;
+  dailyPLGoal: number;
+  weeklyRuleDaysGoal: number;   // 週にルールを守った日数
+  weeklyPipsGoal: number;
+  weeklyPLGoal: number;
+  monthlyRuleDaysGoal: number;  // 月にルールを守った日数
+  yearlyRuleDaysGoal: number;   // 年にルールを守った日数
+  yearlyPipsGoal: number;
+  yearlyPLGoal: number;
+  yearlyWinRateGoal: number;
   themeMode: 'dark' | 'light' | 'system';
   appLockEnabled: boolean;      // 生体認証によるアプリロック
 }

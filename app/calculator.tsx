@@ -157,6 +157,10 @@ export default function CalculatorScreen() {
             <HintRow label={t('calc_aggressive')} value={t('calc_hint_aggressive')} />
           </View>
 
+          {/* アプリ内で唯一、具体的な取引行動（建玉サイズ）を数値で提示する画面。
+              入力値からの決定論的な計算であることを明示する。 */}
+          <Text style={styles.disclaimer}>{t('paywall_disclaimer')}</Text>
+
           <View style={{ height: 40 }} />
         </ScrollView>
       </KeyboardAvoidingView>
@@ -183,6 +187,7 @@ function HintRow({ label, value, highlight }: { label: string; value: string; hi
 
 function makeStyles(C: ThemeColors) {
   return StyleSheet.create({
+    disclaimer: { fontSize: 10, lineHeight: 14, color: C.text3, textAlign: 'center', marginTop: 16, paddingHorizontal: 8 },
     container: { flex: 1, backgroundColor: C.bg },
     scroll: { padding: 16 },
     titleRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6 },

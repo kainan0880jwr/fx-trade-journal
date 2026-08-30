@@ -74,7 +74,7 @@
       "name": "¿Dónde se guardan mis datos de trading?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Tus registros de operaciones se cifran y se guardan solo en tu dispositivo (las imágenes de gráficos adjuntas se guardan en el dispositivo sin cifrar). No hay sincronización en la nube, y la app funciona sin conexión a internet."
+        "text": "Tus registros de operaciones se cifran y se guardan solo en tu dispositivo (las imágenes de gráficos adjuntas se guardan en el dispositivo sin cifrar). No hay sincronización en la nube; el registro y el análisis funcionan sin conexión a internet. Solo se necesita conexión para comprar o restaurar Premium."
       }
     },
     {
@@ -156,13 +156,14 @@
 <div class="ticker" aria-hidden="true" title="Visualización ilustrativa de pares de divisas (no son datos de mercado reales)">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
+  <p class="ticker-note">Pares de divisas de ejemplo. No son datos de mercado reales.</p>
 <p class="sr-only">Pares compatibles (algunos): USD/JPY, EUR/JPY, GBP/JPY, EUR/USD, AUD/JPY, USD/CHF, NZD/USD, GBP/USD y más</p>
 
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">App de diario de trading y análisis</p>
-      <h1>Cada trade construye<br>tu próxima <em>tasa de acierto</em>.</h1>
+      <h1>Cada trade se convierte<br>en tu próximo <em>dato de análisis</em>.</h1>
       <p class="hero-sub">
         Solo con registrar un trade, tu tasa de acierto, pips y profit factor aparecen automáticamente.
         Tus resultados se convierten en una tarjeta para compartir que te mantiene motivado. Todo funciona en tu móvil o tablet.
@@ -202,6 +203,7 @@
           </div>
           <div class="stat-strip">
             <div><span class="k">Trades</span><span class="v">9</span></div>
+          <p class="sample-note">Pantalla de ejemplo. No son resultados reales.</p>
             <div><span class="k">Acierto</span><span class="v text-accent">78%</span></div>
             <div><span class="k">Pips</span><span class="v text-profit">+138</span></div>
             <div><span class="k">PF</span><span class="v">7.75</span></div>
@@ -270,6 +272,7 @@
           </div>
           <div class="bw-row">
             <div class="bw-card"><span class="bwk">Mejor (USD/JPY)</span><span class="bwv">+32.5 pips</span></div>
+          <p class="sample-note">Pantalla de ejemplo. No son resultados reales.</p>
             <div class="bw-card worst"><span class="bwk">Peor (GBP/JPY)</span><span class="bwv">−12 pips</span></div>
           </div>
         </div>
@@ -296,6 +299,7 @@
               <span>PF 7.75</span><span>+138 pips</span><span>9 trades</span>
             </div>
             <div class="watermark-chip">FX Trade Journal</div>
+            <p class="sample-note">Pantalla de ejemplo. No son resultados reales.</p>
           </div>
         </div>
       </div>
@@ -361,7 +365,7 @@
           </div>
           <div class="sec-note">Puedes activarlo o desactivarlo cuando quieras en ajustes (desactivado por defecto)</div>
           <div class="sec-note">Cifrado de la base de datos con SQLCipher (clave exclusiva del dispositivo, excluida de iCloud)</div>
-          <div class="sec-note">Sin sincronización en la nube, no requiere conexión a internet</div>
+          <div class="sec-note">Sin sincronización en la nube. El registro y el análisis funcionan sin conexión</div>
           <div class="sec-note">No requiere cuenta, tus registros de operaciones nunca salen de tu dispositivo</div>
           <div class="sec-note sec-note-disclosure">* Para detectar problemas y mejorar la calidad, enviamos informes de fallos y estadísticas de uso anónimas que no te identifican ni a tus operaciones. Consulta nuestra <a href="privacy-policy-es.html">política de privacidad</a>.</div>
         </div>
@@ -377,13 +381,38 @@
       </div>
     </div>
   </div>
+    <div class="feature-row reveal" id="widget">
+      <div class="feature-visual">
+        <div class="panel">
+          <span class="panel-tag">Widgets</span>
+          <div class="stat-strip">
+            <div><span class="k">Tasa de acierto</span><span class="v text-accent">62%</span></div>
+            <div><span class="k">Pips totales</span><span class="v text-profit">+84</span></div>
+            <div><span class="k">PF</span><span class="v">1.50</span></div>
+            <div><span class="k">Racha</span><span class="v">12 días</span></div>
+          </div>
+          <p class="sample-note">Pantalla de ejemplo. No son resultados reales.</p>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <h3>Ver el mes sin abrir la app.</h3>
+        <p>En la pantalla de inicio, el mes en curso queda a la vista. Los números visibles son la razón para seguir registrando.</p>
+        <ul class="feature-list">
+          <li>El widget de pantalla de inicio muestra la tasa de acierto y los pips del mes (disponible en el plan gratuito)</li>
+          <li>También widgets de pantalla de bloqueo. Un toque abre directamente el registro</li>
+          <li>Metas diarias, semanales, mensuales y anuales: los días cumplidos se marcan en el calendario (las metas mensuales son gratuitas)</li>
+          <li>33 insignias, desbloqueadas al cumplir tus reglas y alcanzar tus metas (Premium)</li>
+        </ul>
+      </div>
+    </div>
+
 </section>
 
 <section class="stat-band">
   <div class="wrap">
     <div class="stat-band-grid reveal">
       <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Idiomas (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
-      <div class="stat-band-item"><span class="num" data-count="175">0</span><span class="lbl">Países y regiones disponibles</span></div>
+      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">Cifrado de datos en el dispositivo</span></div>
       <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">Importación de historial compatible</span></div>
       <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Registros de operaciones enviados a la nube</span></div>
     </div>
@@ -447,7 +476,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>¿Dónde se guardan mis datos de trading?</summary>
-        <div class="faq-a">Tus registros de operaciones se cifran y se guardan solo en tu dispositivo (las imágenes de gráficos adjuntas se guardan en el dispositivo sin cifrar). No hay sincronización en la nube, y la app funciona sin conexión a internet.</div>
+        <div class="faq-a">Tus registros de operaciones se cifran y se guardan solo en tu dispositivo (las imágenes de gráficos adjuntas se guardan en el dispositivo sin cifrar). No hay sincronización en la nube; el registro y el análisis funcionan sin conexión a internet. Solo se necesita conexión para comprar o restaurar Premium.</div>
       </details>
       <details class="faq-item">
         <summary>¿Puedo usarla con un bróker distinto de MT4/MT5?</summary>
@@ -468,7 +497,7 @@
 <section class="final-cta">
   <canvas id="ctaChart" aria-hidden="true"></canvas>
   <div class="wrap inner reveal">
-    <h2>Tu próximo registro se convierte<br>en tu próxima tasa de acierto.</h2>
+    <h2>Tu próximo registro se convierte<br>en tu próximo dato de análisis.</h2>
     <p>Empieza a revisar hoy mismo, con tu próximo trade.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://apps.apple.com/es/app/id6786188634">Descargar gratis</a>
@@ -488,7 +517,7 @@
           </svg>
           FX Trade Journal
         </div>
-        <p class="foot-tag">Un diario de trading que funciona por completo en tu móvil o tablet. Registra, analiza y construye tu próxima tasa de acierto.</p>
+        <p class="foot-tag">Un diario de trading que funciona por completo en tu móvil o tablet. Registra, analiza y observa lo que muestran tus datos.</p>
       </div>
       <div class="foot-col">
         <h4>Producto</h4>
@@ -521,6 +550,7 @@
       <a lang="pt" href="index-pt.html">Português</a>
     </nav>
     <div class="foot-legal">
+      MetaTrader, MT4 y MT5 son marcas de MetaQuotes Software Corp. Esta app no está afiliada a MetaQuotes ni cuenta con su respaldo.<br>
       Las funciones de análisis de esta app no pretenden ofrecer asesoramiento de inversión ni promocionar ningún producto financiero concreto. Toma tus decisiones de trading bajo tu propia responsabilidad y riesgo.<br>
       © 2026 Daiki Ikebata
     </div>

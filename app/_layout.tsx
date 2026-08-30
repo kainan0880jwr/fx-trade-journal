@@ -208,6 +208,10 @@ function RootLayoutContent() {
           name="badges"
           options={{ headerShown: false, presentation: 'modal' }}
         />
+        <Stack.Screen
+          name="goals"
+          options={{ headerShown: false, presentation: 'modal' }}
+        />
       </Stack>
     </AppLockGate>
   );
