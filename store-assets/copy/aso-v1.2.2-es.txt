@@ -48,9 +48,8 @@ Importa CSV de MT4/MT5, calcula automáticamente tasa de acierto y pips, tarjeta
 
 📊 Convierte tu historial de trading en mejoras reales
 
-Tanto si empiezas en el forex como si llevas años operando, llevar un
-diario de trading es una de las formas más rápidas de mejorar tu tasa
-de acierto. FX Trade Journal es una aplicación seria de seguimiento de
+Tanto si empiezas en el forex como si llevas años operando, un diario de
+trading hace visible cómo operas en realidad. FX Trade Journal es una aplicación seria de seguimiento de
 operaciones para traders que quieren aprender de verdad de su
 historial, incluida la importación directa del historial de MT4/MT5.
 
@@ -64,7 +63,7 @@ historial, incluida la importación directa del historial de MT4/MT5.
 ■ Analizar
 
 ・El panel mensual calcula automáticamente tasa de acierto, pips, factor de beneficio y G/P
-・Análisis de rendimiento semanal, por par y por hora del día
+・Análisis por par de divisas y por estilo de trading
 ・Seguimiento de rachas diarias para mantener tu hábito de registro
 
 ■ Compartir
@@ -84,7 +83,9 @@ historial, incluida la importación directa del historial de MT4/MT5.
 
 Una suscripción mensual o anual desbloquea el nivel premium:
 
-・Análisis semanal e insights en profundidad
+・Vista semanal y análisis de insights en profundidad
+・Análisis por franja horaria y día de la semana
+・Análisis de etiquetas, de RR, curva de capital y seguimiento mental
 ・Tarjetas para compartir sin marca de agua
 ・Estadísticas detalladas exclusivas de Premium
 ・Todas las futuras funciones premium
@@ -95,7 +96,7 @@ Las suscripciones se pueden cancelar en cualquier momento desde la app Ajustes d
 ■ Sobre tus datos
 
 ・Todos los datos se almacenan localmente en tu dispositivo
-・No se requiere sincronización en la nube ni conexión a internet para usar la app
+・Sin sincronización en la nube; el registro y el análisis funcionan sin conexión (solo se necesita internet para comprar o restaurar PRO)
 ・Diseñada con un enfoque centrado en la privacidad
 
 ■ Brokers y plataformas compatibles
