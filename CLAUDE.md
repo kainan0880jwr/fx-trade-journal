@@ -21,6 +21,10 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
 - No lint script is configured in this repo.
 - Builds/releases go through EAS (`eas.json`: `development`, `preview`, `production` profiles). The `eas-build-pre-install` hook runs `scripts/check-prod-keys.js`, which aborts a `production`-profile build if `EXPO_PUBLIC_RC_IOS_KEY` / `EXPO_PUBLIC_RC_ANDROID_KEY` / `EXPO_PUBLIC_SENTRY_DSN` are still placeholders — a guard against shipping a build with no real RevenueCat/Sentry keys.
 - `runtimeVersion.policy` is `"appVersion"` (`app.json`), so an OTA update (`eas update`) only reaches installs whose native binary has the exact same `expo.version`. A JS-only fix meant to reach an already-shipped version must **not** bump `version` — doing so silently cuts that OTA off from every existing install. Only bump `version` when the change requires a new store submission (native module change, or you specifically want the update gated to a new build).
+- **Google Play のクローズドテストは `alpha` トラック（2026-08-31 設定）。** 個人開発者アカウントの製品版アクセスには「**12人のテスターがクローズドテストに14日間連続でオプトインしている**」ことが要る。`eas.json` の submit.production.android を `track: "alpha"` にしてあるのはこのため。**`internal`（内部テスト）はこの要件にカウントされない**ので、間違えると日数が一切積み上がらない。
+  - テスターはメールを送るだけでは登録されない。各自が **オプトインURL**（`https://play.google.com/apps/testing/com.fxtradejournal.app`）を開いて参加する必要がある。Googleグループで管理すると、Play Console 側を触らずにメンバーを増減できる。
+  - 14日はリセットされる。途中でオプトアウトや除名があると巻き戻るので、12人ちょうどではなく15人程度確保しておく。
+  - `eas submit --platform android` には **Google Play のサービスアカウントJSON** が必要（Google Cloud で作成し、Play Console でアクセス権を付与する）。未設定の間は Play Console へ手動で `.aab` をアップロードする。
 - **App Store のメタデータは `store.config.json` で管理し、`eas metadata` で同期する（2026-08-30 導入）。** 画面での手入力ではなく、`npx eas-cli metadata:pull --profile production` で現状を取得し、`store.config.json` を編集して `npx eas-cli metadata:push --profile production` で反映する。11言語の説明文・キーワード・リリースノート・審査メモ・スクリーンショットがこの1ファイル（＋`store/`）に集約される。
   - **push は本番のストア情報を上書きする。** 実行前に必ず `metadata:pull` して差分を確認すること。`store.config.json` の `version` が対象バージョンで、pull 直後は古い値が入っていることがある（実際に `1.2.6` のままだった）。ここを直さないと意図しないバージョンに書き込む。
   - `release.automaticRelease: true` のため、**審査に通ると自動で公開される**。段階的リリースにしたい場合はここを変える。
