@@ -26,6 +26,8 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   - 14日はリセットされる。途中でオプトアウトや除名があると巻き戻るので、12人ちょうどではなく15人程度確保しておく。
   - `eas submit --platform android` には **Google Play のサービスアカウントJSON** が必要（Google Cloud で作成し、Play Console でアクセス権を付与する）。未設定の間は Play Console へ手動で `.aab` をアップロードする。
 - **App Store のメタデータは `store.config.json` で管理し、`eas metadata` で同期する（2026-08-30 導入）。** 画面での手入力ではなく、`npx eas-cli metadata:pull --profile production` で現状を取得し、`store.config.json` を編集して `npx eas-cli metadata:push --profile production` で反映する。11言語の説明文・キーワード・リリースノート・審査メモ・スクリーンショットがこの1ファイル（＋`store/`）に集約される。
+  - **スクリーンショットは `store.config.json` のファイル名一覧が正本。** `store/apple/screenshot/<locale>/<size>/` にファイルを置き換えるだけでは `metadata:push` は何も送らない。`info.<locale>.screenshots.<size>` の配列も書き換えること（実際に2回空振りした）。並び順がそのままストアでの表示順になる。
+  - **公開済みバージョンのメタデータは更新できない。** `eas metadata:push` はバージョンを作成・更新しようとするため、リリース済みの版に対しては `Failed creating new version <ver>` で失敗する（プロモーション用テキストも含めて全フィールドが編集不可）。説明文やスクショを変えるには、`store.config.json` の `version` を次の番号にして新規バージョンを作る。バイナリの変更が不要ならビルド枠は消費しない。
   - **push は本番のストア情報を上書きする。** 実行前に必ず `metadata:pull` して差分を確認すること。`store.config.json` の `version` が対象バージョンで、pull 直後は古い値が入っていることがある（実際に `1.2.6` のままだった）。ここを直さないと意図しないバージョンに書き込む。
   - `release.automaticRelease: true` のため、**審査に通ると自動で公開される**。段階的リリースにしたい場合はここを変える。
   - `/store/` はスクリーンショット約27MBで gitignore してある。ASC が正本なので、push する前に必ず pull すること。pull せずに push すると画像が見つからず失敗する。

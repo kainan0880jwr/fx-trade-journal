@@ -45,5 +45,5 @@ if [ "$i" -eq 0 ]; then
   echo "入力ディレクトリに画像がありません: $IN"; exit 1
 fi
 echo
-echo "$i 枚を $OUT に出力しました（$W x $H）。"
+echo "$i 枚を $OUT に出力しました（${W}x${H}）。"
 echo "ASC は1つの表示サイズにつき最大10枚です。"
