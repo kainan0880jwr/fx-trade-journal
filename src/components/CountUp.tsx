@@ -60,7 +60,11 @@ export default function CountUp({
     <AnimatedTextInput
       editable={false}
       underlineColorAndroid="transparent"
-      style={[{ padding: 0, margin: 0 }, style]}
+      // width を指定しないと、TextInput が初期値（defaultValue）の幅で
+      // レイアウトされたまま固定され、あとから animatedProps で入る長い文字列の
+      // 末尾が切れる。ホーム画面の月間サマリーで「22件」が「2」、「13/9」が
+      // 「13/」と表示されていた。数値そのものは正しく、表示だけが欠けていた。
+      style={[{ padding: 0, margin: 0, width: '100%' }, style]}
       animatedProps={animatedProps}
     />
   );
