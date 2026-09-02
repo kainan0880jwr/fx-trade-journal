@@ -80,6 +80,12 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
 
 - **CSV import** (`src/utils/mt4Import.ts`): parses MT4 (tab/comma-delimited) and MT5 (comma-delimited "Deals") trade history exports.
 
+- **配信地域と法務** — コードからは分からないが判断に効く事実。
+  - **EU・英国・ノルウェー・アイスランドでは配信していない**（2026-09-02 に App Store の国別配信状況で確認）。EU非加盟のスイスや、日本・米国・インド・ブラジル等16か国では配信あり。配信されない範囲が EU + 英国 + EEA2か国に一致しており、Apple の**トレーダー情報の登録要件**を満たしていないために外れている形。**このため GDPR 27条の EU 代理人は不要**と判断してプライバシーポリシーに記載していない。トレーダー情報を登録して EU 配信を再開する場合は、代理人の設置が要る（登録には氏名・住所・電話番号の公開が伴う）。
+  - **インドは配信しているので、2023年デジタル個人データ保護法（DPDP法）の対象**。プライバシーポリシー12節に苦情窓口（運営者本人）と Data Protection Board of India への申立権を記載してある。
+  - **`ITSAppUsesNonExemptEncryption: false` の根拠は `EXPORT-COMPLIANCE.md` に書いてある。** SQLCipher を同梱しているのに `false` としているので、変更する前に必ず読むこと。暗号を**ユーザー向けの機能として**提供する変更（バックアップのパスフレーズ暗号化、端末間の暗号化同期など）を入れると判断が崩れる。
+  - プライバシーポリシーは**居住地ではなく UI 言語**で出し分けている（`legalLinks.ts`）。ドイツ在住の日本語話者には GDPR 条項の無い版が出る。既知の割り切りで、意図的に現状維持としている（2026-09-02 判断）。
+
 - **Marketing/legal site**: the repo root also contains a static landing page and legal pages (`index*.html`, `privacy-policy-*.html`, `terms-*.html`, `support-*.html`, `lp-assets/`) in the same 11 languages as the app, deployed independently of the Expo app. CI (`.github/workflows/lp-checks.yml`) validates these with `html-validate` and a non-blocking Lighthouse report, triggered only on changes to `*.html`/`manifest.json`/`lp-assets/**`. `.github/workflows/npm-audit.yml` runs `npm audit --audit-level=high` on every push but with `continue-on-error: true`, since flagged vulnerabilities are in build-only tooling (Expo CLI, jest-expo, etc.) that never ships in the app bundle.
 
 - **iOS home screen widget** (`targets/widget/`): a WidgetKit extension (SwiftUI, `FXWidget.swift`) added via the `@bacons/apple-targets` config plugin, which links `targets/widget/` into the Xcode project on every `expo prebuild` (survives regeneration, unlike hand-editing `ios/`). Shows this month's stats across four families: `systemSmall` (win rate + pips), `systemMedium` (win rate / pips / profit factor / trade count, plus the recording streak when non-zero), and the Lock Screen's `accessoryCircular` (win-rate gauge) and `accessoryRectangular`. Tapping any of them opens `fx-trade-journal://trade/new` via `.widgetURL` — expo-router resolves it to `app/trade/new.tsx` with no extra app-side code.
