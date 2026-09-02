@@ -699,6 +699,13 @@ export const es: LangStrings = {
   backup_status_last: 'Última copia de seguridad: {date}',
   backup_status_ok_sub: 'Crea una nueva de vez en cuando a medida que aumenten tus registros.',
   backup_status_stale_sub: 'La última fue hace {n} días. Te recomendamos crear una copia nueva.',
+  backup_export_error: 'No se pudo crear la copia de seguridad',
+  backup_export_images_title: '¿Incluir las imágenes de gráficos?',
+  backup_export_images_msg: 'Con las imágenes también se restauran tus gráficos, pero el archivo será mucho más grande. Solo los registros ocupa menos y es más fiable.',
+  backup_export_with_images: 'Incluir imágenes',
+  backup_export_records_only: 'Solo registros',
+  backup_export_partial_title: 'Se excluyeron algunas imágenes',
+  backup_export_partial_msg: 'No se pudieron incluir {n} imagen(es) de gráficos porque la copia alcanzó su límite de tamaño. Todos tus registros de operaciones sí están incluidos.',
 
   // Gestión de errores
   error_boundary_title: 'Se produjo un error',

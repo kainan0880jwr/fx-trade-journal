@@ -699,6 +699,13 @@ export const fr: LangStrings = {
   backup_status_last: 'Dernière sauvegarde : {date}',
   backup_status_ok_sub: "Recréez-en une de temps en temps à mesure que vos données s'accumulent.",
   backup_status_stale_sub: "La dernière date d'il y a {n} jours. Nous vous recommandons d'en créer une nouvelle.",
+  backup_export_error: "La sauvegarde n'a pas pu être créée",
+  backup_export_images_title: 'Inclure les images de graphiques ?',
+  backup_export_images_msg: 'Avec les images, vos graphiques sont aussi restaurés, mais le fichier devient beaucoup plus lourd. Les enregistrements seuls sont plus légers et plus fiables.',
+  backup_export_with_images: 'Inclure les images',
+  backup_export_records_only: 'Enregistrements seuls',
+  backup_export_partial_title: 'Certaines images ont été exclues',
+  backup_export_partial_msg: "{n} image(s) de graphique n'ont pas pu être incluses car la sauvegarde a atteint sa limite de taille. Tous vos enregistrements de trades sont inclus.",
 
   // Gestion des erreurs
   error_boundary_title: "Une erreur s'est produite",

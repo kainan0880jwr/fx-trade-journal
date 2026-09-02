@@ -699,6 +699,13 @@ export const it: LangStrings = {
   backup_status_last: 'Ultimo backup: {date}',
   backup_status_ok_sub: 'Creane uno nuovo di tanto in tanto, man mano che i dati aumentano.',
   backup_status_stale_sub: "L'ultimo risale a {n} giorni fa. Ti consigliamo di crearne uno nuovo.",
+  backup_export_error: 'Non è stato possibile creare il backup',
+  backup_export_images_title: 'Includere le immagini dei grafici?',
+  backup_export_images_msg: 'Con le immagini vengono ripristinati anche i grafici, ma il file diventa molto più grande. Solo i dati è più leggero e affidabile.',
+  backup_export_with_images: 'Includi immagini',
+  backup_export_records_only: 'Solo i dati',
+  backup_export_partial_title: 'Alcune immagini sono state escluse',
+  backup_export_partial_msg: 'Non è stato possibile includere {n} immagini dei grafici perché il backup ha raggiunto il limite di dimensione. Tutti i tuoi record delle operazioni sono inclusi.',
 
   // Gestione degli errori
   error_boundary_title: 'Si è verificato un errore',

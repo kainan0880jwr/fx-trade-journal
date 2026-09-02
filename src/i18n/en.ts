@@ -699,6 +699,13 @@ export const en: LangStrings = {
   backup_status_last: 'Last backup: {date}',
   backup_status_ok_sub: 'Create a new one from time to time as your records grow.',
   backup_status_stale_sub: 'The last one was {n} days ago. We recommend creating a new backup.',
+  backup_export_error: 'Could not create the backup',
+  backup_export_images_title: 'Include chart images?',
+  backup_export_images_msg: 'Including images restores your charts too, but makes the file much larger. Records only is smaller and more dependable.',
+  backup_export_with_images: 'Include images',
+  backup_export_records_only: 'Records only',
+  backup_export_partial_title: 'Some images were left out',
+  backup_export_partial_msg: '{n} chart image(s) could not be included because the backup reached its size limit. All of your trade records are included.',
 
   // Error boundary
   error_boundary_title: 'Something went wrong',

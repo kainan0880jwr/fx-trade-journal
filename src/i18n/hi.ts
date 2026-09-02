@@ -699,6 +699,13 @@ export const hi: LangStrings = {
   backup_status_last: 'आखिरी बैकअप: {date}',
   backup_status_ok_sub: 'रिकॉर्ड बढ़ने के साथ समय-समय पर नया बैकअप बनाते रहें।',
   backup_status_stale_sub: 'आखिरी बैकअप {n} दिन पहले था। नया बैकअप बनाने की सलाह है।',
+  backup_export_error: 'बैकअप नहीं बनाया जा सका',
+  backup_export_images_title: 'क्या चार्ट इमेज भी शामिल करें?',
+  backup_export_images_msg: 'इमेज शामिल करने पर आपके चार्ट भी वापस आते हैं, लेकिन फ़ाइल बहुत बड़ी हो जाती है। सिर्फ़ रिकॉर्ड हल्का और ज़्यादा भरोसेमंद है।',
+  backup_export_with_images: 'इमेज शामिल करें',
+  backup_export_records_only: 'सिर्फ़ रिकॉर्ड',
+  backup_export_partial_title: 'कुछ इमेज छोड़ दी गईं',
+  backup_export_partial_msg: 'बैकअप आकार की सीमा तक पहुँच गया, इसलिए {n} चार्ट इमेज शामिल नहीं की जा सकीं। आपके सभी ट्रेड रिकॉर्ड शामिल हैं।',
 
   // एरर हैंडलिंग
   error_boundary_title: 'कुछ गड़बड़ हो गई',

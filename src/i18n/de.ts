@@ -699,6 +699,13 @@ export const de: LangStrings = {
   backup_status_last: 'Letzte Sicherung: {date}',
   backup_status_ok_sub: 'Erstelle von Zeit zu Zeit eine neue, wenn Aufzeichnungen dazukommen.',
   backup_status_stale_sub: 'Die letzte war vor {n} Tagen. Wir empfehlen, eine neue Sicherung zu erstellen.',
+  backup_export_error: 'Das Backup konnte nicht erstellt werden',
+  backup_export_images_title: 'Chart-Bilder einschließen?',
+  backup_export_images_msg: 'Mit Bildern werden auch deine Charts wiederhergestellt, die Datei wird aber deutlich größer. Nur Aufzeichnungen ist kleiner und verlässlicher.',
+  backup_export_with_images: 'Bilder einschließen',
+  backup_export_records_only: 'Nur Aufzeichnungen',
+  backup_export_partial_title: 'Einige Bilder wurden ausgelassen',
+  backup_export_partial_msg: '{n} Chart-Bild(er) konnten nicht aufgenommen werden, da das Backup die Größenbeschränkung erreicht hat. Alle deine Trade-Aufzeichnungen sind enthalten.',
 
   // Fehlerbehandlung
   error_boundary_title: 'Ein Fehler ist aufgetreten',
