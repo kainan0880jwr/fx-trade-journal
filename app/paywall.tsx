@@ -377,7 +377,7 @@ export default function PaywallScreen() {
               style={s.ctaBtn}
             >
               {loading ? (
-                <ActivityIndicator color="#FFF" />
+                <ActivityIndicator color={C.onAccent} />
               ) : (
                 <Text style={s.ctaBtnText}>
                   {hasTrialSelected ? t('premium_trial') : t('premium_cta')}
@@ -494,7 +494,7 @@ function makeStyles(C: ThemeColors) {
     },
     ctaBtn: { borderRadius: 16, paddingVertical: 16, alignItems: 'center' },
     ctaBtnDisabled: { opacity: 0.5 },
-    ctaBtnText: { color: '#FFF', fontSize: 16, fontWeight: '800' },
+    ctaBtnText: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
 
     trialDisclaimer: {
       // text3はライトモードでWCAG AAのコントラスト比(4.5:1)を満たさないため、

@@ -132,7 +132,7 @@ function BadgeCard({ badge }: { badge: UnlockedBadge }) {
         />
         {badge.unlocked && (
           <View style={s.checkBadge}>
-            <Ionicons name="checkmark" size={10} color="#FFFFFF" />
+            <Ionicons name="checkmark" size={10} color={C.onAccent} />
           </View>
         )}
       </View>
@@ -171,7 +171,7 @@ function makeStyles(C: ThemeColors) {
     filterBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16, borderWidth: 1, borderColor: C.border },
     filterBtnActive: { backgroundColor: C.primary, borderColor: C.primary },
     filterLabel: { fontSize: 12, color: C.text2 },
-    filterLabelActive: { color: '#FFF', fontWeight: '700' },
+    filterLabelActive: { color: C.onAccent, fontWeight: '700' },
     scroll: { padding: 12 },
     nearlyBox: { backgroundColor: C.card, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: C.border, marginBottom: 12 },
     nearlyTitle: { fontSize: 13, fontWeight: '800', color: C.text, marginBottom: 8 },

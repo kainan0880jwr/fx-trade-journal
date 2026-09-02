@@ -124,7 +124,7 @@ function makeStyles(C: ThemeColors) {
       paddingVertical: 14,
     },
     buttonText: {
-      color: '#FFF',
+      color: C.onAccent,
       fontSize: 15,
       fontWeight: '800',
     },

@@ -199,7 +199,7 @@ function makeStyles(C: ThemeColors) {
     chip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 22, borderWidth: 1.5, borderColor: C.border, backgroundColor: C.card },
     chipActive: { backgroundColor: C.primary, borderColor: C.primary },
     chipLabel: { fontSize: 13, color: C.text2 },
-    chipLabelActive: { color: '#FFFFFF', fontWeight: '700' },
+    chipLabelActive: { color: C.onAccent, fontWeight: '700' },
     segRow: { flexDirection: 'row', gap: 8 },
     seg: { flex: 1, paddingVertical: 11, borderRadius: 12, borderWidth: 1.5, borderColor: C.border, backgroundColor: C.card, alignItems: 'center' },
     segActive: { borderColor: C.primary, backgroundColor: C.cardAlt },

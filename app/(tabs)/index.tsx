@@ -176,7 +176,7 @@ export default function RecordScreen() {
           <Ionicons name="bookmark-outline" size={18} color={C.text2} />
           {!isPremium && (
             <View style={styles.bookmarkLockDot}>
-              <Ionicons name="lock-closed" size={9} color="#FFFFFF" />
+              <Ionicons name="lock-closed" size={9} color={C.onAccent} />
             </View>
           )}
         </TouchableOpacity>
@@ -187,7 +187,7 @@ export default function RecordScreen() {
           accessibilityLabel={t('add_trade')}
           accessibilityRole="button"
         >
-          <Ionicons name="add" size={22} color="#FFFFFF" />
+          <Ionicons name="add" size={22} color={C.onAccent} />
           <Text style={styles.fabText}>{t('add_trade')}</Text>
         </TouchableOpacity>
       </View>
@@ -267,7 +267,7 @@ function makeStyles(C: ThemeColors, isTablet: boolean) {
     },
     filterBtnActive: { backgroundColor: C.primary, borderColor: C.primary },
     filterLabel: { fontSize: isTablet ? 14 : 12, color: C.text2 },
-    filterLabelActive: { color: '#FFFFFF', fontWeight: '700' },
+    filterLabelActive: { color: C.onAccent, fontWeight: '700' },
 
     statsBlock: { paddingHorizontal: ph, paddingTop: 10, paddingBottom: 4, gap: 8 },
 
@@ -339,6 +339,6 @@ function makeStyles(C: ThemeColors, isTablet: boolean) {
       shadowColor: C.primary, shadowOffset: { width: 0, height: 6 },
       shadowOpacity: 0.45, shadowRadius: 12, elevation: 8,
     },
-    fabText: { fontSize: isTablet ? 16 : 14, fontWeight: '800', color: '#FFFFFF' },
+    fabText: { fontSize: isTablet ? 16 : 14, fontWeight: '800', color: C.onAccent },
   });
 }

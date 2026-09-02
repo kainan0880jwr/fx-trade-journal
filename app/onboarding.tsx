@@ -184,7 +184,7 @@ export default function OnboardingScreen() {
           <Text style={s.nextBtnText}>
             {isLast ? t('onboarding_start') : t('onboarding_next')}
           </Text>
-          {!isLast && <Ionicons name="arrow-forward" size={18} color="#FFF" />}
+          {!isLast && <Ionicons name="arrow-forward" size={18} color={C.onAccent} />}
         </TouchableOpacity>
         {/* 初回起動で最も強い訴求が出る画面なのに、免責がどこにも無かった。
             既存の文言を流用するので新規翻訳は不要。 */}
@@ -232,7 +232,7 @@ function makeStyles(C: ThemeColors) {
       shadowColor: C.primary, shadowOffset: { width: 0, height: 6 },
       shadowOpacity: 0.4, shadowRadius: 14, elevation: 8,
     },
-    nextBtnText: { color: '#FFF', fontSize: 16, fontWeight: '800' },
+    nextBtnText: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
 
     choiceWrap: { flex: 1, justifyContent: 'center', paddingHorizontal: 24, gap: 14 },
     choiceTitle: {

@@ -58,6 +58,11 @@ const TINTED: [string, string][] = [
   ['yellow', 'yellowBg'], ['purple', 'purpleBg'], ['cyan', 'cyanBg'],
 ];
 
+// アクセント色でベタ塗りした面（ボタン・バッジ・FAB など）。この上には onAccent を載せる。
+const ACCENT_FILLS = ['primary', 'win', 'loss', 'even', 'buy', 'sell'] as const;
+// paywall の CTA はこの3色のグラデーション。どのストップの上にも onAccent が載る。
+const ACCENT_GRADIENT = ['primaryLight', 'primary', 'primaryDark'] as const;
+
 describe.each([['ライト', lightColors], ['ダーク', darkColors]] as const)('%s テーマ', (_name, palette) => {
   const C = palette as unknown as Record<string, string>;
 
@@ -69,6 +74,24 @@ describe.each([['ライト', lightColors], ['ダーク', darkColors]] as const)(
 
     it.each(TINTED)('%s が %s の上でも AA を満たす', (fg, tint) => {
       const ratio = contrast(parse(C[fg]).rgb, composite(C[tint], C[surface]));
+      expect(ratio).toBeGreaterThanOrEqual(AA);
+    });
+  });
+
+  // ダークのアクセントは明るく、ライトのアクセントは濃い。前景を白に固定すると
+  // ダークで 3.71:1（primary）まで落ちるため、テーマごとに onAccent を切り替えている。
+  describe.each(ACCENT_FILLS)('%s のベタ塗り', (fill) => {
+    it('onAccent が AA を満たす', () => {
+      const ratio = contrast(parse(C.onAccent).rgb, parse(C[fill]).rgb);
+      expect(ratio).toBeGreaterThanOrEqual(AA);
+    });
+  });
+
+  // グラデーションは端まで含めて成立していないと意味がない。片方の端だけ
+  // 条件を外れると、そこに重なった文字だけが読めなくなる。
+  describe.each(ACCENT_GRADIENT)('CTAグラデーションの %s ストップ', (stop) => {
+    it('onAccent が AA を満たす', () => {
+      const ratio = contrast(parse(C.onAccent).rgb, parse(C[stop]).rgb);
       expect(ratio).toBeGreaterThanOrEqual(AA);
     });
   });

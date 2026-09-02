@@ -94,9 +94,9 @@ export default function ShareModal({ visible, onClose, stats, yearMonth, streak 
             disabled={htmlLoading}
           >
             {htmlLoading ? (
-              <ActivityIndicator size="small" color="#FFF" style={{ marginRight: 8 }} />
+              <ActivityIndicator size="small" color={C.onAccent} style={{ marginRight: 8 }} />
             ) : (
-              <Ionicons name="image-outline" size={16} color="#FFF" style={{ marginRight: 6 }} />
+              <Ionicons name="image-outline" size={16} color={C.onAccent} style={{ marginRight: 6 }} />
             )}
             <Text style={styles.shareBtnText}>{t('share_card_btn')}</Text>
           </TouchableOpacity>
@@ -174,7 +174,7 @@ function makeStyles(C: ThemeColors, isTablet: boolean) {
       borderWidth: 1.5, borderColor: C.primary,
     },
     shareBtnText: {
-      fontSize: isTablet ? 15 : 14, fontWeight: '800', color: '#FFF',
+      fontSize: isTablet ? 15 : 14, fontWeight: '800', color: C.onAccent,
     },
     watermarkNote: {
       fontSize: isTablet ? 12 : 11,

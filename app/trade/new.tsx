@@ -619,7 +619,7 @@ export default function NewTradeScreen() {
               accessibilityRole="button"
               accessibilityState={{ selected: mode === 'quick' }}
             >
-              <Ionicons name="flash" size={14} color={mode === 'quick' ? '#FFF' : C.text2} />
+              <Ionicons name="flash" size={14} color={mode === 'quick' ? C.onAccent : C.text2} />
               <Text style={[styles.modeBtnText, mode === 'quick' && styles.modeBtnTextActive]}>
                 {t('form_mode_quick')}
               </Text>
@@ -630,7 +630,7 @@ export default function NewTradeScreen() {
               accessibilityRole="button"
               accessibilityState={{ selected: mode === 'full' }}
             >
-              <Ionicons name="document-text" size={14} color={mode === 'full' ? '#FFF' : C.text2} />
+              <Ionicons name="document-text" size={14} color={mode === 'full' ? C.onAccent : C.text2} />
               <Text style={[styles.modeBtnText, mode === 'full' && styles.modeBtnTextActive]}>
                 {t('form_mode_full')}
               </Text>
@@ -718,7 +718,7 @@ export default function NewTradeScreen() {
                   >
                     <Text style={[
                       styles.resultBtnText,
-                      quickResult === r && { color: '#FFF', fontWeight: '800' },
+                      quickResult === r && { color: C.onAccent, fontWeight: '800' },
                     ]}>
                       {r === 'win' ? t('win') : r === 'loss' ? t('loss') : t('even')}
                     </Text>
@@ -1177,7 +1177,7 @@ function makeStyles(C: ThemeColors) {
     },
     modeBtnActive: { backgroundColor: C.primary },
     modeBtnText: { fontSize: 13, fontWeight: '700', color: C.text2 },
-    modeBtnTextActive: { color: '#FFF' },
+    modeBtnTextActive: { color: C.onAccent },
 
     input: { backgroundColor: C.card, borderWidth: 1, borderColor: C.border, borderRadius: 12, padding: 13, fontSize: 15, color: C.text },
     textArea: { minHeight: 90 },
@@ -1210,7 +1210,7 @@ function makeStyles(C: ThemeColors) {
     chipActive: { backgroundColor: C.primary, borderColor: C.primary },
     tagActive: { backgroundColor: C.purple, borderColor: C.purple },
     chipLabel: { fontSize: 13, color: C.text2 },
-    chipLabelActive: { color: '#FFFFFF', fontWeight: '700' },
+    chipLabelActive: { color: C.onAccent, fontWeight: '700' },
 
     sectionToggle: {
       flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
@@ -1232,7 +1232,7 @@ function makeStyles(C: ThemeColors) {
     dateBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, justifyContent: 'flex-start' },
     dateBtnText: { fontSize: 15, color: C.text },
     pickerDoneBtn: { alignSelf: 'flex-end', backgroundColor: C.primary, paddingHorizontal: 20, paddingVertical: 8, borderRadius: 10, marginTop: 4 },
-    pickerDoneText: { color: '#FFFFFF', fontSize: 14, fontWeight: '700' },
+    pickerDoneText: { color: C.onAccent, fontSize: 14, fontWeight: '700' },
 
     saveBtn: {
       backgroundColor: C.primary, borderRadius: 16, padding: 18,
@@ -1241,7 +1241,7 @@ function makeStyles(C: ThemeColors) {
       shadowOpacity: 0.4, shadowRadius: 14, elevation: 8,
     },
     saveBtnDisabled: { opacity: 0.4 },
-    saveBtnText: { color: '#FFFFFF', fontSize: 16, fontWeight: '800', letterSpacing: 0.5 },
+    saveBtnText: { color: C.onAccent, fontSize: 16, fontWeight: '800', letterSpacing: 0.5 },
 
     mentalCard: { backgroundColor: C.card, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: C.border, gap: 12 },
     ruleHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
