@@ -706,6 +706,8 @@ export const fr: LangStrings = {
   backup_export_records_only: 'Enregistrements seuls',
   backup_export_partial_title: 'Certaines images ont été exclues',
   backup_export_partial_msg: "{n} image(s) de graphique n'ont pas pu être incluses car la sauvegarde a atteint sa limite de taille. Tous vos enregistrements de trades sont inclus.",
+  backup_export_images_msg_partial: "Vos images de graphiques totalisent {size}, donc les {total} ne tiennent pas toutes. Environ {n} d'entre elles seront incluses. Les enregistrements seuls sont plus légers et plus fiables.",
+  backup_export_partial_btn: 'Inclure ce qui tient',
 
   // Gestion des erreurs
   error_boundary_title: "Une erreur s'est produite",
