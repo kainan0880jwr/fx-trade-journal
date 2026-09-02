@@ -74,7 +74,7 @@
       "name": "Where is my trade data stored?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Your trade records are encrypted and stored only on your device (attached chart images are stored on-device without encryption). There is no cloud sync, and logging and analysis work without an internet connection. A connection is required only to purchase or restore Premium."
+        "text": "Your trade records are encrypted and stored only on your device (attached chart images are stored on-device without encryption). There is no cloud sync, and logging and analysis work without an internet connection. A connection is required only to purchase or restore Premium. If you have iCloud Backup enabled, they are also included in that backup."
       }
     },
     {
@@ -364,7 +364,7 @@
             <div class="switch"></div>
           </div>
           <div class="sec-note">Toggle on/off anytime in Settings (off by default)</div>
-          <div class="sec-note">Database encryption via SQLCipher (device-only key, excluded from iCloud)</div>
+          <div class="sec-note">Database encryption via SQLCipher (key protected by the OS keychain)</div>
           <div class="sec-note">No cloud sync. Logging and analysis work offline</div>
           <div class="sec-note">No account required, your trade records never leave your device</div>
           <div class="sec-note sec-note-disclosure">* To detect problems and improve quality, we send crash reports and anonymous usage statistics that do not identify you or your trades. See our <a href="privacy-policy-en.html">Privacy Policy</a> for details.</div>
@@ -375,7 +375,7 @@
         <p>FX trading history is sensitive data that can reveal your financial position. That's why encryption and biometric lock come standard.</p>
         <ul class="feature-list">
           <li>Lock the app with Face ID / Touch ID (enable anytime in Settings)</li>
-          <li>Encryption key is device-only (excluded from iCloud backup)</li>
+          <li>Encryption key protected by the OS keychain (carries over on iOS device changes)</li>
           <li>Designed to never send your trade records to a server</li>
         </ul>
       </div>
@@ -476,7 +476,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>Where is my trade data stored?</summary>
-        <div class="faq-a">Your trade records are encrypted and stored only on your device (attached chart images are stored on-device without encryption). There is no cloud sync, and logging and analysis work without an internet connection. A connection is required only to purchase or restore Premium.</div>
+        <div class="faq-a">Your trade records are encrypted and stored only on your device (attached chart images are stored on-device without encryption). There is no cloud sync, and logging and analysis work without an internet connection. A connection is required only to purchase or restore Premium. If you have iCloud Backup enabled, they are also included in that backup.</div>
       </details>
       <details class="faq-item">
         <summary>Can I use it with a broker other than MT4/MT5?</summary>
