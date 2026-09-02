@@ -706,6 +706,8 @@ export const es: LangStrings = {
   backup_export_records_only: 'Solo registros',
   backup_export_partial_title: 'Se excluyeron algunas imágenes',
   backup_export_partial_msg: 'No se pudieron incluir {n} imagen(es) de gráficos porque la copia alcanzó su límite de tamaño. Todos tus registros de operaciones sí están incluidos.',
+  backup_export_images_msg_partial: 'Tus imágenes de gráficos suman {size}, así que no caben las {total}. Se incluirán unas {n}. Solo los registros ocupa menos y es más fiable.',
+  backup_export_partial_btn: 'Incluir lo que quepa',
 
   // Gestión de errores
   error_boundary_title: 'Se produjo un error',

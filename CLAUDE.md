@@ -55,7 +55,9 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   - **バックアップの容量上限は `MAX_IMAGE_BASE64_TOTAL_BYTES`（200MB, base64換算）と `MAX_TRADES_PER_BACKUP` で、エクスポートとインポートが同じ定数を共有する。** 以前はインポート側にしか上限が無く、エクスポートは無制限だったため、画像の多いユーザーは**「作れるのに復元できないバックアップ」**を持たされていた（本人はバックアップ済みのつもりで機種変更し、旧端末を手放した後で初めて弾かれる）。実測ではなく見積もりだが、画像は `quality: 0.8` で1枚およそ500KB、無料版は1トレード1枚・PROは3枚なので、**無料版で約300件、PROで約100件**で上限に届く。決して極端な使い方ではない。
     - `exportBackup()` は `canIncludeImage()` で1枚ずつ判定し、上限を超える画像は積まずに `omittedImages` として数える。**画像を落としてでもトレード記録は必ず復元できる状態を優先する。** 落とした場合は必ずUIで伝えること（黙って落とすと、本人は画像も残っているつもりで機種変更する）。
     - `exportBackup({ includeImages: false })` で画像なしの軽量バックアップを作れる。設定画面は、画像を持っているユーザーにだけ選択肢を出す（`hasAnyTradeImages()`）。
-    - **残っている問題**: 全画像を base64 にして1つの JSON 文字列にまとめるため、上限いっぱいだと `JSON.stringify` の段階でメモリ不足になりうる。分割書き出しやストリーミング化は未対応で、当面は「記録だけ」を逃げ道にしている。
+    - **エクスポートとインポートで上限が違う。** インポートは `MAX_IMAGE_BASE64_TOTAL_BYTES`（200MB）、エクスポートは `MAX_EXPORT_IMAGE_BASE64_BYTES`（60MB）。全画像を base64 にして1つの JSON 文字列にまとめる作りのため、書き出しの瞬間におおよそ3倍のメモリが要る（base64 の文字列 → `JSON.stringify` の結果 → ファイルへ渡すコピー）。200MB いっぱいまで積むと 600MB 近くなり端末が落ちて**バックアップが1つも作れない**ので、ピークが 200MB 程度に収まる値に抑えてある。**端末での実測はしていない見積もりなので、落ちる報告があればエクスポート側を下げること。インポート側は下げてはいけない**（過去のバックアップファイルが読めなくなる）。
+    - `estimateBackupImages()` が**画像を読み込まずにファイルサイズだけで**事前に見積もり、入りきらない場合は枚数と合計サイズを示してから選ばせる。読み込んでから「入りませんでした」では、その読み込み自体でメモリ不足になって何も作れない恐れがある。
+    - **残っている問題**: 分割書き出し・ストリーミング化は未対応。上限と事前見積もりで「落ちる領域に入らない」ようにしているだけで、根本的には巨大な文字列を作る構造のまま。
   - **最終バックアップ日**（`src/utils/backup.ts` の `LAST_BACKUP_SETTING_KEY`）は settings テーブルに置き、設定画面のバックアップ節に常時表示する。上記のとおり復旧手段は手動バックアップだけなので、`BACKUP_STALE_DAYS`（14日）を超えたら注意を促す。**この値はバックアップファイルに含めない** — 「この端末で最後に取った日時」という意味なので、含めると復元した瞬間に他端末の古い日付が入り込む。
 
 - **Image storage** (`src/utils/imageStorage.ts`): trade chart images are copied into `documentDirectory/charts/` and stored in the DB as **relative** paths (`charts/xxx.jpg`), resolved to an absolute URI only at read time. This is because `documentDirectory`'s container ID changes across reinstalls/OS updates, which would silently break absolute paths. Old absolute-path rows are migrated to relative paths in `database.ts`.

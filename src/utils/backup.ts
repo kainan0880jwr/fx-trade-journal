@@ -15,9 +15,14 @@ import { resolveImageUri, isSafeChartPath } from './imageStorage';
 import type { Trade, CurrencyPair } from '../types';
 
 const SCHEMA_VERSION = SCHEMA_MIGRATIONS.length;
-// バックアップに載せられる画像の合計量（base64換算）。**エクスポートとインポートで
-// 同じ値を使うこと。** 以前はインポート側にしか上限が無く、エクスポートは無制限だった
-// ため、画像の多いユーザーは「作れるのに復元できないバックアップ」を持たされていた。
+// **インポート側**が受け付ける画像の合計量（base64換算）。
+//
+// エクスポートはこれより小さい MAX_EXPORT_IMAGE_BASE64_BYTES で積むので、
+// 自分で作ったファイルがここに引っかかることはない。ここを下げてはいけない —
+// 過去に作られたバックアップファイルが読めなくなり、機種変更のときに詰む。
+//
+// かつてはインポート側にしか上限が無く、エクスポートは無制限だった。そのため
+// 画像の多いユーザーは「作れるのに復元できないバックアップ」を持たされていた。
 // 本人はバックアップ済みのつもりで機種変更し、復元しようとして初めて弾かれる —
 // 旧端末を手放した後では取り返しがつかない。
 export const MAX_IMAGE_BASE64_TOTAL_BYTES = 200 * 1024 * 1024; // 合計200MBまで
@@ -25,12 +30,92 @@ export const MAX_IMAGE_BASE64_TOTAL_BYTES = 200 * 1024 * 1024; // 合計200MBま
 export const MAX_TRADES_PER_BACKUP = 50000;
 
 /**
+ * **エクスポート時**に積む画像の上限。インポートの上限（200MB）より意図的に小さい。
+ *
+ * 全画像を base64 にして1つの JSON 文字列にまとめる作りのため、書き出しの瞬間に
+ * おおよそ3倍のメモリが要る（base64の文字列 → JSON.stringify の結果 → ファイルへ
+ * 渡すコピー）。インポートの上限いっぱいまで積むと 600MB 近くなり、端末が落ちて
+ * **バックアップが1つも作れない**。落ちるくらいなら画像を諦めるほうがましなので、
+ * ピークが 200MB 程度に収まる 60MB を上限にする。
+ *
+ * 端末での実測はしていない見積もりなので、落ちる報告があればここを下げること。
+ * インポート側を下げてはいけない（既存のバックアップファイルが読めなくなる）。
+ */
+export const MAX_EXPORT_IMAGE_BASE64_BYTES = 60 * 1024 * 1024;
+
+/** base64 は元データのおよそ 4/3 の長さになる。 */
+const BASE64_OVERHEAD = 4 / 3;
+
+/**
  * この画像をまだバックアップに載せられるか。
- * インポート側の判定（合計が上限を超えたら拒否）と表裏になっており、
- * ここで true を返した画像だけを積む限り、必ず復元できるファイルになる。
+ * ここで true を返した画像だけを積む限り、インポート側の上限を超えることはなく、
+ * かつ書き出し時のメモリも見積もりの範囲に収まる。
  */
 export function canIncludeImage(currentBase64Bytes: number, imageBase64Bytes: number): boolean {
-  return currentBase64Bytes + imageBase64Bytes <= MAX_IMAGE_BASE64_TOTAL_BYTES;
+  return currentBase64Bytes + imageBase64Bytes <= MAX_EXPORT_IMAGE_BASE64_BYTES;
+}
+
+/**
+ * 画像を積んでいったときに何枚入って何枚溢れるかを、実際の書き出しと同じ順序・
+ * 同じ判定で数える純粋関数。上限を超える画像は飛ばして次に進む（そこで打ち切らない）
+ * ので、後ろにある小さい画像は入ることがある。
+ */
+export function planImageInclusion(base64Sizes: number[]): {
+  included: number;
+  omitted: number;
+  base64Bytes: number;
+} {
+  let total = 0, included = 0, omitted = 0;
+  for (const size of base64Sizes) {
+    if (canIncludeImage(total, size)) {
+      total += size;
+      included++;
+    } else {
+      omitted++;
+    }
+  }
+  return { included, omitted, base64Bytes: total };
+}
+
+/** 画像込みでバックアップを作ったらどうなるかの事前見積もり。 */
+export interface BackupImageEstimate {
+  /** チャート画像の総枚数 */
+  total: number;
+  /** 上限内に収まる枚数 */
+  included: number;
+  /** 上限を超えて入らない枚数 */
+  omitted: number;
+  /** 画像の実ファイル合計バイト数（base64 前） */
+  rawBytes: number;
+}
+
+/**
+ * 画像を読み込まずに、ファイルサイズだけを見て見積もる。
+ *
+ * 実際に読み込んでから「入りませんでした」と伝えるのでは、その読み込み自体で
+ * 端末が落ちうる。**落ちる前に伝えて選ばせる**ためにこれが要る。
+ */
+export async function estimateBackupImages(): Promise<BackupImageEstimate> {
+  const trades = await getAllTrades();
+  const sizes: number[] = [];
+  let rawBytes = 0;
+  for (const trade of trades) {
+    for (const uri of trade.imageUris) {
+      if (!uri.includes('://') && !isSafeChartPath(uri)) continue;
+      try {
+        const info = await getInfoAsync(resolveImageUri(uri));
+        // size は exists のときだけ入る
+        const raw = info.exists && 'size' in info ? (info.size as number) : 0;
+        if (raw <= 0) continue;
+        rawBytes += raw;
+        sizes.push(Math.ceil(raw * BASE64_OVERHEAD));
+      } catch {
+        // 読めない画像は書き出し時も飛ばされるので、見積もりからも外す
+      }
+    }
+  }
+  const plan = planImageInclusion(sizes);
+  return { total: sizes.length, included: plan.included, omitted: plan.omitted, rawBytes };
 }
 
 /** エクスポートの結果。呼び出し側が「何が入らなかったか」を伝えるために使う。 */
@@ -76,22 +161,6 @@ export function backupFreshness(raw: string | null | undefined, now: Date = new 
   // 端末の時計が戻された等で未来日付になっていても、経過日数を負にはしない
   const days = Math.max(0, Math.floor((now.getTime() - ms) / 86400000));
   return { state: days > BACKUP_STALE_DAYS ? 'stale' : 'ok', at, days };
-}
-
-/**
- * チャート画像を1枚でも持っているか。
- *
- * 画像を持っていないユーザーに「画像を含めますか？」と聞くのは無意味な手間なので、
- * 聞くかどうかの判定に使う。全トレードを読み込むと重いので件数だけ問い合わせる。
- */
-export async function hasAnyTradeImages(): Promise<boolean> {
-  const db = await getDatabase();
-  const row = await db.getFirstAsync<{ n: number }>(
-    `SELECT 1 AS n FROM trades
-      WHERE image_uris IS NOT NULL AND image_uris != '' AND image_uris != '[]'
-      LIMIT 1`
-  );
-  return row != null;
 }
 
 /** 最終バックアップ日時を取得する（未実施なら null）。 */

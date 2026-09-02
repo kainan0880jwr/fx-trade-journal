@@ -16,7 +16,7 @@ import { useTradeStore } from '../../src/store/tradeStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { generateId } from '../../src/utils/statsCalc';
 import { getAllTrades, getSetting, setSetting } from '../../src/db/queries';
-import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot, getLastBackupAt, backupFreshness, hasAnyTradeImages } from '../../src/utils/backup';
+import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot, getLastBackupAt, backupFreshness, estimateBackupImages } from '../../src/utils/backup';
 import { importMT4CSV } from '../../src/utils/mt4Import';
 import {
   isNotificationsAvailable, requestNotificationPermission,
@@ -155,6 +155,9 @@ export default function SettingsScreen() {
     }
   };
 
+  // 見積もりはMB表示で十分（KB単位の精度は判断に影響しない）
+  const formatMB = (bytes: number) => `${Math.max(1, Math.round(bytes / (1024 * 1024)))} MB`;
+
   const runExportBackup = async (includeImages: boolean) => {
     setBackupLoading(true);
     try {
@@ -163,7 +166,8 @@ export default function SettingsScreen() {
       // 取ったのに警告が出続けて「効いていない」ように見える）
       setLastBackupAt(await getLastBackupAt());
       // 容量の上限で画像が落ちたことは必ず伝える。黙って落とすと、本人は
-      // 画像も残っているつもりで機種変更してしまう。
+      // 画像も残っているつもりで機種変更してしまう。事前の見積もりで伝えていても、
+      // 実際に落ちた枚数は結果でしか分からないので、ここでも必ず出す。
       if (result.omittedImages > 0) {
         Alert.alert(
           t('backup_export_partial_title'),
@@ -178,24 +182,41 @@ export default function SettingsScreen() {
   };
 
   const handleExportBackup = async () => {
-    // 画像を持っていない人に選択肢を出しても手間が増えるだけなので、そのまま作る。
-    let hasImages = false;
+    // 画像を読み込む前にファイルサイズだけで見積もる。読み込んでから「入りません
+    // でした」では、その読み込み自体でメモリ不足になって何も作れない恐れがある。
+    let est: Awaited<ReturnType<typeof estimateBackupImages>> | null = null;
+    setBackupLoading(true);
     try {
-      hasImages = await hasAnyTradeImages();
+      est = await estimateBackupImages();
     } catch {
-      // 判定できないときは通常どおり画像込みで作る
+      // 見積もれないときは選択肢を出さず、通常どおり画像込みで作る
+    } finally {
+      setBackupLoading(false);
     }
-    if (!hasImages) {
+
+    // 画像を持っていない人に選択肢を出しても手間が増えるだけなので、そのまま作る。
+    if (!est || est.total === 0) {
       await runExportBackup(true);
       return;
     }
+
+    const overflows = est.omitted > 0;
+    const message = overflows
+      ? t('backup_export_images_msg_partial')
+          .replace('{size}', formatMB(est.rawBytes))
+          .replace('{n}', String(est.included))
+          .replace('{total}', String(est.total))
+      : t('backup_export_images_msg');
     Alert.alert(
       t('backup_export_images_title'),
-      t('backup_export_images_msg'),
+      message,
       [
         { text: t('cancel'), style: 'cancel' },
         { text: t('backup_export_records_only'), onPress: () => { void runExportBackup(false); } },
-        { text: t('backup_export_with_images'), onPress: () => { void runExportBackup(true); } },
+        {
+          text: overflows ? t('backup_export_partial_btn') : t('backup_export_with_images'),
+          onPress: () => { void runExportBackup(true); },
+        },
       ]
     );
   };

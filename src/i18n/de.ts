@@ -706,6 +706,8 @@ export const de: LangStrings = {
   backup_export_records_only: 'Nur Aufzeichnungen',
   backup_export_partial_title: 'Einige Bilder wurden ausgelassen',
   backup_export_partial_msg: '{n} Chart-Bild(er) konnten nicht aufgenommen werden, da das Backup die Größenbeschränkung erreicht hat. Alle deine Trade-Aufzeichnungen sind enthalten.',
+  backup_export_images_msg_partial: 'Deine Chart-Bilder umfassen insgesamt {size}, daher können nicht alle {total} aufgenommen werden. Etwa {n} davon passen. Nur Aufzeichnungen ist kleiner und verlässlicher.',
+  backup_export_partial_btn: 'So viel wie möglich',
 
   // Fehlerbehandlung
   error_boundary_title: 'Ein Fehler ist aufgetreten',

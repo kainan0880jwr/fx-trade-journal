@@ -706,6 +706,8 @@ export const vi: LangStrings = {
   backup_export_records_only: 'Chỉ nhật ký',
   backup_export_partial_title: 'Một số ảnh đã bị bỏ qua',
   backup_export_partial_msg: 'Không thể đưa {n} ảnh biểu đồ vào vì bản sao lưu đã chạm giới hạn dung lượng. Toàn bộ nhật ký giao dịch của bạn vẫn được đưa vào.',
+  backup_export_images_msg_partial: 'Ảnh biểu đồ của bạn tổng cộng {size} nên không thể kèm hết {total} ảnh. Khoảng {n} ảnh sẽ vừa. Chỉ nhật ký thì nhẹ và chắc chắn hơn.',
+  backup_export_partial_btn: 'Kèm phần vừa được',
 
   // Xử lý lỗi
   error_boundary_title: 'Đã xảy ra sự cố',

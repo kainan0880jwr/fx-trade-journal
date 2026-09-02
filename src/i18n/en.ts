@@ -706,6 +706,8 @@ export const en: LangStrings = {
   backup_export_records_only: 'Records only',
   backup_export_partial_title: 'Some images were left out',
   backup_export_partial_msg: '{n} chart image(s) could not be included because the backup reached its size limit. All of your trade records are included.',
+  backup_export_images_msg_partial: 'Your chart images total {size}, so not all {total} can be included. About {n} of them will fit. Records only is smaller and more dependable.',
+  backup_export_partial_btn: 'Include what fits',
 
   // Error boundary
   error_boundary_title: 'Something went wrong',

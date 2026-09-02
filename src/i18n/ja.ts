@@ -704,6 +704,8 @@ export const ja = {
   backup_export_records_only: '記録だけ',
   backup_export_partial_title: '一部の画像を除きました',
   backup_export_partial_msg: '容量の上限を超えたため、チャート画像{n}枚をバックアップに含められませんでした。トレード記録はすべて含まれています。',
+  backup_export_images_msg_partial: 'チャート画像は合計{size}あり、{total}枚すべては含められません。約{n}枚まで含めて作成できます。記録だけなら軽くて確実です。',
+  backup_export_partial_btn: '入る分だけ含める',
 
   // エラーバウンダリ
   error_boundary_title: '問題が発生しました',

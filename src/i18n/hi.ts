@@ -706,6 +706,8 @@ export const hi: LangStrings = {
   backup_export_records_only: 'सिर्फ़ रिकॉर्ड',
   backup_export_partial_title: 'कुछ इमेज छोड़ दी गईं',
   backup_export_partial_msg: 'बैकअप आकार की सीमा तक पहुँच गया, इसलिए {n} चार्ट इमेज शामिल नहीं की जा सकीं। आपके सभी ट्रेड रिकॉर्ड शामिल हैं।',
+  backup_export_images_msg_partial: 'आपकी चार्ट इमेज कुल {size} हैं, इसलिए सभी {total} शामिल नहीं हो सकतीं। लगभग {n} ही समाएंगी। सिर्फ़ रिकॉर्ड हल्का और ज़्यादा भरोसेमंद है।',
+  backup_export_partial_btn: 'जितनी समाएं उतनी',
 
   // एरर हैंडलिंग
   error_boundary_title: 'कुछ गड़बड़ हो गई',

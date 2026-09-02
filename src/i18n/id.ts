@@ -706,6 +706,8 @@ export const id: LangStrings = {
   backup_export_records_only: 'Hanya catatan',
   backup_export_partial_title: 'Sebagian gambar tidak disertakan',
   backup_export_partial_msg: '{n} gambar grafik tidak dapat disertakan karena cadangan mencapai batas ukuran. Seluruh catatan transaksi Anda tetap disertakan.',
+  backup_export_images_msg_partial: 'Gambar grafik Anda berjumlah {size}, sehingga tidak semua {total} bisa disertakan. Sekitar {n} yang muat. Hanya catatan lebih ringan dan lebih pasti.',
+  backup_export_partial_btn: 'Sertakan yang muat',
 
   // Penanganan error
   error_boundary_title: 'Terjadi kesalahan',

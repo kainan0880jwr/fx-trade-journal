@@ -706,6 +706,8 @@ export const tr: LangStrings = {
   backup_export_records_only: 'Yalnızca kayıtlar',
   backup_export_partial_title: 'Bazı görseller dışarıda kaldı',
   backup_export_partial_msg: 'Yedek boyut sınırına ulaştığı için {n} grafik görseli eklenemedi. İşlem kayıtlarınızın tamamı yedeğe dahil edildi.',
+  backup_export_images_msg_partial: 'Grafik görselleriniz toplam {size} tutuyor, bu yüzden {total} görselin tamamı eklenemez. Yaklaşık {n} tanesi sığar. Yalnızca kayıtlar daha küçük ve daha güvenilirdir.',
+  backup_export_partial_btn: 'Sığanları ekle',
 
   // Hata yönetimi
   error_boundary_title: 'Bir sorun oluştu',

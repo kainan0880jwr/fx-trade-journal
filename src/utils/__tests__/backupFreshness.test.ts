@@ -1,4 +1,7 @@
-import { backupFreshness, BACKUP_STALE_DAYS, canIncludeImage, MAX_IMAGE_BASE64_TOTAL_BYTES } from '../backup';
+import {
+  backupFreshness, BACKUP_STALE_DAYS, canIncludeImage, planImageInclusion,
+  MAX_IMAGE_BASE64_TOTAL_BYTES, MAX_EXPORT_IMAGE_BASE64_BYTES,
+} from '../backup';
 
 const NOW = new Date('2026-09-02T12:00:00Z');
 const daysBefore = (n: number) => new Date(NOW.getTime() - n * 86400000).toISOString();
@@ -39,18 +42,47 @@ describe('backupFreshness', () => {
 
 describe('canIncludeImage', () => {
   it('上限ちょうどまでは積める', () => {
-    expect(canIncludeImage(0, MAX_IMAGE_BASE64_TOTAL_BYTES)).toBe(true);
-    expect(canIncludeImage(MAX_IMAGE_BASE64_TOTAL_BYTES - 10, 10)).toBe(true);
+    expect(canIncludeImage(0, MAX_EXPORT_IMAGE_BASE64_BYTES)).toBe(true);
+    expect(canIncludeImage(MAX_EXPORT_IMAGE_BASE64_BYTES - 10, 10)).toBe(true);
   });
 
   it('1バイトでも超えたら積まない', () => {
     // ここで true を返すと、インポート側の `> 上限` に引っかかって
     // ファイルごと復元不能になる。エクスポートとインポートの境界は必ず一致させる。
-    expect(canIncludeImage(MAX_IMAGE_BASE64_TOTAL_BYTES - 10, 11)).toBe(false);
-    expect(canIncludeImage(MAX_IMAGE_BASE64_TOTAL_BYTES, 1)).toBe(false);
+    expect(canIncludeImage(MAX_EXPORT_IMAGE_BASE64_BYTES - 10, 11)).toBe(false);
+    expect(canIncludeImage(MAX_EXPORT_IMAGE_BASE64_BYTES, 1)).toBe(false);
   });
 
   it('空の画像は常に積める', () => {
-    expect(canIncludeImage(MAX_IMAGE_BASE64_TOTAL_BYTES, 0)).toBe(true);
+    expect(canIncludeImage(MAX_EXPORT_IMAGE_BASE64_BYTES, 0)).toBe(true);
+  });
+});
+
+
+describe('planImageInclusion', () => {
+  const CAP = MAX_EXPORT_IMAGE_BASE64_BYTES;
+
+  it('全部収まるならすべて含める', () => {
+    expect(planImageInclusion([100, 200, 300])).toEqual({ included: 3, omitted: 0, base64Bytes: 600 });
+  });
+
+  it('上限を超えた分だけ落とす', () => {
+    const r = planImageInclusion([CAP, 10]);
+    expect(r).toEqual({ included: 1, omitted: 1, base64Bytes: CAP });
+  });
+
+  it('大きい画像を飛ばしても、後ろの小さい画像は入る', () => {
+    // 打ち切らずに次へ進むので、巨大な1枚のせいで以降が全滅することはない。
+    const r = planImageInclusion([CAP - 5, CAP, 5]);
+    expect(r).toEqual({ included: 2, omitted: 1, base64Bytes: CAP });
+  });
+
+  it('画像が無ければ何も起きない', () => {
+    expect(planImageInclusion([])).toEqual({ included: 0, omitted: 0, base64Bytes: 0 });
+  });
+
+  it('エクスポートの上限はインポートの上限を超えない', () => {
+    // 超えると「作れるのに復元できないバックアップ」が復活する。
+    expect(MAX_EXPORT_IMAGE_BASE64_BYTES).toBeLessThanOrEqual(MAX_IMAGE_BASE64_TOTAL_BYTES);
   });
 });
