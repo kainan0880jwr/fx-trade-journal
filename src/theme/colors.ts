@@ -23,7 +23,7 @@ export const darkColors = {
 
   text: '#E8ECFF',
   text2: '#7C8DB5',
-  text3: '#6E7A9F',
+  text3: '#7580A3',
 
   yellow: '#F5BE4A',
   yellowBg: 'rgba(245,190,74,0.12)',
@@ -44,30 +44,30 @@ export const lightColors = {
   border: '#DDE2F4',
   borderLight: '#C8CEE8',
 
-  primary: '#3E6EE8',
+  primary: '#2F62E6',
   primaryLight: '#6290F5',
   primaryDark: '#2652C8',
   primaryGlow: 'rgba(62,110,232,0.12)',
 
-  win: '#16A87A',
+  win: '#0F7455',
   winBg: 'rgba(22,168,122,0.10)',
-  loss: '#D44A4A',
+  loss: '#BC2D2D',
   lossBg: 'rgba(212,74,74,0.10)',
-  even: '#6B7CAD',
+  even: '#536598',
   evenBg: 'rgba(107,124,173,0.08)',
 
-  buy: '#16A87A',
-  sell: '#D44A4A',
+  buy: '#0F7455',
+  sell: '#BC2D2D',
 
   text: '#111827',
-  text2: '#5A6A96',
-  text3: '#8A9AC0',
+  text2: '#434F6F',
+  text3: '#566B9F',
 
-  yellow: '#C47C00',
+  yellow: '#8F5A00',
   yellowBg: 'rgba(196,124,0,0.10)',
-  purple: '#7048D0',
+  purple: '#6F47D0',
   purpleBg: 'rgba(112,72,208,0.10)',
-  cyan: '#0E86C0',
+  cyan: '#0B6D9C',
   cyanBg: 'rgba(14,134,192,0.08)',
 
   tabBg: '#EAEDFA',
