@@ -139,6 +139,10 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
     if (recovered) {
       // 開けた＝移行は完了していた。フラグを立て直して以後は通常経路に乗せる。
       await SecureStore.setItemAsync(MIGRATION_FLAG_KEY, 'v1').catch(() => {});
+      // この経路も鍵の複製を通しておく。フラグを立て直したので次回起動では
+      // 上の通常経路に乗って複製されるが、その1回の間に機種変更されると
+      // 鍵がバックアップに入らないまま取りこぼす。
+      ensureKeyIsBackupable(existingKey).catch(() => {});
       try {
         Sentry.captureMessage('db:migration_flag_recovered', { level: 'warning' });
       } catch { /* 監視できないだけなので握り潰す */ }
