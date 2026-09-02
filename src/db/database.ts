@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react-native';
 import * as SQLite from 'expo-sqlite';
 import * as SecureStore from 'expo-secure-store';
-import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey } from './dbEncryption';
+import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey, ensureKeyIsBackupable } from './dbEncryption';
 
 const OLD_DB_NAME = 'fx_journal.db'; // 旧・平文DB（SQLCipher導入前）
 const NEW_DB_NAME = 'fx_journal_v2.db'; // 新・SQLCipher暗号化DB
@@ -118,6 +118,11 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
     // 新規鍵は生成せず、専用のエラーとして呼び出し側に委ねる。
     const key = await getEncryptionKey();
     if (!key) throw new EncryptionKeyLostError();
+    // 既存ユーザーの鍵は旧スロット（THIS_DEVICE_ONLY）にしか無いことがある。この経路は
+    // getOrCreateEncryptionKey を通らないため、ここで複製しないと
+    // 「機種変更で鍵だけ引き継がれない」状態がアップデート後も残り続ける。
+    // DBを開く条件ではないので待たず、失敗しても起動は妨げない。
+    ensureKeyIsBackupable(key).catch(() => {});
     const db = await SQLite.openDatabaseAsync(NEW_DB_NAME);
     await db.execAsync(`PRAGMA key = '${key}';`);
     return db;

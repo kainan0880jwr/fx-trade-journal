@@ -694,6 +694,11 @@ export const de: LangStrings = {
   backup_import_empty: "Diese Sicherung enthält keine Trades. Die Wiederherstellung wurde abgebrochen, deine vorhandenen Daten bleiben erhalten.",
   backup_exporting: 'Backup wird erstellt...',
   backup_importing: 'Wird wiederhergestellt...',
+  backup_status_never: 'Noch keine Sicherung erstellt',
+  backup_status_never_sub: 'Deine Aufzeichnungen liegen nur auf diesem Gerät. Bei einem Gerätewechsel oder Verlust sind sie weg.',
+  backup_status_last: 'Letzte Sicherung: {date}',
+  backup_status_ok_sub: 'Erstelle von Zeit zu Zeit eine neue, wenn Aufzeichnungen dazukommen.',
+  backup_status_stale_sub: 'Die letzte war vor {n} Tagen. Wir empfehlen, eine neue Sicherung zu erstellen.',
 
   // Fehlerbehandlung
   error_boundary_title: 'Ein Fehler ist aufgetreten',

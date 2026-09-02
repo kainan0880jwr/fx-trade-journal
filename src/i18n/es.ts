@@ -694,6 +694,11 @@ export const es: LangStrings = {
   backup_import_empty: "Esta copia de seguridad no contiene operaciones. Se canceló la restauración para no eliminar tus datos actuales.",
   backup_exporting: "Creando copia de seguridad...",
   backup_importing: "Restaurando...",
+  backup_status_never: 'Todavía no has creado ninguna copia de seguridad',
+  backup_status_never_sub: 'Tus registros solo existen en este dispositivo. Si cambias o pierdes el teléfono, los perderás.',
+  backup_status_last: 'Última copia de seguridad: {date}',
+  backup_status_ok_sub: 'Crea una nueva de vez en cuando a medida que aumenten tus registros.',
+  backup_status_stale_sub: 'La última fue hace {n} días. Te recomendamos crear una copia nueva.',
 
   // Gestión de errores
   error_boundary_title: 'Se produjo un error',
