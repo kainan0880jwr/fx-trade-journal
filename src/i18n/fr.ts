@@ -694,6 +694,11 @@ export const fr: LangStrings = {
   backup_import_empty: "Cette sauvegarde ne contient aucun trade. La restauration a été annulée afin de ne pas supprimer vos données existantes.",
   backup_exporting: "Création de la sauvegarde...",
   backup_importing: "Restauration en cours...",
+  backup_status_never: "Aucune sauvegarde n'a encore été créée",
+  backup_status_never_sub: "Vos données n'existent que sur cet appareil. Un changement ou une perte de téléphone les fera disparaître.",
+  backup_status_last: 'Dernière sauvegarde : {date}',
+  backup_status_ok_sub: "Recréez-en une de temps en temps à mesure que vos données s'accumulent.",
+  backup_status_stale_sub: "La dernière date d'il y a {n} jours. Nous vous recommandons d'en créer une nouvelle.",
 
   // Gestion des erreurs
   error_boundary_title: "Une erreur s'est produite",

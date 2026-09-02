@@ -9,13 +9,54 @@ import {
 } from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
-import { getAllTrades, getCurrencyPairs } from '../db/queries';
+import { getAllTrades, getCurrencyPairs, getSetting, setSetting } from '../db/queries';
 import { getDatabase, SCHEMA_MIGRATIONS } from '../db/database';
 import { resolveImageUri, isSafeChartPath } from './imageStorage';
 import type { Trade, CurrencyPair } from '../types';
 
 const SCHEMA_VERSION = SCHEMA_MIGRATIONS.length;
 const MAX_IMAGE_BASE64_TOTAL_BYTES = 200 * 1024 * 1024; // インポート時のメモリDoS防止（合計200MBまで）
+
+/**
+ * 最後にこの端末でバックアップを作成した日時（ISO8601）。settingsテーブルに置く。
+ *
+ * 暗号鍵は端末に紐づくため、機種変更や端末の紛失では手動バックアップだけが復旧手段になる。
+ * これまで「自分が最後にいつバックアップしたか」を知る手段がアプリ内に無く、
+ * ユーザーは自分がどれだけ危険な状態かを判断できなかった。
+ *
+ * 「この端末で作成した日時」という意味なので、**バックアップファイルには含めない**
+ * （exportBackup で除外する）。含めてしまうと、復元した瞬間に他端末の古い日付が
+ * 入り込み、「復元したばかりなのに3ヶ月前」といった読めない表示になる。
+ */
+export const LAST_BACKUP_SETTING_KEY = 'last_backup_at';
+
+/** バックアップが古いと見なす日数。これを超えたら設定画面で注意を促す。 */
+export const BACKUP_STALE_DAYS = 14;
+
+export type BackupFreshness =
+  | { state: 'never' }
+  | { state: 'ok'; at: Date; days: number }
+  | { state: 'stale'; at: Date; days: number };
+
+/**
+ * 最終バックアップ日時の文字列から、表示に必要な状態を組み立てる純粋関数。
+ * 解釈不能な値（旧バージョンの残骸や壊れた値）は「未実施」に倒す — 実際より
+ * 安全に見せてしまうより、促しすぎるほうが被害が小さい。
+ */
+export function backupFreshness(raw: string | null | undefined, now: Date = new Date()): BackupFreshness {
+  if (!raw) return { state: 'never' };
+  const ms = Date.parse(raw);
+  if (Number.isNaN(ms)) return { state: 'never' };
+  const at = new Date(ms);
+  // 端末の時計が戻された等で未来日付になっていても、経過日数を負にはしない
+  const days = Math.max(0, Math.floor((now.getTime() - ms) / 86400000));
+  return { state: days > BACKUP_STALE_DAYS ? 'stale' : 'ok', at, days };
+}
+
+/** 最終バックアップ日時を取得する（未実施なら null）。 */
+export async function getLastBackupAt(): Promise<string | null> {
+  return getSetting(LAST_BACKUP_SETTING_KEY);
+}
 
 interface BackupTrade extends Trade {
   imageBase64: Record<string, string>; // uri -> base64
@@ -38,7 +79,11 @@ export async function exportBackup(): Promise<void> {
     'SELECT key, value FROM settings'
   );
   const settings: Record<string, string> = {};
-  for (const r of settingRows) settings[r.key] = r.value;
+  for (const r of settingRows) {
+    // 「この端末で最後にバックアップした日時」はバックアップ間で持ち回らない
+    if (r.key === LAST_BACKUP_SETTING_KEY) continue;
+    settings[r.key] = r.value;
+  }
 
   // 各トレードの画像をBase64に変換（メモリ節約のため逐次処理）
   const backupTrades: BackupTrade[] = [];
@@ -83,6 +128,12 @@ export async function exportBackup(): Promise<void> {
 
   // 暗号化DBの投資を無にしないよう、共有後は平文の一時ファイルをキャッシュに残さない
   await deleteAsync(filePath, { idempotent: true }).catch(() => {});
+
+  // 共有シートを閉じた時点を「バックアップした」と見なす。保存先まで追跡する手段が
+  // Sharing には無いため、これが取れる最良の信号（キャンセルされた場合は実際より
+  // 新しく見えるが、shareAsync まで到達している以上ファイルは生成できている）。
+  // ここでの失敗は表示が古いままになるだけなので、エクスポート自体は成功扱いにする。
+  await setSetting(LAST_BACKUP_SETTING_KEY, new Date().toISOString()).catch(() => {});
 }
 
 export async function importBackup(): Promise<number> {

@@ -694,6 +694,11 @@ export const en: LangStrings = {
   backup_import_empty: "This backup contains no trades. The restore was cancelled so your existing data was not deleted.",
   backup_exporting: 'Creating backup...',
   backup_importing: 'Restoring...',
+  backup_status_never: 'No backup has been created yet',
+  backup_status_never_sub: 'Your records exist only on this device. Changing or losing your phone will lose them.',
+  backup_status_last: 'Last backup: {date}',
+  backup_status_ok_sub: 'Create a new one from time to time as your records grow.',
+  backup_status_stale_sub: 'The last one was {n} days ago. We recommend creating a new backup.',
 
   // Error boundary
   error_boundary_title: 'Something went wrong',

@@ -694,6 +694,11 @@ export const hi: LangStrings = {
   backup_import_empty: "इस बैकअप में कोई ट्रेड नहीं है। आपका मौजूदा डेटा न मिटे इसलिए पुनर्स्थापना रद्द कर दी गई।",
   backup_exporting: 'बैकअप बन रहा है...',
   backup_importing: 'रीस्टोर हो रहा है...',
+  backup_status_never: 'अभी तक कोई बैकअप नहीं बनाया गया',
+  backup_status_never_sub: 'आपके रिकॉर्ड सिर्फ़ इसी डिवाइस में हैं। फ़ोन बदलने या खो जाने पर वे चले जाएंगे।',
+  backup_status_last: 'आखिरी बैकअप: {date}',
+  backup_status_ok_sub: 'रिकॉर्ड बढ़ने के साथ समय-समय पर नया बैकअप बनाते रहें।',
+  backup_status_stale_sub: 'आखिरी बैकअप {n} दिन पहले था। नया बैकअप बनाने की सलाह है।',
 
   // एरर हैंडलिंग
   error_boundary_title: 'कुछ गड़बड़ हो गई',

@@ -694,6 +694,11 @@ export const vi: LangStrings = {
   backup_import_empty: "Bản sao lưu này không có lệnh nào. Đã hủy khôi phục để không xóa dữ liệu hiện có của bạn.",
   backup_exporting: 'Đang tạo bản sao lưu...',
   backup_importing: 'Đang khôi phục...',
+  backup_status_never: 'Bạn chưa tạo bản sao lưu nào',
+  backup_status_never_sub: 'Dữ liệu của bạn chỉ nằm trên thiết bị này. Đổi máy hoặc mất máy là mất hết.',
+  backup_status_last: 'Sao lưu gần nhất: {date}',
+  backup_status_ok_sub: 'Thỉnh thoảng hãy tạo bản mới khi dữ liệu tăng lên.',
+  backup_status_stale_sub: 'Lần gần nhất là {n} ngày trước. Bạn nên tạo bản sao lưu mới.',
 
   // Xử lý lỗi
   error_boundary_title: 'Đã xảy ra sự cố',

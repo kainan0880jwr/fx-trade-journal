@@ -694,6 +694,11 @@ export const it: LangStrings = {
   backup_import_empty: "Questo backup non contiene operazioni. Il ripristino è stato annullato per non eliminare i dati esistenti.",
   backup_exporting: "Creazione backup...",
   backup_importing: "Ripristino in corso...",
+  backup_status_never: 'Non hai ancora creato nessun backup',
+  backup_status_never_sub: 'I tuoi dati esistono solo su questo dispositivo. Cambiando o perdendo il telefono andranno persi.',
+  backup_status_last: 'Ultimo backup: {date}',
+  backup_status_ok_sub: 'Creane uno nuovo di tanto in tanto, man mano che i dati aumentano.',
+  backup_status_stale_sub: "L'ultimo risale a {n} giorni fa. Ti consigliamo di crearne uno nuovo.",
 
   // Gestione degli errori
   error_boundary_title: 'Si è verificato un errore',

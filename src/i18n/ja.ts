@@ -692,6 +692,11 @@ export const ja = {
   backup_import_empty: "このバックアップにはトレードが1件も含まれていません。既存のデータを消さないよう、復元を中止しました。",
   backup_exporting: 'バックアップを作成中...',
   backup_importing: '復元中...',
+  backup_status_never: 'まだバックアップを作成していません',
+  backup_status_never_sub: '記録はこの端末の中だけにあります。機種変更や端末の紛失で失われます。',
+  backup_status_last: '最終バックアップ: {date}',
+  backup_status_ok_sub: '記録が増えたら、ときどき作成し直してください。',
+  backup_status_stale_sub: '{n}日前が最後です。新しく作成し直すことをおすすめします。',
 
   // エラーバウンダリ
   error_boundary_title: '問題が発生しました',

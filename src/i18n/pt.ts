@@ -694,6 +694,11 @@ export const pt: LangStrings = {
   backup_import_empty: "Este backup não contém operações. A restauração foi cancelada para não excluir seus dados atuais.",
   backup_exporting: 'Criando backup...',
   backup_importing: 'Restaurando...',
+  backup_status_never: 'Nenhum backup foi criado ainda',
+  backup_status_never_sub: 'Seus registros existem apenas neste aparelho. Trocar ou perder o celular fará você perdê-los.',
+  backup_status_last: 'Último backup: {date}',
+  backup_status_ok_sub: 'Crie um novo de tempos em tempos conforme os registros aumentam.',
+  backup_status_stale_sub: 'O último foi há {n} dias. Recomendamos criar um novo backup.',
 
   // Tratamento de erros
   error_boundary_title: 'Ocorreu um erro',

@@ -16,7 +16,7 @@ import { useTradeStore } from '../../src/store/tradeStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { generateId } from '../../src/utils/statsCalc';
 import { getAllTrades, getSetting, setSetting } from '../../src/db/queries';
-import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot } from '../../src/utils/backup';
+import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot, getLastBackupAt, backupFreshness } from '../../src/utils/backup';
 import { importMT4CSV } from '../../src/utils/mt4Import';
 import {
   isNotificationsAvailable, requestNotificationPermission,
@@ -70,9 +70,14 @@ export default function SettingsScreen() {
   // 「いつの時点に戻るのか」を提示できるよう、有無ではなく日時を持つ
   const [snapshotAt, setSnapshotAt] = useState<string | null>(null);
   const hasSnapshot = snapshotAt != null;
+  // 暗号鍵は端末に紐づくため、機種変更・端末紛失からの復旧手段は手動バックアップだけ。
+  // 「最後にいつ取ったか」を常に見せて、危険な状態に気づけるようにする。
+  const [lastBackupAt, setLastBackupAt] = useState<string | null>(null);
+  const freshness = backupFreshness(lastBackupAt);
 
   useEffect(() => {
     getPreImportSnapshot().then(snap => setSnapshotAt(snap?.exportedAt ?? null));
+    getLastBackupAt().then(setLastBackupAt).catch(() => {});
   }, []);
   const [mt4Loading, setMt4Loading] = useState(false);
   const [notifEnabled, setNotifEnabled] = useState(false);
@@ -154,6 +159,9 @@ export default function SettingsScreen() {
     setBackupLoading(true);
     try {
       await exportBackup();
+      // 表示中の「最終バックアップ」を即座に更新する（次回起動まで古いままだと、
+      // 取ったのに警告が出続けて「効いていない」ように見える）
+      setLastBackupAt(await getLastBackupAt());
     } catch {
       Alert.alert(t('error'), t('backup_import_error'));
     } finally {
@@ -730,6 +738,35 @@ export default function SettingsScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t('backup_section')}</Text>
           <View style={styles.card}>
+            <View style={styles.backupStatus}>
+              <Ionicons
+                name={freshness.state === 'ok' ? 'shield-checkmark-outline' : 'alert-circle-outline'}
+                size={18}
+                color={freshness.state === 'ok' ? C.win : C.yellow}
+              />
+              <View style={{ flex: 1, marginLeft: 10 }}>
+                <Text style={styles.backupStatusTitle}>
+                  {freshness.state === 'never'
+                    ? t('backup_status_never')
+                    : t('backup_status_last').replace('{date}', freshness.at.toLocaleDateString())}
+                </Text>
+                <Text
+                  style={[
+                    styles.backupStatusSub,
+                    // 注意を促す文面は本文色で出す。テーマの yellow は白背景での
+                    // コントラストが 3.4:1 しかなく、小さい文字には使えない。
+                    freshness.state !== 'ok' && styles.backupStatusSubAlert,
+                  ]}
+                >
+                  {freshness.state === 'never'
+                    ? t('backup_status_never_sub')
+                    : freshness.state === 'stale'
+                      ? t('backup_status_stale_sub').replace('{n}', String(freshness.days))
+                      : t('backup_status_ok_sub')}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.backupSep} />
             <TouchableOpacity
               style={[styles.backupBtn, backupLoading && styles.backupBtnDisabled]}
               onPress={handleExportBackup}
@@ -1091,6 +1128,10 @@ function makeStyles(C: ThemeColors) {
     notifTimeText: { fontSize: 22, fontWeight: '700', color: C.text, letterSpacing: 1 },
     notifSaveBtn: { backgroundColor: C.primary, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 10 },
     notifSaveBtnText: { color: '#FFF', fontWeight: '700', fontSize: 13 },
+    backupStatus: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 12 },
+    backupStatusTitle: { fontSize: 13, fontWeight: '600', color: C.text },
+    backupStatusSub: { fontSize: 12, color: C.text2, marginTop: 2, lineHeight: 17 },
+    backupStatusSubAlert: { color: C.text },
     backupBtn: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14 },
     backupBtnDisabled: { opacity: 0.5 },
     backupBtnTitle: { fontSize: 14, fontWeight: '600', color: C.text },

@@ -694,6 +694,11 @@ export const tr: LangStrings = {
   backup_import_empty: "Bu yedekte hiç işlem yok. Mevcut verileriniz silinmesin diye geri yükleme iptal edildi.",
   backup_exporting: 'Yedek oluşturuluyor...',
   backup_importing: 'Geri yükleniyor...',
+  backup_status_never: 'Henüz yedek oluşturmadınız',
+  backup_status_never_sub: 'Kayıtlarınız yalnızca bu cihazda bulunuyor. Telefon değiştirir veya kaybederseniz kayıtlar da gider.',
+  backup_status_last: 'Son yedek: {date}',
+  backup_status_ok_sub: 'Kayıtlarınız arttıkça zaman zaman yeni bir yedek oluşturun.',
+  backup_status_stale_sub: 'Sonuncusu {n} gün önceydi. Yeni bir yedek oluşturmanızı öneririz.',
 
   // Hata yönetimi
   error_boundary_title: 'Bir sorun oluştu',

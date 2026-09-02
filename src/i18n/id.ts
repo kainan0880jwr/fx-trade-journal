@@ -694,6 +694,11 @@ export const id: LangStrings = {
   backup_import_empty: "Cadangan ini tidak berisi transaksi. Pemulihan dibatalkan agar data Anda tidak terhapus.",
   backup_exporting: 'Membuat backup...',
   backup_importing: 'Memulihkan...',
+  backup_status_never: 'Belum ada cadangan yang dibuat',
+  backup_status_never_sub: 'Catatan Anda hanya ada di perangkat ini. Jika ganti atau kehilangan ponsel, catatan akan hilang.',
+  backup_status_last: 'Cadangan terakhir: {date}',
+  backup_status_ok_sub: 'Buat cadangan baru sesekali seiring bertambahnya catatan.',
+  backup_status_stale_sub: 'Terakhir {n} hari yang lalu. Sebaiknya buat cadangan baru.',
 
   // Penanganan error
   error_boundary_title: 'Terjadi kesalahan',
