@@ -279,7 +279,7 @@ function makeStyles(C: ThemeColors) {
     heroDir: { fontSize: 14, fontWeight: '700', marginTop: 4 },
     heroRight: { flexDirection: 'row', alignItems: 'center', gap: 10 },
     resultBadge: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20 },
-    resultBadgeText: { color: '#FFFFFF', fontSize: 13, fontWeight: '700' },
+    resultBadgeText: { color: C.onAccent, fontSize: 13, fontWeight: '700' },
     bookmarkBtn: { padding: 4 },
     heroPips: { fontSize: 44, fontWeight: '900' },
     heroPipsUnit: { fontSize: 18, fontWeight: '400' },

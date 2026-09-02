@@ -53,7 +53,7 @@ class ErrorBoundaryInner extends React.Component<InnerProps, State> {
           onPress={this.handleRestart}
           activeOpacity={0.85}
         >
-          <Text style={styles.buttonText}>{t('error_boundary_restart_button')}</Text>
+          <Text style={[styles.buttonText, { color: C.onAccent }]}>{t('error_boundary_restart_button')}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -94,6 +94,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
   },
   buttonText: {
+    // 静的StyleSheetのためテーマ色を参照できない。実際の色は描画側で
+    // C.onAccent を重ねて上書きしている（ダークでは白だとコントラストが足りない）。
     color: '#FFFFFF',
     fontSize: 15,
     fontWeight: '800',

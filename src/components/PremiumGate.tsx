@@ -204,7 +204,7 @@ function makeStyles(C: ThemeColors) {
       elevation: 6,
     },
     btnText: {
-      color: '#FFF',
+      color: C.onAccent,
       fontSize: 15,
       fontWeight: '800',
     },

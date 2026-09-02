@@ -8,7 +8,9 @@ export const darkColors = {
 
   primary: '#4F7EF7',
   primaryLight: '#7BA3FF',
-  primaryDark: '#2D5CE0',
+  // paywall の CTA はこの3色のグラデーション。onAccent(#080B14) が全ストップで
+  // 4.5:1 を満たすよう、暗い側の端を引き上げてある（#2D5CE0 だと 3.48:1）。
+  primaryDark: '#4972E4',
   primaryGlow: 'rgba(79,126,247,0.18)',
 
   win: '#2DD4A0',
@@ -20,6 +22,11 @@ export const darkColors = {
 
   buy: '#2DD4A0',
   sell: '#F47171',
+
+  // アクセント色のベタ塗り（ボタン・バッジ等）の上に載せる前景色。
+  // ダークのアクセントは明るいので、白を載せるとコントラストが足りない
+  // （白 on primary は 3.71:1）。濃い色を載せて 4.5:1 以上を確保する。
+  onAccent: '#080B14',
 
   text: '#E8ECFF',
   text2: '#7C8DB5',
@@ -45,7 +52,9 @@ export const lightColors = {
   borderLight: '#C8CEE8',
 
   primary: '#2F62E6',
-  primaryLight: '#6290F5',
+  // paywall の CTA グラデーションの明るい側の端。白文字で 4.5:1 を満たすまで
+  // 濃くしてある（#6290F5 だと 3.08:1）。
+  primaryLight: '#336EF2',
   primaryDark: '#2652C8',
   primaryGlow: 'rgba(62,110,232,0.12)',
 
@@ -58,6 +67,9 @@ export const lightColors = {
 
   buy: '#0F7455',
   sell: '#BC2D2D',
+
+  // アクセント色のベタ塗りの上に載せる前景色。ライトのアクセントは濃いので白でよい。
+  onAccent: '#FFFFFF',
 
   text: '#111827',
   text2: '#434F6F',

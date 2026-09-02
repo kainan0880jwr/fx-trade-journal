@@ -155,7 +155,7 @@ function RootLayoutContent() {
           style={[styles.retryBtn, { backgroundColor: C.primary }]}
           onPress={handleResetData}
         >
-          <Text style={styles.retryBtnText}>{t('db_reset_confirm_button')}</Text>
+          <Text style={[styles.retryBtnText, { color: C.onAccent }]}>{t('db_reset_confirm_button')}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -170,7 +170,7 @@ function RootLayoutContent() {
           style={[styles.retryBtn, { backgroundColor: C.primary }]}
           onPress={() => { setDbReady(false); initDb(); }}
         >
-          <Text style={styles.retryBtnText}>{t('retry')}</Text>
+          <Text style={[styles.retryBtnText, { color: C.onAccent }]}>{t('retry')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.resetLink} onPress={handleResetData}>
           <Text style={[styles.resetLinkText, { color: C.text3 }]}>{t('db_reset_link')}</Text>
@@ -242,6 +242,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
   },
   retryBtnText: {
+    // 静的StyleSheetのためテーマ色を参照できない。実際の色は描画側で
+    // C.onAccent を重ねて上書きしている（ダークでは白だとコントラストが足りない）。
     color: '#FFFFFF',
     fontSize: 15,
     fontWeight: '800',

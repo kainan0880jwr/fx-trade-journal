@@ -64,7 +64,9 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   - 2026-09-02 以前、ライトモードは text3 が 2.56:1、win が 2.76:1、yellow が 3.07:1 で、**大きい文字やアイコンに許される 3:1 すら下回っていた**。損益の数字・プレースホルダ・表ヘッダーなど中心的な情報がまとめて読みにくかった。前景色だけを濃くして解消してある（`*Bg` のティントは触っていない — 下地を濃くすると逆に比が悪化するため）。
   - 制約が最も厳しいのは **`cardAlt` の上にティントを重ねた面**で、ここで 4.5:1 を確保するために前景は見た目より少し濃くしてある。「もう少し明るくしたい」と戻すとテストが落ちる。
   - `buy`/`sell` は `win`/`loss` と同じ値を保つこと（方向ラベルの文字色に使われる）。
-  - **未解決**: ダークモードでベタ塗りのボタン（`C.primary` 等）に白文字を載せている箇所が AA 未達（primary 3.71 / win 1.90 / loss 2.82）。パレットではなく前景トークンの問題で、`#FFF` リテラルをテーマ依存の色に置き換える必要がある。
+  - **アクセント色でベタ塗りした面（ボタン・バッジ・FAB）の前景は `C.onAccent` を使う。`'#FFF'` を直書きしないこと。** ダークのアクセントは明るいため白を載せるとコントラストが足りない（白 on dark primary は 3.71:1、win は 1.90:1）。`onAccent` はライトが `#FFFFFF`、ダークが `#080B14` で、どの塗りの上でも 4.5:1 以上になる。
+  - paywall の CTA は `primaryLight → primary → primaryDark` のグラデーション。**端まで含めて `onAccent` が 4.5:1 を満たす必要がある**ため、ライトの `primaryLight` とダークの `primaryDark` は元の値から寄せてある（元のままだと 3.08:1 / 3.48:1）。グラデーションを派手にしようと端を広げると、そこに重なった文字だけが読めなくなる。
+  - 白のままにしてよいのは、テーマに連動しない固定の暗い面だけ: `src/utils/shareUtils.ts`（共有カードのHTML、背景 `#0D0D0D`）と `app/trade/[id].tsx` の画像ビューアの閉じるボタン（全画面オーバーレイの上）。`app/_layout.tsx` と `ErrorBoundary.tsx` は静的 StyleSheet でテーマ色を参照できないため、既定値を `#FFFFFF` にしたうえで描画側で `C.onAccent` を重ねている。
 
 - **State**: Zustand stores in `src/store/` — `tradeStore.ts`, `settingsStore.ts`, `purchaseStore.ts`. No React Context/Redux.
 

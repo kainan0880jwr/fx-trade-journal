@@ -240,6 +240,6 @@ function makeStyles(C: ThemeColors) {
     warn: { fontSize: 10, lineHeight: 15, color: C.text3, marginTop: 8 },
     footNote: { fontSize: 11, lineHeight: 16, color: C.text2, marginTop: 14, marginBottom: 16 },
     saveBtn: { backgroundColor: C.primary, borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
-    saveBtnText: { color: '#FFF', fontSize: 15, fontWeight: '800' },
+    saveBtnText: { color: C.onAccent, fontSize: 15, fontWeight: '800' },
   });
 }

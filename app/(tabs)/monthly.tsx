@@ -798,7 +798,7 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     periodBtn: { flex: 1, paddingVertical: 9, borderRadius: 9, alignItems: 'center' },
     periodBtnActive: { backgroundColor: C.primary },
     periodBtnText: { fontSize: 13, fontWeight: '700', color: C.text2 },
-    periodBtnTextActive: { color: '#FFF' },
+    periodBtnTextActive: { color: C.onAccent },
 
     // 年間ビュー
     yearSelector: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: isTablet ? 16 : 12, borderBottomWidth: 1, borderBottomColor: C.border },
