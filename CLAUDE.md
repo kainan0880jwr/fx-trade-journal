@@ -60,6 +60,12 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
 
 - **Image storage** (`src/utils/imageStorage.ts`): trade chart images are copied into `documentDirectory/charts/` and stored in the DB as **relative** paths (`charts/xxx.jpg`), resolved to an absolute URI only at read time. This is because `documentDirectory`'s container ID changes across reinstalls/OS updates, which would silently break absolute paths. Old absolute-path rows are migrated to relative paths in `database.ts`.
 
+- **Theme colors** (`src/theme/colors.ts`): `darkColors` / `lightColors` の2パレット。**文字として使う色は全て WCAG AA（4.5:1）を満たすこと。`src/theme/__tests__/contrast.test.ts` が全ての「文字色 × 面」と、同系ティントの上に同じ色の文字を載せる組み合わせ（TradeCard のチップ等）を合成込みで検証している。**
+  - 2026-09-02 以前、ライトモードは text3 が 2.56:1、win が 2.76:1、yellow が 3.07:1 で、**大きい文字やアイコンに許される 3:1 すら下回っていた**。損益の数字・プレースホルダ・表ヘッダーなど中心的な情報がまとめて読みにくかった。前景色だけを濃くして解消してある（`*Bg` のティントは触っていない — 下地を濃くすると逆に比が悪化するため）。
+  - 制約が最も厳しいのは **`cardAlt` の上にティントを重ねた面**で、ここで 4.5:1 を確保するために前景は見た目より少し濃くしてある。「もう少し明るくしたい」と戻すとテストが落ちる。
+  - `buy`/`sell` は `win`/`loss` と同じ値を保つこと（方向ラベルの文字色に使われる）。
+  - **未解決**: ダークモードでベタ塗りのボタン（`C.primary` 等）に白文字を載せている箇所が AA 未達（primary 3.71 / win 1.90 / loss 2.82）。パレットではなく前景トークンの問題で、`#FFF` リテラルをテーマ依存の色に置き換える必要がある。
+
 - **State**: Zustand stores in `src/store/` — `tradeStore.ts`, `settingsStore.ts`, `purchaseStore.ts`. No React Context/Redux.
 
 - **Monetization** (`src/store/purchaseStore.ts`): RevenueCat (`react-native-purchases`), entitlement id `premium` — `hasPremium()` checks `ENTITLEMENT_IDS` (`['premium', 'FXトレード日記 Pro']`) so a RevenueCat-dashboard rename doesn't silently break premium detection the way the non-ASCII-only id did once before. The dashboard must have a `premium` entitlement configured (in addition to, or eventually instead of, the legacy Japanese-name one) for this to take effect. Both this and Sentry init (`app/_layout.tsx`) check for placeholder API keys (`isPlaceholderKey`/`isPlaceholderDsn`, matching `/xxxx/i`) and skip initialization when unset, so local dev works without real keys in `.env`. Required env vars (read via `process.env.EXPO_PUBLIC_*`): `EXPO_PUBLIC_RC_IOS_KEY`, `EXPO_PUBLIC_RC_ANDROID_KEY`, `EXPO_PUBLIC_SENTRY_DSN`.
