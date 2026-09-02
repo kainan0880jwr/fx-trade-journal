@@ -699,6 +699,13 @@ export const id: LangStrings = {
   backup_status_last: 'Cadangan terakhir: {date}',
   backup_status_ok_sub: 'Buat cadangan baru sesekali seiring bertambahnya catatan.',
   backup_status_stale_sub: 'Terakhir {n} hari yang lalu. Sebaiknya buat cadangan baru.',
+  backup_export_error: 'Gagal membuat cadangan',
+  backup_export_images_title: 'Sertakan gambar grafik?',
+  backup_export_images_msg: 'Dengan gambar, grafik Anda ikut dipulihkan, tetapi ukuran file menjadi jauh lebih besar. Hanya catatan lebih ringan dan lebih pasti.',
+  backup_export_with_images: 'Sertakan gambar',
+  backup_export_records_only: 'Hanya catatan',
+  backup_export_partial_title: 'Sebagian gambar tidak disertakan',
+  backup_export_partial_msg: '{n} gambar grafik tidak dapat disertakan karena cadangan mencapai batas ukuran. Seluruh catatan transaksi Anda tetap disertakan.',
 
   // Penanganan error
   error_boundary_title: 'Terjadi kesalahan',

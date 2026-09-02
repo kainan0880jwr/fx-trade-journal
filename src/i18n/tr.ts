@@ -699,6 +699,13 @@ export const tr: LangStrings = {
   backup_status_last: 'Son yedek: {date}',
   backup_status_ok_sub: 'Kayıtlarınız arttıkça zaman zaman yeni bir yedek oluşturun.',
   backup_status_stale_sub: 'Sonuncusu {n} gün önceydi. Yeni bir yedek oluşturmanızı öneririz.',
+  backup_export_error: 'Yedek oluşturulamadı',
+  backup_export_images_title: 'Grafik görselleri de eklensin mi?',
+  backup_export_images_msg: 'Görsellerle birlikte grafikleriniz de geri gelir, ancak dosya çok daha büyük olur. Yalnızca kayıtlar daha küçük ve daha güvenilirdir.',
+  backup_export_with_images: 'Görselleri ekle',
+  backup_export_records_only: 'Yalnızca kayıtlar',
+  backup_export_partial_title: 'Bazı görseller dışarıda kaldı',
+  backup_export_partial_msg: 'Yedek boyut sınırına ulaştığı için {n} grafik görseli eklenemedi. İşlem kayıtlarınızın tamamı yedeğe dahil edildi.',
 
   // Hata yönetimi
   error_boundary_title: 'Bir sorun oluştu',

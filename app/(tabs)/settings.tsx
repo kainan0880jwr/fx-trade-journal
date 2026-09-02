@@ -16,7 +16,7 @@ import { useTradeStore } from '../../src/store/tradeStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { generateId } from '../../src/utils/statsCalc';
 import { getAllTrades, getSetting, setSetting } from '../../src/db/queries';
-import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot, getLastBackupAt, backupFreshness } from '../../src/utils/backup';
+import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot, getLastBackupAt, backupFreshness, hasAnyTradeImages } from '../../src/utils/backup';
 import { importMT4CSV } from '../../src/utils/mt4Import';
 import {
   isNotificationsAvailable, requestNotificationPermission,
@@ -155,18 +155,49 @@ export default function SettingsScreen() {
     }
   };
 
-  const handleExportBackup = async () => {
+  const runExportBackup = async (includeImages: boolean) => {
     setBackupLoading(true);
     try {
-      await exportBackup();
+      const result = await exportBackup({ includeImages });
       // 表示中の「最終バックアップ」を即座に更新する（次回起動まで古いままだと、
       // 取ったのに警告が出続けて「効いていない」ように見える）
       setLastBackupAt(await getLastBackupAt());
+      // 容量の上限で画像が落ちたことは必ず伝える。黙って落とすと、本人は
+      // 画像も残っているつもりで機種変更してしまう。
+      if (result.omittedImages > 0) {
+        Alert.alert(
+          t('backup_export_partial_title'),
+          t('backup_export_partial_msg').replace('{n}', String(result.omittedImages))
+        );
+      }
     } catch {
-      Alert.alert(t('error'), t('backup_import_error'));
+      Alert.alert(t('error'), t('backup_export_error'));
     } finally {
       setBackupLoading(false);
     }
+  };
+
+  const handleExportBackup = async () => {
+    // 画像を持っていない人に選択肢を出しても手間が増えるだけなので、そのまま作る。
+    let hasImages = false;
+    try {
+      hasImages = await hasAnyTradeImages();
+    } catch {
+      // 判定できないときは通常どおり画像込みで作る
+    }
+    if (!hasImages) {
+      await runExportBackup(true);
+      return;
+    }
+    Alert.alert(
+      t('backup_export_images_title'),
+      t('backup_export_images_msg'),
+      [
+        { text: t('cancel'), style: 'cancel' },
+        { text: t('backup_export_records_only'), onPress: () => { void runExportBackup(false); } },
+        { text: t('backup_export_with_images'), onPress: () => { void runExportBackup(true); } },
+      ]
+    );
   };
 
   const handleImportBackup = () => {

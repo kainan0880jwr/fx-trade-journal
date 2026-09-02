@@ -697,6 +697,13 @@ export const ja = {
   backup_status_last: '最終バックアップ: {date}',
   backup_status_ok_sub: '記録が増えたら、ときどき作成し直してください。',
   backup_status_stale_sub: '{n}日前が最後です。新しく作成し直すことをおすすめします。',
+  backup_export_error: 'バックアップの作成に失敗しました',
+  backup_export_images_title: 'チャート画像も含めますか？',
+  backup_export_images_msg: '画像を含めると復元時にチャートも戻りますが、ファイルが大きくなります。記録だけなら軽くて確実です。',
+  backup_export_with_images: '画像を含める',
+  backup_export_records_only: '記録だけ',
+  backup_export_partial_title: '一部の画像を除きました',
+  backup_export_partial_msg: '容量の上限を超えたため、チャート画像{n}枚をバックアップに含められませんでした。トレード記録はすべて含まれています。',
 
   // エラーバウンダリ
   error_boundary_title: '問題が発生しました',

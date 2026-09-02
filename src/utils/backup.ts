@@ -15,7 +15,32 @@ import { resolveImageUri, isSafeChartPath } from './imageStorage';
 import type { Trade, CurrencyPair } from '../types';
 
 const SCHEMA_VERSION = SCHEMA_MIGRATIONS.length;
-const MAX_IMAGE_BASE64_TOTAL_BYTES = 200 * 1024 * 1024; // インポート時のメモリDoS防止（合計200MBまで）
+// バックアップに載せられる画像の合計量（base64換算）。**エクスポートとインポートで
+// 同じ値を使うこと。** 以前はインポート側にしか上限が無く、エクスポートは無制限だった
+// ため、画像の多いユーザーは「作れるのに復元できないバックアップ」を持たされていた。
+// 本人はバックアップ済みのつもりで機種変更し、復元しようとして初めて弾かれる —
+// 旧端末を手放した後では取り返しがつかない。
+export const MAX_IMAGE_BASE64_TOTAL_BYTES = 200 * 1024 * 1024; // 合計200MBまで
+/** 1ファイルに載せられるトレード件数。こちらもインポート側と共有する。 */
+export const MAX_TRADES_PER_BACKUP = 50000;
+
+/**
+ * この画像をまだバックアップに載せられるか。
+ * インポート側の判定（合計が上限を超えたら拒否）と表裏になっており、
+ * ここで true を返した画像だけを積む限り、必ず復元できるファイルになる。
+ */
+export function canIncludeImage(currentBase64Bytes: number, imageBase64Bytes: number): boolean {
+  return currentBase64Bytes + imageBase64Bytes <= MAX_IMAGE_BASE64_TOTAL_BYTES;
+}
+
+/** エクスポートの結果。呼び出し側が「何が入らなかったか」を伝えるために使う。 */
+export interface ExportBackupResult {
+  tradeCount: number;
+  /** 実際にバックアップへ入った画像の枚数 */
+  includedImages: number;
+  /** 容量の上限に達したため入れられなかった画像の枚数（ユーザーが記録のみを選んだ場合は0） */
+  omittedImages: number;
+}
 
 /**
  * 最後にこの端末でバックアップを作成した日時（ISO8601）。settingsテーブルに置く。
@@ -53,6 +78,22 @@ export function backupFreshness(raw: string | null | undefined, now: Date = new 
   return { state: days > BACKUP_STALE_DAYS ? 'stale' : 'ok', at, days };
 }
 
+/**
+ * チャート画像を1枚でも持っているか。
+ *
+ * 画像を持っていないユーザーに「画像を含めますか？」と聞くのは無意味な手間なので、
+ * 聞くかどうかの判定に使う。全トレードを読み込むと重いので件数だけ問い合わせる。
+ */
+export async function hasAnyTradeImages(): Promise<boolean> {
+  const db = await getDatabase();
+  const row = await db.getFirstAsync<{ n: number }>(
+    `SELECT 1 AS n FROM trades
+      WHERE image_uris IS NOT NULL AND image_uris != '' AND image_uris != '[]'
+      LIMIT 1`
+  );
+  return row != null;
+}
+
 /** 最終バックアップ日時を取得する（未実施なら null）。 */
 export async function getLastBackupAt(): Promise<string | null> {
   return getSetting(LAST_BACKUP_SETTING_KEY);
@@ -71,7 +112,17 @@ interface BackupData {
   settings: Record<string, string>;
 }
 
-export async function exportBackup(): Promise<void> {
+/**
+ * バックアップファイルを作って共有シートに渡す。
+ *
+ * `includeImages` を false にすると、チャート画像を一切含めない軽量なファイルを作る。
+ * 画像はバックアップの大半を占めるため、トレード記録だけを確実に残したい場合や、
+ * 画像込みでは容量が大きすぎる場合の逃げ道になる。
+ */
+export async function exportBackup(
+  options: { includeImages?: boolean } = {}
+): Promise<ExportBackupResult> {
+  const includeImages = options.includeImages !== false;
   const [trades, pairs] = await Promise.all([getAllTrades(), getCurrencyPairs()]);
 
   const db = await getDatabase();
@@ -87,8 +138,16 @@ export async function exportBackup(): Promise<void> {
 
   // 各トレードの画像をBase64に変換（メモリ節約のため逐次処理）
   const backupTrades: BackupTrade[] = [];
+  let imageBase64Total = 0;
+  let includedImages = 0;
+  let omittedImages = 0;
   for (const trade of trades) {
     const imageBase64: Record<string, string> = {};
+    if (!includeImages) {
+      // ユーザーが記録のみを選んだ場合。本人の選択なので omittedImages には数えない。
+      backupTrades.push({ ...trade, imageBase64 });
+      continue;
+    }
     for (const uri of trade.imageUris) {
       // 万一DBに不正なパスが入っていても、バックアップJSONに他ファイルを
       // 取り込まないようにする
@@ -96,9 +155,18 @@ export async function exportBackup(): Promise<void> {
       try {
         const resolved = resolveImageUri(uri);
         const info = await getInfoAsync(resolved);
-        if (info.exists) {
-          imageBase64[uri] = await readAsStringAsync(resolved, { encoding: 'base64' });
+        if (!info.exists) continue;
+        const b64 = await readAsStringAsync(resolved, { encoding: 'base64' });
+        // 上限を超える画像は積まない。ここで止めずに積むと、インポート側の
+        // 同じ上限に引っかかって**ファイルごと復元不能**になる。
+        // 画像を落としてでもトレード記録は必ず復元できる状態を優先する。
+        if (!canIncludeImage(imageBase64Total, b64.length)) {
+          omittedImages++;
+          continue;
         }
+        imageBase64Total += b64.length;
+        imageBase64[uri] = b64;
+        includedImages++;
       } catch {
         // 画像が読めない場合はスキップ
       }
@@ -134,6 +202,8 @@ export async function exportBackup(): Promise<void> {
   // 新しく見えるが、shareAsync まで到達している以上ファイルは生成できている）。
   // ここでの失敗は表示が古いままになるだけなので、エクスポート自体は成功扱いにする。
   await setSetting(LAST_BACKUP_SETTING_KEY, new Date().toISOString()).catch(() => {});
+
+  return { tradeCount: trades.length, includedImages, omittedImages };
 }
 
 export async function importBackup(): Promise<number> {
@@ -158,7 +228,7 @@ export async function importBackup(): Promise<number> {
   // 「元に戻す」ボタンも表示されないという最悪の結果になっていた。
   // 破壊的処理に入る前に明示的に拒否する。
   if (data.trades.length === 0) throw new Error('empty_backup');
-  if (data.trades.length > 50000) throw new Error('file_too_large');
+  if (data.trades.length > MAX_TRADES_PER_BACKUP) throw new Error('file_too_large');
   let imageBytesTotal = 0;
   for (const trade of data.trades) {
     if (

@@ -699,6 +699,13 @@ export const vi: LangStrings = {
   backup_status_last: 'Sao lưu gần nhất: {date}',
   backup_status_ok_sub: 'Thỉnh thoảng hãy tạo bản mới khi dữ liệu tăng lên.',
   backup_status_stale_sub: 'Lần gần nhất là {n} ngày trước. Bạn nên tạo bản sao lưu mới.',
+  backup_export_error: 'Không thể tạo bản sao lưu',
+  backup_export_images_title: 'Có kèm ảnh biểu đồ không?',
+  backup_export_images_msg: 'Kèm ảnh thì biểu đồ cũng được khôi phục, nhưng tệp sẽ lớn hơn nhiều. Chỉ nhật ký thì nhẹ và chắc chắn hơn.',
+  backup_export_with_images: 'Kèm ảnh',
+  backup_export_records_only: 'Chỉ nhật ký',
+  backup_export_partial_title: 'Một số ảnh đã bị bỏ qua',
+  backup_export_partial_msg: 'Không thể đưa {n} ảnh biểu đồ vào vì bản sao lưu đã chạm giới hạn dung lượng. Toàn bộ nhật ký giao dịch của bạn vẫn được đưa vào.',
 
   // Xử lý lỗi
   error_boundary_title: 'Đã xảy ra sự cố',
