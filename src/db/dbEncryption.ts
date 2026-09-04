@@ -33,7 +33,12 @@ const KEYCHAIN_ACCESSIBLE = SecureStore.WHEN_UNLOCKED;
 // 新旧どちらのスロットも見る。機種変更でiCloudから復元した端末には現行スロットだけが
 // 来るが、アップデートしただけの端末には旧スロットしか無いこともある。
 export async function getEncryptionKey(): Promise<string | null> {
-  const current = await SecureStore.getItemAsync(KEY_NAME);
+  // 現行スロットの読み取り失敗は握り潰して旧スロットへ進む。ここで throw を
+  // そのまま通すと、**旧スロットにしか鍵が無いユーザー**（この移行が救おうと
+  // している当人）が、新スロットを足したせいで復号できなくなる。
+  // 旧スロット側の失敗は握り潰さない — EncryptionKeyLostError と真の障害を
+  // 区別できなくなるため。
+  const current = await SecureStore.getItemAsync(KEY_NAME).catch(() => null);
   if (current) return current;
   return SecureStore.getItemAsync(LEGACY_KEY_NAME);
 }
@@ -43,7 +48,11 @@ export async function getEncryptionKey(): Promise<string | null> {
 export async function getOrCreateEncryptionKey(): Promise<string> {
   const existing = await getEncryptionKey();
   if (existing) {
-    await ensureKeyIsBackupable(existing);
+    // 複製は「次の機種変更のための備え」であって、DBを開く条件ではない。
+    // ここで throw を通すと、鍵は正常に読めているのにキーチェーンへの書き込みが
+    // 失敗しただけで起動不能になる（施錠中のバックグラウンド起動など）。
+    // database.ts の2経路と同じく、失敗しても先へ進める。
+    await ensureKeyIsBackupable(existing).catch(() => {});
     return existing;
   }
 
@@ -72,6 +81,10 @@ export async function getOrCreateEncryptionKey(): Promise<string> {
  * 変化しないので、2つが食い違うこともない。
  *
  * 失敗してもDBは開けるので、呼び出し側は結果を待たなくてよい。
+ *
+ * 待たない代償として、getItemAsync と setItemAsync の間に deleteEncryptionKey()
+ * が割り込むと、削除したはずの鍵が現行スロットに蘇りうる。ただし蘇るのは削除済みDBに
+ * 対応する鍵で、次回起動時は開けずに同じ鍵で空DBが作り直されるだけなので実害は無い。
  */
 export async function ensureKeyIsBackupable(key: string): Promise<void> {
   const current = await SecureStore.getItemAsync(KEY_NAME);

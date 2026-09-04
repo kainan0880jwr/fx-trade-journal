@@ -16,7 +16,7 @@ import { useTradeStore } from '../../src/store/tradeStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { generateId } from '../../src/utils/statsCalc';
 import { getAllTrades, getSetting, setSetting } from '../../src/db/queries';
-import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot, getLastBackupAt, backupFreshness, estimateBackupImages } from '../../src/utils/backup';
+import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot, getLastBackupAt, backupFreshness, estimateBackupImages, MAX_TRADES_PER_BACKUP } from '../../src/utils/backup';
 import { importMT4CSV } from '../../src/utils/mt4Import';
 import {
   isNotificationsAvailable, requestNotificationPermission,
@@ -163,8 +163,15 @@ export default function SettingsScreen() {
     try {
       const result = await exportBackup({ includeImages });
       // 表示中の「最終バックアップ」を即座に更新する（次回起動まで古いままだと、
-      // 取ったのに警告が出続けて「効いていない」ように見える）
-      setLastBackupAt(await getLastBackupAt());
+      // 取ったのに警告が出続けて「効いていない」ように見える）。
+      // **この読み直しの失敗でエクスポートを失敗扱いにしないこと。** DBの読み取りは
+      // throw しうるので、外側の catch に流すと「バックアップは取れているのに
+      // 失敗しました と出る」ことになり、ユーザーは正しいバックアップを捨ててしまう。
+      try {
+        setLastBackupAt(await getLastBackupAt());
+      } catch {
+        // 表示が次回起動まで古いままになるだけ
+      }
       // 容量の上限で画像が落ちたことは必ず伝える。黙って落とすと、本人は
       // 画像も残っているつもりで機種変更してしまう。事前の見積もりで伝えていても、
       // 実際に落ちた枚数は結果でしか分からないので、ここでも必ず出す。
@@ -174,8 +181,14 @@ export default function SettingsScreen() {
           t('backup_export_partial_msg').replace('{n}', String(result.omittedImages))
         );
       }
-    } catch {
-      Alert.alert(t('error'), t('backup_export_error'));
+    } catch (e) {
+      const tooMany = e instanceof Error && e.message === 'too_many_trades';
+      Alert.alert(
+        t('error'),
+        tooMany
+          ? t('backup_export_too_many').replace('{n}', String(MAX_TRADES_PER_BACKUP))
+          : t('backup_export_error')
+      );
     } finally {
       setBackupLoading(false);
     }

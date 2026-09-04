@@ -700,6 +700,7 @@ export const pt: LangStrings = {
   backup_status_ok_sub: 'Crie um novo de tempos em tempos conforme os registros aumentam.',
   backup_status_stale_sub: 'O último foi há {n} dias. Recomendamos criar um novo backup.',
   backup_export_error: 'Não foi possível criar o backup',
+  backup_export_too_many: 'Seus registros excedem {n} operações, então o backup não pode ser criado porque não seria restaurável. Entre em contato pelo endereço de suporte.',
   backup_export_images_title: 'Incluir as imagens dos gráficos?',
   backup_export_images_msg: 'Com as imagens, seus gráficos também são restaurados, mas o arquivo fica bem maior. Somente os registros é mais leve e mais confiável.',
   backup_export_with_images: 'Incluir imagens',

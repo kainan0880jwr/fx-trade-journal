@@ -700,6 +700,7 @@ export const en: LangStrings = {
   backup_status_ok_sub: 'Create a new one from time to time as your records grow.',
   backup_status_stale_sub: 'The last one was {n} days ago. We recommend creating a new backup.',
   backup_export_error: 'Could not create the backup',
+  backup_export_too_many: 'Your records exceed {n} trades, so a backup file cannot be created — it would not be restorable. Please contact us via the support address.',
   backup_export_images_title: 'Include chart images?',
   backup_export_images_msg: 'Including images restores your charts too, but makes the file much larger. Records only is smaller and more dependable.',
   backup_export_with_images: 'Include images',

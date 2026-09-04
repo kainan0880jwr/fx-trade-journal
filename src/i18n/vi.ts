@@ -700,6 +700,7 @@ export const vi: LangStrings = {
   backup_status_ok_sub: 'Thỉnh thoảng hãy tạo bản mới khi dữ liệu tăng lên.',
   backup_status_stale_sub: 'Lần gần nhất là {n} ngày trước. Bạn nên tạo bản sao lưu mới.',
   backup_export_error: 'Không thể tạo bản sao lưu',
+  backup_export_too_many: 'Nhật ký của bạn vượt quá {n} giao dịch nên không thể tạo bản sao lưu vì sẽ không khôi phục được. Vui lòng liên hệ với chúng tôi qua địa chỉ hỗ trợ.',
   backup_export_images_title: 'Có kèm ảnh biểu đồ không?',
   backup_export_images_msg: 'Kèm ảnh thì biểu đồ cũng được khôi phục, nhưng tệp sẽ lớn hơn nhiều. Chỉ nhật ký thì nhẹ và chắc chắn hơn.',
   backup_export_with_images: 'Kèm ảnh',

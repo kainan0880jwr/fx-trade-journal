@@ -698,6 +698,7 @@ export const ja = {
   backup_status_ok_sub: '記録が増えたら、ときどき作成し直してください。',
   backup_status_stale_sub: '{n}日前が最後です。新しく作成し直すことをおすすめします。',
   backup_export_error: 'バックアップの作成に失敗しました',
+  backup_export_too_many: 'トレードが{n}件を超えているため、バックアップファイルを作成できません。復元できないファイルができてしまうためです。お手数ですが問い合わせ先までご連絡ください。',
   backup_export_images_title: 'チャート画像も含めますか？',
   backup_export_images_msg: '画像を含めると復元時にチャートも戻りますが、ファイルが大きくなります。記録だけなら軽くて確実です。',
   backup_export_with_images: '画像を含める',

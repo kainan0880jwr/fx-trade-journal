@@ -700,6 +700,7 @@ export const tr: LangStrings = {
   backup_status_ok_sub: 'Kayıtlarınız arttıkça zaman zaman yeni bir yedek oluşturun.',
   backup_status_stale_sub: 'Sonuncusu {n} gün önceydi. Yeni bir yedek oluşturmanızı öneririz.',
   backup_export_error: 'Yedek oluşturulamadı',
+  backup_export_too_many: 'Kayıtlarınız {n} işlemi aştığı için yedek oluşturulamıyor; oluşsa bile geri yüklenemezdi. Lütfen destek adresinden bize ulaşın.',
   backup_export_images_title: 'Grafik görselleri de eklensin mi?',
   backup_export_images_msg: 'Görsellerle birlikte grafikleriniz de geri gelir, ancak dosya çok daha büyük olur. Yalnızca kayıtlar daha küçük ve daha güvenilirdir.',
   backup_export_with_images: 'Görselleri ekle',

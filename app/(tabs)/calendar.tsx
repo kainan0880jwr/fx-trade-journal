@@ -123,7 +123,7 @@ export default function CalendarScreen() {
               accessibilityState={{ selected: metric === m.key }}
               hitSlop={{ top: 10, bottom: 10, left: 6, right: 6 }}
             >
-              <Text style={[s.metricChipLabel, { color: metric === m.key ? '#fff' : C.text2 }]}>
+              <Text style={[s.metricChipLabel, { color: metric === m.key ? C.onAccent : C.text2 }]}>
                 {t(m.labelKey as any)}
               </Text>
             </TouchableOpacity>
