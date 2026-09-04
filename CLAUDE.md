@@ -25,6 +25,7 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   - テスターはメールを送るだけでは登録されない。各自が **オプトインURL**（`https://play.google.com/apps/testing/com.fxtradejournal.app`）を開いて参加する必要がある。Googleグループで管理すると、Play Console 側を触らずにメンバーを増減できる。
   - 14日はリセットされる。途中でオプトアウトや除名があると巻き戻るので、12人ちょうどではなく15人程度確保しておく。
   - `eas submit --platform android` には **Google Play のサービスアカウントJSON** が必要（Google Cloud で作成し、Play Console でアクセス権を付与する）。未設定の間は Play Console へ手動で `.aab` をアップロードする。
+- **`store.config.json` は git 追跡外（2026-09-04）。** `apple.review` に App 審査の連絡先として氏名・メールアドレス・電話番号が入るが、**このリポジトリは GitHub Pages で LP と法務ページを配信するため公開されている**。個人開発者の連絡先が公開リポジトリに常時置かれる状態は避ける。中身は ASC が正本で `metadata:pull` で取り直せる（`/store/` と同じ扱い）。**追跡対象に戻さないこと。**
 - **App Store のメタデータは `store.config.json` で管理し、`eas metadata` で同期する（2026-08-30 導入）。** 画面での手入力ではなく、`npx eas-cli metadata:pull --profile production` で現状を取得し、`store.config.json` を編集して `npx eas-cli metadata:push --profile production` で反映する。11言語の説明文・キーワード・リリースノート・審査メモ・スクリーンショットがこの1ファイル（＋`store/`）に集約される。
   - **スクリーンショットは `store.config.json` のファイル名一覧が正本。** `store/apple/screenshot/<locale>/<size>/` にファイルを置き換えるだけでは `metadata:push` は何も送らない。`info.<locale>.screenshots.<size>` の配列も書き換えること（実際に2回空振りした）。並び順がそのままストアでの表示順になる。
   - **公開済みバージョンのメタデータは更新できない。** `eas metadata:push` はバージョンを作成・更新しようとするため、リリース済みの版に対しては `Failed creating new version <ver>` で失敗する（プロモーション用テキストも含めて全フィールドが編集不可）。説明文やスクショを変えるには、`store.config.json` の `version` を次の番号にして新規バージョンを作る。バイナリの変更が不要ならビルド枠は消費しない。

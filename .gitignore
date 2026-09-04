@@ -53,3 +53,11 @@ yarn-error.*
 # 実行する前に必ず pull しておくこと。
 /store/
 store.config.json.bak
+
+# store.config.json は追跡しない。`apple.review` に App 審査の連絡先として
+# 氏名・メールアドレス・電話番号が入るが、**このリポジトリは GitHub Pages で
+# LP と法務ページを配信するため公開されている**。個人開発者の連絡先が
+# 公開リポジトリに常時置かれる状態は避ける。
+# 中身は ASC が正本で、`npx eas-cli metadata:pull --profile production` で
+# いつでも取り直せる（`/store/` と同じ扱い）。
+store.config.json
