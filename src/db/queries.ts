@@ -147,7 +147,10 @@ export async function getTradesByMonth(yearMonth: string): Promise<Trade[]> {
 export async function getAllTrades(): Promise<Trade[]> {
   const db = await getDatabase();
   const rows = await db.getAllAsync<any>(
-    `SELECT * FROM trades ORDER BY date ASC`
+    // date は一意ではないので id を第2キーにして全順序にする。
+    // バックアップの見積もりと実書き出しが「同じ順序で走査する」ことに依存しており、
+    // 同着行の順序がクエリごとに変わると、その前提が静かに崩れる。
+    `SELECT * FROM trades ORDER BY date ASC, id ASC`
   );
   return rows.map(rowToTrade);
 }

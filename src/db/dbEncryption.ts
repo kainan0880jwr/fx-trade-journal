@@ -94,6 +94,14 @@ export async function ensureKeyIsBackupable(key: string): Promise<void> {
   });
 }
 
+/**
+ * 旧スロットの鍵だけを読む。現行スロットの鍵でDBが開けなかったときの
+ * 最後の手当てに使う（通常の取得は getEncryptionKey を使うこと）。
+ */
+export async function getLegacyEncryptionKey(): Promise<string | null> {
+  return SecureStore.getItemAsync(LEGACY_KEY_NAME).catch(() => null);
+}
+
 /** 暗号化キーを削除する（DBリセット時、キーとDBファイルの不整合を解消するために使用） */
 export async function deleteEncryptionKey(): Promise<void> {
   // 旧スロットを消し忘れると、リセット後の起動で古い鍵が拾われる。

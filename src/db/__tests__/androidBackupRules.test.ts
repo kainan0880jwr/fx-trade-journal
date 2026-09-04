@@ -40,16 +40,18 @@ describe('Android Auto Backup の規則', () => {
     ['secure_store_data_extraction_rules.xml'], // Android 12+（cloud-backup と device-transfer）
     ['secure_store_backup_rules.xml'],          // Android 11 以下
   ])('%s', (file) => {
-    const xml = readRules(file);
-    const includes = [...xml.matchAll(/<include\s+domain="([^"]+)"/g)].map(m => m[1]);
-
+    // 読み込みは it の中で行う。収集フェーズ（describe のコールバック本体）で読むと、
+    // 依存パッケージの更新でファイルが移動したときに「規則が変わった」という
+    // 分かりやすい失敗ではなく、スイート全体が収集時例外で落ちて原因が読めなくなる。
     it('include が sharedpref だけである（DBと画像を巻き込まない）', () => {
+      const xml = readRules(file);
+      const includes = [...xml.matchAll(/<include\s+domain="([^"]+)"/g)].map(m => m[1]);
       expect(includes.length).toBeGreaterThan(0);
       expect(new Set(includes)).toEqual(new Set(['sharedpref']));
     });
 
     it('SecureStore 自体は除外されている', () => {
-      expect(xml).toContain('<exclude domain="sharedpref" path="SecureStore"/>');
+      expect(readRules(file)).toContain('<exclude domain="sharedpref" path="SecureStore"/>');
     });
   });
 
