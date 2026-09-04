@@ -1,5 +1,5 @@
 import {
-  backupFreshness, BACKUP_STALE_DAYS, canIncludeImage, planImageInclusion,
+  backupFreshness, BACKUP_STALE_DAYS, canIncludeImage, planImageInclusion, base64Length,
   MAX_IMAGE_BASE64_TOTAL_BYTES, MAX_EXPORT_IMAGE_BASE64_BYTES,
 } from '../backup';
 
@@ -84,5 +84,35 @@ describe('planImageInclusion', () => {
   it('エクスポートの上限はインポートの上限を超えない', () => {
     // 超えると「作れるのに復元できないバックアップ」が復活する。
     expect(MAX_EXPORT_IMAGE_BASE64_BYTES).toBeLessThanOrEqual(MAX_IMAGE_BASE64_TOTAL_BYTES);
+  });
+});
+
+
+describe('base64Length', () => {
+  it('base64の実際の長さと一致する', () => {
+    // 見積もりと実書き出しでこの式が食い違うと「約N枚入ります」が嘘になる。
+    // Buffer で実際にエンコードして突き合わせる。
+    for (const n of [0, 1, 2, 3, 4, 5, 6, 100, 1023, 1024, 65537]) {
+      const actual = Buffer.alloc(n).toString('base64').length;
+      expect(base64Length(n)).toBe(actual);
+    }
+  });
+
+  it('n * 4/3 では実長より短くなる（これが以前のズレの原因）', () => {
+    const n = 4;
+    expect(Math.ceil((n * 4) / 3)).toBe(6);      // 旧: 楽観側に外れる
+    expect(base64Length(n)).toBe(8);             // 新: 実長と一致
+    expect(Buffer.alloc(n).toString('base64').length).toBe(8);
+  });
+
+  it('見積もりで積める枚数は、実測値で積んだ場合と一致する', () => {
+    // estimateBackupImages と exportBackup が同じ判定になることの土台。
+    // 実長どおりに見積もっていれば、両者の included は必ず一致する。
+    const rawSizes = [10, 3_000_000, 1, 40_000_000, 25_000_000, 7];
+    const estimated = planImageInclusion(rawSizes.map(base64Length));
+    const measured = planImageInclusion(
+      rawSizes.map((n) => Buffer.alloc(n).toString('base64').length)
+    );
+    expect(estimated).toEqual(measured);
   });
 });

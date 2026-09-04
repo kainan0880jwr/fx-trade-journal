@@ -700,6 +700,7 @@ export const de: LangStrings = {
   backup_status_ok_sub: 'Erstelle von Zeit zu Zeit eine neue, wenn Aufzeichnungen dazukommen.',
   backup_status_stale_sub: 'Die letzte war vor {n} Tagen. Wir empfehlen, eine neue Sicherung zu erstellen.',
   backup_export_error: 'Das Backup konnte nicht erstellt werden',
+  backup_export_too_many: 'Deine Aufzeichnungen überschreiten {n} Trades, daher kann keine Sicherung erstellt werden — sie ließe sich nicht wiederherstellen. Bitte wende dich an unsere Support-Adresse.',
   backup_export_images_title: 'Chart-Bilder einschließen?',
   backup_export_images_msg: 'Mit Bildern werden auch deine Charts wiederhergestellt, die Datei wird aber deutlich größer. Nur Aufzeichnungen ist kleiner und verlässlicher.',
   backup_export_with_images: 'Bilder einschließen',

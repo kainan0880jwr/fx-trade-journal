@@ -116,7 +116,7 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
                 ]}
                 activeOpacity={0.7}
               >
-                <Text style={[s.metricChipLabel, { color: metric === m.key ? '#fff' : C.text2 }]}>
+                <Text style={[s.metricChipLabel, { color: metric === m.key ? C.onAccent : C.text2 }]}>
                   {t(m.labelKey as any)}
                 </Text>
               </TouchableOpacity>

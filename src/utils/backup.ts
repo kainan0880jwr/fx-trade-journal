@@ -43,8 +43,16 @@ export const MAX_TRADES_PER_BACKUP = 50000;
  */
 export const MAX_EXPORT_IMAGE_BASE64_BYTES = 60 * 1024 * 1024;
 
-/** base64 は元データのおよそ 4/3 の長さになる。 */
-const BASE64_OVERHEAD = 4 / 3;
+/**
+ * n バイトを base64 にしたときの正確な文字数。
+ *
+ * `n * 4/3` では**実際より短く**出る（4バイトなら実長8に対し6）。見積もりと
+ * 実書き出しでこの式が食い違うと、「約N枚入ります」と伝えた後に実際はそれ未満しか
+ * 入らない、というズレが構造的に起きる。両方からこの関数だけを使うこと。
+ */
+export function base64Length(bytes: number): number {
+  return 4 * Math.ceil(bytes / 3);
+}
 
 /**
  * この画像をまだバックアップに載せられるか。
@@ -81,6 +89,8 @@ export function planImageInclusion(base64Sizes: number[]): {
 export interface BackupImageEstimate {
   /** チャート画像の総枚数 */
   total: number;
+  /** サイズを取得できずに見積もれなかった枚数。0でなければ見積もりは当てにならない。 */
+  unknown: number;
   /** 上限内に収まる枚数 */
   included: number;
   /** 上限を超えて入らない枚数 */
@@ -99,23 +109,31 @@ export async function estimateBackupImages(): Promise<BackupImageEstimate> {
   const trades = await getAllTrades();
   const sizes: number[] = [];
   let rawBytes = 0;
+  let unknown = 0;
   for (const trade of trades) {
     for (const uri of trade.imageUris) {
       if (!uri.includes('://') && !isSafeChartPath(uri)) continue;
       try {
         const info = await getInfoAsync(resolveImageUri(uri));
-        // size は exists のときだけ入る
-        const raw = info.exists && 'size' in info ? (info.size as number) : 0;
-        if (raw <= 0) continue;
+        if (!info.exists) continue; // 実体が無い画像は書き出し時も飛ばされる
+        const raw = 'size' in info ? (info.size as number) : -1;
+        if (raw < 0) {
+          // サイズが取れない。枚数には数えるが容量は見積もれない。
+          unknown++;
+          sizes.push(0);
+          continue;
+        }
         rawBytes += raw;
-        sizes.push(Math.ceil(raw * BASE64_OVERHEAD));
+        sizes.push(base64Length(raw));
       } catch {
-        // 読めない画像は書き出し時も飛ばされるので、見積もりからも外す
+        // stat 自体に失敗した場合も、存在は不明なので枚数だけ数えておく
+        unknown++;
+        sizes.push(0);
       }
     }
   }
   const plan = planImageInclusion(sizes);
-  return { total: sizes.length, included: plan.included, omitted: plan.omitted, rawBytes };
+  return { total: sizes.length, unknown, included: plan.included, omitted: plan.omitted, rawBytes };
 }
 
 /** エクスポートの結果。呼び出し側が「何が入らなかったか」を伝えるために使う。 */
@@ -194,6 +212,11 @@ export async function exportBackup(
   const includeImages = options.includeImages !== false;
   const [trades, pairs] = await Promise.all([getAllTrades(), getCurrencyPairs()]);
 
+  // 件数についてもインポート側と同じ上限を課す。画像だけ塞いでも、件数側に
+  // 「作れるのに復元できないバックアップ」の穴が残っていては意味がない。
+  // 画像と違って落として続行できないので、作らずに知らせる。
+  if (trades.length > MAX_TRADES_PER_BACKUP) throw new Error('too_many_trades');
+
   const db = await getDatabase();
   const settingRows = await db.getAllAsync<{ key: string; value: string }>(
     'SELECT key, value FROM settings'
@@ -225,10 +248,18 @@ export async function exportBackup(
         const resolved = resolveImageUri(uri);
         const info = await getInfoAsync(resolved);
         if (!info.exists) continue;
+        // **読み込む前に**ファイルサイズで判定する。読んでから捨てると、上限を
+        // 超える巨大な画像でも一度は全量メモリに載ってしまい、上限が無力になる。
+        const raw = 'size' in info ? (info.size as number) : -1;
+        if (raw >= 0 && !canIncludeImage(imageBase64Total, base64Length(raw))) {
+          omittedImages++;
+          continue;
+        }
         const b64 = await readAsStringAsync(resolved, { encoding: 'base64' });
         // 上限を超える画像は積まない。ここで止めずに積むと、インポート側の
         // 同じ上限に引っかかって**ファイルごと復元不能**になる。
         // 画像を落としてでもトレード記録は必ず復元できる状態を優先する。
+        // （サイズが取れなかった場合は、この実測値が唯一の判定になる）
         if (!canIncludeImage(imageBase64Total, b64.length)) {
           omittedImages++;
           continue;
@@ -259,12 +290,16 @@ export async function exportBackup(
   const filePath = `${cacheDirectory}fx-backup-${dateStr}.json`;
   await writeAsStringAsync(filePath, JSON.stringify(backup), { encoding: 'utf8' });
 
-  const isAvailable = await Sharing.isAvailableAsync();
-  if (!isAvailable) throw new Error('sharing_unavailable');
-  await Sharing.shareAsync(filePath, { mimeType: 'application/json', dialogTitle: 'FXバックアップを保存' });
-
-  // 暗号化DBの投資を無にしないよう、共有後は平文の一時ファイルをキャッシュに残さない
-  await deleteAsync(filePath, { idempotent: true }).catch(() => {});
+  // 暗号化DBの投資を無にしないよう、平文の一時ファイルをキャッシュに残さない。
+  // **finally で消すこと。** 共有が使えない／共有中に例外が出た経路で消し忘れると、
+  // 全トレード記録とチャート画像の平文JSON（最大60MB超）がキャッシュに残留する。
+  try {
+    const isAvailable = await Sharing.isAvailableAsync();
+    if (!isAvailable) throw new Error('sharing_unavailable');
+    await Sharing.shareAsync(filePath, { mimeType: 'application/json', dialogTitle: 'FXバックアップを保存' });
+  } finally {
+    await deleteAsync(filePath, { idempotent: true }).catch(() => {});
+  }
 
   // 共有シートを閉じた時点を「バックアップした」と見なす。保存先まで追跡する手段が
   // Sharing には無いため、これが取れる最良の信号（キャンセルされた場合は実際より
