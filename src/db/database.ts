@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react-native';
 import * as SQLite from 'expo-sqlite';
 import * as SecureStore from 'expo-secure-store';
-import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey, ensureKeyIsBackupable } from './dbEncryption';
+import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey, ensureKeyIsBackupable, getLegacyEncryptionKey } from './dbEncryption';
 
 const OLD_DB_NAME = 'fx_journal.db'; // 旧・平文DB（SQLCipher導入前）
 const NEW_DB_NAME = 'fx_journal_v2.db'; // 新・SQLCipher暗号化DB
@@ -123,9 +123,36 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
     // 「機種変更で鍵だけ引き継がれない」状態がアップデート後も残り続ける。
     // DBを開く条件ではないので待たず、失敗しても起動は妨げない。
     ensureKeyIsBackupable(key).catch(() => {});
+
     const db = await SQLite.openDatabaseAsync(NEW_DB_NAME);
     await db.execAsync(`PRAGMA key = '${key}';`);
-    return db;
+    try {
+      // PRAGMA key は鍵が違っても通り、最初の読み取りで初めて失敗する。
+      // ここで一度読んでおかないと、鍵違いに気づかないままハンドルを返してしまう。
+      //
+      // 注: trades テーブルが無くても（＝行が返らなくても）成功でよい。iOSでは
+      // キーチェーンがアプリ削除後も残るため、「フラグと鍵はあるがDBファイルは無い」
+      // 再インストール直後が正常に起こりうる。その場合ここで空の暗号化DBが作られる。
+      await db.getFirstAsync("SELECT name FROM sqlite_master WHERE type='table' AND name='trades'");
+      return db;
+    } catch {
+      await db.closeAsync().catch(() => {});
+    }
+
+    // 現行スロットの鍵では読めなかった。旧スロットに別の鍵が残っていれば試す。
+    // 今のところ両スロットが食い違う経路は無いが、この経路には他に安全網が無く、
+    // 外したときの代償が全データなので残しておく。
+    const legacy = await getLegacyEncryptionKey();
+    if (legacy && legacy !== key) {
+      const recovered = await tryOpenExistingEncrypted(legacy);
+      if (recovered) {
+        try {
+          Sentry.captureMessage('db:opened_with_legacy_key', { level: 'warning' });
+        } catch { /* 監視できないだけなので握り潰す */ }
+        return recovered;
+      }
+    }
+    throw new EncryptionKeyLostError();
   }
 
   // ここに来たということは移行フラグが 'v1' ではない。だが「フラグが読めなかった」のか
