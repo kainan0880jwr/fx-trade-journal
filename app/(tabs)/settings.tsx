@@ -389,11 +389,16 @@ export default function SettingsScreen() {
             const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
             const filePath = `${cacheDirectory}fx-trades-${dateStr}.csv`;
             await writeAsStringAsync(filePath, csv, { encoding: 'utf8' });
-            const isAvailable = await Sharing.isAvailableAsync();
-            if (!isAvailable) throw new Error('sharing_unavailable');
-            await Sharing.shareAsync(filePath, { mimeType: 'text/csv', dialogTitle: t('settings_csv') });
-            // 暗号化DBの投資を無にしないよう、共有後は平文の一時ファイルをキャッシュに残さない
-            await deleteAsync(filePath, { idempotent: true }).catch(() => {});
+            // 暗号化DBの投資を無にしないよう、平文の一時ファイルをキャッシュに残さない。
+            // **finally で消すこと。** 共有が使えない／共有中に例外が出た経路で消し忘れると、
+            // 全トレードの平文CSV（日付・通貨ペア・レート・ロット・損益・反省メモ）が残る。
+            try {
+              const isAvailable = await Sharing.isAvailableAsync();
+              if (!isAvailable) throw new Error('sharing_unavailable');
+              await Sharing.shareAsync(filePath, { mimeType: 'text/csv', dialogTitle: t('settings_csv') });
+            } finally {
+              await deleteAsync(filePath, { idempotent: true }).catch(() => {});
+            }
           } catch {
             Alert.alert(t('error'), t('settings_export_error'));
           }

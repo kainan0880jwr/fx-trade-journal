@@ -231,21 +231,24 @@ export async function shareStatsAsHTML(opts: ShareStatsOptions): Promise<void> {
 
   await writeAsStringAsync(filePath, html, { encoding: 'utf8' });
 
-  const available = await Sharing.isAvailableAsync();
-  if (!available) {
-    // フォールバック: テキストシェア
-    await shareStats(opts);
-    return;
+  // 一時ファイルは finally で必ず消す。共有が使えずテキストシェアへ抜ける経路では
+  // 必ず、共有中の例外でも、削除に到達しないまま残っていた。
+  try {
+    const available = await Sharing.isAvailableAsync();
+    if (!available) {
+      // フォールバック: テキストシェア
+      await shareStats(opts);
+      return;
+    }
+
+    await Sharing.shareAsync(filePath, {
+      mimeType: 'text/html',
+      dialogTitle: opts.period,
+      UTI: 'public.html',
+    });
+  } finally {
+    await deleteAsync(filePath, { idempotent: true }).catch(() => {});
   }
-
-  await Sharing.shareAsync(filePath, {
-    mimeType: 'text/html',
-    dialogTitle: opts.period,
-    UTI: 'public.html',
-  });
-
-  // 暗号化DBの投資を無にしないよう、共有後は平文の一時ファイルをキャッシュに残さない
-  await deleteAsync(filePath, { idempotent: true }).catch(() => {});
 }
 
 // ── 期間ラベル ────────────────────────────────────────────────
