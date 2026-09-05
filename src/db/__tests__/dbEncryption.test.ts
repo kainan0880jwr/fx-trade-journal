@@ -28,7 +28,7 @@ jest.mock('expo-crypto', () => ({
 }));
 
 import * as SecureStore from 'expo-secure-store';
-import { getEncryptionKey, getOrCreateEncryptionKey, ensureKeyIsBackupable, deleteEncryptionKey } from '../dbEncryption';
+import { getEncryptionKey, getOrCreateEncryptionKey, ensureKeyIsBackupable, deleteEncryptionKey, KeychainUnavailableError } from '../dbEncryption';
 
 const CURRENT = 'fx_db_encryption_key_v2';
 const LEGACY = 'fx_db_encryption_key';
@@ -87,5 +87,38 @@ describe('暗号鍵のスロット', () => {
     store.set(CURRENT, { value: 'abc' });
     await deleteEncryptionKey();
     expect(store.size).toBe(0);
+  });
+
+  describe('読み取り失敗と「鍵が無い」の区別', () => {
+    // ここを取り違えると、一時的にキーチェーンが読めなかっただけのユーザーに
+    // 「全データを削除する」ボタンしかない画面を出してしまう。
+    const failOnce = (key: string) =>
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation(async (k: string) => {
+        if (k === key) throw new Error('errSecInteractionNotAllowed');
+        return store.get(k)?.value ?? null;
+      });
+
+    afterEach(() => {
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation(
+        async (k: string) => store.get(k)?.value ?? null
+      );
+    });
+
+    it('両スロットとも正常に「無い」なら null（本当に鍵が無い）', async () => {
+      await expect(getEncryptionKey()).resolves.toBeNull();
+    });
+
+    it('現行スロットが読めなくても、旧スロットに鍵があれば救う', async () => {
+      store.set(LEGACY, { value: 'abc' });
+      failOnce(CURRENT);
+      await expect(getEncryptionKey()).resolves.toBe('abc');
+    });
+
+    it('現行スロットが読めず旧スロットも空なら、null ではなく専用エラー', async () => {
+      // 旧スロットを持たない新規ユーザーで、これを null にすると
+      // 「鍵が無い」と誤判定され全削除を促される。
+      failOnce(CURRENT);
+      await expect(getEncryptionKey()).rejects.toBeInstanceOf(KeychainUnavailableError);
+    });
   });
 });

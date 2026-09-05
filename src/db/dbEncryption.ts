@@ -24,6 +24,20 @@ const LEGACY_KEY_NAME = 'fx_db_encryption_key';
 // 「復元されるものが何も無い」状態に揃えてある。
 const KEYCHAIN_ACCESSIBLE = SecureStore.WHEN_UNLOCKED;
 
+/**
+ * キーチェーンを読めなかった（鍵が無いのとは違う）状態。
+ *
+ * 呼び出し側はこれを EncryptionKeyLostError と区別すること。前者は再試行で
+ * 直りうる一時的な障害で、後者は全削除しか復旧手段が無い。取り違えると、
+ * 無事なデータを持つユーザーに削除を促すことになる。
+ */
+export class KeychainUnavailableError extends Error {
+  constructor() {
+    super('keychain_unavailable');
+    this.name = 'KeychainUnavailableError';
+  }
+}
+
 // 鍵を新規生成せず、既存の鍵があればそれだけを返す（なければnull）。
 // 既に暗号化DBが存在する状態（migrated==='v1'）でこれがnullを返す場合、
 // SecureStoreからの鍵取得に失敗している（Androidのキーストア無効化等）ことを意味し、
@@ -33,14 +47,29 @@ const KEYCHAIN_ACCESSIBLE = SecureStore.WHEN_UNLOCKED;
 // 新旧どちらのスロットも見る。機種変更でiCloudから復元した端末には現行スロットだけが
 // 来るが、アップデートしただけの端末には旧スロットしか無いこともある。
 export async function getEncryptionKey(): Promise<string | null> {
-  // 現行スロットの読み取り失敗は握り潰して旧スロットへ進む。ここで throw を
-  // そのまま通すと、**旧スロットにしか鍵が無いユーザー**（この移行が救おうと
-  // している当人）が、新スロットを足したせいで復号できなくなる。
-  // 旧スロット側の失敗は握り潰さない — EncryptionKeyLostError と真の障害を
-  // 区別できなくなるため。
-  const current = await SecureStore.getItemAsync(KEY_NAME).catch(() => null);
+  // 現行スロットの読み取りが失敗しても、そこで諦めずに旧スロットを試す。
+  // ここで throw をそのまま通すと、**旧スロットにしか鍵が無いユーザー**
+  // （この移行が救おうとしている当人）が、新スロットを足したせいで
+  // 復号できなくなる。
+  //
+  // ただし失敗を握り潰して null にしてはいけない。**「鍵が無い」と
+  // 「読めなかった」は結果がまったく違う。** null を返すと呼び出し側は
+  // EncryptionKeyLostError を投げ、ユーザーには「全データを削除する」ボタン
+  // しかない画面が出る。施錠中のバックグラウンド起動などで一時的に読めなかった
+  // だけの人が、無事なデータを自分の手で消してしまう。
+  // 読めなかった場合は、再試行できる別のエラーとして扱う。
+  let readFailed = false;
+  const current = await SecureStore.getItemAsync(KEY_NAME).catch(() => {
+    readFailed = true;
+    return null;
+  });
   if (current) return current;
-  return SecureStore.getItemAsync(LEGACY_KEY_NAME);
+
+  const legacy = await SecureStore.getItemAsync(LEGACY_KEY_NAME);
+  if (legacy) return legacy;
+
+  if (readFailed) throw new KeychainUnavailableError();
+  return null; // 両スロットとも正常に「無い」と答えた＝本当に鍵が無い
 }
 
 // SQLiteの暗号化パスフレーズとして使う。32バイトのランダム値を16進文字列化するため
