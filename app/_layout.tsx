@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as Sentry from '@sentry/react-native';
+import { purgeExpiredSnapshot } from '../src/utils/backup';
 import { getDatabase, resetDatabase, EncryptionKeyLostError } from '../src/db/database';
 import { useSettingsStore } from '../src/store/settingsStore';
 import { usePurchaseStore } from '../src/store/purchaseStore';
@@ -71,6 +72,9 @@ function RootLayoutContent() {
       await loadAll();
       syncScheduledNotifications(); // OS側の通知予約が消えていた場合に備えて再同期（結果は待たない）
       recordAppOpen(); // リテンション自前計測（D1/D7）、結果は待たない
+      // インポート前スナップショット（全記録の平文JSON）の期限切れを掃除する。
+      // 設定画面を開かないユーザーの端末に残り続けるのを防ぐため。結果は待たない。
+      purgeExpiredSnapshot().catch(() => {});
       syncWidgetData(); // ホーム画面ウィジェットに今月の成績を反映、結果は待たない
       const onboardingDone = await getSetting('onboarding_done');
       if (onboardingDone !== '1') {

@@ -549,6 +549,31 @@ export async function getPreImportSnapshot(): Promise<{ exportedAt: string } | n
 }
 
 /**
+ * 期限切れのインポート前スナップショットを削除する。
+ *
+ * 期限切れの掃除は これまで getPreImportSnapshot()（＝設定画面を開いたときだけ）
+ * でしか走らなかった。インポート後に設定画面を二度と開かないユーザーの端末には、
+ * **全トレード記録の平文JSONが documentDirectory に残り続ける**。可用性のために
+ * cacheDirectory から移した経緯があるが、その結果 OS のバックアップにも入るように
+ * なっている。SQLCipher で守っているものが平文で隣に置かれていては意味がない。
+ * 起動時にも掃除する。
+ *
+ * 中身は読まずに更新時刻で判断する（数十MBになりうるファイルを、消すためだけに
+ * 読み込んでメモリに載せる必要はない）。
+ */
+export async function purgeExpiredSnapshot(): Promise<void> {
+  const p = snapshotPath();
+  if (!p) return;
+  const info = await getInfoAsync(p);
+  if (!info.exists) return;
+  const sec = 'modificationTime' in info ? (info.modificationTime as number) : 0;
+  if (!sec) return; // 更新時刻が取れないなら消さない（getPreImportSnapshot 側で判断される）
+  if (Date.now() - sec * 1000 > SNAPSHOT_TTL_DAYS * 86400000) {
+    await deleteAsync(p, { idempotent: true }).catch(() => {});
+  }
+}
+
+/**
  * バックアップインポート直前に自動保存されたスナップショットから復元する。
  * 画像ファイル自体はインポート時に上書き削除されないため、旧パスのままで復元できる。
  */

@@ -61,6 +61,10 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
     - `estimateBackupImages()` が**画像を読み込まずにファイルサイズだけで**事前に見積もり、入りきらない場合は枚数と合計サイズを示してから選ばせる。読み込んでから「入りませんでした」では、その読み込み自体でメモリ不足になって何も作れない恐れがある。**`exportBackup()` 本体も同じ理由で、読み込む前にサイズで判定する。**
     - **base64 の長さは必ず `base64Length()` を使う。** `n * 4/3` は実長より短く出るため（4バイトなら実長8に対し6）、見積もりと実書き出しで式が違うと「約N枚入ります」と伝えた後に実際はそれ未満しか入らない。両方から同じ関数を呼ぶこと。`backupFreshness.test.ts` が実際の Buffer エンコード結果と突き合わせて固定している。
     - **残っている問題**: 分割書き出し・ストリーミング化は未対応。上限と事前見積もりで「落ちる領域に入らない」ようにしているだけで、根本的には巨大な文字列を作る構造のまま。
+  - **アプリロックが有効なときはウィジェットに実データを書かない**（`src/utils/widgetSync.ts`）。ウィジェットは `accessoryCircular` / `accessoryRectangular` に対応しており**ロック画面に置ける**ため、生体認証で守っていても施錠された端末を覗くだけで今月の勝率・損益・取引回数が読めてしまう。App Group に書いた内容はバックアップにも入る。
+  - **`AppLockGate` は `inactive`/`background` で画面を覆う**（`src/components/AppLockGate.tsx`）。iOSがアプリスイッチャー用のスナップショットを撮るのは遷移中で、復帰時にロックしても撮られた1枚には直前の画面が写っている。**覆う条件（`inactive` を含む）と再ロックの条件（`background` からの復帰のみ）が違うのは意図的。** 再ロック側に `inactive` を含めると、認証シート自体が `inactive` を経由するため無限ループになる。覆う側は `isAuthenticatingRef` で認証中を除外している。
+  - **`resetDatabase()` はチャート画像とインポート前スナップショットも消す。** DBだけ消すと、参照元を失った**暗号化されていない**チャート画像がアプリから到達も削除もできない孤児として残る。「全データを削除する」の約束と実態を合わせるため。
+  - **`PRAGMA key` / `ATTACH ... KEY` に渡す前に `assertKeyFormat()` を通す。** 文字列結合の安全性は「鍵が16進64文字である」という離れた不変条件に依存しているので、破れた瞬間に気付けるようにしてある。
   - **最終バックアップ日**（`src/utils/backup.ts` の `LAST_BACKUP_SETTING_KEY`）は settings テーブルに置き、設定画面のバックアップ節に常時表示する。上記のとおり復旧手段は手動バックアップだけなので、`BACKUP_STALE_DAYS`（14日）を超えたら注意を促す。**この値はバックアップファイルに含めない** — 「この端末で最後に取った日時」という意味なので、含めると復元した瞬間に他端末の古い日付が入り込む。
 
 - **Image storage** (`src/utils/imageStorage.ts`): trade chart images are copied into `documentDirectory/charts/` and stored in the DB as **relative** paths (`charts/xxx.jpg`), resolved to an absolute URI only at read time. This is because `documentDirectory`'s container ID changes across reinstalls/OS updates, which would silently break absolute paths. Old absolute-path rows are migrated to relative paths in `database.ts`.

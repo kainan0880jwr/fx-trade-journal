@@ -122,3 +122,13 @@ describe('暗号鍵のスロット', () => {
     });
   });
 });
+
+describe('鍵の形式', () => {
+  it('生成される鍵は PRAGMA に安全に埋め込める形式である', async () => {
+    store.clear();
+    const key = await getOrCreateEncryptionKey();
+    // 引用符・改行・バックスラッシュが混ざらないこと。database.ts の
+    // assertKeyFormat がこの形式を前提に文字列結合の安全性を担保している。
+    expect(key).toMatch(/^[0-9a-f]{64}$/);
+  });
+});

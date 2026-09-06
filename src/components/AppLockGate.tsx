@@ -17,6 +17,8 @@ export default function AppLockGate({ children }: Props) {
   const s = makeStyles(C);
   const appLockEnabled = useSettingsStore((st) => st.settings.appLockEnabled);
   const [unlocked, setUnlocked] = useState(!appLockEnabled);
+  // アプリスイッチャー用のスナップショットが撮られる間だけ画面を覆う
+  const [covered, setCovered] = useState(false);
   const appState = useRef<AppStateStatus>(AppState.currentState);
   // Face ID等のシステム認証UI自体がアプリを一瞬 'inactive' にするため、
   // 認証中はその遷移をバックグラウンド復帰と誤検知して再認証ループに陥らないようにするフラグ
@@ -66,17 +68,45 @@ export default function AppLockGate({ children }: Props) {
 
   useEffect(() => {
     const sub = AppState.addEventListener('change', (next) => {
-      // 'background' からの復帰のみを対象にする。'inactive' は認証シート表示時にも
-      // 一時的に経由するため、これを含めると認証→再検知→再認証の無限ループになる。
-      if (appLockEnabled && appState.current === 'background' && next === 'active') {
-        setUnlocked(false);
-        tryAuthenticate();
+      if (appLockEnabled) {
+        // 目隠し: iOSがアプリスイッチャー用のスナップショットを撮るのは
+        // active → inactive → background の**遷移中**で、その時点ではまだ
+        // トレード一覧が表示されている。復帰時にロックしても、撮られた1枚には
+        // 直前の画面が写っており、スイッチャーを開けば誰でも見られる。
+        //
+        // 認証シートの表示中も 'inactive' を経由するので、そこでは覆わない
+        // （自分の認証UIの裏を隠してしまい、解除後のちらつきにもなる）。
+        if (!isAuthenticatingRef.current && (next === 'inactive' || next === 'background')) {
+          setCovered(true);
+        } else if (next === 'active') {
+          setCovered(false);
+        }
+
+        // 再ロックは 'background' からの復帰のみを対象にする。'inactive' は
+        // 認証シート表示時にも経由するため、含めると認証→再検知→再認証の
+        // 無限ループになる。目隠しと再ロックで条件が違うのは意図的。
+        if (appState.current === 'background' && next === 'active') {
+          setUnlocked(false);
+          tryAuthenticate();
+        }
       }
       appState.current = next;
     });
     return () => sub.remove();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appLockEnabled]);
+
+  // 覆いはロック状態より優先する。スナップショットに中身を写さないことが目的で、
+  // 解除済みかどうかは関係ない。
+  if (appLockEnabled && covered) {
+    return (
+      <View style={s.container}>
+        <View style={s.iconWrap}>
+          <Ionicons name="lock-closed" size={32} color={C.primary} />
+        </View>
+      </View>
+    );
+  }
 
   if (unlocked) return <>{children}</>;
 

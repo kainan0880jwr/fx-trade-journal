@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react-native';
 import * as SQLite from 'expo-sqlite';
+import { documentDirectory, deleteAsync } from 'expo-file-system/legacy';
 import * as SecureStore from 'expo-secure-store';
 import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey, ensureKeyIsBackupable, getLegacyEncryptionKey } from './dbEncryption';
 
@@ -15,6 +16,18 @@ export class EncryptionKeyLostError extends Error {
     super('encryption_key_lost');
     this.name = 'EncryptionKeyLostError';
   }
+}
+
+/**
+ * PRAGMA に埋め込む前に鍵の形式を確かめる。
+ *
+ * 鍵は 32バイト乱数の16進文字列なので引用符も改行も含まれず、文字列結合しても
+ * 注入の余地は無い。ただしその安全性は「鍵の生成方法」という離れた場所にある
+ * 不変条件に依存していて、コメントで担保されているだけだった。将来 base64 化や
+ * パスフレーズ導入で形式が変われば静かに壊れる。破れた瞬間に気付けるようにする。
+ */
+function assertKeyFormat(key: string): void {
+  if (!/^[0-9a-f]{64}$/.test(key)) throw new Error('malformed_encryption_key');
 }
 
 // Promiseをキャッシュして並行呼び出し時の二重初期化を防ぐ
@@ -70,6 +83,16 @@ export async function resetDatabase(): Promise<void> {
 
   await SecureStore.deleteItemAsync(MIGRATION_FLAG_KEY).catch(() => {});
   await deleteEncryptionKey().catch(() => {});
+
+  // DBだけ消してもチャート画像は端末に残る。参照元のDBが無くなるのでアプリからは
+  // 到達も削除もできない孤児ファイルになり、アンインストールするまで消えない。
+  // チャート画像は**暗号化されていない**うえ、しばしば損益や口座残高が写り込んで
+  // いるので、「全データを削除する」と言って残すのは約束と実態がずれている。
+  // インポート前スナップショット（全記録の平文JSON）も同様に消す。
+  if (documentDirectory) {
+    await deleteAsync(`${documentDirectory}charts/`, { idempotent: true }).catch(() => {});
+    await deleteAsync(`${documentDirectory}fx-pre-import-snapshot.json`, { idempotent: true }).catch(() => {});
+  }
 }
 
 // 平文SQLite→SQLCipher暗号化DBへの移行。
@@ -91,6 +114,7 @@ async function tryOpenExistingEncrypted(key: string): Promise<SQLite.SQLiteDatab
   let db: SQLite.SQLiteDatabase | null = null;
   try {
     db = await SQLite.openDatabaseAsync(NEW_DB_NAME);
+    assertKeyFormat(key);
     await db.execAsync(`PRAGMA key = '${key}';`);
     // 鍵が違う場合、PRAGMA key 自体は通り、最初の読み取りで
     // "file is not a database" になる。ここで初めて判定できる。
@@ -125,6 +149,7 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
     ensureKeyIsBackupable(key).catch(() => {});
 
     const db = await SQLite.openDatabaseAsync(NEW_DB_NAME);
+    assertKeyFormat(key);
     await db.execAsync(`PRAGMA key = '${key}';`);
     try {
       // PRAGMA key は鍵が違っても通り、最初の読み取りで初めて失敗する。
@@ -208,6 +233,7 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
   if (!plainDb) {
     // 移行対象データがない場合は新規に空の暗号化DBを作るだけでよい
     const encDb = await SQLite.openDatabaseAsync(NEW_DB_NAME);
+    assertKeyFormat(key);
     await encDb.execAsync(`PRAGMA key = '${key}';`);
     await SecureStore.setItemAsync(MIGRATION_FLAG_KEY, 'v1');
     return encDb;
@@ -219,6 +245,7 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
   try {
     origCount = await plainDb.getFirstAsync<{ c: number }>('SELECT COUNT(*) as c FROM trades');
     const newDbPath = `${SQLite.defaultDatabaseDirectory.replace(/\/+$/, '')}/${NEW_DB_NAME}`;
+    assertKeyFormat(key);
     await plainDb.execAsync(`ATTACH DATABASE '${newDbPath}' AS encrypted KEY '${key}';`);
     await plainDb.execAsync(`SELECT sqlcipher_export('encrypted');`);
     await plainDb.execAsync('DETACH DATABASE encrypted;');
@@ -230,6 +257,7 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
 
   const encDb = await SQLite.openDatabaseAsync(NEW_DB_NAME);
   try {
+    assertKeyFormat(key);
     await encDb.execAsync(`PRAGMA key = '${key}';`);
     const newCount = await encDb.getFirstAsync<{ c: number }>('SELECT COUNT(*) as c FROM trades');
     if ((origCount?.c ?? 0) !== (newCount?.c ?? 0)) {
