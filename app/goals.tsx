@@ -230,7 +230,7 @@ function makeStyles(C: ThemeColors) {
     noticeCard: { flexDirection: 'row', gap: 8, alignItems: 'flex-start', backgroundColor: C.cardAlt, borderRadius: 10, padding: 12, marginBottom: 14 },
     noticeText: { flex: 1, fontSize: 11, lineHeight: 16, color: C.text2 },
     sectionRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8 },
-    proTag: { fontSize: 9, fontWeight: '800', color: '#1B1E28', backgroundColor: C.yellow, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, overflow: 'hidden' },
+    proTag: { fontSize: 9, fontWeight: '800', color: C.onAccent, backgroundColor: C.yellow, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, overflow: 'hidden' },
     inputLocked: { alignItems: 'center', justifyContent: 'center' },
     section: { fontSize: 13, fontWeight: '800', color: C.text, marginTop: 8, marginBottom: 8 },
     card: { backgroundColor: C.card, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: C.border, marginBottom: 6 },

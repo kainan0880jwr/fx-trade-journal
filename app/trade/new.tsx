@@ -706,6 +706,7 @@ export default function NewTradeScreen() {
                     key={r}
                     style={[
                       styles.resultBtn,
+                      quickResult === r && styles.resultBtnSelected,
                       quickResult === r && (
                         r === 'win' ? styles.resultBtnWin
                         : r === 'loss' ? styles.resultBtnLoss
@@ -718,7 +719,13 @@ export default function NewTradeScreen() {
                   >
                     <Text style={[
                       styles.resultBtnText,
-                      quickResult === r && { color: C.onAccent, fontWeight: '800' },
+                      // 背景は winBg などの**ティント**であってベタ塗りではないので、
+                      // onAccent（ダークではほぼ黒）を載せると読めなくなる。
+                      // 上の売買方向ボタンと同じく、意味色そのものを文字色にする。
+                      quickResult === r && {
+                        color: r === 'win' ? C.win : r === 'loss' ? C.loss : C.primary,
+                        fontWeight: '800',
+                      },
                     ]}>
                       {r === 'win' ? t('win') : r === 'loss' ? t('loss') : t('even')}
                     </Text>
@@ -1190,9 +1197,12 @@ function makeStyles(C: ThemeColors) {
     dirLabel: { fontSize: 14, fontWeight: '700', color: C.text2 },
 
     resultBtn: { flex: 1, paddingVertical: 18, borderRadius: 14, borderWidth: 1.5, borderColor: C.border, alignItems: 'center', backgroundColor: C.card, marginHorizontal: 4 },
+    // 選択を色だけで伝えない。枠を太くして形でも分かるようにする。
+    resultBtnSelected: { borderWidth: 3 },
     resultBtnWin: { backgroundColor: C.winBg, borderColor: C.win },
     resultBtnLoss: { backgroundColor: C.lossBg, borderColor: C.loss },
-    resultBtnEven: { backgroundColor: C.primary + '20', borderColor: C.primary },
+    // ティントを濃くすると、その上に載る同色文字のコントラストが落ちる（'20'だと4.3台）
+    resultBtnEven: { backgroundColor: C.primary + '14', borderColor: C.primary },
     resultBtnText: { fontSize: 16, fontWeight: '700', color: C.text2 },
 
     pipsRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },

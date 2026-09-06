@@ -47,7 +47,8 @@ function contrast(a: RGB, b: RGB): number {
 }
 
 const AA = 4.5;
-const SURFACES = ['bg', 'card', 'cardAlt'] as const;
+// tabBg を必ず含めること。タブバーの選択色（10px）がここに載る。
+const SURFACES = ['bg', 'card', 'cardAlt', 'tabBg'] as const;
 // 文字として使われる色。装飾専用（primaryLight / primaryDark / primaryGlow など）は含めない。
 const TEXT_COLORS = [
   'text', 'text2', 'text3', 'primary', 'win', 'loss', 'even', 'yellow', 'purple', 'cyan', 'buy', 'sell',
@@ -59,7 +60,10 @@ const TINTED: [string, string][] = [
 ];
 
 // アクセント色でベタ塗りした面（ボタン・バッジ・FAB など）。この上には onAccent を載せる。
-const ACCENT_FILLS = ['primary', 'win', 'loss', 'even', 'buy', 'sell'] as const;
+// yellow / purple / cyan もベタ塗りとして使われる（PROタグ、おすすめバッジなど）。
+// 抜けていたために、黄色の上に #000 を直書きした2箇所（ライトで 2.87 / 3.63）を
+// 検出できていなかった。
+const ACCENT_FILLS = ['primary', 'win', 'loss', 'even', 'buy', 'sell', 'yellow', 'purple', 'cyan'] as const;
 // paywall の CTA はこの3色のグラデーション。どのストップの上にも onAccent が載る。
 const ACCENT_GRADIENT = ['primaryLight', 'primary', 'primaryDark'] as const;
 

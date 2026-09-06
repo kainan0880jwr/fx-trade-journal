@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import * as Sentry from '@sentry/react-native';
 import { ExtensionStorage } from '@bacons/apple-targets';
-import { getTradesByMonth, getRecordStreak } from '../db/queries';
+import { getTradesByMonth, getRecordStreak, getSetting } from '../db/queries';
 import { calcStats } from './statsCalc';
 import { t } from '../i18n';
 
@@ -43,6 +43,29 @@ function isNativeModuleLinked(): boolean {
 
 let linkageReported = false;
 
+/**
+ * ウィジェットの表示内容を「データなし」に戻す。
+ * 値を消すのではなく hasData: 0 の正規のペイロードを書くことで、Swift 側の
+ * デコード失敗（プレースホルダーの `--%`）と区別できる状態にしておく。
+ */
+function clearWidgetData(): void {
+  try {
+    const storage = new ExtensionStorage(APP_GROUP);
+    storage.set('monthlyStats', {
+      title: t('this_month'),
+      winRate: '-', winRateLabel: t('win_rate'),
+      totalPips: '-', pipsLabel: 'pips', isPositive: 1,
+      profitFactor: '-', profitFactorLabel: t('pf'),
+      tradeCount: '-', tradeCountLabel: t('trade_count'),
+      streak: '0', streakSuffix: t('home_streak_days'),
+      winRateValue: 0, hasData: 0,
+    });
+    ExtensionStorage.reloadWidget();
+  } catch {
+    // 書けなくてもアプリ本体は止めない
+  }
+}
+
 export async function syncWidgetData(): Promise<void> {
   if (Platform.OS !== 'ios') return;
 
@@ -60,6 +83,22 @@ export async function syncWidgetData(): Promise<void> {
       }
     }
     return;
+  }
+
+  // アプリロックが有効なら実データを書かない。
+  //
+  // ウィジェットは accessoryCircular / accessoryRectangular に対応しており
+  // **ロック画面に置ける**。生体認証でアプリを守っているのに、施錠された端末を
+  // 覗くだけで今月の勝率・損益・取引回数が読めるのでは、ロックの意味が薄い。
+  // 資産状況の推測につながる情報である以上、ロックを有効にした人の期待は
+  // 「見えないこと」のはず。App Group に書いた内容はバックアップにも入る。
+  try {
+    if ((await getSetting('app_lock_enabled')) === '1') {
+      clearWidgetData();
+      return;
+    }
+  } catch {
+    // 設定が読めないときは従来どおり同期する（ウィジェットが壊れるほうが困る）
   }
 
   try {

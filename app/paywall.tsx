@@ -470,7 +470,7 @@ function makeStyles(C: ThemeColors) {
       position: 'absolute', top: -10, right: 14,
       backgroundColor: C.yellow, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2,
     },
-    bestBadgeText: { fontSize: 10, fontWeight: '800', color: '#000' },
+    bestBadgeText: { fontSize: 10, fontWeight: '800', color: C.onAccent },
     planRadio: {
       width: 20, height: 20, borderRadius: 10,
       borderWidth: 2, borderColor: C.border, alignItems: 'center', justifyContent: 'center',

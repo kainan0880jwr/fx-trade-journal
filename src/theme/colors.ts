@@ -82,7 +82,9 @@ export const lightColors = {
   cyan: '#0B6D9C',
   cyanBg: 'rgba(14,134,192,0.08)',
 
-  tabBg: '#EAEDFA',
+  // tabBg はタブバーの選択ラベル（10px）が載る面なので、cardAlt と同等以上に
+  // 明るく保つこと。#EAEDFA だと primary が 4.49:1 で AA をわずかに割っていた。
+  tabBg: '#ECEFFA',
   overlay: 'rgba(0,0,0,0.60)',
 } as const;
 
