@@ -107,6 +107,10 @@ export default function TradeDetailScreen() {
   const isWin = trade.result === 'win';
   const isLoss = trade.result === 'loss';
   const resultColor = isWin ? C.win : isLoss ? C.loss : C.even;
+  // 44px/900 の pips は WCAG の「大きい文字」に当たるので、判別しやすい鮮やかな側を使う。
+  // resultColor はバッジの**背景**にも使うため、そちらは据え置く（背景を明るくすると
+  // 上に載る onAccent のコントラストが変わる）。
+  const heroColor = isWin ? C.winLarge : isLoss ? C.lossLarge : C.even;
   const resultLabel = isWin ? t('win') : isLoss ? t('loss') : t('even');
   const pipsStr = trade.pips != null ? `${trade.pips > 0 ? '+' : ''}${trade.pips}` : '-';
   const plStr = trade.profitLoss != null
@@ -168,7 +172,7 @@ export default function TradeDetailScreen() {
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={[styles.heroPips, { color: resultColor }]}>{pipsStr} <Text style={styles.heroPipsUnit}>pips</Text></Text>
+        <Text style={[styles.heroPips, { color: heroColor }]}>{pipsStr} <Text style={styles.heroPipsUnit}>pips</Text></Text>
         {plStr && <Text style={[styles.heroPL, { color: resultColor }]}>{plStr}</Text>}
         <View style={styles.heroStars}>
           {[1,2,3,4,5].map(n => (

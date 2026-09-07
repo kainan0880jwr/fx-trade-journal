@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react-native';
 import * as SQLite from 'expo-sqlite';
 import { documentDirectory, deleteAsync } from 'expo-file-system/legacy';
 import * as SecureStore from 'expo-secure-store';
+import { tArr } from '../i18n';
 import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey, ensureKeyIsBackupable, getLegacyEncryptionKey } from './dbEncryption';
 
 const OLD_DB_NAME = 'fx_journal.db'; // 旧・平文DB（SQLCipher導入前）
@@ -294,16 +295,19 @@ export const SCHEMA_MIGRATIONS = [
   "ALTER TABLE trades ADD COLUMN tf_1h TEXT DEFAULT ''",
 ];
 
-const DEFAULT_TAGS = JSON.stringify([
-  'MAクロス', 'サポレジ反発', 'トレンドライン', 'チャートパターン',
-  'ボリンジャー', 'RSI/MACD', 'フィボナッチ', '経済指標', 'ニュース', '感覚',
-]);
+// 新規インストール時にだけ投入される既定値（INSERT OR IGNORE なので既存ユーザーは
+// 影響を受けない）。**端末の言語で入れること。** 以前はロケールに関係なく日本語の
+// 固定文字列を投入しており、11言語・16か国に配信しているのに、ドイツ人でもブラジル人でも
+// 初回に開く記録画面に日本語のタグが10個とルールが7項目並んでいた。
+function defaultTagsJson(): string {
+  const tags = tArr('default_tags');
+  return JSON.stringify(tags.length > 0 ? tags : []);
+}
 
-const DEFAULT_RULES = JSON.stringify([
-  'ロット上限を守った', '損切りを設定した', 'トレンド方向に乗った',
-  '根拠を確認してからエントリー', '感情的にならなかった',
-  '目標RRを満たしていた', '経済指標前を避けた',
-]);
+function defaultRulesJson(): string {
+  const rules = tArr('default_rules');
+  return JSON.stringify(rules.length > 0 ? rules : []);
+}
 
 async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void> {
   await database.execAsync(`
@@ -586,10 +590,10 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
     INSERT OR IGNORE INTO settings (key, value) VALUES ('app_lock_enabled', '0');
   `);
   await database.runAsync(
-    `INSERT OR IGNORE INTO settings (key, value) VALUES ('entry_tags', ?)`, [DEFAULT_TAGS]
+    `INSERT OR IGNORE INTO settings (key, value) VALUES ('entry_tags', ?)`, [defaultTagsJson()]
   );
   await database.runAsync(
-    `INSERT OR IGNORE INTO settings (key, value) VALUES ('trade_rules', ?)`, [DEFAULT_RULES]
+    `INSERT OR IGNORE INTO settings (key, value) VALUES ('trade_rules', ?)`, [defaultRulesJson()]
   );
   await database.execAsync(`
     INSERT OR IGNORE INTO settings (key, value) VALUES ('onboarding_done', '0');

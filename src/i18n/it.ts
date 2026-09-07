@@ -677,6 +677,10 @@ export const it: LangStrings = {
   share_watermark_cta: "Passa a PRO per rimuoverlo",
 
   // Backup
+  // 新規インストール時に投入される既定値。ロケールごとに用意しないと、
+  // 全ユーザーの入力画面に日本語のタグとルールが並ぶことになる。
+  default_tags: ['Incrocio medie', 'Rimbalzo S/R', 'Linea di tendenza', 'Pattern grafico', 'Bollinger', 'RSI/MACD', 'Fibonacci', 'Dati economici', 'Notizie', 'Istinto'],
+  default_rules: ['Rispettato il limite di lotti', 'Impostato lo stop loss', 'Operato nel senso del trend', 'Confermato il setup prima di entrare', 'Rimasto senza emozioni', 'Raggiunto il R:R obiettivo', 'Evitate le notizie importanti'],
   backup_section: "Backup dei dati",
   backup_export: "Crea backup",
   backup_export_sub: "Backup completo che include tutte le operazioni e le immagini",

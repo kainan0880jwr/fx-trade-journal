@@ -677,6 +677,10 @@ export const id: LangStrings = {
   share_watermark_cta: 'Upgrade ke PRO untuk menghapus',
 
   // Backup
+  // 新規インストール時に投入される既定値。ロケールごとに用意しないと、
+  // 全ユーザーの入力画面に日本語のタグとルールが並ぶことになる。
+  default_tags: ['Persilangan MA', 'Pantulan S/R', 'Garis tren', 'Pola grafik', 'Bollinger', 'RSI/MACD', 'Fibonacci', 'Data ekonomi', 'Berita', 'Firasat'],
+  default_rules: ['Mematuhi batas lot', 'Memasang stop loss', 'Mengikuti arah tren', 'Memastikan setup sebelum masuk', 'Tidak terbawa emosi', 'Memenuhi target R:R', 'Menghindari rilis berita besar'],
   backup_section: 'Backup Data',
   backup_export: 'Buat Backup',
   backup_export_sub: 'Backup lengkap termasuk semua trade dan gambar',

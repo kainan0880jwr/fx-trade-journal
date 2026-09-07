@@ -677,6 +677,10 @@ export const pt: LangStrings = {
   share_watermark_cta: 'Atualize para PRO para remover',
 
   // Backup
+  // 新規インストール時に投入される既定値。ロケールごとに用意しないと、
+  // 全ユーザーの入力画面に日本語のタグとルールが並ぶことになる。
+  default_tags: ['Cruzamento de MM', 'Repique S/R', 'Linha de tendência', 'Padrão gráfico', 'Bollinger', 'RSI/MACD', 'Fibonacci', 'Dados econômicos', 'Notícias', 'Intuição'],
+  default_rules: ['Respeitei meu limite de lotes', 'Coloquei stop loss', 'Operei a favor da tendência', 'Confirmei o setup antes de entrar', 'Mantive-me sem emoção', 'Atingi meu R:R alvo', 'Evitei divulgações importantes'],
   backup_section: 'Backup de Dados',
   backup_export: 'Criar Backup',
   backup_export_sub: 'Backup completo incluindo todas as operações e imagens',

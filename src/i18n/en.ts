@@ -677,6 +677,10 @@ export const en: LangStrings = {
   share_watermark_cta: 'Upgrade to PRO to remove',
 
   // Backup
+  // 新規インストール時に投入される既定値。ロケールごとに用意しないと、
+  // 全ユーザーの入力画面に日本語のタグとルールが並ぶことになる。
+  default_tags: ['MA cross', 'S/R bounce', 'Trend line', 'Chart pattern', 'Bollinger', 'RSI/MACD', 'Fibonacci', 'Economic data', 'News', 'Gut feel'],
+  default_rules: ['Respected my lot limit', 'Set a stop loss', 'Traded with the trend', 'Confirmed my setup before entry', 'Stayed unemotional', 'Met my target R:R', 'Avoided major news releases'],
   backup_section: 'Data Backup',
   backup_export: 'Create Backup',
   backup_export_sub: 'Full backup including all trades and images',

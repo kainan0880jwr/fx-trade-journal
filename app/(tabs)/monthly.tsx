@@ -97,8 +97,8 @@ export default function MonthlyScreen() {
   );
 
   const pieData = useMemo(() => [
-    { name: t('win_short'), population: stats.wins, color: C.win, legendFontColor: C.text, legendFontSize: 13 },
-    { name: t('loss_short'), population: stats.losses, color: C.loss, legendFontColor: C.text, legendFontSize: 13 },
+    { name: t('win_short'), population: stats.wins, color: C.winLarge, legendFontColor: C.text, legendFontSize: 13 },
+    { name: t('loss_short'), population: stats.losses, color: C.lossLarge, legendFontColor: C.text, legendFontSize: 13 },
     { name: t('even_short'), population: stats.evens, color: C.even, legendFontColor: C.text, legendFontSize: 13 },
   ].filter(d => d.population > 0), [stats, C]);
 
@@ -249,7 +249,7 @@ export default function MonthlyScreen() {
 
                 <View style={styles.bigNumCard}>
                   <Text style={styles.bigNumLabel}>{t('total_pips')}</Text>
-                  <Text style={[styles.bigNum, { color: stats.totalPips >= 0 ? C.win : C.loss }]}>
+                  <Text style={[styles.bigNum, { color: stats.totalPips >= 0 ? C.winLarge : C.lossLarge }]}>
                     {stats.totalPips > 0 ? '+' : ''}{stats.totalPips}
                   </Text>
                   {stats.totalProfitLoss !== 0 && (
@@ -663,7 +663,7 @@ function YearlyView() {
                     {m.totalPips !== 0 ? `${m.totalPips > 0 ? '+' : ''}${m.totalPips}` : ''}
                   </Text>
                   <View style={styles.barTrack}>
-                    <View style={[styles.barFill, { height: `${h}%`, backgroundColor: isPos ? C.win : C.loss }]} />
+                    <View style={[styles.barFill, { height: `${h}%`, backgroundColor: isPos ? C.winLarge : C.lossLarge }]} />
                   </View>
                   <Text style={styles.barLabel}>{i + 1}</Text>
                 </View>

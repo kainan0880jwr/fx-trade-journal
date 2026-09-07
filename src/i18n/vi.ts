@@ -677,6 +677,10 @@ export const vi: LangStrings = {
   share_watermark_cta: 'Nâng cấp lên PRO để xóa',
 
   // Backup
+  // 新規インストール時に投入される既定値。ロケールごとに用意しないと、
+  // 全ユーザーの入力画面に日本語のタグとルールが並ぶことになる。
+  default_tags: ['Giao cắt MA', 'Bật từ S/R', 'Đường xu hướng', 'Mô hình giá', 'Bollinger', 'RSI/MACD', 'Fibonacci', 'Dữ liệu kinh tế', 'Tin tức', 'Cảm tính'],
+  default_rules: ['Tuân thủ giới hạn lot', 'Đặt cắt lỗ', 'Giao dịch thuận xu hướng', 'Xác nhận thiết lập trước khi vào lệnh', 'Giữ được bình tĩnh', 'Đạt tỷ lệ R:R mục tiêu', 'Tránh các tin quan trọng'],
   backup_section: 'Sao Lưu Dữ Liệu',
   backup_export: 'Tạo Bản Sao Lưu',
   backup_export_sub: 'Sao lưu đầy đủ bao gồm tất cả giao dịch và ảnh',

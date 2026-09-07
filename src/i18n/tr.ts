@@ -677,6 +677,10 @@ export const tr: LangStrings = {
   share_watermark_cta: "Kaldırmak için PRO'ya yükselt",
 
   // Backup
+  // 新規インストール時に投入される既定値。ロケールごとに用意しないと、
+  // 全ユーザーの入力画面に日本語のタグとルールが並ぶことになる。
+  default_tags: ['MA kesişimi', 'D/D sekmesi', 'Trend çizgisi', 'Grafik formasyonu', 'Bollinger', 'RSI/MACD', 'Fibonacci', 'Ekonomik veri', 'Haber', 'Sezgi'],
+  default_rules: ['Lot limitime uydum', 'Zarar durdur koydum', 'Trend yönünde işlem yaptım', 'Girmeden önce kurulumu doğruladım', 'Duygusal davranmadım', 'Hedef R:R oranını tutturdum', 'Önemli haber saatlerinden kaçındım'],
   backup_section: 'Veri Yedekleme',
   backup_export: 'Yedek Oluştur',
   backup_export_sub: 'Tüm işlemler ve görseller dahil tam yedek',

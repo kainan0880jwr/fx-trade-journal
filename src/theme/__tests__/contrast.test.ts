@@ -47,6 +47,10 @@ function contrast(a: RGB, b: RGB): number {
 }
 
 const AA = 4.5;
+// WCAG の「大きい文字」（18.66px以上の太字、または24px以上）は 3:1 で足りる。
+const AA_LARGE = 3;
+// 大きい数字と図形（円グラフ・バー・ヒートマップ）専用の鮮やかな対。
+const LARGE_COLORS = ['winLarge', 'lossLarge'] as const;
 // tabBg を必ず含めること。タブバーの選択色（10px）がここに載る。
 const SURFACES = ['bg', 'card', 'cardAlt', 'tabBg'] as const;
 // 文字として使われる色。装飾専用（primaryLight / primaryDark / primaryGlow など）は含めない。
@@ -84,6 +88,20 @@ describe.each([['ライト', lightColors], ['ダーク', darkColors]] as const)(
 
   // ダークのアクセントは明るく、ライトのアクセントは濃い。前景を白に固定すると
   // ダークで 3.71:1（primary）まで落ちるため、テーマごとに onAccent を切り替えている。
+  describe.each(SURFACES)('%s の上（大きい文字）', (surface) => {
+    it.each(LARGE_COLORS)('%s が大きい文字の基準を満たす', (token) => {
+      const ratio = contrast(parse(C[token]).rgb, parse(C[surface]).rgb);
+      expect(ratio).toBeGreaterThanOrEqual(AA_LARGE);
+    });
+  });
+
+  it('winLarge と lossLarge の輝度が離れている（色覚に頼らず判別できる）', () => {
+    // 本文用の win/loss は 4.5:1 まで濃くした結果、相互比が 1.03 まで潰れ、
+    // 符号を持たない図形で勝敗が判別できなくなっていた。ここが再び潰れないよう固定する。
+    const ratio = contrast(parse(C.winLarge).rgb, parse(C.lossLarge).rgb);
+    expect(ratio).toBeGreaterThanOrEqual(1.2);
+  });
+
   describe.each(ACCENT_FILLS)('%s のベタ塗り', (fill) => {
     it('onAccent が AA を満たす', () => {
       const ratio = contrast(parse(C.onAccent).rgb, parse(C[fill]).rgb);

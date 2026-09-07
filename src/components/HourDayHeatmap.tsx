@@ -51,7 +51,7 @@ export default function HourDayHeatmap({ trades }: { trades: Trade[] }) {
                       cell.total === 0
                         ? { backgroundColor: 'transparent', borderColor: C.border }
                         : {
-                          backgroundColor: (cell.avgPips >= 0 ? C.win : C.loss) +
+                          backgroundColor: (cell.avgPips >= 0 ? C.winLarge : C.lossLarge) +
                             opacityHex(cell.total / maxCount),
                           borderColor: 'transparent',
                         },
