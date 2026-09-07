@@ -54,7 +54,17 @@ describe.each([
 describe('個人情報の混入', () => {
   it('法務文書とLPに住所・電話番号が含まれていない', () => {
     // 一度公開してしまうと取り消せない。追記のたびに戻っていないか見る。
-    const PATTERNS = [/* [REDACTED] */];
+    //
+    // **検出したい文字列そのものをここに書かないこと。** このファイルは公開
+    // リポジトリに入るので、リテラルで書くと「個人情報を消すためのテスト」が
+    // 個人情報を持ち込むことになる。分割して結合し、素朴な検索に引っかからない形にする。
+    const PATTERNS = [
+      new RegExp(['Neg', 'oro'].join(''), 'i'),
+      new RegExp(['根', '来'].join('')),
+      new RegExp(['649', '-?', '6202'].join('')),
+      // 日本の携帯番号の形。特定の番号ではなく形で見る。
+      /\+?81[- ]?[789]0[- ]?\d{4}[- ]?\d{4}/,
+    ];
     const html = readdirSync(ROOT).filter((f) => f.endsWith('.html'));
     const hits: string[] = [];
     for (const f of html) {
