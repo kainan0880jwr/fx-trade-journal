@@ -100,7 +100,7 @@ export default function BadgesScreen() {
             <Text style={s.nearlyTitle}>{t('badge_nearly_title')}</Text>
             {nearly.map(b => (
               <View key={b.id} style={s.nearlyRow}>
-                <Ionicons name={b.icon as any} size={18} color={b.color} />
+                <Ionicons name={b.icon as any} size={18} color={C[b.color]} />
                 <Text style={s.nearlyLabel} numberOfLines={1}>{b.title}</Text>
                 <Text style={s.nearlyRemain}>{b.progress} / {b.target}</Text>
               </View>
@@ -124,11 +124,11 @@ function BadgeCard({ badge }: { badge: UnlockedBadge }) {
   const pct = Math.min(badge.progress / badge.target * 100, 100);
   return (
     <View style={[s.card, !badge.unlocked && s.cardLocked]}>
-      <View style={[s.iconCircle, { backgroundColor: badge.unlocked ? badge.color + '25' : C.cardAlt, borderColor: badge.unlocked ? badge.color : C.border }]}>
+      <View style={[s.iconCircle, { backgroundColor: badge.unlocked ? C[badge.color] + '25' : C.cardAlt, borderColor: badge.unlocked ? C[badge.color] : C.border }]}>
         <Ionicons
           name={badge.icon as any}
           size={28}
-          color={badge.unlocked ? badge.color : C.text3}
+          color={badge.unlocked ? C[badge.color] : C.text3}
         />
         {badge.unlocked && (
           <View style={s.checkBadge}>
@@ -144,13 +144,13 @@ function BadgeCard({ badge }: { badge: UnlockedBadge }) {
       {!badge.unlocked && !badge.needsGoal && (
         <>
           <View style={s.progBg}>
-            <View style={[s.progFill, { width: `${pct}%`, backgroundColor: badge.color }]} />
+            <View style={[s.progFill, { width: `${pct}%`, backgroundColor: C[badge.color] }]} />
           </View>
           <Text style={s.progLabel}>{badge.progress} / {badge.target}</Text>
         </>
       )}
       {badge.unlocked && (
-        <Text style={[s.unlockedLabel, { color: badge.color }]}>{t('achieved')}</Text>
+        <Text style={[s.unlockedLabel, { color: C[badge.color] }]}>{t('achieved')}</Text>
       )}
     </View>
   );

@@ -6,7 +6,13 @@ export interface BadgeDef {
   title: string;
   description: string;
   icon: string;
-  color: string;
+  /**
+   * テーマのトークン名。**固定の hex を書かないこと。**
+   * 以前は #FBBF24 などダーク前提の値を直書きしており、ライトモードの白カード上で
+   * 1.67〜3.31:1 しか無く、達成ラベルの文字もアイコンも読めなかった。
+   * 描画側で C[color] に解決する。ここに挙げるトークンは両テーマで AA を満たす。
+   */
+  color: 'primary' | 'win' | 'loss' | 'yellow' | 'purple';
   category: 'record' | 'performance' | 'habit' | 'analysis' | 'discipline' | 'goal';
 }
 
@@ -26,51 +32,51 @@ export interface BadgeGoals {
 }
 
 export const BADGE_DEFS: BadgeDef[] = [
-  { id: 'first_trade',   title: '', description: '', icon: 'flag-outline',             color: '#5B8AF0', category: 'record' },
-  { id: 'trades_10',     title: '', description: '', icon: 'layers-outline',           color: '#5B8AF0', category: 'record' },
-  { id: 'trades_50',     title: '', description: '', icon: 'shield-outline',           color: '#34D399', category: 'record' },
-  { id: 'trades_100',    title: '', description: '', icon: 'trophy-outline',           color: '#FBBF24', category: 'record' },
-  { id: 'win3',          title: '', description: '', icon: 'trending-up-outline',      color: '#34D399', category: 'performance' },
-  { id: 'win5',          title: '', description: '', icon: 'flame-outline',            color: '#FBBF24', category: 'performance' },
-  { id: 'pips50',        title: '', description: '', icon: 'pulse-outline',            color: '#5B8AF0', category: 'performance' },
-  { id: 'pips100',       title: '', description: '', icon: 'rocket-outline',           color: '#FBBF24', category: 'performance' },
-  { id: 'reflection_10', title: '', description: '', icon: 'book-outline',             color: '#A78BFA', category: 'habit' },
-  { id: 'mental_10',     title: '', description: '', icon: 'heart-outline',            color: '#F87171', category: 'habit' },
-  { id: 'rule_10',       title: '', description: '', icon: 'checkmark-circle-outline', color: '#34D399', category: 'habit' },
-  { id: 'image_5',       title: '', description: '', icon: 'image-outline',            color: '#5B8AF0', category: 'analysis' },
-  { id: 'rr_10',         title: '', description: '', icon: 'git-compare-outline',      color: '#A78BFA', category: 'analysis' },
-  { id: 'tf_10',         title: '', description: '', icon: 'time-outline',             color: '#FBBF24', category: 'analysis' },
+  { id: 'first_trade',   title: '', description: '', icon: 'flag-outline',             color: 'primary', category: 'record' },
+  { id: 'trades_10',     title: '', description: '', icon: 'layers-outline',           color: 'primary', category: 'record' },
+  { id: 'trades_50',     title: '', description: '', icon: 'shield-outline',           color: 'win', category: 'record' },
+  { id: 'trades_100',    title: '', description: '', icon: 'trophy-outline',           color: 'yellow', category: 'record' },
+  { id: 'win3',          title: '', description: '', icon: 'trending-up-outline',      color: 'win', category: 'performance' },
+  { id: 'win5',          title: '', description: '', icon: 'flame-outline',            color: 'yellow', category: 'performance' },
+  { id: 'pips50',        title: '', description: '', icon: 'pulse-outline',            color: 'primary', category: 'performance' },
+  { id: 'pips100',       title: '', description: '', icon: 'rocket-outline',           color: 'yellow', category: 'performance' },
+  { id: 'reflection_10', title: '', description: '', icon: 'book-outline',             color: 'purple', category: 'habit' },
+  { id: 'mental_10',     title: '', description: '', icon: 'heart-outline',            color: 'loss', category: 'habit' },
+  { id: 'rule_10',       title: '', description: '', icon: 'checkmark-circle-outline', color: 'win', category: 'habit' },
+  { id: 'image_5',       title: '', description: '', icon: 'image-outline',            color: 'primary', category: 'analysis' },
+  { id: 'rr_10',         title: '', description: '', icon: 'git-compare-outline',      color: 'purple', category: 'analysis' },
+  { id: 'tf_10',         title: '', description: '', icon: 'time-outline',             color: 'yellow', category: 'analysis' },
 
   // ── 日単位 ──
-  { id: 'day_sl',        title: '', description: '', icon: 'shield-checkmark-outline', color: '#34D399', category: 'discipline' },
-  { id: 'day_rules',     title: '', description: '', icon: 'checkbox-outline',         color: '#34D399', category: 'discipline' },
-  { id: 'day_reflect',   title: '', description: '', icon: 'create-outline',           color: '#A78BFA', category: 'discipline' },
-  { id: 'day_plus',      title: '', description: '', icon: 'sunny-outline',            color: '#FBBF24', category: 'goal' },
+  { id: 'day_sl',        title: '', description: '', icon: 'shield-checkmark-outline', color: 'win', category: 'discipline' },
+  { id: 'day_rules',     title: '', description: '', icon: 'checkbox-outline',         color: 'win', category: 'discipline' },
+  { id: 'day_reflect',   title: '', description: '', icon: 'create-outline',           color: 'purple', category: 'discipline' },
+  { id: 'day_plus',      title: '', description: '', icon: 'sunny-outline',            color: 'yellow', category: 'goal' },
 
   // ── 週単位 ──
-  { id: 'week_5days',    title: '', description: '', icon: 'calendar-outline',         color: '#5B8AF0', category: 'habit' },
-  { id: 'week_sl',       title: '', description: '', icon: 'shield-half-outline',      color: '#34D399', category: 'discipline' },
-  { id: 'week_plus',     title: '', description: '', icon: 'leaf-outline',             color: '#34D399', category: 'goal' },
+  { id: 'week_5days',    title: '', description: '', icon: 'calendar-outline',         color: 'primary', category: 'habit' },
+  { id: 'week_sl',       title: '', description: '', icon: 'shield-half-outline',      color: 'win', category: 'discipline' },
+  { id: 'week_plus',     title: '', description: '', icon: 'leaf-outline',             color: 'win', category: 'goal' },
 
   // ── 月単位（自分で決めた目標との比較）──
-  { id: 'goal_pips',     title: '', description: '', icon: 'flag-outline',             color: '#5B8AF0', category: 'goal' },
-  { id: 'goal_winrate',  title: '', description: '', icon: 'ribbon-outline',           color: '#A78BFA', category: 'goal' },
-  { id: 'goal_pl',       title: '', description: '', icon: 'cash-outline',             color: '#FBBF24', category: 'goal' },
-  { id: 'goal_slam',     title: '', description: '', icon: 'medal-outline',            color: '#FBBF24', category: 'goal' },
+  { id: 'goal_pips',     title: '', description: '', icon: 'flag-outline',             color: 'primary', category: 'goal' },
+  { id: 'goal_winrate',  title: '', description: '', icon: 'ribbon-outline',           color: 'purple', category: 'goal' },
+  { id: 'goal_pl',       title: '', description: '', icon: 'cash-outline',             color: 'yellow', category: 'goal' },
+  { id: 'goal_slam',     title: '', description: '', icon: 'medal-outline',            color: 'yellow', category: 'goal' },
 
   // ── 年単位 ──
-  { id: 'year_full',     title: '', description: '', icon: 'calendar-number-outline',  color: '#A78BFA', category: 'habit' },
-  { id: 'year_plus',     title: '', description: '', icon: 'trophy-outline',           color: '#34D399', category: 'goal' },
+  { id: 'year_full',     title: '', description: '', icon: 'calendar-number-outline',  color: 'purple', category: 'habit' },
+  { id: 'year_plus',     title: '', description: '', icon: 'trophy-outline',           color: 'win', category: 'goal' },
 
   // ── 規律の積み重ね ──
-  { id: 'sl_streak_20',  title: '', description: '', icon: 'lock-closed-outline',      color: '#34D399', category: 'discipline' },
-  { id: 'rules_50',      title: '', description: '', icon: 'list-outline',             color: '#34D399', category: 'discipline' },
-  { id: 'rr2_10',        title: '', description: '', icon: 'analytics-outline',        color: '#A78BFA', category: 'discipline' },
+  { id: 'sl_streak_20',  title: '', description: '', icon: 'lock-closed-outline',      color: 'win', category: 'discipline' },
+  { id: 'rules_50',      title: '', description: '', icon: 'list-outline',             color: 'win', category: 'discipline' },
+  { id: 'rr2_10',        title: '', description: '', icon: 'analytics-outline',        color: 'purple', category: 'discipline' },
 
   // ── 継続 ──
-  { id: 'streak_7',      title: '', description: '', icon: 'flame-outline',            color: '#F87171', category: 'habit' },
-  { id: 'streak_30',     title: '', description: '', icon: 'bonfire-outline',          color: '#F87171', category: 'habit' },
-  { id: 'streak_100',    title: '', description: '', icon: 'planet-outline',           color: '#FBBF24', category: 'habit' },
+  { id: 'streak_7',      title: '', description: '', icon: 'flame-outline',            color: 'loss', category: 'habit' },
+  { id: 'streak_30',     title: '', description: '', icon: 'bonfire-outline',          color: 'loss', category: 'habit' },
+  { id: 'streak_100',    title: '', description: '', icon: 'planet-outline',           color: 'yellow', category: 'habit' },
 ];
 
 function withTranslations(defs: BadgeDef[]): BadgeDef[] {
