@@ -568,6 +568,12 @@ export const fr: LangStrings = {
   onboarding_next: "Suivant",
 
   // App name
+  share_upgrade: 'Passer à PRO',
+  share_headline: 'Résultats {p}',
+  share_wl: 'G / P',
+  share_pl: 'P&P',
+  share_streak: 'Série',
+  share_free: 'Gratuit',
   app_name: "FX Trade Log",
   notif_daily_streak: "{n} jours d'affilée ! Enregistrez votre trade du jour",
   notif_daily_default: "Il est temps d'enregistrer votre trade du jour !",

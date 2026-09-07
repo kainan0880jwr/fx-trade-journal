@@ -566,6 +566,12 @@ export const ja = {
   onboarding_next: '次へ',
 
   // アプリ名
+  share_upgrade: 'PROにアップグレード',
+  share_headline: '{p}の成績',
+  share_wl: '勝/負',
+  share_pl: '損益',
+  share_streak: '連続記録',
+  share_free: '無料版',
   app_name: 'FXトレードログ',
   notif_daily_streak: "{n}日連続記録中！今日のトレードを記録しましょう",
   notif_daily_default: "今日のトレードを記録しましょう！",

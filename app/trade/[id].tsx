@@ -78,7 +78,7 @@ export default function TradeDetailScreen() {
       `📈 ${pips} pips${pl}`,
       `${stars}`,
       `━━━━━━━━━━━━━━`,
-      `📱 FXトレードログ`,
+      `📱 ${t('app_name')}`,
     ];
     await Share.share({ message: lines.join('\n') });
   };

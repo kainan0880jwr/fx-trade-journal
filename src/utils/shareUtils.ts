@@ -30,41 +30,26 @@ export function buildShareText(opts: ShareStatsOptions): string {
   const row = (icon: string, label: string, value: string) =>
     `│ ${icon} ${pad(label, 12)} ${pad(value, 10)} │`;
 
-  const lines = lang === 'ja'
-    ? [
-        BORDER_TOP,
-        `│    📊 ${pad(period + 'の成績', 19)} │`,
-        BORDER_DIV,
-        row('✅', '勝率',   `${stats.winRate}%`),
-        row('📈', 'pips',   `${sign(stats.totalPips)}${stats.totalPips}`),
-        row('📉', 'PF',     formatPF(stats.profitFactor, stats.totalTrades > 0)),
-        row('📋', '取引',   `${stats.totalTrades}回`),
-        row('🏆', '勝/負',  `${stats.wins}勝 / ${stats.losses}敗`),
-        ...(includeFinancials && stats.totalProfitLoss !== 0
-          ? [row('💴', '損益', `${sign(stats.totalProfitLoss)}${stats.totalProfitLoss.toLocaleString()}円`)]
-          : []),
-        ...(streak >= 2 ? [row('🔥', '連続記録', `${streak}日`)] : []),
-        BORDER_DIV,
-        '│         📱 FXトレードログ         │',
-        BORDER_BOT,
-      ]
-    : [
-        BORDER_TOP,
-        `│    📊 ${pad(period + ' Results', 19)} │`,
-        BORDER_DIV,
-        row('✅', 'Win Rate', `${stats.winRate}%`),
-        row('📈', 'Pips',     `${sign(stats.totalPips)}${stats.totalPips}`),
-        row('📉', 'PF',       formatPF(stats.profitFactor, stats.totalTrades > 0)),
-        row('📋', 'Trades',   `${stats.totalTrades}`),
-        row('🏆', 'W / L',   `${stats.wins}W / ${stats.losses}L`),
-        ...(includeFinancials && stats.totalProfitLoss !== 0
-          ? [row('💴', 'P&L', `${sign(stats.totalProfitLoss)}${stats.totalProfitLoss.toLocaleString()}¥`)]
-          : []),
-        ...(streak >= 2 ? [row('🔥', 'Streak', `${streak} days`)] : []),
-        BORDER_DIV,
-        '│         📱 FX Trade Log           │',
-        BORDER_BOT,
-      ];
+  // 以前は日本語と英語の2分岐しかなく、他9言語のユーザーが月次成績をシェアすると
+  // **英語（または日本語）の投稿になっていた**。共有は唯一の拡散導線なので、
+  // 到達先の言語で出す。ラベル幅は pad() で切るため、長い訳語でも枠は崩れない。
+  const lines = [
+    BORDER_TOP,
+    `│    📊 ${pad(t('share_headline').replace('{p}', period), 19)} │`,
+    BORDER_DIV,
+    row('✅', t('win_rate'), `${stats.winRate}%`),
+    row('📈', 'pips',        `${sign(stats.totalPips)}${stats.totalPips}`),
+    row('📉', t('pf'),       formatPF(stats.profitFactor, stats.totalTrades > 0)),
+    row('📋', t('trade_count'), String(stats.totalTrades)),
+    row('🏆', t('share_wl'), `${stats.wins} / ${stats.losses}`),
+    ...(includeFinancials && stats.totalProfitLoss !== 0
+      ? [row('💴', t('share_pl'), `${sign(stats.totalProfitLoss)}${stats.totalProfitLoss.toLocaleString()}`)]
+      : []),
+    ...(streak >= 2 ? [row('🔥', t('share_streak'), `${streak}${t('home_streak_days')}`)] : []),
+    BORDER_DIV,
+    `│ ${pad(`📱 ${t('app_name')}`, 32)} │`,
+    BORDER_BOT,
+  ];
 
   return lines.join('\n') + '\n\n' + t('share_disclaimer');
 }
@@ -72,22 +57,21 @@ export function buildShareText(opts: ShareStatsOptions): string {
 // ── HTMLシェアカード ───────────────────────────────────────────
 function buildShareHTML(opts: ShareStatsOptions): string {
   const { stats, period, streak = 0, includeFinancials = false, isPremium = false } = opts;
-  const isJa = lang === 'ja';
 
   const pipsColor = stats.totalPips >= 0 ? '#3ECF8E' : '#FF6B6B';
   const winRateColor = stats.winRate >= 50 ? '#3ECF8E' : '#FF6B6B';
 
   const rows: { icon: string; label: string; value: string }[] = [
-    { icon: '📈', label: isJa ? 'pips'  : 'Pips',       value: `${stats.totalPips > 0 ? '+' : ''}${stats.totalPips}` },
+    { icon: '📈', label: 'pips',       value: `${stats.totalPips > 0 ? '+' : ''}${stats.totalPips}` },
     { icon: '📉', label: 'PF',                            value: formatPF(stats.profitFactor, stats.totalTrades > 0) },
-    { icon: '📋', label: isJa ? '取引回数' : 'Trades',   value: isJa ? `${stats.totalTrades}回` : String(stats.totalTrades) },
-    { icon: '🏆', label: isJa ? '勝/負' : 'W / L',       value: isJa ? `${stats.wins}勝 / ${stats.losses}敗` : `${stats.wins}W / ${stats.losses}L` },
+    { icon: '📋', label: t('trade_count'),   value: String(stats.totalTrades) },
+    { icon: '🏆', label: t('share_wl'),       value: `${stats.wins} / ${stats.losses}` },
   ];
 
   if (includeFinancials && stats.totalProfitLoss !== 0) {
     rows.push({
       icon: '💴',
-      label: isJa ? '損益' : 'P&L',
+      label: t('share_pl'),
       value: formatMoney(stats.totalProfitLoss),
     });
   }
@@ -95,8 +79,8 @@ function buildShareHTML(opts: ShareStatsOptions): string {
   if (streak >= 2) {
     rows.push({
       icon: '🔥',
-      label: isJa ? '連続記録' : 'Streak',
-      value: isJa ? `${streak}日` : `${streak} days`,
+      label: t('share_streak'),
+      value: `${streak}${t('home_streak_days')}`,
     });
   }
 
@@ -107,17 +91,17 @@ function buildShareHTML(opts: ShareStatsOptions): string {
       <span class="value">${r.value}</span>
     </div>`).join('');
 
-  const appName = isJa ? 'FXトレードログ' : 'FX Trade Log';
-  const headline = isJa ? `${period}の成績` : `${period} Results`;
+  const appName = t('app_name');
+  const headline = t('share_headline').replace('{p}', period);
 
   // 無料版ウォーターマーク
   const watermarkHTML = !isPremium ? `
   <div class="watermark-bar">
     <span class="wm-icon">📱</span>
-    <span class="wm-text">${isJa ? '無料版 · FXトレードログ' : 'Free · FX Trade Log'}</span>
-    <span class="wm-cta">${isJa ? 'PRO版にアップグレード ›' : 'Upgrade to PRO ›'}</span>
+    <span class="wm-text">${t('share_free')} · ${t('app_name')}</span>
+    <span class="wm-cta">${t('share_upgrade')} ›</span>
   </div>` : `
-  <div class="footer">${isJa ? 'FXトレードログ PRO' : 'FX Trade Log PRO'}</div>`;
+  <div class="footer">${t('app_name')} PRO</div>`;
 
   // 個人の記録に基づく実績であり投資助言ではない旨の免責。ウォーターマークとは異なり、
   // プレミアム版でも除去対象にしない（法務レビュー: シェア成果物にのみ免責がなかった穴を埋める）。
@@ -200,7 +184,7 @@ body {
   <div class="headline">${headline}</div>
 
   <div class="winrate-block">
-    <div class="winrate-label">${isJa ? '勝率' : 'Win Rate'}</div>
+    <div class="winrate-label">${t('win_rate')}</div>
     <div class="winrate-value">${stats.winRate}<span class="winrate-pct">%</span></div>
   </div>
 
@@ -254,7 +238,12 @@ export async function shareStatsAsHTML(opts: ShareStatsOptions): Promise<void> {
 // ── 期間ラベル ────────────────────────────────────────────────
 export function formatPeriodLabel(yearMonth: string): string {
   const [year, month] = yearMonth.split('-').map(Number);
-  return lang === 'ja'
-    ? `${year}年${month}月`
-    : new Date(year, month - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  if (lang === 'ja') return `${year}年${month}月`;
+  // 'en-US' 固定だと、共有カードの見出しだけ英語になる（本文は各言語なのにちぐはぐ）。
+  // 端末の Intl が該当ロケールを持たない場合に throw しうるので、英語に落とす。
+  try {
+    return new Date(year, month - 1).toLocaleDateString(lang, { month: 'long', year: 'numeric' });
+  } catch {
+    return new Date(year, month - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
 }

@@ -568,6 +568,12 @@ export const vi: LangStrings = {
   onboarding_next: 'Tiếp theo',
 
   // App name
+  share_upgrade: 'Nâng cấp lên PRO',
+  share_headline: 'Kết quả {p}',
+  share_wl: 'T / B',
+  share_pl: 'Lãi/Lỗ',
+  share_streak: 'Chuỗi',
+  share_free: 'Miễn phí',
   app_name: 'FX Trade Log',
   notif_daily_streak: "{n} ngày liên tiếp! Hãy ghi lại giao dịch hôm nay",
   notif_daily_default: "Đã đến lúc ghi lại giao dịch hôm nay!",

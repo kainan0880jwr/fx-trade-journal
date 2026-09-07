@@ -568,6 +568,12 @@ export const id: LangStrings = {
   onboarding_next: 'Lanjut',
 
   // App name
+  share_upgrade: 'Tingkatkan ke PRO',
+  share_headline: 'Hasil {p}',
+  share_wl: 'M / K',
+  share_pl: 'L&R',
+  share_streak: 'Rentetan',
+  share_free: 'Gratis',
   app_name: 'FX Trade Log',
   notif_daily_streak: "{n} hari beruntun! Catat transaksi Anda hari ini",
   notif_daily_default: "Saatnya mencatat transaksi Anda hari ini!",

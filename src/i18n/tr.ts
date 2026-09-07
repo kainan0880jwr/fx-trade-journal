@@ -568,6 +568,12 @@ export const tr: LangStrings = {
   onboarding_next: 'İleri',
 
   // App name
+  share_upgrade: "PRO'ya yükselt",
+  share_headline: '{p} Sonuçları',
+  share_wl: 'K / Z',
+  share_pl: 'K&Z',
+  share_streak: 'Seri',
+  share_free: 'Ücretsiz',
   app_name: 'FX Trade Log',
   notif_daily_streak: "{n} gün üst üste! Bugünkü işleminizi kaydedin",
   notif_daily_default: "Bugünkü işleminizi kaydetme zamanı!",

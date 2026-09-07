@@ -568,6 +568,12 @@ export const hi: LangStrings = {
   onboarding_next: 'आगे',
 
   // App name
+  share_upgrade: 'PRO में अपग्रेड करें',
+  share_headline: '{p} के नतीजे',
+  share_wl: 'जीत / हार',
+  share_pl: 'लाभ-हानि',
+  share_streak: 'लगातार',
+  share_free: 'मुफ़्त',
   app_name: 'FX Trade Log',
   notif_daily_streak: "{n} दिन लगातार! आज का ट्रेड रिकॉर्ड करें",
   notif_daily_default: "आज का ट्रेड रिकॉर्ड करने का समय है!",

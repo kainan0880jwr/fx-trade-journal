@@ -13,6 +13,7 @@ import { getAllTrades, getCurrencyPairs, getSetting, setSetting } from '../db/qu
 import { getDatabase, SCHEMA_MIGRATIONS } from '../db/database';
 import { resolveImageUri, isSafeChartPath } from './imageStorage';
 import type { Trade, CurrencyPair } from '../types';
+import { t } from '../i18n';
 
 const SCHEMA_VERSION = SCHEMA_MIGRATIONS.length;
 // **インポート側**が受け付ける画像の合計量（base64換算）。
@@ -296,7 +297,7 @@ export async function exportBackup(
   try {
     const isAvailable = await Sharing.isAvailableAsync();
     if (!isAvailable) throw new Error('sharing_unavailable');
-    await Sharing.shareAsync(filePath, { mimeType: 'application/json', dialogTitle: 'FXバックアップを保存' });
+    await Sharing.shareAsync(filePath, { mimeType: 'application/json', dialogTitle: t('backup_export') });
   } finally {
     await deleteAsync(filePath, { idempotent: true }).catch(() => {});
   }
