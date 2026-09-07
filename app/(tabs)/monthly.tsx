@@ -328,7 +328,7 @@ export default function MonthlyScreen() {
                   <Text style={styles.bigNumLabel}>{t('avg_rating')}</Text>
                   <View style={styles.starsRow}>
                     {[1,2,3,4,5].map(n => (
-                      <Ionicons key={n} name="star" size={28} color={n <= Math.round(avgRating) ? C.yellow : C.text3} />
+                      <Ionicons key={n} name={n <= Math.round(avgRating) ? 'star' : 'star-outline'} size={28} color={n <= Math.round(avgRating) ? C.yellow : C.text3} />
                     ))}
                   </View>
                   <Text style={styles.bigNum}>{avgRating} / 5</Text>
@@ -341,7 +341,7 @@ export default function MonthlyScreen() {
                       <View key={n} style={styles.ratingRow}>
                         <View style={styles.ratingStars}>
                           {[1,2,3,4,5].map(s => (
-                            <Ionicons key={s} name="star" size={12} color={s <= n ? C.yellow : C.text3} />
+                            <Ionicons key={s} name={s <= n ? 'star' : 'star-outline'} size={12} color={s <= n ? C.yellow : C.text3} />
                           ))}
                         </View>
                         <View style={styles.ratingBar}>

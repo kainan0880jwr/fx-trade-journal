@@ -14,22 +14,25 @@ import { t } from '../src/i18n';
 
 const { width } = Dimensions.get('window');
 
+// アイコン色はテーマのトークン名で持つ。固定色を直書きすると、ライトモードで
+// 沈む（#F5A623 は白背景で 1.85:1 しかなく、初回に出る1枚目のアイコンが
+// ほぼ見えていなかった）。描画側で C[...] に解決する。
 const STEPS = [
   {
     icon: 'flash' as const,
-    iconColor: '#F5A623',
+    iconColor: 'yellow' as const,
     title: 'onboarding_step1_title' as const,
     desc: 'onboarding_step1_desc' as const,
   },
   {
     icon: 'analytics' as const,
-    iconColor: '#4F7EF7',
+    iconColor: 'primary' as const,
     title: 'onboarding_step2_title' as const,
     desc: 'onboarding_step2_desc' as const,
   },
   {
     icon: 'flame' as const,
-    iconColor: '#E74C3C',
+    iconColor: 'loss' as const,
     title: 'onboarding_step3_title' as const,
     desc: 'onboarding_step3_desc' as const,
   },
@@ -91,7 +94,12 @@ export default function OnboardingScreen() {
   };
 
   const handleSkip = async () => {
-    await setSetting('onboarding_done', '1');
+    // completeOnboarding と同じ理由で必ず catch する。ここだけ直し漏れていた。
+    // throw すると router.replace に到達せず「押しても何も起きない」うえ、
+    // フラグが立たないので再起動しても毎回オンボーディングに戻る。
+    try {
+      await setSetting('onboarding_done', '1');
+    } catch { /* 次回起動で再試行される */ }
     router.replace('/(tabs)');
   };
 
@@ -104,8 +112,8 @@ export default function OnboardingScreen() {
           <Text style={s.choiceTitle}>{t('onboarding_choice_title')}</Text>
 
           <TouchableOpacity style={s.choiceCard} onPress={handleChooseRecord} activeOpacity={0.85}>
-            <View style={[s.choiceIcon, { backgroundColor: '#F5A62320' }]}>
-              <Ionicons name="flash" size={26} color="#F5A623" />
+            <View style={[s.choiceIcon, { backgroundColor: C.yellow + '20' }]}>
+              <Ionicons name="flash" size={26} color={C.yellow} />
             </View>
             <View style={{ flex: 1 }}>
               <Text style={s.choiceCardTitle}>{t('onboarding_choice_record_title')}</Text>
@@ -115,8 +123,8 @@ export default function OnboardingScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity style={s.choiceCard} onPress={handleChooseImport} activeOpacity={0.85}>
-            <View style={[s.choiceIcon, { backgroundColor: '#4F7EF720' }]}>
-              <Ionicons name="cloud-upload" size={26} color="#4F7EF7" />
+            <View style={[s.choiceIcon, { backgroundColor: C.primary + '20' }]}>
+              <Ionicons name="cloud-upload" size={26} color={C.primary} />
             </View>
             <View style={{ flex: 1 }}>
               <Text style={s.choiceCardTitle}>{t('onboarding_choice_import_title')}</Text>
@@ -162,8 +170,8 @@ export default function OnboardingScreen() {
       >
         {STEPS.map((item, i) => (
           <View key={i} style={[s.slide, { width }]}>
-            <View style={[s.iconCircle, { backgroundColor: item.iconColor + '20' }]}>
-              <Ionicons name={item.icon} size={64} color={item.iconColor} />
+            <View style={[s.iconCircle, { backgroundColor: C[item.iconColor] + '20' }]}>
+              <Ionicons name={item.icon} size={64} color={C[item.iconColor]} />
             </View>
             <Text style={s.title}>{t(item.title)}</Text>
             <Text style={s.desc}>{t(item.desc)}</Text>
@@ -222,7 +230,9 @@ function makeStyles(C: ThemeColors) {
     },
 
     dots: { flexDirection: 'row', justifyContent: 'center', gap: 8, marginBottom: 16 },
-    dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: C.border },
+    // 非選択のドットに C.border を使うと 1.18:1 で見えず、「全部で3枚ある」ことが
+    // 伝わらない。選択状態は幅 8→24 の形状差が付いているので、色を上げても混同しない。
+    dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: C.text3 },
     dotActive: { width: 24, backgroundColor: C.primary },
 
     btnWrap: { paddingHorizontal: 24, paddingBottom: 24 },

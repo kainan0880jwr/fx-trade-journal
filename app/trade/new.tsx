@@ -372,7 +372,7 @@ export default function NewTradeScreen() {
   };
 
   const pickImages = async () => {
-    if (imageUris.length >= imageLimit) { Alert.alert(t('max_images_alert')); return; }
+    if (imageUris.length >= imageLimit) { Alert.alert(t('max_images_alert').replace('{n}', String(imageLimit))); return; }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsMultipleSelection: true,
@@ -980,7 +980,7 @@ export default function NewTradeScreen() {
 
                   {/* 画像 */}
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                    <Text style={styles.label}>{t('form_images')}</Text>
+                    <Text style={styles.label}>{t('form_images').replace('{n}', String(imageLimit))}</Text>
                     {!isPremium && <Text style={styles.proTag}>{t('premium_badge')}</Text>}
                   </View>
                   <View style={styles.imageRow}>
@@ -1000,12 +1000,25 @@ export default function NewTradeScreen() {
                         </TouchableOpacity>
                       </View>
                     ))}
-                    {imageUris.length < imageLimit && (
+                    {imageUris.length < imageLimit ? (
                       <TouchableOpacity style={styles.addImageBtn} onPress={pickImages}>
                         <Ionicons name="camera-outline" size={26} color={C.text2} />
                         <Text style={styles.addImageLabel}>{t('add')}</Text>
                       </TouchableOpacity>
-                    )}
+                    ) : !isPremium ? (
+                      // 上限に達した無料ユーザーには、ボタンを黙って消さずロック枠を出す。
+                      // 以前は消えるだけで、ロック表示もペイウォール導線も無かったため
+                      // 「なぜ追加できないのか」が分からなかった。goals.tsx と同じ作法。
+                      <TouchableOpacity
+                        style={[styles.addImageBtn, styles.addImageBtnLocked]}
+                        onPress={() => router.push({ pathname: '/paywall', params: { feature: 'images' } })}
+                        accessibilityRole="button"
+                        accessibilityLabel={`${t('add')} (${t('premium_badge')})`}
+                      >
+                        <Ionicons name="lock-closed" size={22} color={C.text3} />
+                        <Text style={styles.addImageLabel}>{t('premium_badge')}</Text>
+                      </TouchableOpacity>
+                    ) : null}
                   </View>
 
                   {/* ルール */}
@@ -1233,6 +1246,7 @@ function makeStyles(C: ThemeColors) {
     thumbWrap: { position: 'relative' },
     thumb: { width: 90, height: 90, borderRadius: 12, backgroundColor: C.card },
     thumbRemove: { position: 'absolute', top: -6, right: -6 },
+    addImageBtnLocked: { opacity: 0.7 },
     addImageBtn: { width: 90, height: 90, borderRadius: 12, borderWidth: 1.5, borderColor: C.border, borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center', gap: 4 },
     addImageLabel: { fontSize: 11, color: C.text2 },
 

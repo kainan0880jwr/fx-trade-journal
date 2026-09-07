@@ -101,10 +101,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="yearly"
-        options={{ href: null }}
-      />
-      <Tabs.Screen
         name="bookmarks"
         options={{ href: null }}
       />

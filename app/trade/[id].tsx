@@ -176,7 +176,7 @@ export default function TradeDetailScreen() {
         {plStr && <Text style={[styles.heroPL, { color: resultColor }]}>{plStr}</Text>}
         <View style={styles.heroStars}>
           {[1,2,3,4,5].map(n => (
-            <Ionicons key={n} name="star" size={18} color={n <= trade.selfRating ? C.yellow : C.text3} />
+            <Ionicons key={n} name={n <= trade.selfRating ? 'star' : 'star-outline'} size={18} color={n <= trade.selfRating ? C.yellow : C.text3} />
           ))}
         </View>
       </View>
