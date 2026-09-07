@@ -101,7 +101,7 @@ export const fr: LangStrings = {
   today: "AUJOURD'HUI",
   home_streak_days: " jours d'affilée",
   empty_month: "Aucun trade ce mois-ci",
-  empty_month_sub: "Appuyez sur + ci-dessous pour ajouter un trade",
+  empty_month_sub: 'Appuyez sur « Ajouter » en bas à droite pour commencer',
   add_trade: "Ajouter un trade",
 
   // Bookmarks tab

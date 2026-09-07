@@ -99,7 +99,7 @@ export const ja = {
   today: 'TODAY',
   home_streak_days: '日連続',
   empty_month: 'この月のトレードはありません',
-  empty_month_sub: '下の＋ボタンで記録しましょう',
+  empty_month_sub: '右下の「記録する」から始めましょう',
   add_trade: '記録する',
 
   // ブックマークタブ

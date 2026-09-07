@@ -114,7 +114,8 @@ export default function ShareModal({ visible, onClose, stats, yearMonth, streak 
 function makeStyles(C: ThemeColors, isTablet: boolean) {
   return StyleSheet.create({
     overlay: {
-      flex: 1, backgroundColor: 'rgba(0,0,0,0.4)',
+      // C.overlay トークンがあるのに直書きされており、他の全スクリムより薄かった。
+      flex: 1, backgroundColor: C.overlay,
     },
     sheet: {
       backgroundColor: C.bg,

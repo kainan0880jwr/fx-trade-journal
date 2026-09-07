@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
   StyleSheet, KeyboardAvoidingView, Platform
@@ -18,7 +18,7 @@ const RISK_PRESETS = ['0.5', '1', '1.5', '2', '3', '5'];
 
 export default function CalculatorScreen() {
   const C = useTheme();
-  const styles = makeStyles(C);
+  const styles = useMemo(() => makeStyles(C), [C]);
   const { settings } = useSettingsStore();
   const [balance, setBalance] = useState(
     settings.accountBalance > 0 ? String(settings.accountBalance) : ''
@@ -176,7 +176,7 @@ function Label({ children }: { children: React.ReactNode }) {
 
 function HintRow({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   const C = useTheme();
-  const styles = makeStyles(C);
+  const styles = useMemo(() => makeStyles(C), [C]);
   return (
     <View style={styles.hintRow}>
       <Text style={[styles.hintLabel, highlight && { color: C.primary }]}>{label}</Text>

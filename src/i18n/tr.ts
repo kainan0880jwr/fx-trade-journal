@@ -101,7 +101,7 @@ export const tr: LangStrings = {
   today: 'BUGÜN',
   home_streak_days: ' gün üst üste',
   empty_month: 'Bu ay işlem yok',
-  empty_month_sub: 'İşlem eklemek için aşağıdaki + öğesine dokunun',
+  empty_month_sub: 'Başlamak için sağ alttaki "Ekle" düğmesine dokunun',
   add_trade: 'İşlem Ekle',
 
   // Bookmarks tab

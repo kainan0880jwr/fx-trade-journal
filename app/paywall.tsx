@@ -505,7 +505,8 @@ function makeStyles(C: ThemeColors) {
 
     restoreOnly: { paddingHorizontal: 20, paddingBottom: 12 },
   restoreOnlyInFooter: { paddingHorizontal: 20, paddingBottom: 12, backgroundColor: C.bg },
-  restoreBtn: { alignItems: 'center', paddingVertical: 10, marginBottom: 20, minHeight: 34, justifyContent: 'center' },
+  // Apple が要求する「購入を復元」。34pt では HIG の 44pt を切る。
+    restoreBtn: { alignItems: 'center', paddingVertical: 10, marginBottom: 20, minHeight: 44, justifyContent: 'center' },
     restoreBtnText: { fontSize: 13, color: C.text2 },
 
     featureCard: {

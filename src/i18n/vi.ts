@@ -101,7 +101,7 @@ export const vi: LangStrings = {
   today: 'HÔM NAY',
   home_streak_days: ' ngày liên tiếp',
   empty_month: 'Không có giao dịch trong tháng này',
-  empty_month_sub: 'Chạm + bên dưới để thêm giao dịch',
+  empty_month_sub: 'Chạm "Thêm" ở góc dưới bên phải để bắt đầu',
   add_trade: 'Thêm giao dịch',
 
   // Bookmarks tab

@@ -101,7 +101,7 @@ export const de: LangStrings = {
   today: 'HEUTE',
   home_streak_days: ' Tage in Folge',
   empty_month: 'Keine Trades in diesem Monat',
-  empty_month_sub: 'Tippe unten auf +, um einen Trade hinzuzufügen',
+  empty_month_sub: 'Tippe unten rechts auf „Trade hinzufügen“, um zu starten',
   add_trade: 'Trade hinzufügen',
 
   // Bookmarks tab

@@ -73,6 +73,9 @@ export default function MonthlyScreen() {
         ? () => (
           <TouchableOpacity
             onPress={() => setShareVisible(true)}
+            accessibilityRole="button"
+            accessibilityLabel={t('share_button')}
+            hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
             style={{ marginRight: 12, width: 36, height: 36, alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: C.card, borderWidth: 1, borderColor: C.border }}
           >
             <Ionicons name="share-social-outline" size={19} color={C.primary} />

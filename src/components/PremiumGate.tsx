@@ -54,7 +54,9 @@ export default function PremiumGate({ children, feature, featureKey }: Props) {
   if (isPremium) return <>{children}</>;
 
   return (
-    <View style={s.container}>
+    // ロックカードはモーダル相当。これが無いと VoiceOver のローターで背後の
+    // （隠したはずの）要素に抜けられる。
+    <View style={s.container} accessibilityViewIsModal>
       {/* ── ぼかしプレビュー（childrenを薄く表示して価値を示す）── */}
       {/* pointerEvents はタッチだけを遮断する。VoiceOver/TalkBack には
           ロック対象の数値がそのまま読み上げられてしまうため、

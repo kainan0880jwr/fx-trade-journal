@@ -97,7 +97,7 @@ function RuleChecklist({ rules, checked, onToggle, C, styles }: {
 
 export default function NewTradeScreen() {
   const C = useTheme();
-  const styles = makeStyles(C);
+  const styles = useMemo(() => makeStyles(C), [C]);
   const navigation = useNavigation();
   const { addTrade, editTrade } = useTradeStore();
   const { pairs, settings, entryTags, tradeRules } = useSettingsStore();

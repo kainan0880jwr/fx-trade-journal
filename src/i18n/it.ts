@@ -101,7 +101,7 @@ export const it: LangStrings = {
   today: "OGGI",
   home_streak_days: ' giorni di fila',
   empty_month: "Nessuna operazione questo mese",
-  empty_month_sub: "Tocca + qui sotto per aggiungere un'operazione",
+  empty_month_sub: 'Tocca "Aggiungi" in basso a destra per iniziare',
   add_trade: "Aggiungi operazione",
 
   // Bookmarks tab

@@ -101,7 +101,7 @@ export const id: LangStrings = {
   today: 'HARI INI',
   home_streak_days: ' hari berturut-turut',
   empty_month: 'Belum ada trade bulan ini',
-  empty_month_sub: 'Ketuk + di bawah untuk menambah trade',
+  empty_month_sub: 'Ketuk "Tambah" di kanan bawah untuk memulai',
   add_trade: 'Tambah Trade',
 
   // Bookmarks tab

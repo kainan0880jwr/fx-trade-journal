@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert, Image, ActivityIndicator, Share } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
@@ -19,7 +19,7 @@ const STYLE_LABELS = () => ({
 
 export default function TradeDetailScreen() {
   const C = useTheme();
-  const styles = makeStyles(C);
+  const styles = useMemo(() => makeStyles(C), [C]);
   const { id } = useLocalSearchParams<{ id: string }>();
   const [trade, setTrade] = useState<Trade | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -260,7 +260,7 @@ export default function TradeDetailScreen() {
 
 function InfoRow({ label, value, valueColor, last }: { label: string; value: string; valueColor?: string; last?: boolean }) {
   const C = useTheme();
-  const styles = makeStyles(C);
+  const styles = useMemo(() => makeStyles(C), [C]);
   return (
     <View style={[styles.infoRow, !last && styles.infoRowBorder]}>
       <Text style={styles.infoLabel}>{label}</Text>
