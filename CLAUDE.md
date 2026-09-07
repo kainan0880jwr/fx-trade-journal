@@ -26,6 +26,12 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   - 14日はリセットされる。途中でオプトアウトや除名があると巻き戻るので、12人ちょうどではなく15人程度確保しておく。
   - `eas submit --platform android` には **Google Play のサービスアカウントJSON** が必要（Google Cloud で作成し、Play Console でアクセス権を付与する）。未設定の間は Play Console へ手動で `.aab` をアップロードする。
 - **`store.config.json` は git 追跡外（2026-09-04）。** `apple.review` に App 審査の連絡先として氏名・メールアドレス・電話番号が入るが、**このリポジトリは GitHub Pages で LP と法務ページを配信するため公開されている**。個人開発者の連絡先が公開リポジトリに常時置かれる状態は避ける。中身は ASC が正本で `metadata:pull` で取り直せる（`/store/` と同じ扱い）。**追跡対象に戻さないこと。**
+- **次の iOS 提出で反映される store.config.json の変更（2026-09-08 に準備済み・未push）。** いずれも公開済みバージョンには反映できないので、**次のバージョンを作るときに `version` を上げてから `metadata:push` すること。**
+  - `marketingUrl` を全11ロケールに設定し、**各言語版のLP**（`index-<lang>.html`）を指すようにした。以前は en-US を含む5ロケールで欠落し、残りも日本語版LPを指していた。
+  - `advisory.ageRatingOverride` / `ageRatingOverrideV2` を **NONE に戻した**（以前は 17+ と 18+ で食い違っていた）。質問票の回答はすべて NONE/false で、ギャンブルも無制限Webアクセスも無い。**18+ はスクリーンタイムの既定設定で弾かれやすく、インストールの障壁になっていた。** レーティングのダウングレードは審査で見られるので、提出時に審査メモで理由を添えること。
+  - `release.automaticRelease` を **false** に。審査通過と同時の全公開をやめ、段階リリースを挟めるようにする。
+  - `review.notes` に、1.3.2 期間中に暗号鍵の保管場所を変えた件を追記した。OTA で挙動を変えた以上、こちらから説明しておくのが安全。
+  - **`store.config.json` のバックアップは `~/Keys/fx-trade-journal/store.config.json.backup`。** git 追跡外にしたため、この1台にしか無い状態だった。11言語の説明文と2,678文字の審査メモが入っており、失うと書き直しのコストが大きい。
 - **App Store のメタデータは `store.config.json` で管理し、`eas metadata` で同期する（2026-08-30 導入）。** 画面での手入力ではなく、`npx eas-cli metadata:pull --profile production` で現状を取得し、`store.config.json` を編集して `npx eas-cli metadata:push --profile production` で反映する。11言語の説明文・キーワード・リリースノート・審査メモ・スクリーンショットがこの1ファイル（＋`store/`）に集約される。
   - **スクリーンショットは `store.config.json` のファイル名一覧が正本。** `store/apple/screenshot/<locale>/<size>/` にファイルを置き換えるだけでは `metadata:push` は何も送らない。`info.<locale>.screenshots.<size>` の配列も書き換えること（実際に2回空振りした）。並び順がそのままストアでの表示順になる。
   - **公開済みバージョンのメタデータは更新できない。** `eas metadata:push` はバージョンを作成・更新しようとするため、リリース済みの版に対しては `Failed creating new version <ver>` で失敗する（プロモーション用テキストも含めて全フィールドが編集不可）。説明文やスクショを変えるには、`store.config.json` の `version` を次の番号にして新規バージョンを作る。バイナリの変更が不要ならビルド枠は消費しない。
