@@ -17,6 +17,7 @@ import { calcPips, signedQuickPips, signedByResult } from '../../src/utils/pipsC
 import { calcProfitLoss, determineResult } from '../../src/utils/profitCalc';
 import { generateId } from '../../src/utils/statsCalc';
 import { getTradeById, updateRecordStreak, getAllCurrencyPairs } from '../../src/db/queries';
+import { isStreakMilestone } from '../../src/utils/streakMilestone';
 import { useReviewPrompt } from '../../src/hooks/useReviewPrompt';
 import { useAppLockPrompt } from '../../src/hooks/useAppLockPrompt';
 import { recordFirstTradeSaved } from '../../src/utils/retentionEvents';
@@ -411,12 +412,20 @@ export default function NewTradeScreen() {
       justSavedRef.current = true;
       recordFirstTradeSaved(); // リテンション自前計測、結果は待たない
       const streak = await updateRecordStreak();
-      const msg = streak <= 1
-        ? t('form_quick_saved_first')
-        : `${streak}${t('form_quick_saved_streak')}`;
-      await new Promise<void>((resolve) => {
-        Alert.alert('', msg, [{ text: 'OK', onPress: () => { closeScreen(); resolve(); } }]);
-      });
+      // 保存のたびにダイアログを出してOKを押させると、2タップで保存できる設計が
+      // 毎回3タップになる。保存できたことは画面が閉じて一覧に記録が出ることで
+      // 伝わるので、**初回と節目だけ**知らせる。
+      const isFirst = streak <= 1;
+      if (isFirst || isStreakMilestone(streak)) {
+        const msg = isFirst
+          ? t('form_quick_saved_first')
+          : `${streak}${t('form_quick_saved_streak')}`;
+        await new Promise<void>((resolve) => {
+          Alert.alert('', msg, [{ text: 'OK', onPress: () => { closeScreen(); resolve(); } }]);
+        });
+      } else {
+        closeScreen();
+      }
       // 保存完了ダイアログを閉じた後、初回のみアプリロック提案 → レビュー促進チェック（10件・30件・100件マイルストーン）の順で確認
       await promptAppLockIfNeeded();
       await promptReviewIfNeeded();

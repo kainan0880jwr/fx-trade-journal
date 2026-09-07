@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react-native';
 import * as SQLite from 'expo-sqlite';
-import { documentDirectory, deleteAsync } from 'expo-file-system/legacy';
+import { documentDirectory, deleteAsync, moveAsync, readDirectoryAsync } from 'expo-file-system/legacy';
 import * as SecureStore from 'expo-secure-store';
 import { tArr } from '../i18n';
 import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey, ensureKeyIsBackupable, getLegacyEncryptionKey } from './dbEncryption';
@@ -94,6 +94,17 @@ export async function resetDatabase(): Promise<void> {
     await deleteAsync(`${documentDirectory}charts/`, { idempotent: true }).catch(() => {});
     await deleteAsync(`${documentDirectory}fx-pre-import-snapshot.json`, { idempotent: true }).catch(() => {});
   }
+  // 退避してあった開けないDBも消す。「全データを削除する」と言っている以上、
+  // 端末に残したままにはしない。
+  const dbDir = SQLite.defaultDatabaseDirectory?.replace(/\/+$/, '');
+  if (dbDir) {
+    const entries = await readDirectoryAsync(dbDir).catch(() => [] as string[]);
+    for (const name of entries) {
+      if (name.startsWith(QUARANTINE_PREFIX)) {
+        await deleteAsync(`${dbDir}/${name}`, { idempotent: true }).catch(() => {});
+      }
+    }
+  }
 }
 
 // 平文SQLite→SQLCipher暗号化DBへの移行。
@@ -130,6 +141,47 @@ async function tryOpenExistingEncrypted(key: string): Promise<SQLite.SQLiteDatab
   } catch {
     if (db) await db.closeAsync().catch(() => {});
     return null;
+  }
+}
+
+/** 開けなくなったDBの退避ファイルにつける印。 */
+const QUARANTINE_PREFIX = 'fx_journal_v2.unopenable-';
+
+/**
+ * 復号できない暗号化DBを、削除せず退避する。
+ *
+ * ここに到達するのは「記録はあるのに鍵が無い」状態で、削除すると**取り返しがつかない**。
+ * 非暗号化のパソコンバックアップからの復元など、キーチェーンだけが新端末へ渡らなかった
+ * ケースが該当する。ユーザーには空のアプリに見えるが、少なくともファイルは端末に残るので、
+ * 後から手立てを取る余地がある（中身は暗号化されたままなので、そのままでは読めない）。
+ *
+ * 退避は**1世代だけ**残す。積み上がると端末の容量を圧迫するし、古いものほど
+ * 対応する鍵が戻る見込みも薄い。移動に失敗した場合は、そのままでは新しいDBを
+ * 作れないので削除に落とす（起動できないほうが困る）。
+ */
+async function quarantineUnopenableDb(): Promise<void> {
+  const dir = SQLite.defaultDatabaseDirectory?.replace(/\/+$/, '');
+  if (!dir) {
+    await SQLite.deleteDatabaseAsync(NEW_DB_NAME).catch(() => {});
+    return;
+  }
+  try {
+    // 先に古い退避を片付ける（1世代だけ残す方針）
+    const entries = await readDirectoryAsync(dir).catch(() => [] as string[]);
+    for (const name of entries) {
+      if (name.startsWith(QUARANTINE_PREFIX)) {
+        await deleteAsync(`${dir}/${name}`, { idempotent: true }).catch(() => {});
+      }
+    }
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    await moveAsync({ from: `${dir}/${NEW_DB_NAME}`, to: `${dir}/${QUARANTINE_PREFIX}${stamp}.db` });
+    try {
+      Sentry.captureMessage('db:quarantined_unopenable_db', { level: 'warning' });
+    } catch { /* 監視できないだけ */ }
+  } catch {
+    // 退避できなければ削除に落とす。ファイルが残ったままだと新しいDBを作れず、
+    // アプリが起動しなくなる。
+    await SQLite.deleteDatabaseAsync(NEW_DB_NAME).catch(() => {});
   }
 }
 
@@ -207,12 +259,11 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
 
   // ここまで来て初めて「開けない暗号化DBファイル」と判断できる。
   // 旧バージョンのbackupDatabaseAsyncによる移行失敗で壊れたファイルが残っている場合で、
-  // ATTACHがそれにぶつかって失敗しないよう、移行前に削除してから作り直す。
-  // 消えるのは復号できないファイルだけだが、痕跡は残す。
+  // ATTACHがそれにぶつかって失敗しないよう、どかしてから作り直す。
   try {
-    Sentry.captureMessage('db:deleting_unopenable_encrypted_db', { level: 'warning' });
+    Sentry.captureMessage('db:unopenable_encrypted_db', { level: 'warning' });
   } catch { /* 同上 */ }
-  await SQLite.deleteDatabaseAsync(NEW_DB_NAME).catch(() => {});
+  await quarantineUnopenableDb();
 
   let plainDb: SQLite.SQLiteDatabase | null = null;
   try {
