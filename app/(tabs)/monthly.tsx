@@ -14,6 +14,7 @@ import PremiumGate from '../../src/components/PremiumGate';
 import ShareModal from '../../src/components/ShareModal';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { useTheme } from '../../src/theme/useTheme';
+import { withAlpha } from '../../src/theme/withAlpha';
 import { useIsTablet, useContentWidth } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
 import type { Trade } from '../../src/types';
@@ -113,7 +114,7 @@ export default function MonthlyScreen() {
     backgroundGradientFrom: C.card,
     backgroundGradientTo: C.card,
     decimalPlaces: 1,
-    color: (opacity = 1) => `rgba(79, 126, 247, ${opacity})`,
+    color: (opacity = 1) => withAlpha(C.primary, opacity),
     labelColor: () => C.text2,
     propsForDots: { r: '4', strokeWidth: '2', stroke: C.primary },
   };
@@ -269,8 +270,8 @@ export default function MonthlyScreen() {
                         ...chartCfg,
                         color: (opacity = 1) =>
                           lastPips >= 0
-                            ? `rgba(52, 211, 153, ${opacity})`
-                            : `rgba(248, 113, 113, ${opacity})`,
+                            ? withAlpha(C.winLarge, opacity)
+                            : withAlpha(C.lossLarge, opacity),
                       }}
                       bezier
                       style={{ borderRadius: 12 }}

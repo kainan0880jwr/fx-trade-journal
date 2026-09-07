@@ -17,6 +17,7 @@ import PremiumGate from '../../src/components/PremiumGate';
 import HourDayHeatmap from '../../src/components/HourDayHeatmap';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
 import { useTheme } from '../../src/theme/useTheme';
+import { withAlpha } from '../../src/theme/withAlpha';
 import { useIsTablet, useContentWidth } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
@@ -72,7 +73,7 @@ export default function AnalysisScreen() {
 
   const chartCfg = {
     backgroundColor: C.card, backgroundGradientFrom: C.card, backgroundGradientTo: C.card,
-    decimalPlaces: 1, color: (op = 1) => `rgba(79,126,247,${op})`,
+    decimalPlaces: 1, color: (op = 1) => withAlpha(C.primary, op),
     labelColor: () => C.text2, propsForDots: { r: '3', strokeWidth: '1', stroke: C.primary },
   };
 
@@ -406,7 +407,7 @@ export default function AnalysisScreen() {
                             }}
                             width={chartWidth}
                             height={180}
-                            chartConfig={{ ...chartCfg, color: (op = 1) => `rgba(52,211,153,${op})` }}
+                            chartConfig={{ ...chartCfg, color: (op = 1) => withAlpha(C.winLarge, op) }}
                             bezier
                             style={{ borderRadius: 10 }}
                             withInnerLines={false}
