@@ -849,7 +849,7 @@ export default function NewTradeScreen() {
                   <Text style={styles.dateBtnText}>{date}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.input, styles.dateBtn, { width: 90 }]}
+                  style={[styles.input, styles.dateBtn, { minWidth: 90 }]}
                   onPress={() => setPickerMode('time')}
                 >
                   <Ionicons name="time-outline" size={15} color={C.text2} />
@@ -1192,7 +1192,7 @@ function MentalRow({ label, value, onChange, positiveHigh }: {
   };
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Text style={{ fontSize: 13, fontWeight: '700', color: C.text2, width: 56 }}>{label}</Text>
+      <Text style={{ fontSize: 13, fontWeight: '700', color: C.text2, minWidth: 56, maxWidth: 110 }}>{label}</Text>
       <View style={{ flexDirection: 'row', gap: 6 }}>
         {[1, 2, 3, 4, 5].map(n => (
           <TouchableOpacity key={n}
@@ -1307,7 +1307,9 @@ function makeStyles(C: ThemeColors) {
     tfHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 },
     tfCard: { backgroundColor: C.card, borderRadius: 14, padding: 12, borderWidth: 1, borderColor: C.border, gap: 10, marginTop: 8 },
     tfRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
-    tfLabel: { width: 44, fontSize: 12, fontWeight: '700', color: C.primary, paddingTop: 13 },
+    // 固定幅にしない。ドイツ語は Wochenchart / Tageschart で、44pt には収まらず
+    // Dynamic Type 以前に既に破綻していた。最小幅だけ確保して伸びるようにする。
+    tfLabel: { minWidth: 44, maxWidth: 96, fontSize: 12, fontWeight: '700', color: C.primary, paddingTop: 13 },
     tfInput: { flex: 1, minHeight: 44 },
     proTag: { fontSize: 10, fontWeight: '800', color: C.primary, letterSpacing: 1, backgroundColor: C.primary + '18', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 6 },
     premiumHint: {

@@ -318,7 +318,8 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     },
     dirDot: { width: 8, height: 8, borderRadius: 4 },
     tradePair: { flex: 1, fontSize: isTablet ? 16 : 14, fontWeight: '700', color: C.text },
-    tradeDir: { fontSize: isTablet ? 14 : 12, color: C.text2, width: 36 },
+    // 固定36ptにドイツ語 VERKAUF / スペイン語 COMPRA は収まらない。
+    tradeDir: { fontSize: isTablet ? 14 : 12, color: C.text2, minWidth: 36 },
     tradePips: { fontSize: isTablet ? 15 : 13, fontWeight: '700', minWidth: 72, textAlign: 'right' },
     tradePL: { fontSize: isTablet ? 14 : 12, color: C.text2, minWidth: 80, textAlign: 'right' },
     daySum: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingTop: 10, justifyContent: 'flex-end' },
