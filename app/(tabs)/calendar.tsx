@@ -8,7 +8,7 @@ import MonthSelector from '../../src/components/MonthSelector';
 import { useTheme } from '../../src/theme/useTheme';
 import { useIsTablet } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
-import { t, lang } from '../../src/i18n';
+import { t } from '../../src/i18n';
 import { formatWinRate, formatPips } from '../../src/utils/formatStats';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';

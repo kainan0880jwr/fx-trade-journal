@@ -772,6 +772,10 @@ export default function NewTradeScreen() {
                 />
                 <Text style={styles.pipsUnit}>pips</Text>
               </View>
+              {/* 符号は signedQuickPips が結果から付ける。-20 と入れても保存後は
+                  20 として再表示されるため、開発者向けコメントだけでなく
+                  ユーザーにも説明が要る。 */}
+              <Text style={styles.quickPlHint}>{t('form_pips_sign_note')}</Text>
 
               {/* ロット（必須）。損益を毎回計算できるようにするために必要。
                   既定ロットが初期値として入るので、通常は触らなくてよい。 */}

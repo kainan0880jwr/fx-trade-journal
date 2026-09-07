@@ -22,6 +22,7 @@ import { useIsTablet, useContentWidth } from '../../src/hooks/useIsTablet';
 import type { ThemeColors } from '../../src/theme/colors';
 import { t } from '../../src/i18n';
 import { formatPF } from '../../src/utils/calendarMetrics';
+import { formatCount } from '../../src/utils/formatCount';
 import * as Sentry from '@sentry/react-native';
 import { formatMoney } from '../../src/utils/formatMoney';
 import { formatPips, formatWinRate } from '../../src/utils/formatStats';
@@ -80,7 +81,8 @@ export default function AnalysisScreen() {
   const chartCfg = {
     backgroundColor: C.card, backgroundGradientFrom: C.card, backgroundGradientTo: C.card,
     decimalPlaces: 1, color: (op = 1) => withAlpha(C.primary, op),
-    labelColor: () => C.text2, propsForDots: { r: '3', strokeWidth: '1', stroke: C.primary },
+    // chart-kit が渡す opacity を無視すると、軸ラベルがグリッドより常に濃く出る。
+    labelColor: (op = 1) => withAlpha(C.text2, op), propsForDots: { r: '3', strokeWidth: '1', stroke: C.primary },
   };
 
   const stats = useMemo(() => calcStats(trades), [trades]);
@@ -484,7 +486,7 @@ export default function AnalysisScreen() {
                   </View>
                 ) : (
                   <>
-                    <Text style={styles.sectionTitle}>{t('mental_vs_winrate')}（{mentalStats.count}{t('count_unit')}）</Text>
+                    <Text style={styles.sectionTitle}>{t('mental_vs_winrate')}{formatCount(mentalStats.count)}</Text>
                     <View style={styles.tableCard}>
                       <View style={[styles.tableRow, { borderBottomWidth: 1, borderBottomColor: C.border }]}>
                         <Text style={[styles.colH, { flex: 1.2, textAlign: 'left' }]}>{t('mental_header_metric')}</Text>

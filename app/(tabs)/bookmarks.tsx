@@ -9,7 +9,8 @@ import TradeCard from '../../src/components/TradeCard';
 import PremiumGate from '../../src/components/PremiumGate';
 import { useTheme } from '../../src/theme/useTheme';
 import type { ThemeColors } from '../../src/theme/colors';
-import { t, lang } from '../../src/i18n';
+import { t } from '../../src/i18n';
+import { formatCount } from '../../src/utils/formatCount';
 import type { Trade } from '../../src/types';
 import * as Sentry from '@sentry/react-native';
 
@@ -51,7 +52,7 @@ export default function BookmarksScreen() {
           </Animated.View>
         ), [])}
         ListHeaderComponent={
-          <Text style={styles.header}>{t('bookmarks_title')} ({bookmarks.length}{lang === 'ja' ? '件' : ''})</Text>
+          <Text style={styles.header}>{t('bookmarks_title')}{formatCount(bookmarks.length)}</Text>
         }
         ListEmptyComponent={
           loadFailed ? (

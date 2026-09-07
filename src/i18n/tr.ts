@@ -537,6 +537,7 @@ export const tr: LangStrings = {
   form_mode_quick: 'Hızlı',
   form_mode_full: 'Detaylı',
   form_result: 'Sonuç',
+  form_pips_sign_note: 'İşaret gerekmez — yukarıda seçtiğiniz sonuca göre belirlenir',
   form_pips_optional: 'pip (opsiyonel)',
   form_pl_auto_note: "K/Z, pip ve lot büyüklüğünden otomatik hesaplanır.",
   form_pl_manual: "K/Z (isteğe bağlı)",

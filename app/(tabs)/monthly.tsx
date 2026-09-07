@@ -6,6 +6,7 @@ import { PieChart, LineChart } from 'react-native-chart-kit';
 import { useTradeStore } from '../../src/store/tradeStore';
 import MonthSelector from '../../src/components/MonthSelector';
 import { calcMoneyStats, calcStats, calcDailyCumulativePips, calcRatingDistribution, calcMonthlyBreakdown } from '../../src/utils/statsCalc';
+import { formatCount } from '../../src/utils/formatCount';
 import { getRecordStreak } from '../../src/db/queries';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { evaluatePeriod, ruleFollowedDays } from '../../src/utils/goals';
@@ -118,7 +119,8 @@ export default function MonthlyScreen() {
     backgroundGradientTo: C.card,
     decimalPlaces: 1,
     color: (opacity = 1) => withAlpha(C.primary, opacity),
-    labelColor: () => C.text2,
+    // chart-kit が渡す opacity を無視すると、軸ラベルがグリッドより常に濃く出る。
+    labelColor: (op = 1) => withAlpha(C.text2, op),
     propsForDots: { r: '4', strokeWidth: '2', stroke: C.primary },
   };
 
@@ -356,7 +358,7 @@ export default function MonthlyScreen() {
                   })}
                 </View>
 
-                <Text style={styles.sectionNote}>{t('reflection_with_count')}（{reflections.length}{t('count_unit')}）</Text>
+                <Text style={styles.sectionNote}>{t('reflection_with_count')}{formatCount(reflections.length)}</Text>
                 {reflections.length === 0 ? (
                   <Text style={styles.emptyText}>{t('no_reflection')}</Text>
                 ) : (

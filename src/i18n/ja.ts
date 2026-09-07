@@ -535,6 +535,7 @@ export const ja = {
   form_mode_quick: 'クイック',
   form_mode_full: '詳細入力',
   form_result: '結果',
+  form_pips_sign_note: '符号は不要です。上で選んだ勝ち・負けから自動で付きます',
   form_pips_optional: 'pips（任意）',
   form_pl_auto_note: "損益はpipsとロット数から自動計算されます。",
   form_pl_manual: "損益（任意）",

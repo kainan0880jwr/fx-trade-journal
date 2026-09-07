@@ -537,6 +537,7 @@ export const de: LangStrings = {
   form_mode_quick: 'Schnell',
   form_mode_full: 'Detailliert',
   form_result: 'Ergebnis',
+  form_pips_sign_note: 'Kein Vorzeichen nötig – es folgt der oben gewählten Bewertung',
   form_pips_optional: 'Pips (optional)',
   form_pl_auto_note: "G/V wird automatisch aus Pips und Lot berechnet.",
   form_pl_manual: "G/V (optional)",

@@ -537,6 +537,7 @@ export const hi: LangStrings = {
   form_mode_quick: 'क्विक',
   form_mode_full: 'विस्तृत',
   form_result: 'परिणाम',
+  form_pips_sign_note: 'चिह्न की ज़रूरत नहीं — ऊपर चुने गए नतीजे से अपने आप लगता है',
   form_pips_optional: 'पिप्स (वैकल्पिक)',
   form_pl_auto_note: "लाभ/हानि pips और लॉट साइज़ से अपने आप कैलकुलेट होती है।",
   form_pl_manual: "लाभ/हानि (वैकल्पिक)",

@@ -537,6 +537,7 @@ export const it: LangStrings = {
   form_mode_quick: "Rapido",
   form_mode_full: "Dettagliato",
   form_result: "Risultato",
+  form_pips_sign_note: 'Non serve il segno: viene dal risultato scelto sopra',
   form_pips_optional: "pips (opzionale)",
   form_pl_auto_note: "Il P/L viene calcolato automaticamente da pips e lotto.",
   form_pl_manual: "P/L (facoltativo)",

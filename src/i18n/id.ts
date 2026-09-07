@@ -537,6 +537,7 @@ export const id: LangStrings = {
   form_mode_quick: 'Cepat',
   form_mode_full: 'Detail',
   form_result: 'Hasil',
+  form_pips_sign_note: 'Tanda tidak perlu — mengikuti hasil yang Anda pilih di atas',
   form_pips_optional: 'pips (opsional)',
   form_pl_auto_note: "P/L dihitung otomatis dari pips dan ukuran lot.",
   form_pl_manual: "P/L (opsional)",

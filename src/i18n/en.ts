@@ -537,6 +537,7 @@ export const en: LangStrings = {
   form_mode_quick: 'Quick',
   form_mode_full: 'Detailed',
   form_result: 'Result',
+  form_pips_sign_note: 'No sign needed — it follows the win/loss you chose above',
   form_pips_optional: 'pips (optional)',
   form_pl_auto_note: "P/L is calculated automatically from pips and lot size.",
   form_pl_manual: "P/L (optional)",

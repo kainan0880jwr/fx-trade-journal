@@ -537,6 +537,7 @@ export const vi: LangStrings = {
   form_mode_quick: 'Nhanh',
   form_mode_full: 'Chi Tiết',
   form_result: 'Kết Quả',
+  form_pips_sign_note: 'Không cần dấu — dấu theo kết quả bạn chọn ở trên',
   form_pips_optional: 'pips (tùy chọn)',
   form_pl_auto_note: "Lãi/lỗ được tính tự động từ số pip và khối lượng.",
   form_pl_manual: "Lãi/lỗ (tùy chọn)",
