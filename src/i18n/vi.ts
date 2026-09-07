@@ -536,6 +536,8 @@ export const vi: LangStrings = {
   // Quick input / Form evolution
   form_mode_quick: 'Nhanh',
   form_mode_full: 'Chi Tiết',
+  required_suffix: ' (bắt buộc)',
+  save_blocked_reason: 'Chọn thắng, thua hoặc hòa để lưu',
   form_result: 'Kết Quả',
   form_pips_sign_note: 'Không cần dấu — dấu theo kết quả bạn chọn ở trên',
   form_pips_optional: 'pips (tùy chọn)',

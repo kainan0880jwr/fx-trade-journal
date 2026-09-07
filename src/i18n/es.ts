@@ -536,6 +536,8 @@ export const es: LangStrings = {
   // Quick input / Form evolution
   form_mode_quick: "Rápido",
   form_mode_full: "Detallado",
+  required_suffix: ' (obligatorio)',
+  save_blocked_reason: 'Elige ganancia, pérdida o empate para guardar',
   form_result: "Resultado",
   form_pips_sign_note: 'No hace falta el signo: se toma del resultado elegido arriba',
   form_pips_optional: "pips (opcional)",

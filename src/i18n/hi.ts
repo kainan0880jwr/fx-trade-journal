@@ -536,6 +536,8 @@ export const hi: LangStrings = {
   // Quick input / Form evolution
   form_mode_quick: 'क्विक',
   form_mode_full: 'विस्तृत',
+  required_suffix: ' (आवश्यक)',
+  save_blocked_reason: 'सेव करने के लिए जीत, हार या बराबर चुनें',
   form_result: 'परिणाम',
   form_pips_sign_note: 'चिह्न की ज़रूरत नहीं — ऊपर चुने गए नतीजे से अपने आप लगता है',
   form_pips_optional: 'पिप्स (वैकल्पिक)',

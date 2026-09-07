@@ -536,6 +536,8 @@ export const id: LangStrings = {
   // Quick input / Form evolution
   form_mode_quick: 'Cepat',
   form_mode_full: 'Detail',
+  required_suffix: ' (wajib)',
+  save_blocked_reason: 'Pilih menang, kalah, atau seri untuk menyimpan',
   form_result: 'Hasil',
   form_pips_sign_note: 'Tanda tidak perlu — mengikuti hasil yang Anda pilih di atas',
   form_pips_optional: 'pips (opsional)',

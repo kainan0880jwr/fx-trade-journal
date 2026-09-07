@@ -536,6 +536,8 @@ export const tr: LangStrings = {
   // Quick input / Form evolution
   form_mode_quick: 'Hızlı',
   form_mode_full: 'Detaylı',
+  required_suffix: ' (zorunlu)',
+  save_blocked_reason: 'Kaydetmek için kazanç, kayıp veya berabere seçin',
   form_result: 'Sonuç',
   form_pips_sign_note: 'İşaret gerekmez — yukarıda seçtiğiniz sonuca göre belirlenir',
   form_pips_optional: 'pip (opsiyonel)',

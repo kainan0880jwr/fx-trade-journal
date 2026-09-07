@@ -725,7 +725,7 @@ export default function NewTradeScreen() {
               </View>
 
               {/* 結果 */}
-              <Label>{t('form_result')}</Label>
+              <Label>{t('form_result')}{t('required_suffix')}</Label>
               <View style={styles.row}>
                 {(['win', 'loss', 'even'] as TradeResult[]).map(r => (
                   <TouchableOpacity
@@ -779,7 +779,7 @@ export default function NewTradeScreen() {
 
               {/* ロット（必須）。損益を毎回計算できるようにするために必要。
                   既定ロットが初期値として入るので、通常は触らなくてよい。 */}
-              <Label>{t('form_lot')}</Label>
+              <Label>{t('form_lot')}{t('required_suffix')}</Label>
               <View style={styles.pipsRow}>
                 <TextInput
                   style={[styles.input, { flex: 1 }]}
@@ -830,11 +830,19 @@ export default function NewTradeScreen() {
                 styles={styles}
               />
 
+              {/* 押せないボタンがあるのに理由がどこにも書かれておらず、
+                  無効なのは opacity 0.4 だけで伝えていた。何が足りないかを示す。 */}
+              {!quickResult && (
+                <Text style={styles.saveBlockedReason}>{t('save_blocked_reason')}</Text>
+              )}
               <TouchableOpacity
                 style={[styles.saveBtn, (!quickResult || saving) && styles.saveBtnDisabled]}
                 onPress={handleQuickSave}
                 activeOpacity={0.85}
                 disabled={!quickResult || saving}
+                accessibilityRole="button"
+                accessibilityState={{ disabled: !quickResult || saving }}
+                accessibilityHint={!quickResult ? t('save_blocked_reason') : undefined}
               >
                 <Text style={styles.saveBtnText}>{t('form_save')}</Text>
               </TouchableOpacity>
@@ -905,13 +913,13 @@ export default function NewTradeScreen() {
               <Label>{t('form_rate')}</Label>
               <View style={styles.row}>
                 <View style={{ flex: 1, marginRight: 8 }}>
-                  <Text style={styles.rateLabel}>{t('form_entry')}</Text>
+                  <Text style={styles.rateLabel}>{t('form_entry')}{t('required_suffix')}</Text>
                   <TextInput style={styles.input} value={entryRate} onChangeText={setEntryRate}
                     accessibilityLabel={t('form_entry')}
                     keyboardType="decimal-pad" placeholder="155.000" placeholderTextColor={C.text3} />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.rateLabel}>{t('form_exit')}</Text>
+                  <Text style={styles.rateLabel}>{t('form_exit')}{t('required_suffix')}</Text>
                   <TextInput style={styles.input} value={exitRate} onChangeText={setExitRate}
                     accessibilityLabel={t('form_exit')}
                     keyboardType="decimal-pad" placeholder="155.200" placeholderTextColor={C.text3} />
@@ -948,7 +956,7 @@ export default function NewTradeScreen() {
               </View>
 
               {/* ロット */}
-              <Label>{t('form_lot')}</Label>
+              <Label>{t('form_lot')}{t('required_suffix')}</Label>
               <TextInput style={styles.input} value={lotSize} onChangeText={setLotSize}
                 keyboardType="decimal-pad" placeholder="0.1" placeholderTextColor={C.text3} />
 
@@ -1299,6 +1307,7 @@ function makeStyles(C: ThemeColors) {
       shadowColor: C.primary, shadowOffset: { width: 0, height: 6 },
       shadowOpacity: 0.4, shadowRadius: 14, elevation: 8,
     },
+    saveBlockedReason: { fontSize: 12, color: C.text2, textAlign: 'center', marginBottom: 8 },
     saveBtnDisabled: { opacity: 0.4 },
     saveBtnText: { color: C.onAccent, fontSize: 16, fontWeight: '800', letterSpacing: 0.5 },
 

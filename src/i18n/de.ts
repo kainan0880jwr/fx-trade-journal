@@ -536,6 +536,8 @@ export const de: LangStrings = {
   // Quick input / Form evolution
   form_mode_quick: 'Schnell',
   form_mode_full: 'Detailliert',
+  required_suffix: ' (erforderlich)',
+  save_blocked_reason: 'Wähle Gewinn, Verlust oder ausgeglichen, um zu speichern',
   form_result: 'Ergebnis',
   form_pips_sign_note: 'Kein Vorzeichen nötig – es folgt der oben gewählten Bewertung',
   form_pips_optional: 'Pips (optional)',

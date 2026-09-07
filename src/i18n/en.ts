@@ -536,6 +536,8 @@ export const en: LangStrings = {
   // Quick input / Form evolution
   form_mode_quick: 'Quick',
   form_mode_full: 'Detailed',
+  required_suffix: ' (required)',
+  save_blocked_reason: 'Choose win, loss, or even to save',
   form_result: 'Result',
   form_pips_sign_note: 'No sign needed — it follows the win/loss you chose above',
   form_pips_optional: 'pips (optional)',

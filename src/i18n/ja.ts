@@ -534,6 +534,8 @@ export const ja = {
   // クイック入力 / フォーム進化
   form_mode_quick: 'クイック',
   form_mode_full: '詳細入力',
+  required_suffix: '（必須）',
+  save_blocked_reason: '勝ち・負け・引き分けを選ぶと保存できます',
   form_result: '結果',
   form_pips_sign_note: '符号は不要です。上で選んだ勝ち・負けから自動で付きます',
   form_pips_optional: 'pips（任意）',
