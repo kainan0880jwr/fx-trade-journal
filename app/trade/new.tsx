@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { withoutAppLock } from '../../src/utils/appLockSuppress';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
   StyleSheet, Alert, Platform, KeyboardAvoidingView, Image, ActivityIndicator
@@ -386,12 +387,14 @@ export default function NewTradeScreen() {
 
   const pickImages = async () => {
     if (imageUris.length >= imageLimit) { Alert.alert(t('max_images_alert').replace('{n}', String(imageLimit))); return; }
-    const result = await ImagePicker.launchImageLibraryAsync({
+    // 写真ピッカーはOSの別画面なのでアプリが background になる。包まないと
+    // 復帰時に再ロックが掛かり、入力途中の記録ごと巻き戻る。
+    const result = await withoutAppLock(() => ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsMultipleSelection: true,
       selectionLimit: imageLimit - imageUris.length,
       quality: 0.8,
-    });
+    }));
     if (!result.canceled) {
       setImageUris(prev => [...prev, ...result.assets.map(a => a.uri)].slice(0, imageLimit));
     }

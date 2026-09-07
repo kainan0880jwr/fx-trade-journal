@@ -1,4 +1,5 @@
 import { formatPF } from './formatStats';
+import { withoutAppLock } from './appLockSuppress';
 import { Share } from 'react-native';
 import * as Sharing from 'expo-sharing';
 import { writeAsStringAsync, deleteAsync, cacheDirectory } from 'expo-file-system/legacy';
@@ -225,11 +226,11 @@ export async function shareStatsAsHTML(opts: ShareStatsOptions): Promise<void> {
       return;
     }
 
-    await Sharing.shareAsync(filePath, {
+    await withoutAppLock(() => Sharing.shareAsync(filePath, {
       mimeType: 'text/html',
       dialogTitle: opts.period,
       UTI: 'public.html',
-    });
+    }));
   } finally {
     await deleteAsync(filePath, { idempotent: true }).catch(() => {});
   }

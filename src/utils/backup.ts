@@ -8,6 +8,7 @@ import {
   deleteAsync,
 } from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
+import { withoutAppLock } from './appLockSuppress';
 import * as DocumentPicker from 'expo-document-picker';
 import { getAllTrades, getCurrencyPairs, getSetting, setSetting } from '../db/queries';
 import { getDatabase, SCHEMA_MIGRATIONS } from '../db/database';
@@ -297,7 +298,8 @@ export async function exportBackup(
   try {
     const isAvailable = await Sharing.isAvailableAsync();
     if (!isAvailable) throw new Error('sharing_unavailable');
-    await Sharing.shareAsync(filePath, { mimeType: 'application/json', dialogTitle: t('backup_export') });
+    await withoutAppLock(() =>
+      Sharing.shareAsync(filePath, { mimeType: 'application/json', dialogTitle: t('backup_export') }));
   } finally {
     await deleteAsync(filePath, { idempotent: true }).catch(() => {});
   }
@@ -312,7 +314,8 @@ export async function exportBackup(
 }
 
 export async function importBackup(): Promise<number> {
-  const result = await DocumentPicker.getDocumentAsync({ type: 'application/json', copyToCacheDirectory: true });
+  const result = await withoutAppLock(() =>
+    DocumentPicker.getDocumentAsync({ type: 'application/json', copyToCacheDirectory: true }));
   if (result.canceled || !result.assets?.[0]?.uri) return 0;
 
   const fileUri = result.assets[0].uri;

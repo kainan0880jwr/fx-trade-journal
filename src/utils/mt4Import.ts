@@ -7,6 +7,7 @@
  */
 
 import * as DocumentPicker from 'expo-document-picker';
+import { withoutAppLock } from './appLockSuppress';
 import { readAsStringAsync, getInfoAsync } from 'expo-file-system/legacy';
 import { insertTrade } from '../db/queries';
 import { getDatabase } from '../db/database';
@@ -493,10 +494,10 @@ export async function importMT4CSV(): Promise<ImportResult> {
   const result: ImportResult = { imported: 0, skipped: 0, errors: [] };
 
   // ファイル選択
-  const picked = await DocumentPicker.getDocumentAsync({
+  const picked = await withoutAppLock(() => DocumentPicker.getDocumentAsync({
     type: ['text/csv', 'text/plain', 'text/comma-separated-values', 'application/octet-stream'],
     copyToCacheDirectory: true,
-  });
+  }));
 
   if (picked.canceled || !picked.assets?.[0]?.uri) {
     return result; // キャンセル

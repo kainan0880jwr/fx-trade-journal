@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { withoutAppLock } from '../../src/utils/appLockSuppress';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
   StyleSheet, Alert, Switch, Platform, ActivityIndicator
@@ -395,7 +396,8 @@ export default function SettingsScreen() {
             try {
               const isAvailable = await Sharing.isAvailableAsync();
               if (!isAvailable) throw new Error('sharing_unavailable');
-              await Sharing.shareAsync(filePath, { mimeType: 'text/csv', dialogTitle: t('settings_csv') });
+              await withoutAppLock(() =>
+                Sharing.shareAsync(filePath, { mimeType: 'text/csv', dialogTitle: t('settings_csv') }));
             } finally {
               await deleteAsync(filePath, { idempotent: true }).catch(() => {});
             }

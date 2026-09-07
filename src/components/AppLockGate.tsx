@@ -7,6 +7,7 @@ import { useSettingsStore } from '../store/settingsStore';
 import { useTheme } from '../theme/useTheme';
 import type { ThemeColors } from '../theme/colors';
 import { t } from '../i18n';
+import { isAppLockSuppressed } from '../utils/appLockSuppress';
 
 interface Props {
   children: React.ReactNode;
@@ -76,7 +77,8 @@ export default function AppLockGate({ children }: Props) {
         //
         // 認証シートの表示中も 'inactive' を経由するので、そこでは覆わない
         // （自分の認証UIの裏を隠してしまい、解除後のちらつきにもなる）。
-        if (!isAuthenticatingRef.current && (next === 'inactive' || next === 'background')) {
+        if (!isAuthenticatingRef.current && !isAppLockSuppressed()
+            && (next === 'inactive' || next === 'background')) {
           setCovered(true);
         } else if (next === 'active') {
           setCovered(false);
@@ -85,7 +87,10 @@ export default function AppLockGate({ children }: Props) {
         // 再ロックは 'background' からの復帰のみを対象にする。'inactive' は
         // 認証シート表示時にも経由するため、含めると認証→再検知→再認証の
         // 無限ループになる。目隠しと再ロックで条件が違うのは意図的。
-        if (appState.current === 'background' && next === 'active') {
+        // 写真ピッカー・ファイル選択・共有シートはOSの別画面なのでアプリが
+        // background になるが、ユーザーはアプリを離れていない。ここで再ロックすると
+        // 「写真を選んだ瞬間に認証を求められる」ことになるので、抑止中は掛けない。
+        if (appState.current === 'background' && next === 'active' && !isAppLockSuppressed()) {
           setUnlocked(false);
           tryAuthenticate();
         }
@@ -96,29 +101,46 @@ export default function AppLockGate({ children }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appLockEnabled]);
 
-  // 覆いはロック状態より優先する。スナップショットに中身を写さないことが目的で、
-  // 解除済みかどうかは関係ない。
-  if (appLockEnabled && covered) {
-    return (
-      <View style={s.container}>
-        <View style={s.iconWrap}>
-          <Ionicons name="lock-closed" size={32} color={C.primary} />
-        </View>
-      </View>
-    );
-  }
-
-  if (unlocked) return <>{children}</>;
+  // **children を常にマウントしたままにする。** 以前はロック中に別のツリーを
+  // 返しており、再ロックのたびに画面が作り直されて**入力途中の記録が消えていた**。
+  // 写真ピッカーから戻ったときに記録画面が巻き戻る、という形で表面化した。
+  // 中身を見せないことは、上に載せる不透明なビューで達成する。
+  const showCover = appLockEnabled && covered;
+  const showLock = appLockEnabled && !unlocked && !covered;
+  const hideChildren = showCover || showLock;
 
   return (
-    <View style={s.container}>
-      <View style={s.iconWrap}>
-        <Ionicons name="lock-closed" size={32} color={C.primary} />
+    <View style={{ flex: 1 }}>
+      <View
+        style={{ flex: 1 }}
+        // 覆っている間は背後を触れず、読み上げ対象からも外す。
+        pointerEvents={hideChildren ? 'none' : 'auto'}
+        accessibilityElementsHidden={hideChildren}
+        importantForAccessibility={hideChildren ? 'no-hide-descendants' : 'auto'}
+      >
+        {children}
       </View>
-      <Text style={s.message}>{t('app_lock_locked_message')}</Text>
-      <TouchableOpacity style={s.button} onPress={tryAuthenticate} activeOpacity={0.85}>
-        <Text style={s.buttonText}>{t('app_lock_unlock_button')}</Text>
-      </TouchableOpacity>
+
+      {showCover && (
+        // アプリスイッチャー用のスナップショットに中身を写さないための覆い。
+        <View style={[s.container, StyleSheet.absoluteFill]}>
+          <View style={s.iconWrap}>
+            <Ionicons name="lock-closed" size={32} color={C.primary} />
+          </View>
+        </View>
+      )}
+
+      {showLock && (
+        <View style={[s.container, StyleSheet.absoluteFill]} accessibilityViewIsModal>
+          <View style={s.iconWrap}>
+            <Ionicons name="lock-closed" size={32} color={C.primary} />
+          </View>
+          <Text style={s.message}>{t('app_lock_locked_message')}</Text>
+          <TouchableOpacity style={s.button} onPress={tryAuthenticate} activeOpacity={0.85}>
+            <Text style={s.buttonText}>{t('app_lock_unlock_button')}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
