@@ -113,6 +113,11 @@ export default function AnalysisScreen() {
           {ANALYSIS_TABS().map(tab => (
             <TouchableOpacity key={tab.key}
               style={styles.subTab}
+              accessibilityRole="tab"
+              // 選択状態が色と2ptの下線でしか表現されておらず、読み上げでは
+              // どのタブが開いているか分からなかった。
+              accessibilityState={{ selected: activeTab === tab.key }}
+              hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
               onPress={() => setActiveTab(tab.key)}>
               <Text style={[styles.subTabLabel, activeTab === tab.key && styles.subTabLabelActive]} numberOfLines={1}>{tab.label}</Text>
               {activeTab === tab.key && <View style={styles.subTabUnderline} />}

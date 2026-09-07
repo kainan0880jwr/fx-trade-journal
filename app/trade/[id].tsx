@@ -284,7 +284,10 @@ function makeStyles(C: ThemeColors) {
     heroRight: { flexDirection: 'row', alignItems: 'center', gap: 10 },
     resultBadge: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20 },
     resultBadgeText: { color: C.onAccent, fontSize: 13, fontWeight: '700' },
-    bookmarkBtn: { padding: 4 },
+    // 編集・共有・ブックマークが横並びの主要導線。padding 4 では約30×32 しかなく
+    // iOS HIG の 44pt を切っていた。padding で確保すると隣接ボタンとの間隔が詰まって
+    // 押し間違えるので、最小サイズを指定して中央寄せする。
+    bookmarkBtn: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
     heroPips: { fontSize: 44, fontWeight: '900' },
     heroPipsUnit: { fontSize: 18, fontWeight: '400' },
     heroPL: { fontSize: 18, fontWeight: '600', marginTop: 4 },

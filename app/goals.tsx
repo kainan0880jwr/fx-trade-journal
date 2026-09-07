@@ -156,7 +156,9 @@ export default function GoalsScreen() {
               <Text style={s.rowLabel}>{t('goal_rule_daily')}</Text>
               {!isPremium ? (
                 <TouchableOpacity onPress={openPaywall} accessibilityRole="button"
-                  accessibilityLabel={`${t('goal_rule_daily')} (${t('premium_badge')})`}>
+                  accessibilityLabel={`${t('goal_rule_daily')} (${t('premium_badge')})`}
+                  // アイコン16ptだけの素のボタンだった。44pt相当まで広げる。
+                  hitSlop={{ top: 14, bottom: 14, left: 14, right: 14 }}>
                   <Ionicons name="lock-closed" size={16} color={C.text3} />
                 </TouchableOpacity>
               ) : (

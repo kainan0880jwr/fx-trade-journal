@@ -877,11 +877,13 @@ export default function NewTradeScreen() {
                 <View style={{ flex: 1, marginRight: 8 }}>
                   <Text style={styles.rateLabel}>{t('form_entry')}</Text>
                   <TextInput style={styles.input} value={entryRate} onChangeText={setEntryRate}
+                    accessibilityLabel={t('form_entry')}
                     keyboardType="decimal-pad" placeholder="155.000" placeholderTextColor={C.text3} />
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.rateLabel}>{t('form_exit')}</Text>
                   <TextInput style={styles.input} value={exitRate} onChangeText={setExitRate}
+                    accessibilityLabel={t('form_exit')}
                     keyboardType="decimal-pad" placeholder="155.200" placeholderTextColor={C.text3} />
                 </View>
               </View>
@@ -995,6 +997,9 @@ export default function NewTradeScreen() {
                           onPress={() => setImageUris(prev => prev.filter((_, j) => j !== i))}
                           accessibilityLabel={t('a11y_remove_image')}
                           accessibilityRole="button"
+                          // アイコンは20ptしかない。破壊的操作なので押し間違いも
+                          // 押しにくさも困る。44pt相当まで広げる。
+                          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
                         >
                           <Ionicons name="close-circle" size={20} color={C.loss} />
                         </TouchableOpacity>
