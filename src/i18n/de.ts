@@ -33,6 +33,7 @@ export const de: LangStrings = {
   save_error_msg: 'Trade konnte nicht gespeichert werden. Bitte erneut versuchen.',
   settings_save_error_msg: 'Einstellungen konnten nicht gespeichert werden. Bitte erneut versuchen.',
   saved: 'Gespeichert',
+  result_required: 'Bitte wähle Gewinn, Verlust oder ausgeglichen',
   input_error: 'Eingabefehler',
   delete_confirm: 'Löschen bestätigen',
   db_init_error_title: 'Datenbank konnte nicht initialisiert werden',

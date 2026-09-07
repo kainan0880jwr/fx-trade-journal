@@ -470,7 +470,7 @@ export default function NewTradeScreen() {
 
   // ── クイック保存 ──
   const handleQuickSave = async () => {
-    if (!quickResult) { Alert.alert(t('input_error'), t('form_result')); return; }
+    if (!quickResult) { Alert.alert(t('input_error'), t('result_required')); return; }
     const quickLotNum = parseDecimal(quickLot);
     if (quickLotNum == null || quickLotNum <= 0) {
       Alert.alert(t('input_error'), t('lot_error'));
@@ -620,7 +620,12 @@ export default function NewTradeScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        // モーダル表示でヘッダーがあるため、その分ずれる。
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 56 : 0}
+      >
 
         {/* ── モード切替（編集モードでは記録時のモードに固定し、切替UIは出さない）── */}
         {!isEditMode && (
@@ -650,7 +655,7 @@ export default function NewTradeScreen() {
           </View>
         )}
 
-        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
+        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag">
 
           {mode === 'quick' ? (
             /* ══════════════ クイックモード ══════════════ */

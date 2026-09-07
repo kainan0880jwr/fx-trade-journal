@@ -33,6 +33,7 @@ export const es: LangStrings = {
   save_error_msg: "No se pudo guardar la operación. Inténtalo de nuevo.",
   settings_save_error_msg: "No se pudieron guardar los ajustes. Inténtalo de nuevo.",
   saved: "Guardado",
+  result_required: 'Elige ganancia, pérdida o empate',
   input_error: "Error de entrada",
   delete_confirm: "Confirmar eliminación",
   db_init_error_title: "No se pudo inicializar la base de datos",

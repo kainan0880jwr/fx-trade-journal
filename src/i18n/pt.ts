@@ -33,6 +33,7 @@ export const pt: LangStrings = {
   save_error_msg: 'Falha ao salvar a operação. Tente novamente.',
   settings_save_error_msg: 'Falha ao salvar as configurações. Tente novamente.',
   saved: 'Salvo',
+  result_required: 'Escolha ganho, perda ou empate',
   input_error: 'Erro de Entrada',
   delete_confirm: 'Confirmar Exclusão',
   db_init_error_title: 'Falha ao inicializar o banco de dados',

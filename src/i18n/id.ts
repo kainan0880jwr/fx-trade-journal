@@ -33,6 +33,7 @@ export const id: LangStrings = {
   save_error_msg: 'Gagal menyimpan trade. Silakan coba lagi.',
   settings_save_error_msg: 'Gagal menyimpan pengaturan. Silakan coba lagi.',
   saved: 'Tersimpan',
+  result_required: 'Silakan pilih menang, kalah, atau seri',
   input_error: 'Kesalahan Input',
   delete_confirm: 'Konfirmasi Hapus',
   db_init_error_title: 'Gagal menginisialisasi database',

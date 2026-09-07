@@ -33,6 +33,7 @@ export const en: LangStrings = {
   save_error_msg: 'Failed to save trade. Please try again.',
   settings_save_error_msg: 'Failed to save settings. Please try again.',
   saved: 'Saved',
+  result_required: 'Please choose win, loss, or even',
   input_error: 'Input Error',
   delete_confirm: 'Confirm Delete',
   db_init_error_title: 'Failed to initialize the database',

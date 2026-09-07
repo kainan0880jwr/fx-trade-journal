@@ -33,6 +33,7 @@ export const it: LangStrings = {
   save_error_msg: "Impossibile salvare l'operazione. Riprova.",
   settings_save_error_msg: "Impossibile salvare le impostazioni. Riprova.",
   saved: "Salvato",
+  result_required: 'Scegli vincita, perdita o pareggio',
   input_error: "Errore di inserimento",
   delete_confirm: "Conferma eliminazione",
   db_init_error_title: "Impossibile inizializzare il database",

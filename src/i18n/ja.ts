@@ -31,6 +31,7 @@ export const ja = {
   save_error_msg: 'トレードの保存に失敗しました。再度お試しください。',
   settings_save_error_msg: '設定の保存に失敗しました。再度お試しください。',
   saved: '保存しました',
+  result_required: '勝ち・負け・引き分けのいずれかを選んでください',
   input_error: '入力エラー',
   delete_confirm: '削除確認',
   error: 'エラー',

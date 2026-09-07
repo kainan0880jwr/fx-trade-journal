@@ -33,6 +33,7 @@ export const tr: LangStrings = {
   save_error_msg: 'İşlem kaydedilemedi. Lütfen tekrar deneyin.',
   settings_save_error_msg: 'Ayarlar kaydedilemedi. Lütfen tekrar deneyin.',
   saved: 'Kaydedildi',
+  result_required: 'Lütfen kazanç, kayıp veya berabere seçin',
   input_error: 'Giriş Hatası',
   delete_confirm: 'Silmeyi Onayla',
   db_init_error_title: 'Veritabanı başlatılamadı',

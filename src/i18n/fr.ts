@@ -33,6 +33,7 @@ export const fr: LangStrings = {
   save_error_msg: "Échec de l'enregistrement du trade. Veuillez réessayer.",
   settings_save_error_msg: "Échec de l'enregistrement des réglages. Veuillez réessayer.",
   saved: "Enregistré",
+  result_required: 'Veuillez choisir gain, perte ou neutre',
   input_error: "Erreur de saisie",
   delete_confirm: "Confirmer la suppression",
   db_init_error_title: "Échec de l'initialisation de la base de données",

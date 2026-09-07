@@ -33,6 +33,7 @@ export const hi: LangStrings = {
   save_error_msg: 'ट्रेड सेव करने में विफल। कृपया फिर से कोशिश करें।',
   settings_save_error_msg: 'सेटिंग्स सेव करने में विफल। कृपया फिर से कोशिश करें।',
   saved: 'सेव हो गया',
+  result_required: 'कृपया जीत, हार या बराबर में से चुनें',
   input_error: 'इनपुट त्रुटि',
   delete_confirm: 'हटाने की पुष्टि करें',
   db_init_error_title: 'डेटाबेस शुरू करने में विफल',

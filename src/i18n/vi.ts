@@ -33,6 +33,7 @@ export const vi: LangStrings = {
   save_error_msg: 'Không thể lưu giao dịch. Vui lòng thử lại.',
   settings_save_error_msg: 'Không thể lưu cài đặt. Vui lòng thử lại.',
   saved: 'Đã lưu',
+  result_required: 'Vui lòng chọn thắng, thua hoặc hòa',
   input_error: 'Lỗi Nhập Liệu',
   delete_confirm: 'Xác nhận Xóa',
   db_init_error_title: 'Không thể khởi tạo cơ sở dữ liệu',
