@@ -187,7 +187,7 @@ export default function CalendarModal({ visible, onClose, trades, onSelectDate }
           </View>
 
           {/* 凡例 */}
-          <CalendarLegend />
+          <CalendarLegend metric={metric} />
 
           {/* 日別詳細 */}
           {selectedDate && (

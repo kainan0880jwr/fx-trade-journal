@@ -218,7 +218,7 @@ export default function CalendarScreen() {
           />
         </View>
 
-        <CalendarLegend isTablet={isTablet} />
+        <CalendarLegend isTablet={isTablet} metric={metric} />
 
         {selectedDay && (
           <View style={s.dayDetail}>

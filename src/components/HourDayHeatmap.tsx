@@ -46,6 +46,18 @@ export default function HourDayHeatmap({ trades }: { trades: Trade[] }) {
                 {row.map(cell => (
                   <View
                     key={cell.hour}
+                    // セルは塗りだけで文字が無く、色相が符号・不透明度が回数という
+                    // 2変数を1つの塗りに載せている。読み上げでは何も伝わらないので、
+                    // データのあるセルにだけ内容をラベルとして持たせる。
+                    // 空セル（大半）を読み上げ対象にすると移動が煩雑になるため隠す。
+                    accessible={cell.total > 0}
+                    accessibilityElementsHidden={cell.total === 0}
+                    importantForAccessibility={cell.total === 0 ? 'no-hide-descendants' : 'yes'}
+                    accessibilityLabel={cell.total > 0
+                      ? `${dayLabels[dow] ?? ''} ${cell.hour}${t('heatmap_hour_suffix')}, ` +
+                        `${t('trade_count')} ${cell.total}, ` +
+                        `${t('col_avg_pips')} ${cell.avgPips > 0 ? '+' : ''}${cell.avgPips}`
+                      : undefined}
                     style={[
                       s.cell,
                       cell.total === 0

@@ -57,7 +57,9 @@ export default function AnalysisScreen() {
   const [equityLoadFailed, setEquityLoadFailed] = useState(false);
   const [equityMode, setEquityMode] = useState<'month' | 'all'>('month');
   const { width: SW } = useWindowDimensions();
-  const chartWidth = contentWidth - 56;
+  // 電話は左右16+カード12で56、タブレットは scroll の余白が20なので64。
+  // 固定の56だとタブレットでチャートがカードから8ptはみ出す。
+  const chartWidth = contentWidth - (isTablet ? 64 : 56);
 
   useEffect(() => { loadTradesByMonth(currentMonth); }, [currentMonth, loadTradesByMonth]);
   useEffect(() => {
@@ -195,7 +197,7 @@ export default function AnalysisScreen() {
                   <>
                     <Text style={styles.sectionTitle}>{t('by_pair')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_pair'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,0.9,1,1.3,1.4,1.4]} />
+                      <TableHeader cols={[t('col_pair'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,0.9,1,1.3,1.4]} />
                       {byPair.map((item, i) => (
                         <View key={item.pair} style={[styles.tableRow, i < byPair.length - 1 && styles.rowBorder]}>
                           <Text style={[styles.cell, { flex: 1.8, color: C.text }]} numberOfLines={1}>{item.pair}</Text>
@@ -216,7 +218,7 @@ export default function AnalysisScreen() {
                   <>
                     <Text style={styles.sectionTitle}>{t('by_style')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_style'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,0.9,1,1.3,1.4,1.4]} />
+                      <TableHeader cols={[t('col_style'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,0.9,1,1.3,1.4]} />
                       {byStyle.map((item, i) => (
                         <View key={item.style} style={[styles.tableRow, i < byStyle.length - 1 && styles.rowBorder]}>
                           <Text style={[styles.cell, { flex: 1.8, color: C.text }]} numberOfLines={1}>{STYLE_LABELS()[item.style] ?? item.style}</Text>
@@ -245,7 +247,7 @@ export default function AnalysisScreen() {
 
                     <Text style={styles.sectionTitle}>{t('time_analysis_title')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_time'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,1,1,1]} />
+                      <TableHeader cols={[t('col_time'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,1,1,1,1.4]} />
                       {timeData.map((item, i) => (
                         <View key={item.hour} style={[styles.tableRow, i < timeData.length - 1 && styles.rowBorder]}>
                           <View style={[styles.cell, { flex: 1.8, flexDirection: 'row', alignItems: 'center', gap: 4 }]}>
@@ -265,7 +267,7 @@ export default function AnalysisScreen() {
 
                     <Text style={styles.sectionTitle}>{t('day_analysis_title')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_day'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,1,1,1]} />
+                      <TableHeader cols={[t('col_day'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[1.8,1,1,1,1.4]} />
                       {dayData.map((item, i) => (
                         <View key={item.day} style={[styles.tableRow, i < dayData.length - 1 && styles.rowBorder]}>
                           <View style={[styles.cell, { flex: 1.8, flexDirection: 'row', alignItems: 'center', gap: 4 }]}>
@@ -295,7 +297,7 @@ export default function AnalysisScreen() {
                   <>
                     <Text style={styles.sectionTitle}>{t('tag_analysis_perf')}</Text>
                     <View style={styles.tableCard}>
-                      <TableHeader cols={[t('col_tag'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[2,1,1,1]} />
+                      <TableHeader cols={[t('col_tag'), t('col_count_h'), t('win_rate'), t('col_avg_pips'), t('col_total_pl')]} widths={[2,1,1,1,1.4]} />
                       {tagStats.map((item, i) => (
                         <View key={item.tag} style={[styles.tableRow, i < tagStats.length - 1 && styles.rowBorder]}>
                           <View style={[styles.cell, { flex: 2, flexDirection: 'row', alignItems: 'center', gap: 6 }]}>
@@ -454,9 +456,12 @@ export default function AnalysisScreen() {
                     )}
 
                     <View style={styles.equitySummary}>
+                      {/* ワーストが正の値のこともある（ずっとプラス圏だった場合）。
+                          そのとき赤で「+」付きの数字を出すと意味が食い違う。
+                          同じ修正は best_worst 側（:187）に既にあり、こちらが漏れていた。 */}
                       <EqItem label={t('worst_label')}
                         value={`${Math.min(...equityPoints.map(p => p.cumPips)) > 0 ? '+' : ''}${Math.min(...equityPoints.map(p => p.cumPips))} pips`}
-                        color={C.loss}
+                        color={Math.min(...equityPoints.map(p => p.cumPips)) < 0 ? C.loss : C.text2}
                       />
                       <EqItem
                         label={t('current_label')}
@@ -616,6 +621,12 @@ function MentalRow({ label, avg, high, low, positiveHigh, last }: {
 }
 
 function TableHeader({ cols, widths }: { cols: string[]; widths: number[] }) {
+  // 列数と幅の数が食い違うと、`widths[i] ?? 1` のフォールバックで**ヘッダーだけが
+  // 違う列の上に乗る**。実際に3つの表で最終列が 1.4 なのにヘッダーが 1 に落ちていた。
+  // 見た目のズレは小さく気づきにくいので、開発中に知らせる。
+  if (__DEV__ && cols.length !== widths.length) {
+    console.warn(`TableHeader: cols(${cols.length}) と widths(${widths.length}) の数が違います`);
+  }
   const C = useTheme();
   // 親は makeStyles(C, isTablet) を使っているのに、ここだけ既定(false)で
   // 生成していたため、タブレットでヘッダー行と本文行の左右パディングが

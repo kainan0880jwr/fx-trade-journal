@@ -1,3 +1,4 @@
+import type { CalMetric } from '../utils/calendarMetrics';
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useTheme } from '../theme/useTheme';
@@ -30,13 +31,32 @@ export function SCard({ label, value, color, isTablet = false, note }: {
   );
 }
 
-export function CalendarLegend({ isTablet = false }: { isTablet?: boolean }) {
+/**
+ * 選択中の指標に合わせた凡例を出す。
+ *
+ * 以前は指標に関係なく「プラス日／マイナス日／ゼロ」を出していたが、色の意味は
+ * 指標ごとに違う（getDayBg 参照）。勝率は50%超/未満、勝敗数は勝ち越し/負け越し、
+ * PFは1超/1未満、件数に至っては緑赤ではなく青1色。**6指標中4つで凡例が
+ * 間違っていた。**
+ */
+export function CalendarLegend({ isTablet = false, metric = 'pips' }: { isTablet?: boolean; metric?: CalMetric }) {
   const C = useTheme();
+  if (metric === 'count') {
+    // 件数は記録の有無だけを青で示す。プラス/マイナスの概念が無い。
+    return (
+      <View style={{ flexDirection: 'row', gap: 14, justifyContent: 'center', marginBottom: 12, paddingVertical: 4 }}>
+        <LegendItem C={C} isTablet={isTablet} color={C.primary} label={t('cal_has_record')} />
+      </View>
+    );
+  }
+  // pips / pl は金額や pips の符号そのものなので従来の文言が正しい。
+  // winRate / wl / pf は「良い・悪い・互角」でまとめる。
+  const signed = metric === 'pips' || metric === 'pl';
   return (
     <View style={{ flexDirection: 'row', gap: 14, justifyContent: 'center', marginBottom: 12, paddingVertical: 4 }}>
-      <LegendItem C={C} isTablet={isTablet} color={C.win} label={t('cal_plus_day')} />
-      <LegendItem C={C} isTablet={isTablet} color={C.loss} label={t('cal_minus_day')} />
-      <LegendItem C={C} isTablet={isTablet} color={C.border} label={t('cal_zero_day')} />
+      <LegendItem C={C} isTablet={isTablet} color={C.win} label={t(signed ? 'cal_plus_day' : 'cal_good_day')} />
+      <LegendItem C={C} isTablet={isTablet} color={C.loss} label={t(signed ? 'cal_minus_day' : 'cal_bad_day')} />
+      <LegendItem C={C} isTablet={isTablet} color={C.border} label={t(signed ? 'cal_zero_day' : 'cal_even_day')} />
     </View>
   );
 }
