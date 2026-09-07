@@ -329,7 +329,19 @@ export default function NewTradeScreen() {
         tf1h !== (orig.tf1h ?? '')
       );
     }
-    if (mode === 'quick') return quickPips !== '' || quickResult !== null;
+    if (mode === 'quick') {
+      // **クイックモードで触れる項目をすべて見ること。** 以前は pips と結果しか
+      // 見ておらず、通貨ペア・売買方向・ロット・損益・ルールチェックだけを変えて
+      // 戻ると、破棄確認も出ないまま黙って消えていた。フルモード側は15項目、
+      // 編集モードは全項目を比較しているのに、ここだけ2項目だった。
+      return (
+        quickPips !== '' || quickResult !== null ||
+        quickLot !== '' || quickPL !== '' ||
+        ruleChecks.length > 0 || imageUris.length > 0 ||
+        pair !== (pairs[0]?.name ?? 'USD/JPY') ||
+        direction !== 'buy'
+      );
+    }
     return (
       entryRate !== '' || exitRate !== '' || reflection !== '' || imageUris.length > 0 ||
       stopLossStr !== '' || takeProfitStr !== '' || selectedTags.length > 0 ||
@@ -338,7 +350,7 @@ export default function NewTradeScreen() {
     );
   }, [
     isEditMode, loadingExisting, mode, pair, direction, lotSize, style,
-    quickPips, quickResult, entryRate, exitRate, reflection, imageUris,
+    quickPips, quickResult, quickLot, quickPL, pairs, entryRate, exitRate, reflection, imageUris,
     stopLossStr, takeProfitStr, selectedTags, selfRating, mentalFocus, mentalCalm, mentalFear,
     ruleChecks, tfWeekly, tfDaily, tf4h, tf1h,
   ]);

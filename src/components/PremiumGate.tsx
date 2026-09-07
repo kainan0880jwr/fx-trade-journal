@@ -131,7 +131,11 @@ function makeStyles(C: ThemeColors) {
     closeLinkText: { color: C.text3, fontSize: 14 },
     previewContent: {
       flex: 1,
-      opacity: 0.13,
+      // 0.13 では実質見えず、「childrenを薄く表示して価値を示す」という意図が
+      // 達成できていなかった（ユーザーには壁だけが見える）。数値が読み取れない
+      // 程度に抑えつつ、下に何かあることは分かる濃さにする。
+      // 上に重ねるグラデーションが下半分をさらに隠すので、これでも読めはしない。
+      opacity: 0.35,
     },
     // ロックカードを中央下寄りに配置
     lockWrap: {

@@ -54,6 +54,7 @@ export default function AnalysisScreen() {
   const isPremium = usePurchaseStore(s => s.isPremium);
   const [activeTab, setActiveTab] = useState<ATab>('performance');
   const [allTrades, setAllTrades] = useState<typeof trades>([]);
+  const [equityLoadFailed, setEquityLoadFailed] = useState(false);
   const [equityMode, setEquityMode] = useState<'month' | 'all'>('month');
   const { width: SW } = useWindowDimensions();
   const chartWidth = contentWidth - 56;
@@ -61,11 +62,14 @@ export default function AnalysisScreen() {
   useEffect(() => { loadTradesByMonth(currentMonth); }, [currentMonth, loadTradesByMonth]);
   useEffect(() => {
     if (activeTab === 'equity' && equityMode === 'all') {
-      // 失敗すると allTrades が [] のままで「データがありません」が固定表示になる
+      // 失敗を握り潰すと allTrades が [] のままで「データがありません」が固定表示に
+      // なり、読み込めなかったのか本当に無いのか区別できない。失敗を状態として持つ。
+      setEquityLoadFailed(false);
       loadAllTrades()
         .then(setAllTrades)
         .catch(e => {
           try { Sentry.captureException(e, { tags: { area: 'equity_load' } }); } catch { /* 無視 */ }
+          setEquityLoadFailed(true);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -117,9 +121,18 @@ export default function AnalysisScreen() {
               // 選択状態が色と2ptの下線でしか表現されておらず、読み上げでは
               // どのタブが開いているか分からなかった。
               accessibilityState={{ selected: activeTab === tab.key }}
+              accessibilityLabel={!isPremium && tab.key !== 'performance' ? `${tab.label} (${t('premium_badge')})` : tab.label}
               hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
               onPress={() => setActiveTab(tab.key)}>
-              <Text style={[styles.subTabLabel, activeTab === tab.key && styles.subTabLabelActive]} numberOfLines={1}>{tab.label}</Text>
+              <View style={styles.subTabInner}>
+                {/* ロックされたタブは押す前に分かるようにする。ラベルの見た目が
+                    無料タブと同一で、鍵もPROバッジも無かったため、押して初めて
+                    壁に当たっていた。 */}
+                {!isPremium && tab.key !== 'performance' && (
+                  <Ionicons name="lock-closed" size={10} color={C.text3} style={{ marginRight: 3 }} />
+                )}
+                <Text style={[styles.subTabLabel, activeTab === tab.key && styles.subTabLabelActive]} numberOfLines={1}>{tab.label}</Text>
+              </View>
               {activeTab === tab.key && <View style={styles.subTabUnderline} />}
             </TouchableOpacity>
           ))}
@@ -374,7 +387,25 @@ export default function AnalysisScreen() {
                   ))}
                 </View>
 
-                {equityPoints.length === 0 ? (
+                {equityPoints.length === 0 && equityLoadFailed ? (
+                  // 読み込み失敗を「データがありません」と同じ見た目で出さない。
+                  <View style={styles.emptyHint}>
+                    <Ionicons name="alert-circle-outline" size={36} color={C.yellow} />
+                    <Text style={styles.emptyText}>{t('trade_load_error')}</Text>
+                    <TouchableOpacity
+                      style={styles.retryBtn}
+                      onPress={() => {
+                        setEquityLoadFailed(false);
+                        loadAllTrades()
+                          .then(setAllTrades)
+                          .catch(() => setEquityLoadFailed(true));
+                      }}
+                      accessibilityRole="button"
+                    >
+                      <Text style={styles.retryBtnText}>{t('retry')}</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : equityPoints.length === 0 ? (
                   <View style={styles.emptyHint}>
                     <Ionicons name="trending-up-outline" size={36} color={C.text3} />
                     <Text style={styles.emptyText}>{t('no_data_trades')}</Text>
@@ -610,6 +641,7 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     subTabBarContent: { flexDirection: 'row', alignItems: 'center' },
     // 下線をborderにすると選択中タブだけ2px高さが増えて文字位置がずれるため、
     // 高さに影響しないabsolute配置の下線に変更
+    subTabInner: { flexDirection: 'row', alignItems: 'center' },
     subTab: { paddingHorizontal: isTablet ? 20 : 16, paddingVertical: 12, alignItems: 'center', justifyContent: 'center' },
     subTabUnderline: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 2, backgroundColor: C.primary },
     subTabLabel: { fontSize: isTablet ? 14 : 12, color: C.text },
@@ -618,6 +650,8 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     subTabLabelActive: { color: C.primary },
     scroll: { padding: ph, paddingBottom: 40 },
     empty: { alignItems: 'center', paddingTop: 60 },
+    retryBtn: { marginTop: 14, backgroundColor: C.primary, borderRadius: 10, paddingHorizontal: 20, paddingVertical: 12, minHeight: 44, justifyContent: 'center' },
+    retryBtnText: { color: C.onAccent, fontWeight: '700', fontSize: 14 },
     emptyHint: { alignItems: 'center', paddingTop: 40, gap: 12 },
     emptyText: { fontSize: 14, color: C.text2, textAlign: 'center', lineHeight: 22 },
     donutRow: {
