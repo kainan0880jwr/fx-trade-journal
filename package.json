@@ -30,7 +30,7 @@
     "react-native-calendars": "^1.1314.0",
     "react-native-chart-kit": "^6.12.3",
     "react-native-is-edge-to-edge": "^1.1.6",
-    "react-native-purchases": "^10.4.0",
+    "react-native-purchases": "^10.9.0",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
