@@ -39,7 +39,7 @@
       var x = (i/(pts.length-1))*w;
       ctx.lineTo(x, pts[i]);
     }
-    ctx.strokeStyle = dir==='up' ? getVar('--profit') : getVar('--loss');
+    ctx.strokeStyle = dir==='up' ? getVar('--profit-large') : getVar('--loss-large');
     ctx.lineWidth = 1.4;
     ctx.stroke();
   }
@@ -113,8 +113,8 @@
         var bw = cw*0.6;
         function y(v){ return h - ((v-min)/(max-min))*h; }
         var up = c.close >= c.open;
-        ctx.strokeStyle = up ? getVar('--profit') : getVar('--loss');
-        ctx.fillStyle = up ? getVar('--profit') : getVar('--loss');
+        ctx.strokeStyle = up ? getVar('--profit-large') : getVar('--loss-large');
+        ctx.fillStyle = up ? getVar('--profit-large') : getVar('--loss-large');
         ctx.globalAlpha = 0.9;
         ctx.beginPath();
         ctx.moveTo(x+bw/2, y(c.high));

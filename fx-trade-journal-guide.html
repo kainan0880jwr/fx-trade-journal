@@ -94,9 +94,13 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) 自体を呼ばない。 -->
+<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) を呼ばず、
+     gtag.js の読み込みもしない（consent.js が同意後に <script> を動的に作る）。
+     これにより「同意しない」場合はCookieなしの計測ピングも含めて一切送信されない。 -->
 <script src="lp-assets/ga-init.js"></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3HNGHT6YJ"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
 <link rel="stylesheet" href="lp-assets/style.css">
 </head>
@@ -129,7 +133,7 @@
       <li><a href="index.html#faq">よくある質問</a></li>
     </ul>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="https://apps.apple.com/jp/app/id6786188634">App Storeで入手</a>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=guide-ja">App Storeで入手</a>
     </div>
   </div>
 </header>
@@ -204,7 +208,7 @@
       <div class="article-callout">
         <h3>1タップの記録と自動集計を試す</h3>
         <p>「FXトレードログ」は、この記事で紹介した7項目をタップとタグ選択だけで記録でき、勝率・pips・プロフィットファクターを自動集計するFXトレード日記アプリです。MT4/MT5の取引履歴CSVインポートにも対応しています。</p>
-        <a class="btn btn-primary" href="https://apps.apple.com/jp/app/id6786188634">App Storeで無料ダウンロード</a>
+        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=guide-ja">App Storeで無料ダウンロード</a>
       </div>
 
       <h2 id="compare">手書き・Excel・アプリの比較</h2>
@@ -252,7 +256,7 @@
     <div class="wrap">
       <h2>今日の1トレードから、記録を始めましょう。</h2>
       <p>「FXトレードログ」なら、この記事の7項目をタップとタグ選択で記録でき、振り返りに必要な数字は自動で集計されます。</p>
-      <a class="btn btn-primary" href="https://apps.apple.com/jp/app/id6786188634">App Storeで無料ダウンロード</a>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=guide-ja">App Storeで無料ダウンロード</a>
     </div>
   </div>
 </article>
@@ -284,6 +288,7 @@
         <h4>サポート・法的情報</h4>
         <ul>
           <li><a href="support.html">お問い合わせ</a></li>
+          <li><a href="#" id="consentReset">アクセス解析の設定</a></li>
           <li><a href="privacy-policy.html">プライバシーポリシー</a></li>
           <li><a href="terms.html">利用規約</a></li>
           <li><a href="tokushoho.html">特定商取引法に基づく表記</a></li>

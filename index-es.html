@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FX Trade Journal — Cada trade construye tu próxima tasa de acierto.</title>
+<title>FX Trade Journal — Diario de trading Forex (importación MT4/MT5)</title>
 <meta name="description" content="Solo con registrar un trade, tu tasa de acierto, pips y profit factor se calculan automáticamente. Tus resultados se convierten en una tarjeta para compartir. Un diario de trading que funciona por completo en tu móvil o tablet. Compatible con importación CSV de MT4/MT5.">
 <link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/index-es.html">
 <link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/">
@@ -34,7 +34,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FX Trade Journal">
 <meta property="og:locale" content="es_ES">
-<meta property="og:title" content="FX Trade Journal — Cada trade construye tu próxima tasa de acierto.">
+<meta property="og:title" content="FX Trade Journal — Diario de trading Forex (importación MT4/MT5)">
 <meta property="og:description" content="Solo con registrar un trade, tu tasa de acierto, pips y profit factor se calculan automáticamente. Tus resultados se convierten en una tarjeta para compartir. Funciona por completo en tu móvil o tablet.">
 <meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/index-es.html">
 <meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
@@ -42,7 +42,7 @@
 <meta property="og:image:height" content="630">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="FX Trade Journal — Cada trade construye tu próxima tasa de acierto.">
+<meta name="twitter:title" content="FX Trade Journal — Diario de trading Forex (importación MT4/MT5)">
 <meta name="twitter:description" content="Solo con registrar un trade, tu tasa de acierto, pips y profit factor se calculan automáticamente. Funciona por completo en tu móvil o tablet.">
 <meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
 
@@ -54,7 +54,7 @@
   "operatingSystem": "iOS",
   "applicationCategory": "FinanceApplication",
   "url": "https://kainan0880jwr.github.io/fx-trade-journal/index-es.html",
-  "downloadUrl": "https://apps.apple.com/es/app/id6786188634",
+  "downloadUrl": "https://apps.apple.com/app/id6786188634",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -105,20 +105,18 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) - gtag('config', ...) no se llama hasta que se confirma el
-     consentimiento. Si no consientes, ni siquiera se envía un ping de medición sin cookies. -->
+<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
+     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
+     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
 <script src="lp-assets/ga-init.js"></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3HNGHT6YJ"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
 <link rel="stylesheet" href="lp-assets/style.css">
 </head>
 <body>
 
-<div class="region-notice">
-  <div class="wrap">
-    <p>Aviso: esta aplicación no está disponible actualmente en el App Store en la UE, el EEE y el Reino Unido.</p>
-  </div>
-</div>
 
 <section class="consent-banner" id="consentBanner" aria-label="Consentimiento para analítica" hidden>
   <div class="wrap consent-inner">
@@ -148,10 +146,16 @@
       <li><a href="#faq">Preguntas</a></li>
     </ul>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="https://apps.apple.com/es/app/id6786188634">Consigue la app</a>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-es">Consigue la app</a>
     </div>
   </div>
 </header>
+
+<div class="region-notice">
+  <div class="wrap">
+    <p>Disponible en 16 países y regiones, incluidos Japón, Estados Unidos y Suiza. No disponible en el App Store en la UE, el EEE y el Reino Unido.</p>
+  </div>
+</div>
 
 <div class="ticker" aria-hidden="true" title="Visualización ilustrativa de pares de divisas (no son datos de mercado reales)">
   <div class="ticker-track" id="tickerTrack"></div>
@@ -169,7 +173,7 @@
         Tus resultados se convierten en una tarjeta para compartir que te mantiene motivado. Todo funciona en tu móvil o tablet.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://apps.apple.com/es/app/id6786188634">Descargar gratis</a>
+        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-es">Descargar gratis</a>
         <a class="btn btn-ghost" href="#features">Ver funciones</a>
       </div>
       <div class="hero-trust">
@@ -183,12 +187,13 @@
       <canvas class="chart-canvas" id="heroChart" aria-hidden="true"></canvas>
       <div class="float-chip chip-winrate">
         <span class="k">Tasa de acierto de este mes</span>
-        <span class="v mono">78%</span>
+        <span class="v mono">62%</span>
       </div>
       <div class="float-chip chip-pf">
         <span class="k">Profit factor</span>
-        <span class="v mono">7.75</span>
+        <span class="v mono">1.50</span>
       </div>
+      <p class="sample-note chip-note">Pantalla de ejemplo. No son resultados reales.</p>
 
       <div class="phone">
         <div class="phone-screen">
@@ -202,12 +207,12 @@
             <span class="phone-pill">Swing</span>
           </div>
           <div class="stat-strip">
-            <div><span class="k">Trades</span><span class="v">9</span></div>
+            <div><span class="k">Trades</span><span class="v">13</span></div>
           <p class="sample-note">Pantalla de ejemplo. No son resultados reales.</p>
-            <div><span class="k">Acierto</span><span class="v text-accent">78%</span></div>
-            <div><span class="k">Pips</span><span class="v text-profit">+138</span></div>
-            <div><span class="k">PF</span><span class="v">7.75</span></div>
-            <div><span class="k">G/P</span><span class="v">7/2</span></div>
+            <div><span class="k">Acierto</span><span class="v text-accent">62%</span></div>
+            <div><span class="k">Pips</span><span class="v text-profit">+84</span></div>
+            <div><span class="k">PF</span><span class="v">1.50</span></div>
+            <div><span class="k">G/P</span><span class="v">8/5</span></div>
           </div>
           <div class="trade-row">
             <div><div class="pair">USD/JPY</div><div class="side">▲ BUY<span class="result-badge win">Gana</span></div></div>
@@ -260,13 +265,13 @@
             <svg class="donut" viewBox="0 0 120 120">
               <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
               <circle cx="60" cy="60" r="50" fill="none" stroke="var(--profit)" stroke-width="14"
-                stroke-dasharray="314" stroke-dashoffset="69" stroke-linecap="round" transform="rotate(-90 60 60)"/>
-              <text x="60" y="56" text-anchor="middle" font-family="var(--font-mono)" font-weight="700" font-size="22" fill="var(--ink)">78%</text>
+                stroke-dasharray="314" stroke-dashoffset="119" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+              <text x="60" y="56" text-anchor="middle" font-family="var(--font-mono)" font-weight="700" font-size="22" fill="var(--ink)">62%</text>
               <text x="60" y="74" text-anchor="middle" font-family="var(--font-body)" font-size="9" fill="var(--ink-faint)">Acierto</text>
             </svg>
             <div class="donut-figs">
-              <div><span class="f-k">Profit factor</span><span class="f-v">7.75</span></div>
-              <div><span class="f-k">Pips totales</span><span class="f-v text-profit">+138.4</span></div>
+              <div><span class="f-k">Profit factor</span><span class="f-v">1.50</span></div>
+              <div><span class="f-k">Pips totales</span><span class="f-v text-profit">+84.2</span></div>
               <div><span class="f-k">Racha actual</span><span class="f-v">2 victorias</span></div>
             </div>
           </div>
@@ -294,9 +299,9 @@
           <span class="panel-tag">Compartir</span>
           <div class="share-card">
             <div class="month mono">Resultados de julio de 2026</div>
-            <div class="big">78%</div>
+            <div class="big">62%</div>
             <div class="sub-figs">
-              <span>PF 7.75</span><span>+138 pips</span><span>9 trades</span>
+              <span>PF 1.50</span><span>+84 pips</span><span>13 trades</span>
             </div>
             <div class="watermark-chip">FX Trade Journal</div>
             <p class="sample-note">Pantalla de ejemplo. No son resultados reales.</p>
@@ -436,7 +441,7 @@
           <li>Panel mensual (tasa de acierto, pips, PF)</li>
           <li>Tarjeta de resultados para compartir (con marca de agua)</li>
         </ul>
-        <a class="btn btn-ghost" href="https://apps.apple.com/es/app/id6786188634">Empezar gratis</a>
+        <a class="btn btn-ghost" href="https://apps.apple.com/app/id6786188634?ct=lp-es">Empezar gratis</a>
       </div>
       <div class="price-card hi">
         <span class="price-badge">Recomendado</span>
@@ -460,7 +465,7 @@
           <li>3 imágenes de gráfico adjuntas y calculadora de tamaño de lote</li>
           <li>Sin marca de agua e insignias de logros</li>
         </ul>
-        <a class="btn btn-primary" href="https://apps.apple.com/es/app/id6786188634">Ver Premium</a>
+        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-es">Ver Premium</a>
         <p class="price-fineprint">Los precios mostrados son para Japón (¥, impuestos incluidos). El precio que verás en el App Store varía según el país o región. Si cancelas durante la prueba gratuita de 7 días del plan anual, no se te cobrará nada. Al finalizar la prueba, se te cobrará automáticamente el plan anual (¥5.000). Las suscripciones se renuevan automáticamente y pueden cancelarse hasta 24 horas antes de que finalice el periodo actual desde los ajustes de tu dispositivo. Consulta nuestros <a href="terms-es.html">Términos de servicio</a> y nuestra <a href="privacy-policy-es.html">Política de Privacidad</a> para más detalles.</p>
       </div>
     </div>
@@ -500,7 +505,7 @@
     <h2>Tu próximo registro se convierte<br>en tu próximo dato de análisis.</h2>
     <p>Empieza a revisar hoy mismo, con tu próximo trade.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://apps.apple.com/es/app/id6786188634">Descargar gratis</a>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-es">Descargar gratis</a>
     </div>
   </div>
 </section>
@@ -531,6 +536,7 @@
         <h4>Soporte y legal</h4>
         <ul>
           <li><a href="support-es.html">Contáctanos</a></li>
+          <li><a href="#" id="consentReset">Configuración de analítica</a></li>
           <li><a href="privacy-policy-es.html">Política de Privacidad</a></li>
           <li><a href="terms-es.html">Términos de servicio</a></li>
         </ul>

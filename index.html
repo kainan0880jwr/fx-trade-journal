@@ -55,7 +55,7 @@
   "operatingSystem": "iOS",
   "applicationCategory": "FinanceApplication",
   "url": "https://kainan0880jwr.github.io/fx-trade-journal/",
-  "downloadUrl": "https://apps.apple.com/jp/app/id6786188634",
+  "downloadUrl": "https://apps.apple.com/app/id6786188634",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -106,10 +106,13 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) 自体を呼ばない。
+<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) を呼ばず、
+     gtag.js の読み込みもしない（consent.js が同意後に <script> を動的に作る）。
      これにより「同意しない」場合はCookieなしの計測ピングも含めて一切送信されない。 -->
 <script src="lp-assets/ga-init.js"></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3HNGHT6YJ"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
 <link rel="stylesheet" href="lp-assets/style.css">
 </head>
@@ -144,14 +147,14 @@
       <li><a href="fx-trade-journal-guide.html">使い方ガイド</a></li>
     </ul>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="https://apps.apple.com/jp/app/id6786188634">App Storeで入手</a>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">App Storeで入手</a>
     </div>
   </div>
 </header>
 
 <div class="region-notice">
   <div class="wrap">
-    <p>ご注意: 本アプリは現在、EU・EEA・英国のApp Storeでは配信していません。</p>
+    <p>配信地域: 日本・米国・スイスなど16の国と地域。EU・EEA・英国のApp Storeでは配信していません。</p>
   </div>
 </div>
 
@@ -171,7 +174,7 @@
         成績はそのままシェアできるカードになり、続ける力になります。すべてスマホ・タブレットで完結します。
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://apps.apple.com/jp/app/id6786188634">App Storeで無料ダウンロード</a>
+        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">App Storeで無料ダウンロード</a>
         <a class="btn btn-ghost" href="#features">機能を見る</a>
       </div>
       <div class="hero-trust">
@@ -185,12 +188,13 @@
       <canvas class="chart-canvas" id="heroChart" aria-hidden="true"></canvas>
       <div class="float-chip chip-winrate">
         <span class="k">今月の勝率</span>
-        <span class="v mono">78%</span>
+        <span class="v mono">62%</span>
       </div>
       <div class="float-chip chip-pf">
         <span class="k">プロフィットファクター</span>
-        <span class="v mono">7.75</span>
+        <span class="v mono">1.50</span>
       </div>
+      <p class="sample-note chip-note">この画面はサンプルです。実際の運用成績ではありません。</p>
 
       <div class="phone">
         <div class="phone-screen">
@@ -204,12 +208,12 @@
             <span class="phone-pill">スウィング</span>
           </div>
           <div class="stat-strip">
-            <div><span class="k">件数</span><span class="v">9</span></div>
+            <div><span class="k">件数</span><span class="v">13</span></div>
           <p class="sample-note">この画面はサンプルです。実際の運用成績ではありません。</p>
-            <div><span class="k">勝率</span><span class="v text-accent">78%</span></div>
-            <div><span class="k">合計pips</span><span class="v text-profit">+138</span></div>
-            <div><span class="k">PF</span><span class="v">7.75</span></div>
-            <div><span class="k">勝/負</span><span class="v">7/2</span></div>
+            <div><span class="k">勝率</span><span class="v text-accent">62%</span></div>
+            <div><span class="k">合計pips</span><span class="v text-profit">+84</span></div>
+            <div><span class="k">PF</span><span class="v">1.50</span></div>
+            <div><span class="k">勝/負</span><span class="v">8/5</span></div>
           </div>
           <div class="trade-row">
             <div><div class="pair">USD/JPY</div><div class="side">▲ BUY<span class="result-badge win">勝</span></div></div>
@@ -262,13 +266,13 @@
             <svg class="donut" viewBox="0 0 120 120">
               <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
               <circle cx="60" cy="60" r="50" fill="none" stroke="var(--profit)" stroke-width="14"
-                stroke-dasharray="314" stroke-dashoffset="69" stroke-linecap="round" transform="rotate(-90 60 60)"/>
-              <text x="60" y="56" text-anchor="middle" font-family="var(--font-mono)" font-weight="700" font-size="22" fill="var(--ink)">78%</text>
+                stroke-dasharray="314" stroke-dashoffset="119" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+              <text x="60" y="56" text-anchor="middle" font-family="var(--font-mono)" font-weight="700" font-size="22" fill="var(--ink)">62%</text>
               <text x="60" y="74" text-anchor="middle" font-family="var(--font-body)" font-size="9" fill="var(--ink-faint)">勝率</text>
             </svg>
             <div class="donut-figs">
-              <div><span class="f-k">プロフィットファクター</span><span class="f-v">7.75</span></div>
-              <div><span class="f-k">合計pips</span><span class="f-v text-profit">+138.4</span></div>
+              <div><span class="f-k">プロフィットファクター</span><span class="f-v">1.50</span></div>
+              <div><span class="f-k">合計pips</span><span class="f-v text-profit">+84.2</span></div>
               <div><span class="f-k">現在のストリーク</span><span class="f-v">2連勝</span></div>
             </div>
           </div>
@@ -296,9 +300,9 @@
           <span class="panel-tag">シェア</span>
           <div class="share-card">
             <div class="month mono">2026年7月の成績</div>
-            <div class="big">78%</div>
+            <div class="big">62%</div>
             <div class="sub-figs">
-              <span>PF 7.75</span><span>+138 pips</span><span>9件</span>
+              <span>PF 1.50</span><span>+84 pips</span><span>13件</span>
             </div>
             <div class="watermark-chip">FXトレードログ</div>
             <p class="sample-note">この画面はサンプルです。実際の運用成績ではありません。</p>
@@ -438,7 +442,7 @@
           <li>月次ダッシュボード（勝率・pips・PF）</li>
           <li>成績シェアカード（ウォーターマーク入り）</li>
         </ul>
-        <a class="btn btn-ghost" href="https://apps.apple.com/jp/app/id6786188634">無料で始める</a>
+        <a class="btn btn-ghost" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">無料で始める</a>
       </div>
       <div class="price-card hi">
         <span class="price-badge">おすすめ</span>
@@ -462,7 +466,7 @@
           <li>チャート画像3枚添付・ロット計算機</li>
           <li>ウォーターマーク除去・実績バッジ</li>
         </ul>
-        <a class="btn btn-primary" href="https://apps.apple.com/jp/app/id6786188634">プレミアムを見る</a>
+        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">プレミアムを見る</a>
         <p class="price-fineprint">価格は日本（¥・税込表示）の場合です。国・地域により異なります。年額プランは初回1週間の無料期間中に解約すれば料金は発生しません。トライアル終了時点で自動的に年額プラン（¥5,000）へ移行し課金されます。サブスクリプションは自動更新され、期間終了の24時間前までに設定アプリから解約できます。詳しくは<a href="terms.html">利用規約</a>・<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
       </div>
     </div>
@@ -502,7 +506,7 @@
     <h2>次の記録が、<br>次の判断材料になる。</h2>
     <p>今日の1トレードから、振り返りを始めましょう。</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://apps.apple.com/jp/app/id6786188634">App Storeで無料ダウンロード</a>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">App Storeで無料ダウンロード</a>
     </div>
   </div>
 </section>
@@ -534,6 +538,7 @@
         <h4>サポート・法的情報</h4>
         <ul>
           <li><a href="support.html">お問い合わせ</a></li>
+          <li><a href="#" id="consentReset">アクセス解析の設定</a></li>
           <li><a href="privacy-policy.html">プライバシーポリシー</a></li>
           <li><a href="terms.html">利用規約</a></li>
           <li><a href="tokushoho.html">特定商取引法に基づく表記</a></li>
