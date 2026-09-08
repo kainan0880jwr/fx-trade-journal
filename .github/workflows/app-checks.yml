@@ -7,6 +7,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# GITHUB_TOKEN は読み取りのみ。CI内で動くコード（npx で取得する依存を含む）が
+# リポジトリを書き換えられないようにする。
+permissions:
+  contents: read
+
 jobs:
   typecheck-and-test:
     runs-on: ubuntu-latest

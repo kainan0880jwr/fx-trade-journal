@@ -1,0 +1,25 @@
+version: 2
+updates:
+  # SHA で固定したサードパーティ Action を追随させるために必要。
+  # 固定しただけだと、脆弱性が直った版に上がらなくなる。
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+
+  # アプリ本体の依存。npm audit ワークフローは continue-on-error なので、
+  # 実際に上げる導線はこちらが担う。
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    # Expo SDK は一括で上げる必要があり、Dependabot の個別PRでは壊れる。
+    # SDK のアップグレードは npx expo install --fix で手動で行う。
+    ignore:
+      - dependency-name: "expo"
+      - dependency-name: "expo-*"
+      - dependency-name: "react-native"
+      - dependency-name: "react"
+      - dependency-name: "react-dom"

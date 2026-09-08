@@ -15,6 +15,11 @@ on:
       - "lp-assets/**"
   workflow_dispatch:
 
+# GITHUB_TOKEN は読み取りのみ。CI内で動くコード（npx で取得する依存を含む）が
+# リポジトリを書き換えられないようにする。
+permissions:
+  contents: read
+
 jobs:
   html-validate:
     runs-on: ubuntu-latest
@@ -25,7 +30,7 @@ jobs:
           node-version: 20
       # LPはアプリ本体(package.json)とは依存関係を分離し、npxでその場実行する
       # リポジトリルート直下の全HTML(法的ページ含む)を検証対象にする
-      - run: npx --yes html-validate *.html
+      - run: npx --yes html-validate@11 *.html
 
   lighthouse:
     runs-on: ubuntu-latest
@@ -33,15 +38,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Serve LP locally
-        run: npx --yes http-server . -p 8080 &
+        run: npx --yes http-server@14 . -p 8080 &
       - name: Wait for server
-        run: npx --yes wait-on http://localhost:8080/index.html
+        run: npx --yes wait-on@9 http://localhost:8080/index.html
       # スコアの閾値によるビルド失敗は設定しない(非ブロッキング・計測レポートのみ)。
       # ヒーローのローソク足キャンバスが表示中は継続描画するため、閾値を課すのは時期尚早と判断。
       - name: Run Lighthouse CI (report only)
-        uses: treosh/lighthouse-ci-action@v11
+        # サードパーティのActionはコミットSHAで固定する。可変タグ(@v11)は
+        # 作者がいつでも別のコミットに付け替えられるため。
+        uses: treosh/lighthouse-ci-action@72f881228236981b625ed765b928efb1786a1f55 # v11
         with:
           urls: |
             http://localhost:8080/index.html
           uploadArtifacts: true
-          temporaryPublicStorage: true
+          # temporaryPublicStorage は使わない。レポートがGoogleの一時公開
+          # ストレージに上がり、URLを知れば誰でも読める状態になるため。
+          # 成果物はActionsのアーティファクトから取得する。
