@@ -46,7 +46,7 @@ jobs:
       - name: Run Lighthouse CI (report only)
         # サードパーティのActionはコミットSHAで固定する。可変タグ(@v11)は
         # 作者がいつでも別のコミットに付け替えられるため。
-        uses: treosh/lighthouse-ci-action@72f881228236981b625ed765b928efb1786a1f55 # v11
+        uses: treosh/lighthouse-ci-action@3e7e23fb74242897f95c0ba9cabad3d0227b9b18 # v12.6.2
         with:
           urls: |
             http://localhost:8080/index.html
