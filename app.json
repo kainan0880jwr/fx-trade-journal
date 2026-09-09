@@ -2,7 +2,7 @@
   "expo": {
     "name": "FXトレードログ",
     "slug": "fx-trade-journal",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -62,7 +62,7 @@
       "permissions": [
         "android.permission.RECEIVE_BOOT_COMPLETED",
         "android.permission.VIBRATE",
-          "com.android.vending.BILLING"
+        "com.android.vending.BILLING"
       ]
     },
     "web": {
