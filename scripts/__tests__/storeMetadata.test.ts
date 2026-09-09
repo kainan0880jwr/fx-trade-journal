@@ -23,14 +23,17 @@ const d = existsSync(PATH) ? JSON.parse(readFileSync(PATH, 'utf8')) : null;
 const maybe = d ? describe : describe.skip;
 
 maybe('store.config.json', () => {
-  const info = d.apple.info as Record<string, any>;
+  // `describe.skip` でも**コールバック本体は評価される**（テスト名の収集のため）。
+  // ここで d が null のまま d.apple を読むと、スキップされるはずのCIで
+  // 「suite failed to run」になる。実際にそれで main を落とした。
+  const info = (d?.apple?.info ?? {}) as Record<string, any>;
 
   it('11ロケールぶんある', () => {
     expect(Object.keys(info).sort()).toEqual([...LOCALES].sort());
   });
 
   describe.each(LOCALES)('%s', (loc) => {
-    const v = () => info[loc];
+    const v = () => info[loc];  // 遅延評価。スキップ時は呼ばれない
 
     it('スクリーンショットが「ファイル名の昇順 + 設定画面は最後」に並んでいる', () => {
       for (const [size, arr] of Object.entries(v().screenshots ?? {})) {
