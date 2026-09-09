@@ -129,7 +129,32 @@ p{margin:0;}
 .nav-links a{text-decoration:none; transition:color .15s;}
 .nav-links a:hover{color:var(--ink);}
 .nav-cta{display:flex; align-items:center; gap:var(--space-3);}
-@media (max-width:860px){ .nav-links{display:none;} }
+/* モバイルではナビのリンクを消していたため、機能・セキュリティ・**料金**・FAQ・
+   使い方ガイドへの導線が全部無くなっていた。訪問者の大半がモバイルで、
+   特に「料金」に跳べないのは購入意向の高い層を落とす。
+   2行目に折り返し、横スクロールするチップ列にする（JS不要・HTML変更なし）。 */
+@media (max-width:860px){
+  .nav-row{height:auto; flex-wrap:wrap; row-gap:.45em; padding-top:.55em; padding-bottom:.5em;}
+  .brand{order:1;}
+  .nav-cta{order:2;}
+  .nav-links{
+    order:3; flex-basis:100%; gap:.45em; padding:0 0 2px;
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none; -ms-overflow-style:none;
+  }
+  .nav-links::-webkit-scrollbar{display:none;}
+  .nav-links li{flex:none;}
+  .nav-links a{
+    display:block; padding:.34em .85em; border-radius:999px;
+    background:var(--surface-2); border:1px solid var(--line);
+    color:var(--ink-dim); font-size:.8rem; white-space:nowrap;
+  }
+}
+@media (max-width:420px){
+  /* 極端に狭い端末ではブランド名を隠してマークだけにし、CTAを潰さない */
+  .brand{font-size:0; gap:0;}
+  .brand-mark{width:24px; height:24px;}
+}
 
 /* ============ Ticker ============ */
 .ticker{

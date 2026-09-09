@@ -375,3 +375,53 @@ describe('OGP', () => {
     }
   });
 });
+
+describe('LP の料金表示', () => {
+  it('有料版の呼称が PRO に統一されている', () => {
+    // アプリとストアは PRO に統一したのに、LPだけ Premium のままだった。
+    for (const file of [...LP_FILES, 'fx-trade-journal-guide.html']) {
+      const html = read(file);
+      const hits = ['Premium', 'プレミアム', 'प्रीमियम'].filter((w) => html.includes(w));
+      expect({ file, hits }).toEqual({ file, hits: [] });
+    }
+    for (const file of LP_FILES) {
+      expect({ file, ok: read(file).includes('<div class="price-name">PRO</div>') }).toEqual({ file, ok: true });
+    }
+  });
+
+  it('無料プランの見出しが数字ではなく語になっている', () => {
+    // 以前は ¥0 / 0 € / 0 ¥ とバラバラで、ドイツ語版は同じカード群の中で
+    // € と ¥ が混在していた。
+    for (const file of LP_FILES) {
+      const tag = read(file).match(/<p class="price-tag mono">([^<]*)<\/p>/)![1];
+      expect({ file, hasDigit: /[0-9]/.test(tag), hasSymbol: /[¥$€]/.test(tag) })
+        .toEqual({ file, hasDigit: false, hasSymbol: false });
+    }
+  });
+
+  it('非日本語ページの価格が JPY と明記されている', () => {
+    // ¥ だけだと自国通貨と誤読されうる（有利誤認に近づく）。桁区切りの流儀も
+    // 言語ごとに違っていた（¥5.000 / ¥5 000 / ¥5,000）。
+    for (const file of LP_FILES) {
+      const html = read(file);
+      if (file === 'index.html') continue;
+      const values = [...html.matchAll(/<span class="pp-value mono">([^<]*)/g)].map((m) => m[1]);
+      expect({ file, values }).toEqual({ file, values: ['JPY 500', 'JPY 5,000'] });
+      // 注釈にも ¥ 表記の価格が残っていないこと（モックの損益 ¥3,920 は価格ではないので除く）
+      const fineprint = html.match(/<p class="price-fineprint">[\s\S]*?<\/p>/)![0];
+      expect({ file, yen: /¥[0-9]/.test(fineprint) }).toEqual({ file, yen: false });
+    }
+  });
+});
+
+describe('モバイルの導線', () => {
+  const css = readFileSync(join(ROOT, 'lp-assets', 'style.css'), 'utf8');
+
+  it('狭い画面でナビのリンクを消していない', () => {
+    // 以前は 860px 未満で .nav-links を display:none にしており、機能・
+    // セキュリティ・**料金**・FAQ・使い方ガイドへの導線が全部消えていた。
+    expect(css).not.toMatch(/\.nav-links\{display:none/);
+    // 横スクロールするチップ列にしてある
+    expect(css).toMatch(/\.nav-links\{[^}]*overflow-x:auto/);
+  });
+});
