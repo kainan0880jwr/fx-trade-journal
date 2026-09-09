@@ -490,3 +490,27 @@ describe('デスクトップ向けのQR', () => {
     expect(css).toMatch(/@media \(max-width:720px\)\{ \.cta-qr\{display:none;\} \}/);
   });
 });
+
+describe('参照している資産が実在する', () => {
+  it('HTML から参照している lp-assets の資産がすべて存在する', () => {
+    // favicon・manifestアイコン・スクショ・QR・OGP。1つでも欠けると
+    // 表示が壊れるが、html-validate は存在までは見ない。
+    const missing: string[] = [];
+    for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.html'))) {
+      const html = readFileSync(join(ROOT, file), 'utf8');
+      for (const m of html.matchAll(/(?:src|href|srcset)="((?:\.\/)?lp-assets\/[^"]+)"/g)) {
+        const rel = m[1].replace(/^\.\//, '');
+        if (!existsSync(join(ROOT, rel))) missing.push(`${file}: ${rel}`);
+      }
+    }
+    expect(missing).toEqual([]);
+  });
+
+  it('manifest.json のアイコンが実在する', () => {
+    const manifest = JSON.parse(readFileSync(join(ROOT, 'manifest.json'), 'utf8'));
+    const missing = (manifest.icons ?? [])
+      .map((i: any) => i.src)
+      .filter((src: string) => !existsSync(join(ROOT, src)));
+    expect(missing).toEqual([]);
+  });
+});
