@@ -1,5 +1,6 @@
 {
   "ios": {
+    "CFBundleDisplayName": "FX Journal",
     "NSPhotoLibraryUsageDescription": "Used to attach trade chart images.",
     "NSFaceIDUsageDescription": "Uses Face ID to lock the app and protect your trade records."
   }

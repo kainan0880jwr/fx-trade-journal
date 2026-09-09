@@ -376,7 +376,7 @@ export const en: LangStrings = {
   settings_badges: 'Achievements',
   settings_upgrade: "FX Trade Journal PRO",
   settings_upgrade_sub: "Unlock deeper analysis, goals and badges",
-  settings_premium_active: "Premium active",
+  settings_premium_active: "PRO active",
   settings_badges_sub: 'Earn badges for your trading',
   settings_csv: 'Export CSV',
   settings_csv_sub: 'Export all trade data as CSV',
@@ -520,18 +520,18 @@ export const en: LangStrings = {
   calc_hint_aggressive: '3%+ risk',
   calc_empty: 'Enter values to calculate',
 
-  // Premium / Purchases
-  premium_badge: 'PREMIUM',
-  premium_title: 'FX Trade Log Premium',
+  // PRO / Purchases
+  premium_badge: 'PRO',
+  premium_title: 'FX Trade Journal PRO',
   premium_desc: 'In-depth analytics to review your trades from every angle',
   premium_monthly: 'Monthly',
   premium_yearly: 'Yearly',
   premium_lifetime: 'Lifetime',
   premium_restore: 'Restore Purchases',
   premium_trial: 'Start Free Trial',
-  premium_cta: 'Get Premium',
-  premium_gate_msg: 'This feature is available on the Premium plan',
-  premium_gate_btn: 'View Premium',
+  premium_cta: 'Get PRO',
+  premium_gate_msg: 'This feature is available on the PRO plan',
+  premium_gate_btn: 'View PRO',
 
   // Quick input / Form evolution
   form_mode_quick: 'Quick',
@@ -546,7 +546,7 @@ export const en: LangStrings = {
   form_pl_manual_note: "This pair cannot be converted to JPY automatically. Enter the amount shown in your broker’s trade history and it will be included in monthly, calendar and analysis totals.",
   form_details_expand: 'Add Details',
   form_details_collapse: 'Hide Details',
-  form_premium_section: 'Premium Features',
+  form_premium_section: 'PRO Features',
   form_quick_saved_streak: ' day streak!',
   form_quick_saved_first: 'First trade recorded! Keep it up!',
 
@@ -583,7 +583,7 @@ export const en: LangStrings = {
   share_pl: 'P&L',
   share_streak: 'Streak',
   share_free: 'Free',
-  app_name: 'FX Trade Log',
+  app_name: 'FX Trade Journal',
   notif_daily_streak: "{n}-day streak! Log today's trade to keep it going",
   notif_daily_default: "Time to log today's trade!",
   notif_weekly_title: "📊 Review last week's results",
@@ -628,7 +628,7 @@ export const en: LangStrings = {
   paywall_discount_badge: 'Save {pct}% vs monthly',
 
   // Form (dehard-coded)
-  form_premium_hint: 'Unlock MTF notes, mental tracking & rule checks with Premium',
+  form_premium_hint: 'Unlock MTF notes, mental tracking & rule checks with PRO',
   discard_title: 'Discard changes?',
   discard_message: 'Your unsaved entry will be lost.',
   form_mode_switch_discard_msg: "Switching to Quick entry will discard what you entered in Detailed entry (rates, tags, images, notes). Switch anyway?",
@@ -637,14 +637,14 @@ export const en: LangStrings = {
   image_save_error: 'Image Save Error',
   image_save_error_msg: 'Failed to save image. Trade will be saved without it.',
   purchase_success_title: 'Thank you!',
-  purchase_success_msg: 'Your Premium plan is now active.',
+  purchase_success_msg: 'Your PRO plan is now active.',
   purchase_fail_msg: 'Could not complete purchase. Please try again.',
   purchase_pending_title: 'Pending Approval',
-  purchase_pending_msg: 'Your purchase is awaiting approval. Premium will activate automatically once approved.',
+  purchase_pending_msg: 'Your purchase is awaiting approval. PRO will activate automatically once approved.',
   purchase_no_entitlement_title: 'Purchase Not Confirmed',
-  purchase_no_entitlement_msg: 'Payment completed, but we could not confirm your Premium access. Try "Restore Purchases" or check again shortly.',
+  purchase_no_entitlement_msg: 'Payment completed, but we could not confirm your PRO access. Try "Restore Purchases" or check again shortly.',
   restore_success_title: 'Restored',
-  restore_success_msg: 'Your Premium plan has been restored.',
+  restore_success_msg: 'Your PRO plan has been restored.',
   restore_fail_title: 'Not Found',
   restore_fail_msg: 'No purchase history found.',
   restore_error_title: 'Error',
@@ -684,11 +684,11 @@ export const en: LangStrings = {
   share_watermark_note: '* Free version includes watermark · Removed in PRO',
 
   // Review prompt
-  review_prompt_title: 'Enjoying FX Trade Log?',
+  review_prompt_title: 'Enjoying FX Trade Journal?',
   review_prompt_message: 'If you\'re finding the app helpful, please take a moment to leave a review — it makes a huge difference!',
   review_prompt_yes: 'Write a Review',
   review_prompt_later: 'Maybe Later',
-  share_watermark_label: 'Free · FX Trade Log',
+  share_watermark_label: 'Free · FX Trade Journal',
   share_watermark_cta: 'Upgrade to PRO to remove',
 
   // Backup

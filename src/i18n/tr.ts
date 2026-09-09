@@ -376,7 +376,7 @@ export const tr: LangStrings = {
   settings_badges: 'Başarılar',
   settings_upgrade: "FX Trade Journal PRO",
   settings_upgrade_sub: "Derin analiz, hedefler ve rozetlerin kilidini açın",
-  settings_premium_active: "Premium etkin",
+  settings_premium_active: "PRO etkin",
   settings_badges_sub: 'Trading\'iniz için rozet kazanın',
   settings_csv: 'CSV Dışa Aktar',
   settings_csv_sub: 'Tüm işlem verilerini CSV olarak dışa aktarın',
@@ -520,18 +520,18 @@ export const tr: LangStrings = {
   calc_hint_aggressive: '%3+ risk',
   calc_empty: 'Hesaplamak için değerleri girin',
 
-  // Premium / Purchases
-  premium_badge: 'PREMIUM',
-  premium_title: 'FX Trade Log Premium',
+  // PRO / Purchases
+  premium_badge: 'PRO',
+  premium_title: 'FX Trade Journal PRO',
   premium_desc: 'İşlemlerinizi her açıdan incelemek için derinlemesine analitik',
   premium_monthly: 'Aylık',
   premium_yearly: 'Yıllık',
   premium_lifetime: 'Ömür Boyu',
   premium_restore: 'Satın Alımları Geri Yükle',
   premium_trial: 'Ücretsiz Denemeyi Başlat',
-  premium_cta: 'Premium Al',
-  premium_gate_msg: 'Bu özellik Premium planda kullanılabilir',
-  premium_gate_btn: 'Premium\'u Görüntüle',
+  premium_cta: 'PRO Al',
+  premium_gate_msg: 'Bu özellik PRO planda kullanılabilir',
+  premium_gate_btn: 'PRO\'yu Görüntüle',
 
   // Quick input / Form evolution
   form_mode_quick: 'Hızlı',
@@ -546,7 +546,7 @@ export const tr: LangStrings = {
   form_pl_manual_note: "Bu parite otomatik olarak JPY’ye çevrilemez. Aracı kurum işlem geçmişinizde görünen tutarı girin; aylık, takvim ve analiz toplamlarına dahil edilir.",
   form_details_expand: 'Detay Ekle',
   form_details_collapse: 'Detayı Gizle',
-  form_premium_section: 'Premium Özellikler',
+  form_premium_section: 'PRO Özellikler',
   form_quick_saved_streak: ' gün üst üste!',
   form_quick_saved_first: 'İlk işlem kaydedildi! Böyle devam edin!',
 
@@ -583,7 +583,7 @@ export const tr: LangStrings = {
   share_pl: 'K&Z',
   share_streak: 'Seri',
   share_free: 'Ücretsiz',
-  app_name: 'FX Trade Log',
+  app_name: 'FX Trade Journal',
   notif_daily_streak: "{n} gün üst üste! Bugünkü işleminizi kaydedin",
   notif_daily_default: "Bugünkü işleminizi kaydetme zamanı!",
   notif_weekly_title: "📊 Geçen haftanın sonuçlarını gözden geçirin",
@@ -628,7 +628,7 @@ export const tr: LangStrings = {
   paywall_discount_badge: 'Aylığa göre %{pct} tasarruf',
 
   // Form (dehard-coded)
-  form_premium_hint: 'Premium ile MTF notları, mental takip ve kural kontrollerinin kilidini açın',
+  form_premium_hint: 'PRO ile MTF notları, mental takip ve kural kontrollerinin kilidini açın',
   discard_title: 'Değişiklikler silinsin mi?',
   discard_message: 'Kaydedilmemiş girişiniz kaybolacak.',
   form_mode_switch_discard_msg: "Hızlı girişe geçmek, ayrıntılı girişte yazdıklarınızı (fiyatlar, etiketler, görseller, notlar) silecek. Yine de geçilsin mi?",
@@ -637,14 +637,14 @@ export const tr: LangStrings = {
   image_save_error: 'Görsel Kaydetme Hatası',
   image_save_error_msg: 'Görsel kaydedilemedi. İşlem görsel olmadan kaydedilecek.',
   purchase_success_title: 'Teşekkürler!',
-  purchase_success_msg: 'Premium planınız artık aktif.',
+  purchase_success_msg: 'PRO planınız artık aktif.',
   purchase_fail_msg: 'Satın alma tamamlanamadı. Lütfen tekrar deneyin.',
   purchase_pending_title: 'Onay Bekleniyor',
-  purchase_pending_msg: 'Satın alımınız onay bekliyor. Onaylandıktan sonra Premium otomatik olarak etkinleşecek.',
+  purchase_pending_msg: 'Satın alımınız onay bekliyor. Onaylandıktan sonra PRO otomatik olarak etkinleşecek.',
   purchase_no_entitlement_title: 'Satın Alma Onaylanmadı',
-  purchase_no_entitlement_msg: 'Ödeme tamamlandı ancak Premium erişiminizi doğrulayamadık. "Satın Alımları Geri Yükle"yi deneyin veya kısa süre sonra tekrar kontrol edin.',
+  purchase_no_entitlement_msg: 'Ödeme tamamlandı ancak PRO erişiminizi doğrulayamadık. "Satın Alımları Geri Yükle"yi deneyin veya kısa süre sonra tekrar kontrol edin.',
   restore_success_title: 'Geri Yüklendi',
-  restore_success_msg: 'Premium planınız geri yüklendi.',
+  restore_success_msg: 'PRO planınız geri yüklendi.',
   restore_fail_title: 'Bulunamadı',
   restore_fail_msg: 'Satın alma geçmişi bulunamadı.',
   restore_error_title: 'Hata',
@@ -684,11 +684,11 @@ export const tr: LangStrings = {
   share_watermark_note: '* Ücretsiz sürüm filigran içerir · PRO\'da kaldırılır',
 
   // Review prompt
-  review_prompt_title: "FX Trade Log'u Beğendiniz mi?",
+  review_prompt_title: "FX Trade Journal'u Beğendiniz mi?",
   review_prompt_message: 'Uygulamayı faydalı buluyorsanız, lütfen bir değerlendirme bırakmak için zaman ayırın — büyük fark yaratır!',
   review_prompt_yes: 'Değerlendirme Yaz',
   review_prompt_later: 'Belki Sonra',
-  share_watermark_label: 'Ücretsiz · FX Trade Log',
+  share_watermark_label: 'Ücretsiz · FX Trade Journal',
   share_watermark_cta: "Kaldırmak için PRO'ya yükselt",
 
   // Backup

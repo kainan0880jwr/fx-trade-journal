@@ -376,7 +376,7 @@ export const vi: LangStrings = {
   settings_badges: 'Thành Tích',
   settings_upgrade: "FX Trade Journal PRO",
   settings_upgrade_sub: "Mở khóa phân tích chuyên sâu, mục tiêu và huy hiệu",
-  settings_premium_active: "Đang dùng Premium",
+  settings_premium_active: "Đang dùng PRO",
   settings_badges_sub: 'Nhận huy hiệu cho hoạt động giao dịch của bạn',
   settings_csv: 'Xuất CSV',
   settings_csv_sub: 'Xuất tất cả dữ liệu giao dịch dưới dạng CSV',
@@ -520,18 +520,18 @@ export const vi: LangStrings = {
   calc_hint_aggressive: 'Rủi ro 3%+',
   calc_empty: 'Nhập giá trị để tính',
 
-  // Premium / Purchases
-  premium_badge: 'PREMIUM',
-  premium_title: 'FX Trade Log Premium',
+  // PRO / Purchases
+  premium_badge: 'PRO',
+  premium_title: 'FX Trade Journal PRO',
   premium_desc: 'Phân tích chuyên sâu để xem xét giao dịch của bạn từ mọi góc độ',
   premium_monthly: 'Hàng tháng',
   premium_yearly: 'Hàng năm',
   premium_lifetime: 'Trọn đời',
   premium_restore: 'Khôi Phục Giao Dịch Mua',
   premium_trial: 'Bắt Đầu Dùng Thử Miễn Phí',
-  premium_cta: 'Nâng Cấp Premium',
-  premium_gate_msg: 'Tính năng này có trong gói Premium',
-  premium_gate_btn: 'Xem Premium',
+  premium_cta: 'Nâng Cấp PRO',
+  premium_gate_msg: 'Tính năng này có trong gói PRO',
+  premium_gate_btn: 'Xem PRO',
 
   // Quick input / Form evolution
   form_mode_quick: 'Nhanh',
@@ -546,7 +546,7 @@ export const vi: LangStrings = {
   form_pl_manual_note: "Cặp này không thể tự động quy đổi sang JPY. Hãy nhập số tiền hiển thị trong lịch sử giao dịch của sàn; nó sẽ được tính vào tổng của tháng, lịch và phân tích.",
   form_details_expand: 'Thêm Chi Tiết',
   form_details_collapse: 'Ẩn Chi Tiết',
-  form_premium_section: 'Tính Năng Premium',
+  form_premium_section: 'Tính Năng PRO',
   form_quick_saved_streak: ' ngày liên tiếp!',
   form_quick_saved_first: 'Đã ghi lại giao dịch đầu tiên! Tiếp tục phát huy nhé!',
 
@@ -583,7 +583,7 @@ export const vi: LangStrings = {
   share_pl: 'Lãi/Lỗ',
   share_streak: 'Chuỗi',
   share_free: 'Miễn phí',
-  app_name: 'FX Trade Log',
+  app_name: 'FX Trade Journal',
   notif_daily_streak: "{n} ngày liên tiếp! Hãy ghi lại giao dịch hôm nay",
   notif_daily_default: "Đã đến lúc ghi lại giao dịch hôm nay!",
   notif_weekly_title: "📊 Xem lại kết quả tuần trước",
@@ -628,7 +628,7 @@ export const vi: LangStrings = {
   paywall_discount_badge: 'Tiết kiệm {pct}% so với hàng tháng',
 
   // Form (dehard-coded)
-  form_premium_hint: 'Mở khóa ghi chú MTF, theo dõi tâm lý & kiểm tra quy tắc với Premium',
+  form_premium_hint: 'Mở khóa ghi chú MTF, theo dõi tâm lý & kiểm tra quy tắc với PRO',
   discard_title: 'Bỏ thay đổi?',
   discard_message: 'Mục nhập chưa lưu của bạn sẽ bị mất.',
   form_mode_switch_discard_msg: "Chuyển sang nhập nhanh sẽ bỏ những gì bạn đã nhập ở chế độ chi tiết (giá, thẻ, ảnh, ghi chú). Vẫn chuyển?",
@@ -637,14 +637,14 @@ export const vi: LangStrings = {
   image_save_error: 'Lỗi Lưu Ảnh',
   image_save_error_msg: 'Không thể lưu ảnh. Giao dịch sẽ được lưu mà không có ảnh.',
   purchase_success_title: 'Cảm ơn bạn!',
-  purchase_success_msg: 'Gói Premium của bạn hiện đã kích hoạt.',
+  purchase_success_msg: 'Gói PRO của bạn hiện đã kích hoạt.',
   purchase_fail_msg: 'Không thể hoàn tất giao dịch mua. Vui lòng thử lại.',
   purchase_pending_title: 'Đang Chờ Phê Duyệt',
-  purchase_pending_msg: 'Giao dịch mua của bạn đang chờ phê duyệt. Premium sẽ tự động kích hoạt khi được phê duyệt.',
+  purchase_pending_msg: 'Giao dịch mua của bạn đang chờ phê duyệt. PRO sẽ tự động kích hoạt khi được phê duyệt.',
   purchase_no_entitlement_title: 'Chưa Xác Nhận Giao Dịch Mua',
-  purchase_no_entitlement_msg: 'Thanh toán đã hoàn tất, nhưng chúng tôi không thể xác nhận quyền truy cập Premium của bạn. Hãy thử "Khôi Phục Giao Dịch Mua" hoặc kiểm tra lại sau.',
+  purchase_no_entitlement_msg: 'Thanh toán đã hoàn tất, nhưng chúng tôi không thể xác nhận quyền truy cập PRO của bạn. Hãy thử "Khôi Phục Giao Dịch Mua" hoặc kiểm tra lại sau.',
   restore_success_title: 'Đã Khôi Phục',
-  restore_success_msg: 'Gói Premium của bạn đã được khôi phục.',
+  restore_success_msg: 'Gói PRO của bạn đã được khôi phục.',
   restore_fail_title: 'Không Tìm Thấy',
   restore_fail_msg: 'Không tìm thấy lịch sử mua hàng.',
   restore_error_title: 'Lỗi',
@@ -684,11 +684,11 @@ export const vi: LangStrings = {
   share_watermark_note: '* Phiên bản miễn phí bao gồm watermark · Đã xóa trong PRO',
 
   // Review prompt
-  review_prompt_title: 'Bạn đang thích FX Trade Log?',
+  review_prompt_title: 'Bạn đang thích FX Trade Journal?',
   review_prompt_message: 'Nếu bạn thấy ứng dụng này hữu ích, vui lòng dành chút thời gian để đánh giá — điều đó tạo ra sự khác biệt lớn!',
   review_prompt_yes: 'Viết Đánh Giá',
   review_prompt_later: 'Để Sau',
-  share_watermark_label: 'Miễn phí · FX Trade Log',
+  share_watermark_label: 'Miễn phí · FX Trade Journal',
   share_watermark_cta: 'Nâng cấp lên PRO để xóa',
 
   // Backup

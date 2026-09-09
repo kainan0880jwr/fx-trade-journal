@@ -376,7 +376,7 @@ export const id: LangStrings = {
   settings_badges: 'Pencapaian',
   settings_upgrade: "FX Trade Journal PRO",
   settings_upgrade_sub: "Buka analisis mendalam, target, dan lencana",
-  settings_premium_active: "Premium aktif",
+  settings_premium_active: "PRO aktif",
   settings_badges_sub: 'Dapatkan badge untuk trading Anda',
   settings_csv: 'Ekspor CSV',
   settings_csv_sub: 'Ekspor semua data trade sebagai CSV',
@@ -520,18 +520,18 @@ export const id: LangStrings = {
   calc_hint_aggressive: 'Risiko 3%+',
   calc_empty: 'Masukkan nilai untuk menghitung',
 
-  // Premium / Purchases
-  premium_badge: 'PREMIUM',
-  premium_title: 'FX Trade Log Premium',
+  // PRO / Purchases
+  premium_badge: 'PRO',
+  premium_title: 'FX Trade Journal PRO',
   premium_desc: 'Analitik mendalam untuk meninjau trade Anda dari setiap sudut',
   premium_monthly: 'Bulanan',
   premium_yearly: 'Tahunan',
   premium_lifetime: 'Seumur Hidup',
   premium_restore: 'Pulihkan Pembelian',
   premium_trial: 'Mulai Uji Coba Gratis',
-  premium_cta: 'Dapatkan Premium',
-  premium_gate_msg: 'Fitur ini tersedia pada paket Premium',
-  premium_gate_btn: 'Lihat Premium',
+  premium_cta: 'Dapatkan PRO',
+  premium_gate_msg: 'Fitur ini tersedia pada paket PRO',
+  premium_gate_btn: 'Lihat PRO',
 
   // Quick input / Form evolution
   form_mode_quick: 'Cepat',
@@ -546,7 +546,7 @@ export const id: LangStrings = {
   form_pl_manual_note: "Pasangan ini tidak dapat dikonversi otomatis ke JPY. Masukkan jumlah yang tertera di riwayat broker Anda agar ikut dihitung pada total bulanan, kalender, dan analisis.",
   form_details_expand: 'Tambah Detail',
   form_details_collapse: 'Sembunyikan Detail',
-  form_premium_section: 'Fitur Premium',
+  form_premium_section: 'Fitur PRO',
   form_quick_saved_streak: ' hari berturut-turut!',
   form_quick_saved_first: 'Trade pertama tercatat! Terus semangat!',
 
@@ -583,7 +583,7 @@ export const id: LangStrings = {
   share_pl: 'L&R',
   share_streak: 'Rentetan',
   share_free: 'Gratis',
-  app_name: 'FX Trade Log',
+  app_name: 'FX Trade Journal',
   notif_daily_streak: "{n} hari beruntun! Catat transaksi Anda hari ini",
   notif_daily_default: "Saatnya mencatat transaksi Anda hari ini!",
   notif_weekly_title: "📊 Tinjau hasil minggu lalu",
@@ -628,7 +628,7 @@ export const id: LangStrings = {
   paywall_discount_badge: 'Hemat {pct}% dibanding bulanan',
 
   // Form (dehard-coded)
-  form_premium_hint: 'Buka catatan MTF, pelacakan mental & cek aturan dengan Premium',
+  form_premium_hint: 'Buka catatan MTF, pelacakan mental & cek aturan dengan PRO',
   discard_title: 'Buang perubahan?',
   discard_message: 'Entri yang belum disimpan akan hilang.',
   form_mode_switch_discard_msg: "Beralih ke entri cepat akan menghapus yang Anda isi di entri detail (harga, tag, gambar, catatan). Tetap beralih?",
@@ -637,14 +637,14 @@ export const id: LangStrings = {
   image_save_error: 'Gagal Menyimpan Gambar',
   image_save_error_msg: 'Gagal menyimpan gambar. Trade akan disimpan tanpa gambar.',
   purchase_success_title: 'Terima kasih!',
-  purchase_success_msg: 'Paket Premium Anda sekarang aktif.',
+  purchase_success_msg: 'Paket PRO Anda sekarang aktif.',
   purchase_fail_msg: 'Tidak dapat menyelesaikan pembelian. Silakan coba lagi.',
   purchase_pending_title: 'Menunggu Persetujuan',
-  purchase_pending_msg: 'Pembelian Anda sedang menunggu persetujuan. Premium akan aktif otomatis setelah disetujui.',
+  purchase_pending_msg: 'Pembelian Anda sedang menunggu persetujuan. PRO akan aktif otomatis setelah disetujui.',
   purchase_no_entitlement_title: 'Pembelian Belum Dikonfirmasi',
-  purchase_no_entitlement_msg: 'Pembayaran selesai, tetapi kami tidak dapat mengonfirmasi akses Premium Anda. Coba "Pulihkan Pembelian" atau periksa lagi nanti.',
+  purchase_no_entitlement_msg: 'Pembayaran selesai, tetapi kami tidak dapat mengonfirmasi akses PRO Anda. Coba "Pulihkan Pembelian" atau periksa lagi nanti.',
   restore_success_title: 'Dipulihkan',
-  restore_success_msg: 'Paket Premium Anda telah dipulihkan.',
+  restore_success_msg: 'Paket PRO Anda telah dipulihkan.',
   restore_fail_title: 'Tidak Ditemukan',
   restore_fail_msg: 'Tidak ada riwayat pembelian ditemukan.',
   restore_error_title: 'Error',
@@ -684,11 +684,11 @@ export const id: LangStrings = {
   share_watermark_note: '* Versi gratis menyertakan watermark · Dihapus di PRO',
 
   // Review prompt
-  review_prompt_title: 'Menikmati FX Trade Log?',
+  review_prompt_title: 'Menikmati FX Trade Journal?',
   review_prompt_message: 'Jika aplikasi ini membantu Anda, luangkan waktu sejenak untuk memberikan ulasan — ini sangat berarti!',
   review_prompt_yes: 'Tulis Ulasan',
   review_prompt_later: 'Nanti Saja',
-  share_watermark_label: 'Gratis · FX Trade Log',
+  share_watermark_label: 'Gratis · FX Trade Journal',
   share_watermark_cta: 'Upgrade ke PRO untuk menghapus',
 
   // Backup

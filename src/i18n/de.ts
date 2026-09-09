@@ -376,7 +376,7 @@ export const de: LangStrings = {
   settings_badges: 'Erfolge',
   settings_upgrade: "FX Trade Journal PRO",
   settings_upgrade_sub: "Tiefere Analysen, Ziele und Abzeichen freischalten",
-  settings_premium_active: "Premium aktiv",
+  settings_premium_active: "PRO aktiv",
   settings_badges_sub: 'Verdiene Abzeichen für dein Trading',
   settings_csv: 'CSV exportieren',
   settings_csv_sub: 'Exportiere alle Trade-Daten als CSV',
@@ -520,18 +520,18 @@ export const de: LangStrings = {
   calc_hint_aggressive: '3 %+ Risiko',
   calc_empty: 'Werte zur Berechnung eingeben',
 
-  // Premium / Purchases
-  premium_badge: 'PREMIUM',
-  premium_title: 'FX Trade Log Premium',
+  // PRO / Purchases
+  premium_badge: 'PRO',
+  premium_title: 'FX Trade Journal PRO',
   premium_desc: 'Detaillierte Analysen, um deine Trades aus jedem Blickwinkel zu betrachten',
   premium_monthly: 'Monatlich',
   premium_yearly: 'Jährlich',
   premium_lifetime: 'Lebenslang',
   premium_restore: 'Käufe wiederherstellen',
   premium_trial: 'Kostenlose Testphase starten',
-  premium_cta: 'Premium holen',
-  premium_gate_msg: 'Diese Funktion ist im Premium-Plan verfügbar',
-  premium_gate_btn: 'Premium ansehen',
+  premium_cta: 'PRO holen',
+  premium_gate_msg: 'Diese Funktion ist im PRO-Plan verfügbar',
+  premium_gate_btn: 'PRO ansehen',
 
   // Quick input / Form evolution
   form_mode_quick: 'Schnell',
@@ -546,7 +546,7 @@ export const de: LangStrings = {
   form_pl_manual_note: "Dieses Paar kann nicht automatisch in JPY umgerechnet werden. Gib den Betrag aus deiner Broker-Historie ein, dann fließt er in Monats-, Kalender- und Analysesummen ein.",
   form_details_expand: 'Details hinzufügen',
   form_details_collapse: 'Details ausblenden',
-  form_premium_section: 'Premium-Funktionen',
+  form_premium_section: 'PRO-Funktionen',
   form_quick_saved_streak: ' Tage in Folge!',
   form_quick_saved_first: 'Erster Trade erfasst! Weiter so!',
 
@@ -583,7 +583,7 @@ export const de: LangStrings = {
   share_pl: 'G&V',
   share_streak: 'Serie',
   share_free: 'Kostenlos',
-  app_name: 'FX Trade Log',
+  app_name: 'FX Trade Journal',
   notif_daily_streak: "{n} Tage in Folge! Trage deinen heutigen Trade ein",
   notif_daily_default: "Zeit, deinen heutigen Trade einzutragen!",
   notif_weekly_title: "📊 Ergebnisse der letzten Woche ansehen",
@@ -628,7 +628,7 @@ export const de: LangStrings = {
   paywall_discount_badge: '{pct}% günstiger als monatlich',
 
   // Form (dehard-coded)
-  form_premium_hint: 'Schalte Multi-Timeframe-Notizen, Mental-Tracking & Regelprüfungen mit Premium frei',
+  form_premium_hint: 'Schalte Multi-Timeframe-Notizen, Mental-Tracking & Regelprüfungen mit PRO frei',
   discard_title: 'Änderungen verwerfen?',
   discard_message: 'Dein nicht gespeicherter Eintrag geht verloren.',
   form_mode_switch_discard_msg: "Beim Wechsel zur Schnelleingabe gehen die in der Detaileingabe erfassten Angaben (Kurse, Tags, Bilder, Notizen) verloren. Trotzdem wechseln?",
@@ -637,14 +637,14 @@ export const de: LangStrings = {
   image_save_error: 'Fehler beim Speichern des Bildes',
   image_save_error_msg: 'Bild konnte nicht gespeichert werden. Der Trade wird ohne Bild gespeichert.',
   purchase_success_title: 'Danke!',
-  purchase_success_msg: 'Dein Premium-Plan ist jetzt aktiv.',
+  purchase_success_msg: 'Dein PRO-Plan ist jetzt aktiv.',
   purchase_fail_msg: 'Kauf konnte nicht abgeschlossen werden. Bitte erneut versuchen.',
   purchase_pending_title: 'Genehmigung ausstehend',
-  purchase_pending_msg: 'Dein Kauf wartet auf Genehmigung. Premium wird nach Genehmigung automatisch aktiviert.',
+  purchase_pending_msg: 'Dein Kauf wartet auf Genehmigung. PRO wird nach Genehmigung automatisch aktiviert.',
   purchase_no_entitlement_title: 'Kauf nicht bestätigt',
-  purchase_no_entitlement_msg: 'Zahlung abgeschlossen, aber dein Premium-Zugang konnte nicht bestätigt werden. Versuche „Käufe wiederherstellen" oder prüfe es in Kürze erneut.',
+  purchase_no_entitlement_msg: 'Zahlung abgeschlossen, aber dein PRO-Zugang konnte nicht bestätigt werden. Versuche „Käufe wiederherstellen" oder prüfe es in Kürze erneut.',
   restore_success_title: 'Wiederhergestellt',
-  restore_success_msg: 'Dein Premium-Plan wurde wiederhergestellt.',
+  restore_success_msg: 'Dein PRO-Plan wurde wiederhergestellt.',
   restore_fail_title: 'Nicht gefunden',
   restore_fail_msg: 'Kein Kaufverlauf gefunden.',
   restore_error_title: 'Fehler',
@@ -684,11 +684,11 @@ export const de: LangStrings = {
   share_watermark_note: '* Kostenlose Version enthält Wasserzeichen · Entfällt in PRO',
 
   // Review prompt
-  review_prompt_title: 'Gefällt dir FX Trade Log?',
+  review_prompt_title: 'Gefällt dir FX Trade Journal?',
   review_prompt_message: 'Wenn dir die App hilft, nimm dir bitte einen Moment Zeit für eine Bewertung — das macht einen großen Unterschied!',
   review_prompt_yes: 'Bewertung schreiben',
   review_prompt_later: 'Vielleicht später',
-  share_watermark_label: 'Kostenlos · FX Trade Log',
+  share_watermark_label: 'Kostenlos · FX Trade Journal',
   share_watermark_cta: 'Auf PRO upgraden, um es zu entfernen',
 
   // Backup

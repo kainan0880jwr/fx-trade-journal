@@ -376,7 +376,7 @@ export const hi: LangStrings = {
   settings_badges: 'उपलब्धियां',
   settings_upgrade: "FX Trade Journal PRO",
   settings_upgrade_sub: "गहन विश्लेषण, लक्ष्य और बैज अनलॉक करें",
-  settings_premium_active: "प्रीमियम सक्रिय",
+  settings_premium_active: "PRO सक्रिय",
   settings_badges_sub: 'अपने ट्रेडिंग के लिए बैज कमाएं',
   settings_csv: 'CSV एक्सपोर्ट करें',
   settings_csv_sub: 'सभी ट्रेड डेटा को CSV के रूप में एक्सपोर्ट करें',
@@ -520,18 +520,18 @@ export const hi: LangStrings = {
   calc_hint_aggressive: '3%+ रिस्क',
   calc_empty: 'कैलकुलेट करने के लिए मान दर्ज करें',
 
-  // Premium / Purchases
-  premium_badge: 'PREMIUM',
-  premium_title: 'FX Trade Log प्रीमियम',
+  // PRO / Purchases
+  premium_badge: 'PRO',
+  premium_title: 'FX Trade Journal PRO',
   premium_desc: 'हर कोण से अपने ट्रेड की समीक्षा करने के लिए गहन एनालिटिक्स',
   premium_monthly: 'मासिक',
   premium_yearly: 'वार्षिक',
   premium_lifetime: 'लाइफटाइम',
   premium_restore: 'खरीदारी बहाल करें',
   premium_trial: 'फ्री ट्रायल शुरू करें',
-  premium_cta: 'प्रीमियम लें',
-  premium_gate_msg: 'यह फीचर प्रीमियम प्लान पर उपलब्ध है',
-  premium_gate_btn: 'प्रीमियम देखें',
+  premium_cta: 'PRO लें',
+  premium_gate_msg: 'यह फीचर PRO प्लान पर उपलब्ध है',
+  premium_gate_btn: 'PRO देखें',
 
   // Quick input / Form evolution
   form_mode_quick: 'क्विक',
@@ -546,7 +546,7 @@ export const hi: LangStrings = {
   form_pl_manual_note: "यह जोड़ी स्वतः JPY में नहीं बदली जा सकती। अपने ब्रोकर के ट्रेड इतिहास में दिख रही राशि दर्ज करें, यह मासिक, कैलेंडर और विश्लेषण के योग में शामिल होगी।",
   form_details_expand: 'विवरण जोड़ें',
   form_details_collapse: 'विवरण छुपाएं',
-  form_premium_section: 'प्रीमियम फीचर्स',
+  form_premium_section: 'PRO फीचर्स',
   form_quick_saved_streak: ' दिन की स्ट्रीक!',
   form_quick_saved_first: 'पहला ट्रेड रिकॉर्ड हुआ! ऐसे ही जारी रखें!',
 
@@ -583,7 +583,7 @@ export const hi: LangStrings = {
   share_pl: 'लाभ-हानि',
   share_streak: 'लगातार',
   share_free: 'मुफ़्त',
-  app_name: 'FX Trade Log',
+  app_name: 'FX Trade Journal',
   notif_daily_streak: "{n} दिन लगातार! आज का ट्रेड रिकॉर्ड करें",
   notif_daily_default: "आज का ट्रेड रिकॉर्ड करने का समय है!",
   notif_weekly_title: "📊 पिछले सप्ताह के नतीजों की समीक्षा करें",
@@ -628,7 +628,7 @@ export const hi: LangStrings = {
   paywall_discount_badge: 'मासिक की तुलना में {pct}% बचाएं',
 
   // Form (dehard-coded)
-  form_premium_hint: 'प्रीमियम के साथ MTF नोट्स, मानसिक ट्रैकिंग और नियम जांच अनलॉक करें',
+  form_premium_hint: 'PRO के साथ MTF नोट्स, मानसिक ट्रैकिंग और नियम जांच अनलॉक करें',
   discard_title: 'बदलाव छोड़ें?',
   discard_message: 'आपकी सेव न की गई एंट्री खो जाएगी।',
   form_mode_switch_discard_msg: "क्विक एंट्री पर जाने से विस्तृत एंट्री में भरी गई जानकारी (रेट, टैग, इमेज, नोट्स) सहेजी नहीं जाएगी। फिर भी बदलें?",
@@ -637,14 +637,14 @@ export const hi: LangStrings = {
   image_save_error: 'इमेज सेव त्रुटि',
   image_save_error_msg: 'इमेज सेव करने में विफल। ट्रेड इमेज के बिना सेव होगा।',
   purchase_success_title: 'धन्यवाद!',
-  purchase_success_msg: 'आपका प्रीमियम प्लान अब सक्रिय है।',
+  purchase_success_msg: 'आपका PRO प्लान अब सक्रिय है।',
   purchase_fail_msg: 'खरीदारी पूरी नहीं हो सकी। कृपया फिर से कोशिश करें।',
   purchase_pending_title: 'अनुमोदन लंबित',
-  purchase_pending_msg: 'आपकी खरीदारी अनुमोदन की प्रतीक्षा में है। अनुमोदित होते ही प्रीमियम अपने आप सक्रिय हो जाएगा।',
+  purchase_pending_msg: 'आपकी खरीदारी अनुमोदन की प्रतीक्षा में है। अनुमोदित होते ही PRO अपने आप सक्रिय हो जाएगा।',
   purchase_no_entitlement_title: 'खरीदारी की पुष्टि नहीं हुई',
-  purchase_no_entitlement_msg: 'भुगतान पूरा हुआ, लेकिन हम आपकी प्रीमियम एक्सेस की पुष्टि नहीं कर सके। "खरीदारी बहाल करें" आज़माएं या थोड़ी देर बाद फिर से जांचें।',
+  purchase_no_entitlement_msg: 'भुगतान पूरा हुआ, लेकिन हम आपकी PRO एक्सेस की पुष्टि नहीं कर सके। "खरीदारी बहाल करें" आज़माएं या थोड़ी देर बाद फिर से जांचें।',
   restore_success_title: 'बहाल हुआ',
-  restore_success_msg: 'आपका प्रीमियम प्लान बहाल कर दिया गया है।',
+  restore_success_msg: 'आपका PRO प्लान बहाल कर दिया गया है।',
   restore_fail_title: 'नहीं मिला',
   restore_fail_msg: 'कोई खरीदारी इतिहास नहीं मिला।',
   restore_error_title: 'त्रुटि',
@@ -684,11 +684,11 @@ export const hi: LangStrings = {
   share_watermark_note: '* फ्री वर्शन में वॉटरमार्क शामिल है · PRO में हटा दिया गया',
 
   // Review prompt
-  review_prompt_title: 'FX Trade Log पसंद आ रहा है?',
+  review_prompt_title: 'FX Trade Journal पसंद आ रहा है?',
   review_prompt_message: 'यदि आपको यह ऐप उपयोगी लग रहा है, तो कृपया एक समीक्षा लिखने के लिए समय निकालें — इससे बहुत फर्क पड़ता है!',
   review_prompt_yes: 'समीक्षा लिखें',
   review_prompt_later: 'शायद बाद में',
-  share_watermark_label: 'फ्री · FX Trade Log',
+  share_watermark_label: 'फ्री · FX Trade Journal',
   share_watermark_cta: 'हटाने के लिए PRO में अपग्रेड करें',
 
   // Backup

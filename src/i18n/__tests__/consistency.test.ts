@@ -67,6 +67,50 @@ describe('翻訳ファイルの整合', () => {
     expect(problems).toEqual([]);
   });
 
+  it('ブランド名の旧表記が残っていない', () => {
+    // 2026-09-09 時点で、同一ファイルの中で `FX Trade Journal` / `FX Trade Log` /
+    // `FXトレード日記` が混在していた。オンボーディングで "Welcome to FX Trade Journal"
+    // と名乗った直後にヘッダーが "FX Trade Log" になる、という状態。
+    // ストアのタイトルは全ロケール `FX Trade Journal` なので、そちらに寄せてある。
+    //
+    // 注意: RevenueCat の entitlement id `FXトレード日記 Pro`（purchaseStore.ts）は
+    // 内部IDなので**絶対に変えない**。ここが対象にしているのは表示文字列だけ。
+    const OLD = ['FX Trade Log', 'FXトレード日記'];
+    const problems: string[] = [];
+    for (const lang of LANGS) {
+      const src = readSource(lang);
+      for (const old of OLD) {
+        if (src.includes(old)) problems.push(`${lang}.ts に「${old}」が残っている`);
+      }
+    }
+    expect(problems).toEqual([]);
+  });
+
+  it('アプリ名が全言語で1つに決まっている', () => {
+    const names = Object.fromEntries(LANGS.map((l) => [l, VALUES[l].app_name]));
+    const nonJa = new Set(LANGS.filter((l) => l !== 'ja').map((l) => names[l]));
+    // 日本語だけ `FXトレードログ`（定着済み・ストアタイトルも同じ）、他10言語は英語名で統一。
+    expect({ ja: names.ja, others: [...nonJa] }).toEqual({
+      ja: 'FXトレードログ',
+      others: ['FX Trade Journal'],
+    });
+  });
+
+  it('有料版の呼称が PRO に統一されている', () => {
+    // 設定画面は "FX Trade Journal PRO"、課金画面は "FX Trade Journal Premium" と
+    // 割れていた。ストアの説明文が既に PRO なので、そちらに寄せてある。
+    // 変数名や型名（isPremium / PremiumGate / premium_* のキー名）は対象外 —
+    // ここが見ているのは**ユーザーに見える値**だけ。
+    const OLD = ['Premium', 'プレミアム', 'प्रीमियम'];
+    const problems: string[] = [];
+    for (const lang of LANGS) {
+      for (const [key, v] of Object.entries(VALUES[lang])) {
+        for (const old of OLD) if (v.includes(old)) problems.push(`${lang}/${key}: ${v.slice(0, 40)}`);
+      }
+    }
+    expect(problems).toEqual([]);
+  });
+
   it('日本語以外の言語に日本語が残っていない', () => {
     const jp = /[ぁ-んァ-ヴ一-龥]/;
     const problems: string[] = [];

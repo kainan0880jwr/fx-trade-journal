@@ -376,7 +376,7 @@ export const es: LangStrings = {
   settings_badges: "Logros",
   settings_upgrade: "FX Trade Journal PRO",
   settings_upgrade_sub: "Desbloquea análisis avanzados, metas e insignias",
-  settings_premium_active: "Premium activo",
+  settings_premium_active: "PRO activo",
   settings_badges_sub: "Consigue insignias por tu trading",
   settings_csv: "Exportar CSV",
   settings_csv_sub: "Exporta todos los datos de operaciones como CSV",
@@ -520,18 +520,18 @@ export const es: LangStrings = {
   calc_hint_aggressive: "3 %+ de riesgo",
   calc_empty: "Introduce valores para calcular",
 
-  // Premium / Purchases
-  premium_badge: "PREMIUM",
-  premium_title: "FX Trade Log Premium",
+  // PRO / Purchases
+  premium_badge: "PRO",
+  premium_title: "FX Trade Journal PRO",
   premium_desc: "Análisis en profundidad para revisar tus operaciones desde todos los ángulos",
   premium_monthly: "Mensual",
   premium_yearly: "Anual",
   premium_lifetime: "De por vida",
   premium_restore: "Restaurar compras",
   premium_trial: "Iniciar prueba gratuita",
-  premium_cta: "Obtener Premium",
-  premium_gate_msg: "Esta función está disponible en el plan Premium",
-  premium_gate_btn: "Ver Premium",
+  premium_cta: "Obtener PRO",
+  premium_gate_msg: "Esta función está disponible en el plan PRO",
+  premium_gate_btn: "Ver PRO",
 
   // Quick input / Form evolution
   form_mode_quick: "Rápido",
@@ -546,7 +546,7 @@ export const es: LangStrings = {
   form_pl_manual_note: "Este par no se puede convertir automáticamente a JPY. Introduce el importe que aparece en el historial de tu bróker y se incluirá en los totales mensuales, del calendario y del análisis.",
   form_details_expand: "Añadir detalles",
   form_details_collapse: "Ocultar detalles",
-  form_premium_section: "Funciones Premium",
+  form_premium_section: "Funciones PRO",
   form_quick_saved_streak: " días seguidos!",
   form_quick_saved_first: "¡Primera operación registrada! ¡Sigue así!",
 
@@ -583,7 +583,7 @@ export const es: LangStrings = {
   share_pl: 'P&G',
   share_streak: 'Racha',
   share_free: 'Gratis',
-  app_name: "FX Trade Log",
+  app_name: "FX Trade Journal",
   notif_daily_streak: "¡{n} días seguidos! Registra tu operación de hoy",
   notif_daily_default: "¡Es hora de registrar tu operación de hoy!",
   notif_weekly_title: "📊 Revisa los resultados de la semana pasada",
@@ -628,7 +628,7 @@ export const es: LangStrings = {
   paywall_discount_badge: "Ahorra {pct} % frente al mensual",
 
   // Form (dehard-coded)
-  form_premium_hint: "Desbloquea notas multi-marco temporal, seguimiento mental y verificaciones de reglas con Premium",
+  form_premium_hint: "Desbloquea notas multi-marco temporal, seguimiento mental y verificaciones de reglas con PRO",
   discard_title: "¿Descartar cambios?",
   discard_message: "Se perderá tu entrada no guardada.",
   form_mode_switch_discard_msg: "Cambiar a la entrada rápida descartará lo que introdujiste en la entrada detallada (precios, etiquetas, imágenes, notas). ¿Cambiar igualmente?",
@@ -637,14 +637,14 @@ export const es: LangStrings = {
   image_save_error: "Error al guardar la imagen",
   image_save_error_msg: "No se pudo guardar la imagen. La operación se guardará sin ella.",
   purchase_success_title: "¡Gracias!",
-  purchase_success_msg: "Tu plan Premium ya está activo.",
+  purchase_success_msg: "Tu plan PRO ya está activo.",
   purchase_fail_msg: "No se pudo completar la compra. Inténtalo de nuevo.",
   purchase_pending_title: "Aprobación pendiente",
-  purchase_pending_msg: "Tu compra está pendiente de aprobación. Premium se activará automáticamente una vez aprobada.",
+  purchase_pending_msg: "Tu compra está pendiente de aprobación. PRO se activará automáticamente una vez aprobada.",
   purchase_no_entitlement_title: "Compra no confirmada",
-  purchase_no_entitlement_msg: "Pago completado, pero no pudimos confirmar tu acceso Premium. Prueba «Restaurar compras» o vuelve a comprobarlo en breve.",
+  purchase_no_entitlement_msg: "Pago completado, pero no pudimos confirmar tu acceso PRO. Prueba «Restaurar compras» o vuelve a comprobarlo en breve.",
   restore_success_title: "Restaurado",
-  restore_success_msg: "Tu plan Premium ha sido restaurado.",
+  restore_success_msg: "Tu plan PRO ha sido restaurado.",
   restore_fail_title: "No encontrado",
   restore_fail_msg: "No se encontró historial de compras.",
   restore_error_title: "Error",
@@ -684,11 +684,11 @@ export const es: LangStrings = {
   share_watermark_note: "* La versión gratuita incluye marca de agua · Se elimina en PRO",
 
   // Review prompt
-  review_prompt_title: "¿Disfrutando de FX Trade Log?",
+  review_prompt_title: "¿Disfrutando de FX Trade Journal?",
   review_prompt_message: "Si te resulta útil la aplicación, tómate un momento para dejar una reseña: ¡marca una gran diferencia!",
   review_prompt_yes: "Escribir una reseña",
   review_prompt_later: "Quizás más tarde",
-  share_watermark_label: "Gratis · FX Trade Log",
+  share_watermark_label: "Gratis · FX Trade Journal",
   share_watermark_cta: "Mejora a PRO para eliminarlo",
 
   // Backup
