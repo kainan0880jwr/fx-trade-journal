@@ -263,8 +263,10 @@ section{padding:var(--space-7) 0;}
 .form-field .fl{display:block; font-size:.68rem; color:var(--ink-faint); margin-bottom:.25em;}
 .form-field .fv{font-family:var(--font-mono); font-weight:700; font-size:.95rem;}
 .toggle-pair{display:flex; background:var(--surface-2); border-radius:12px; overflow:hidden; margin-bottom:.7em;}
-.toggle-pair button{flex:1; border:0; background:transparent; padding:.75em; font-weight:700; font-size:.85rem; color:var(--ink-faint); font-family:var(--font-body);}
-.toggle-pair button.on-buy{background:var(--profit-dim); color:var(--profit);}
+/* モック内の BUY/SELL は装飾で、押しても何も起きない。以前は実際の <button> で、
+   キーボード操作のユーザーが無反応のボタンに引っかかっていた。span に変えてある。 */
+.toggle-pair .mock-btn{flex:1; text-align:center; padding:.75em; font-weight:700; font-size:.85rem; color:var(--ink-faint); font-family:var(--font-body);}
+.toggle-pair .mock-btn.on-buy{background:var(--profit-dim); color:var(--profit);}
 .calc-box{background:var(--bg); border:1px dashed var(--line-strong); border-radius:12px; padding:.7em .9em .2em; margin-bottom:.7em;}
 .calc-label{display:block; font-size:.62rem; color:var(--ink-faint); margin-bottom:.5em;}
 .tag-label{display:block; width:100%; font-size:.68rem; color:var(--ink-faint); margin-bottom:.5em;}
@@ -400,9 +402,13 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
 .btn-neutral{background:var(--surface-2); color:var(--ink); border-color:var(--line-strong);}
 .btn-neutral:hover{border-color:var(--accent);}
 
-/* reveal animation */
-.reveal{opacity:0; transform:translateY(18px); transition:opacity .7s var(--ease), transform .7s var(--ease);}
-.reveal.in{opacity:1; transform:translateY(0);}
+/* reveal animation
+   **`.js` が付いているときだけ隠す。** 素の .reveal{opacity:0} にすると、
+   main.js が例外で止まった瞬間にページ本文（問題提起・機能・料金・FAQ・CTA）が
+   丸ごと消える。boot.js が head で `.js` を付けるので、JSが動かない/落ちた
+   環境ではアニメーションが無いだけで内容は全部読める。 */
+.js .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s var(--ease), transform .7s var(--ease);}
+.js .reveal.in{opacity:1; transform:translateY(0);}
 
 @media (prefers-reduced-motion: reduce){
   .ticker-track, .phone, .float-chip{animation:none !important;}
@@ -471,4 +477,12 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
   font-size: 10px;
   text-align: center;
   color: var(--ink-faint);
+}
+
+/* 記事冒頭の固定注記。ブログを追加する場合もこの1つを使い回す。
+   本文と地続きに見えないよう、枠と背景で「注記」であることを示す。 */
+.article-note{
+  border:1px solid var(--line-strong); border-radius:var(--radius-s);
+  background:var(--surface); color:var(--ink-dim);
+  padding:var(--space-3); font-size:.82rem; line-height:1.8; margin:0 0 var(--space-4);
 }

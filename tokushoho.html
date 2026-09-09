@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
+     style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
+     34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
+     'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>特定商取引法に基づく表記 — FXトレードログ</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -24,7 +29,7 @@
     </tr>
     <tr>
       <th>住所・電話番号</th>
-      <td>個人事業主のため、お問い合わせ先メールアドレスへのご請求により、原則2営業日以内に電磁的方法で開示します。</td>
+      <td>個人事業主のため、お問い合わせ先メールアドレスへのご請求をいただいた場合、遅滞なく（通常2営業日以内に）電磁的方法で開示します。</td>
     </tr>
     <tr>
       <th>連絡先</th>
@@ -105,6 +110,6 @@
    </tbody>
   </table>
 
-  <footer>© 2026 FXトレードログ — All rights reserved.</footer>
+  <footer>© 2026 Daiki Ikebata</footer>
 </body>
 </html>

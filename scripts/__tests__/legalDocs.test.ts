@@ -76,3 +76,28 @@ describe('個人情報の混入', () => {
     expect(hits).toEqual([]);
   });
 });
+
+describe('CSP', () => {
+  it('リポジトリ直下の全HTMLに Content-Security-Policy がある', () => {
+    // LP 12枚には元からあったが、法務ページ35枚には1枚も無かった。
+    // 現状は完全静的なので単独では悪用できないが、ビルドを入れる（Astro等）と
+    // 依存1つの汚染でHTMLに任意スクリプトが混入しうる。CSPはそこで効く多層防御。
+    // 法務ページは App Store の審査から参照され、ユーザーが「安全な情報」として読む面でもある。
+    const files = readdirSync(ROOT).filter((f) => f.endsWith('.html'));
+    const missing = files.filter((f) => !readFileSync(join(ROOT, f), 'utf8').includes('Content-Security-Policy'));
+    expect({ total: files.length, missing }).toEqual({ total: files.length, missing: [] });
+  });
+
+  it('CSP がスクリプトを塞いでいる', () => {
+    const files = readdirSync(ROOT).filter((f) => f.endsWith('.html'));
+    const bad: string[] = [];
+    for (const f of files) {
+      const html = readFileSync(join(ROOT, f), 'utf8');
+      const csp = html.match(/Content-Security-Policy" content="([^"]*)"/)![1];
+      // script が許されるのは 'self' と GA のドメインまで。'unsafe-inline'/'unsafe-eval' は不可。
+      if (/unsafe-inline|unsafe-eval/.test(csp.split(';').find((d) => d.includes('script-src')) ?? '')) bad.push(f);
+      if (!/script-src|default-src 'none'/.test(csp)) bad.push(f);
+    }
+    expect(bad).toEqual([]);
+  });
+});

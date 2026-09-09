@@ -113,6 +113,7 @@
 <!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
 <meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
+<script src="lp-assets/boot.js"></script>
 <link rel="stylesheet" href="lp-assets/style.css">
 </head>
 <body>
@@ -156,7 +157,7 @@
   </div>
 </div>
 
-<div class="ticker" aria-hidden="true" title="Örnek döviz çifti gösterimi (gerçek piyasa verisi değildir)">
+<div class="ticker" aria-hidden="true">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
   <p class="ticker-note">Örnek pariteler. Canlı piyasa verisi değildir.</p>
@@ -322,8 +323,8 @@
         <div class="panel form-mock">
           <span class="panel-tag">İşlem kaydet</span>
           <div class="toggle-pair">
-            <button type="button" class="on-buy">▲ BUY</button>
-            <button type="button">▼ SELL</button>
+            <span class="mock-btn on-buy" aria-hidden="true">▲ BUY</span>
+            <span class="mock-btn" aria-hidden="true">▼ SELL</span>
           </div>
           <div class="row">
             <div class="form-field"><span class="fl">Parite</span><span class="fv">USD/JPY</span></div>
@@ -416,7 +417,7 @@
   <div class="wrap">
     <div class="stat-band-grid reveal">
       <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Dil (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
-      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">Cihazdaki verilerin şifrelenmesi</span></div>
+      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">İşlem veritabanı şifrelemesi</span></div>
       <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">İşlem geçmişi içe aktarma desteği</span></div>
       <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Buluta gönderilen işlem kaydı</span></div>
     </div>
@@ -552,7 +553,7 @@
       <span lang="tr" aria-current="page">Türkçe</span>
       <a lang="hi" href="index-hi.html">हिन्दी</a>
       <a lang="vi" href="index-vi.html">Tiếng Việt</a>
-      <a lang="pt" href="index-pt.html">Português</a>
+      <a lang="pt-BR" href="index-pt.html">Português (Brasil)</a>
     </nav>
     <div class="foot-legal">
       MetaTrader, MT4 ve MT5, MetaQuotes Software Corp. şirketinin ticari markalarıdır. Bu uygulamanın MetaQuotes ile bağlantısı yoktur ve onun onayını taşımaz.<br>

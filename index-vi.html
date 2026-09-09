@@ -113,6 +113,7 @@
 <!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
 <meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
+<script src="lp-assets/boot.js"></script>
 <link rel="stylesheet" href="lp-assets/style.css">
 </head>
 <body>
@@ -156,7 +157,7 @@
   </div>
 </div>
 
-<div class="ticker" aria-hidden="true" title="Hình minh họa các cặp tiền tệ (không phải dữ liệu thị trường thực)">
+<div class="ticker" aria-hidden="true">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
   <p class="ticker-note">Cặp tiền tệ minh họa. Không phải dữ liệu thị trường thực.</p>
@@ -322,8 +323,8 @@
         <div class="panel form-mock">
           <span class="panel-tag">Ghi giao dịch</span>
           <div class="toggle-pair">
-            <button type="button" class="on-buy">▲ BUY</button>
-            <button type="button">▼ SELL</button>
+            <span class="mock-btn on-buy" aria-hidden="true">▲ BUY</span>
+            <span class="mock-btn" aria-hidden="true">▼ SELL</span>
           </div>
           <div class="row">
             <div class="form-field"><span class="fl">Cặp tiền</span><span class="fv">USD/JPY</span></div>
@@ -416,7 +417,7 @@
   <div class="wrap">
     <div class="stat-band-grid reveal">
       <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Ngôn ngữ (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
-      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">Mã hóa dữ liệu trên thiết bị</span></div>
+      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">Mã hóa cơ sở dữ liệu giao dịch</span></div>
       <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">Hỗ trợ nhập lịch sử giao dịch</span></div>
       <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Nhật ký giao dịch gửi lên đám mây</span></div>
     </div>
@@ -552,7 +553,7 @@
       <a lang="tr" href="index-tr.html">Türkçe</a>
       <a lang="hi" href="index-hi.html">हिन्दी</a>
       <span lang="vi" aria-current="page">Tiếng Việt</span>
-      <a lang="pt" href="index-pt.html">Português</a>
+      <a lang="pt-BR" href="index-pt.html">Português (Brasil)</a>
     </nav>
     <div class="foot-legal">
       MetaTrader, MT4 và MT5 là thương hiệu của MetaQuotes Software Corp. Ứng dụng này không liên kết với và không được MetaQuotes chứng thực.<br>

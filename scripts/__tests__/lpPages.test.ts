@@ -234,3 +234,112 @@ describe('LP のコントラスト（WCAG AA）', () => {
     expect(css).not.toMatch(/color:\s*#fff\b/i);
   });
 });
+
+describe('LP の JS が落ちても本文が読めること', () => {
+  // コメント内にも `.reveal{opacity:0}` という文字列があるので、規則だけを見る
+  const css = readFileSync(join(ROOT, 'lp-assets', 'style.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  const main = readFileSync(join(ROOT, 'lp-assets', 'main.js'), 'utf8');
+
+  it('.reveal を隠す規則が `.js` 配下にある', () => {
+    // 素の `.reveal{opacity:0}` にすると、main.js が例外で止まった瞬間に
+    // 問題提起・機能・料金・FAQ・最終CTA が丸ごと消え、
+    // App Store への導線も全部無くなる。
+    expect(css).toMatch(/\.js \.reveal\{opacity:0/);
+    // `.js ` が前に付いていない `.reveal{opacity:0` が無いこと
+    expect(css).not.toMatch(/(?<!\.js )\.reveal\{opacity:0/);
+  });
+
+  it('boot.js が全ページでスタイルシートより前に読まれる', () => {
+    for (const file of [...LP_FILES, 'fx-trade-journal-guide.html']) {
+      const html = read(file);
+      const boot = html.indexOf('lp-assets/boot.js');
+      const style = html.indexOf('lp-assets/style.css');
+      expect({ file, ok: boot > 0 && boot < style }).toEqual({ file, ok: true });
+    }
+  });
+
+  it('reveal の登録が、壊れやすい装飾処理より前にある', () => {
+    const reveal = main.indexOf("querySelectorAll('.reveal')");
+    const ticker = main.indexOf('buildTicker()');
+    const candles = main.indexOf('drawCandles(document.getElementById');
+    expect({ reveal: reveal > 0, beforeTicker: reveal < ticker, beforeCandles: reveal < candles })
+      .toEqual({ reveal: true, beforeTicker: true, beforeCandles: true });
+  });
+
+  it('ティッカーとキャンバスの呼び出しが try/catch で囲われている', () => {
+    expect(main).toMatch(/try \{ buildTicker\(\); \} catch/);
+    expect(main).toMatch(/try \{ drawCandles\(document\.getElementById\('heroChart'\)[^)]*\); \} catch/);
+  });
+
+  it('requestAnimationFrame のループが多重起動しない', () => {
+    // 以前は setTimeout(2600) からの再開と IntersectionObserver の再表示が
+    // どちらも rAF を呼んでおり、画面外へスクロールして戻すたびにループが倍増した。
+    expect(main).toMatch(/if\(rafId !== null \|\| timerId !== null\) return;/);
+  });
+
+  it('色トークンを描画ループの中で読み直していない', () => {
+    // getComputedStyle は同期の強制スタイル再計算。以前は 1フレームあたり68回、
+    // キャンバス2枚ぶんを 60fps で呼んでいた。
+    expect(main).toMatch(/if\(!\(name in colorCache\)\)/);
+    const render = main.slice(main.indexOf('function render()'));
+    const body = render.slice(0, render.indexOf('\n    }\n'));
+    expect({ getVarInLoop: (body.match(/getVar\(/g) ?? []).length }).toEqual({ getVarInLoop: 2 });
+  });
+});
+
+describe('LP・記事の細かい約束事', () => {
+  it('モック内に押せない <button> が無い', () => {
+    // BUY/SELL などの装飾は押しても何も起きないのに実 button だったため、
+    // キーボード操作のユーザーが無反応のボタンに引っかかっていた。
+    for (const file of LP_FILES) {
+      const ids = [...read(file).matchAll(/<button[^>]*id="([^"]*)"/g)].map((m) => m[1]);
+      const all = (read(file).match(/<button/g) ?? []).length;
+      // 実ボタンは同意バナーの2つだけ
+      expect({ file, all, ids: ids.sort() }).toEqual({ file, all: 2, ids: ['consentAccept', 'consentDecline'] });
+    }
+  });
+
+  it('著作権表記が権利主体（個人名）で統一されている', () => {
+    for (const file of readdirSync(ROOT).filter((f) => f.endsWith('.html'))) {
+      const hits = [...readFileSync(join(ROOT, file), 'utf8').matchAll(/© 2026[^<\n]*/g)].map((m) => m[0].trim());
+      for (const h of hits) expect({ file, h }).toEqual({ file, h: '© 2026 Daiki Ikebata' });
+    }
+  });
+
+  it('言語切替の pt が pt-BR で hreflang と揃っている', () => {
+    for (const file of LP_FILES) {
+      const html = read(file);
+      expect({ file, ok: /lang="pt-BR"[^>]*>Português \(Brasil\)/.test(html) }).toEqual({ file, ok: true });
+    }
+  });
+});
+
+describe('使い方ガイド（ブログのテンプレートになる記事）', () => {
+  const guide = readFileSync(join(ROOT, 'fx-trade-journal-guide.html'), 'utf8');
+
+  it('効果・成果を断定する表現が無い', () => {
+    // 効果主張と自社アプリのダウンロードCTAが同一ページにある構造は、
+    // 景表法上もっとも指摘されやすい。
+    const banned = ['勝率アップにつながる', '勝率を上げたいなら', '効果が出ますか'];
+    expect(banned.filter((w) => guide.includes(w))).toEqual([]);
+  });
+
+  it('冒頭に固定の注記がある', () => {
+    expect(guide).toContain('class="article-note"');
+    expect(guide).toMatch(/投資助言・売買推奨ではありません/);
+  });
+
+  it('フッターに「過去の成績は将来の成果を保証しない」がある', () => {
+    // LP の FAQ には11言語すべてにあるのに、この記事だけ欠落していた。
+    expect(guide).toMatch(/過去の記録・成績は将来の成果を保証するものではありません/);
+  });
+
+  it('FAQ の JSON-LD と本文の <summary> が一致している', () => {
+    // 同じ質問文を2箇所に書いており、片方だけ直す事故が起きる典型。
+    const blobs = [...guide.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+    const faq = blobs.map((b) => JSON.parse(b)).flat().find((d: any) => d['@type'] === 'FAQPage') as any;
+    const fromLd = faq.mainEntity.map((q: any) => q.name);
+    const fromBody = [...guide.matchAll(/<summary>([^<]*)<\/summary>/g)].map((m) => m[1]);
+    expect(fromBody).toEqual(fromLd);
+  });
+});

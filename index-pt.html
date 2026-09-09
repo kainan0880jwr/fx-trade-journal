@@ -113,6 +113,7 @@
 <!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
 <meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
+<script src="lp-assets/boot.js"></script>
 <link rel="stylesheet" href="lp-assets/style.css">
 </head>
 <body>
@@ -157,7 +158,7 @@
   </div>
 </div>
 
-<div class="ticker" aria-hidden="true" title="Exibição ilustrativa de pares de moedas (não são dados reais de mercado)">
+<div class="ticker" aria-hidden="true">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
   <p class="ticker-note">Pares de moedas ilustrativos. Não são dados reais de mercado.</p>
@@ -323,8 +324,8 @@
         <div class="panel form-mock">
           <span class="panel-tag">Registrar operação</span>
           <div class="toggle-pair">
-            <button type="button" class="on-buy">▲ COMPRA</button>
-            <button type="button">▼ VENDA</button>
+            <span class="mock-btn on-buy" aria-hidden="true">▲ COMPRA</span>
+            <span class="mock-btn" aria-hidden="true">▼ VENDA</span>
           </div>
           <div class="row">
             <div class="form-field"><span class="fl">Par</span><span class="fv">USD/JPY</span></div>
@@ -417,7 +418,7 @@
   <div class="wrap">
     <div class="stat-band-grid reveal">
       <div class="stat-band-item"><span class="num" data-count="11">0</span><span class="lbl">Idiomas (JA/EN/DE/FR/ES/IT/ID/TR/HI/VI/PT)</span></div>
-      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">Criptografia dos dados no dispositivo</span></div>
+      <div class="stat-band-item"><span class="num" data-static="AES-256">0</span><span class="lbl">Criptografia do banco de operações</span></div>
       <div class="stat-band-item"><span class="num" data-static="MT4/MT5">0</span><span class="lbl">Suporte à importação de histórico de operações</span></div>
       <div class="stat-band-item"><span class="num" data-count="0">0</span><span class="lbl">Registros de operações enviados para a nuvem</span></div>
     </div>
@@ -553,7 +554,7 @@
       <a lang="tr" href="index-tr.html">Türkçe</a>
       <a lang="hi" href="index-hi.html">हिन्दी</a>
       <a lang="vi" href="index-vi.html">Tiếng Việt</a>
-      <span lang="pt" aria-current="page">Português</span>
+      <span lang="pt-BR" aria-current="page">Português (Brasil)</span>
     </nav>
     <div class="foot-legal">
       MetaTrader, MT4 e MT5 são marcas da MetaQuotes Software Corp. Este app não é afiliado nem endossado pela MetaQuotes.<br>
