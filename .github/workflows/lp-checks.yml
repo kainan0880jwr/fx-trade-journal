@@ -27,7 +27,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # html-validate@11 は Node ^22.22 / >=24.8 を要求する。
+          # LPの検証はアプリ本体のツールチェーンとは独立なので、ここだけ新しくてよい
+          # （app-checks.yml は Expo に合わせて 20 のまま）。
+          node-version: 22
       # LPはアプリ本体(package.json)とは依存関係を分離し、npxでその場実行する
       # リポジトリルート直下の全HTML(法的ページ含む)を検証対象にする
       - run: npx --yes html-validate@11 *.html
