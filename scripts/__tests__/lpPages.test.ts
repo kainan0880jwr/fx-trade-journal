@@ -306,11 +306,18 @@ describe('LP・記事の細かい約束事', () => {
     }
   });
 
-  it('言語切替の pt が pt-BR で hreflang と揃っている', () => {
+  it('地域を絞る言語タグが hreflang・表示・<html lang> で揃っている', () => {
+    // pt はブラジル、es は中南米が配信対象。素の pt / es だと
+    // 非配信国（ポルトガル・スペイン）まで含んでしまう。
     for (const file of LP_FILES) {
       const html = read(file);
-      expect({ file, ok: /lang="pt-BR"[^>]*>Português \(Brasil\)/.test(html) }).toEqual({ file, ok: true });
+      expect({ file, pt: /lang="pt-BR"[^>]*>Português \(Brasil\)/.test(html) }).toEqual({ file, pt: true });
+      expect({ file, es: /lang="es-419"[^>]*>Español \(LatAm\)/.test(html) }).toEqual({ file, es: true });
+      const tags = [...html.matchAll(/hreflang="([^"]*)"/g)].map((m) => m[1]);
+      expect({ file, bare: tags.filter((t) => t === 'pt' || t === 'es') }).toEqual({ file, bare: [] });
     }
+    expect(read('index-es.html')).toContain('<html lang="es-419"');
+    expect(read('index-pt.html')).toContain('<html lang="pt-BR"');
   });
 });
 

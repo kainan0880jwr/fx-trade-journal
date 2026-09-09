@@ -128,6 +128,12 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   - **gtag.js は head に静的に置かない。** 同意を拒否した人でも取得リクエストが Google に飛び、IP・User-Agent・Referer が渡るため。`consent.js` の `startMeasurement()` が同意後に `<script>` を動的に作る。フッターの「アクセス解析の設定」（`id="consentReset"`）で撤回でき、`_ga` Cookie も失効させる。撤回導線はLPと使い方ガイドにしか無い（法務ページはGAを積んでいない）ので、ポリシー15節からはLPへリンクしている。
   - **LPの色トークンはアプリの `src/theme/colors.ts` と同じ考え方に揃えてある（2026-09-09）。** アクセント塗りの上の前景は `--on-accent`（`color:#fff` を直書きしない。ダークで白は 3.71:1 しか出ない）。ライトの `--profit`/`--loss` は AA を満たすまで濃くした結果、両者の輝度がほぼ同じ（相互比 1.00）になるため、**ローソク足の描画には `--profit-large`/`--loss-large` を使う**（`main.js` の `getVar`）。文字に `*-large` を使わないこと（4.5:1 に届かない）。`lpPages.test.ts` がティント合成込みで固定している。
   - **モックの成績数値は 勝率62% / PF1.50 / +84pips / 13件（8勝5敗）で11言語共通。** 旧値（78% / PF7.75）は現実のFXとして極端で、打消し表示が必要な水準だった。`sample-note` は5箇所（ヒーローの浮きバッジ・スマホ枠・分析・シェアカード・ウィジェット）。浮きバッジは `.hero-visual`（flex）の中で絶対配置されており、注記も `.chip-note` で絶対配置にしないとモックを押しのける。
+  - **git履歴の書き換えを実施した（2026-09-10）。** 自宅住所が**非日本語10言語のプライバシーポリシー**に、氏名+メール+電話が `store.config.json` に残っていた（当初「住所5コミット・電話2コミット」と見積もっていたのは過少）。`git filter-repo --replace-text` を2回に分けて実行し、main と dependabot の8ブランチを force-push した。**素の `git clone` で全2,603ブロブを走査して検出ゼロを確認済み。**
+    - **2回目の置換が要った理由**: 過去の版の `scripts/__tests__/legalDocs.test.ts` が、検出用の正規表現に**住所・郵便番号・電話の形をリテラルで書いていた**（後に分割文字列へ直した経緯そのものが履歴に残っていた）。1回目はHTMLの住所行しか置換していないので取り残した。**PII を消す作業では、消すためのコード自身も対象になりうる。**
+    - 誤検出を1件除外した。ウィジェットの `$widgetBackground.colorset/Contents.json` の色値が携帯番号の正規表現に当たっていた。置換していたら資産が壊れていた。**置換ルールは適用前に、当たるパスを必ず列挙して確認すること。**
+    - HEAD のツリーハッシュ・コミット数200・全コミットメッセージが書き換え前と一致することを確認してから push した。
+    - **残る露出**: GitHub は force-push 後も到達不能オブジェクトを保持し、`/commit/<旧SHA>` で当面参照できる。**GitHub Support への削除依頼が要る**（下書きは `output/github-support-request.md`）。第三者アーカイブのコピーは回収できない。
+    - バックアップは `Desktop/FXlog/fxlog-backup-pre-rewrite-<日時>.git`（書き換え直前のミラー）ほか2つ。**ここには旧履歴がそのまま入っているので、共有・公開しないこと。**
   - **`store.config.json` のスクリーンショット配列はファイル名の昇順＋設定画面を最後に並べる（2026-09-09 是正）。** `metadata:pull` が ASC 側の登録順を書き戻すため順序が崩れており、**de/es/it は検索結果の2枚目がペイウォール、id/pt-BR/vi は2枚目が設定画面**になっていた。**ASC 側も崩れている可能性が高いので、次の push 前に pull して確認すること。**
   - **`store.config.json` の整合は `scripts/__tests__/storeMetadata.test.ts` が見る。** ただし**このファイルは git 追跡外**なので、無い環境（CI）ではスキップされる。**push 前にローカルで `npm test` を通すことが前提。** 検査しているのは、スクショの並び順・キーワード100字と `metatrader` の有無・title/subtitle/description の字数・サブスク節と規約URL（Review Guidelines 3.1.2）・効果を断定する表現・非円ペアの制限の開示・`marketingUrl` の言語一致。
 
