@@ -526,3 +526,13 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
 .cta-qr span{display:block; margin-top:.25em; color:var(--ink-faint); font-size:.78rem; line-height:1.6;}
 @media (max-width:720px){ .cta-qr{display:none;} }
 @media (pointer:coarse){ .cta-qr{display:none;} }
+
+/* ============ 製品スクリーンショット ============ */
+/* LPには <img> の製品画面が1枚も無く、手書きモックだけだった。実物のほうが
+   情報量が多く説得力もある。ホーム画面はヘッダー（アプリ名が出る）を切ってある。
+   幅・高さ属性を必ず持たせているので、読み込み前でも場所が確保されCLSが出ない。 */
+img.shot{
+  display:block; width:100%; height:auto;
+  border-radius:24px; background:var(--bg);
+}
+.panel img.shot{border-radius:var(--radius-s); margin-top:var(--space-2);}

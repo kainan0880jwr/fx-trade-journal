@@ -97,12 +97,38 @@ describe('LP 11言語', () => {
       expect({ file, chipNote: html.includes('sample-note chip-note') }).toEqual({ file, chipNote: true });
     });
 
-    it('モックの成績数値が11言語で同一', () => {
+    it('モックの成績数値が11言語で同一、かつ実スクショと一致する', () => {
       // 現実離れした数値（旧: 勝率78% / PF7.75）を出すと打消し表示が要る。
-      // ウィジェット節と同じ現実的な水準に揃えてある。
-      expect({ file, w: (html.match(/62%/g) ?? []).length, pf: (html.match(/1\.50/g) ?? []).length })
-        .toEqual({ file, w: 5, pf: 5 });
-      expect(html).not.toMatch(/78%|7\.75/);
+      // 実スクショを載せたので、残るモック（浮きバッジ・シェアカード・ウィジェット）は
+      // スクショと同じデモデータに揃える。食い違うとページ内で矛盾する。
+      // ストアのスクリーンショットとも同じ数字になっている。
+      expect({ file, w: (html.match(/59\.1%/g) ?? []).length, pf: (html.match(/2\.09/g) ?? []).length })
+        .toEqual({ file, w: 3, pf: 3 });
+      expect(html).not.toMatch(/78%|7\.75|62%|1\.50/);
+    });
+
+    it('製品スクリーンショットが3枚あり、参照先が実在する', () => {
+      // LPには <img> の製品画面が1枚も無く、手書きモックだけだった。
+      const lang = langOf(file);
+      for (const role of ['home', 'analysis', 'entry']) {
+        const webp = `lp-assets/shots/${role}-${lang}.webp`;
+        const avif = `lp-assets/shots/${role}-${lang}.avif`;
+        expect({ file, role, ref: html.includes(webp) && html.includes(avif) })
+          .toEqual({ file, role, ref: true });
+        for (const p of [webp, avif]) {
+          expect({ p, exists: existsSync(join(ROOT, p)) }).toEqual({ p, exists: true });
+        }
+      }
+      // 幅・高さが無いと読み込み前に場所が確保されず CLS が出る
+      const imgs = [...html.matchAll(/<img class="shot"[^>]*>/g)].map((m) => m[0]);
+      expect({ file, n: imgs.length }).toEqual({ file, n: 3 });
+      for (const img of imgs) {
+        expect({ file, wh: /width="\d+" height="\d+"/.test(img), alt: /alt="[^"]{10,}"/.test(img) })
+          .toEqual({ file, wh: true, alt: true });
+      }
+      // ヒーローだけ eager（LCP要素）、残りは lazy
+      expect((html.match(/loading="eager"/g) ?? []).length).toBe(1);
+      expect((html.match(/loading="lazy"/g) ?? []).length).toBeGreaterThanOrEqual(2);
     });
 
     it('同意バナーの aria-label が翻訳されている', () => {
