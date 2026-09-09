@@ -343,3 +343,35 @@ describe('使い方ガイド（ブログのテンプレートになる記事）'
     expect(fromBody).toEqual(fromLd);
   });
 });
+
+describe('OGP', () => {
+  it('og:image が言語に合ったものを指し、alt がある', () => {
+    // 以前は11言語すべてが同じ1枚を参照しており、その1枚は
+    // 「アプリアイコンを黒地に置いただけ」で、読める文字はアイコン内の
+    // "FX LOG" だけだった。OGPだけがブランド名の4番目の表記を拡散していた。
+    for (const file of [...LP_FILES, 'fx-trade-journal-guide.html']) {
+      const html = read(file);
+      const lang = file === 'index.html' || file === 'fx-trade-journal-guide.html' ? 'ja' : langOf(file);
+      const expected = lang === 'ja' ? 'og-image.png' : 'og-image-en.png';
+      const og = html.match(/property="og:image" content="([^"]*)"/)![1];
+      const tw = html.match(/name="twitter:image" content="([^"]*)"/)![1];
+      expect({ file, og: og.endsWith('/' + expected), tw: tw === og }).toEqual({ file, og: true, tw: true });
+      expect({ file, alt: /property="og:image:alt" content="[^"]{10,}"/.test(html) }).toEqual({ file, alt: true });
+    }
+  });
+
+  it('ブランドマークがアプリアイコンと同じ形（ヒゲ付きローソク足）', () => {
+    // LPのマークはヒゲの無い棒3本で、favicon（アイコン画像）と並ぶと別ブランドに見えた。
+    for (const file of LP_FILES) {
+      const html = read(file);
+      const marks = [...html.matchAll(/<svg class="brand-mark"[\s\S]*?<\/svg>/g)].map((m) => m[0]);
+      expect({ file, n: marks.length }).toEqual({ file, n: 2 });
+      for (const m of marks) {
+        // 本体3本 + ヒゲ3本
+        expect({ file, rects: (m.match(/<rect/g) ?? []).length }).toEqual({ file, rects: 6 });
+        // 図形なので *-large を使う（文字用の --profit/--loss はライトで輝度がほぼ同じ）
+        expect({ file, large: !/var\(--profit\)|var\(--loss\)/.test(m) }).toEqual({ file, large: true });
+      }
+    }
+  });
+});

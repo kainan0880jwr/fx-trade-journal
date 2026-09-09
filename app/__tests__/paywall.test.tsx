@@ -7,6 +7,12 @@ import { t } from '../../src/i18n';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
 import PaywallScreen from '../paywall';
 
+// このファイルだけ RN の実レンダリングを行うため、他スイートと並列で走ると
+// 最初の1本がモジュール読み込みごと 5 秒（jest の既定）を超えることがある。
+// 単独実行では 300ms 程度で終わるので、遅いのは処理ではなく初回の読み込み。
+// **過去にこれで CI が赤いまま push した。** 実装の問題ではないので枠を広げる。
+jest.setTimeout(20000);
+
 jest.mock('expo-router', () => ({
   router: { back: jest.fn() },
   // ペイウォールは流入元(source/feature)をクエリパラメータで受け取り計測に使う。
