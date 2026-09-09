@@ -511,3 +511,18 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
   background:var(--surface); color:var(--ink-dim);
   padding:var(--space-3); font-size:.82rem; line-height:1.8; margin:0 0 var(--space-4);
 }
+
+/* デスクトップ訪問者の出口。LPのCTAは全部 App Store のWebページへのリンクで、
+   デスクトップで踏むと行き止まりだった。検索流入はデスクトップも少なくない。
+   タッチ端末では不要なので、細い画面と粗いポインタでは出さない。 */
+.cta-qr{
+  display:flex; align-items:center; gap:var(--space-3);
+  width:max-content; max-width:100%; margin:var(--space-5) auto 0;
+  padding:var(--space-3); border:1px solid var(--line); border-radius:var(--radius-m);
+  background:var(--surface); text-align:left;
+}
+.cta-qr img{display:block; border-radius:8px; background:#FFFFFF; padding:6px;}
+.cta-qr strong{display:block; font-family:var(--font-display); font-size:.95rem;}
+.cta-qr span{display:block; margin-top:.25em; color:var(--ink-faint); font-size:.78rem; line-height:1.6;}
+@media (max-width:720px){ .cta-qr{display:none;} }
+@media (pointer:coarse){ .cta-qr{display:none;} }

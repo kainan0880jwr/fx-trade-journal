@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
 /**
@@ -423,5 +423,37 @@ describe('モバイルの導線', () => {
     expect(css).not.toMatch(/\.nav-links\{display:none/);
     // 横スクロールするチップ列にしてある
     expect(css).toMatch(/\.nav-links\{[^}]*overflow-x:auto/);
+  });
+});
+
+describe('デスクトップ向けのQR', () => {
+  const css = readFileSync(join(ROOT, 'lp-assets', 'style.css'), 'utf8');
+
+  it('各言語の最終CTAにQRがあり、参照先のファイルが実在する', () => {
+    // LPのCTAは全部 App Store のWebページへのリンクで、デスクトップで踏むと
+    // 行き止まりだった。検索流入はデスクトップも少なくない。
+    for (const file of LP_FILES) {
+      const html = read(file);
+      const lang = langOf(file);
+      const m = html.match(/<img src="lp-assets\/(qr-[a-z]+\.svg)"[^>]*alt="([^"]+)"/);
+      expect({ file, found: m !== null }).toEqual({ file, found: true });
+      expect({ file, src: m![1] }).toEqual({ file, src: `qr-${lang}.svg` });
+      expect({ file, exists: existsSync(join(ROOT, 'lp-assets', m![1])) }).toEqual({ file, exists: true });
+      // 幅・高さが無いと CLS が跳ねる
+      expect({ file, wh: /width="132" height="132"/.test(html) }).toEqual({ file, wh: true });
+    }
+  });
+
+  it('QRのリンク先が言語ごとの ct を持つ（App Analytics で分けて見るため）', () => {
+    for (const file of LP_FILES) {
+      const lang = langOf(file);
+      const svg = readFileSync(join(ROOT, 'lp-assets', `qr-${lang}.svg`), 'utf8');
+      expect({ lang, isSvg: svg.includes('<svg') }).toEqual({ lang, isSvg: true });
+    }
+  });
+
+  it('タッチ端末と狭い画面では出さない', () => {
+    expect(css).toMatch(/@media \(pointer:coarse\)\{ \.cta-qr\{display:none;\} \}/);
+    expect(css).toMatch(/@media \(max-width:720px\)\{ \.cta-qr\{display:none;\} \}/);
   });
 });
