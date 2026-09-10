@@ -193,35 +193,10 @@ p{margin:0;}
   border:1px solid var(--line-strong); box-shadow:var(--shadow-card); padding:.9em;
 }
 @keyframes floatY{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
-.phone-screen{background:var(--bg); border-radius:24px; padding:1.1em .95em; font-family:var(--font-body);}
-.phone-topbar{display:flex; align-items:center; justify-content:space-between; font-size:.72rem; color:var(--ink-faint); margin-bottom:.6em;}
-.phone-title{text-align:center; font-weight:800; font-size:.92rem; margin-bottom:.7em;}
-.phone-month{display:flex; align-items:center; justify-content:center; gap:.5em; font-size:.78rem; color:var(--ink-dim); margin-bottom:.7em;}
-.phone-month b{color:var(--ink); font-size:.92rem;}
-.phone-month em{font-style:normal; background:var(--accent-dim); color:var(--accent); padding:.15em .55em; border-radius:999px; font-size:.7rem;}
-.phone-pills{display:flex; gap:.4em; margin-bottom:.7em; overflow:hidden;}
-.phone-pill{font-size:.68rem; padding:.32em .7em; border-radius:999px; background:var(--surface-2); color:var(--ink-dim); white-space:nowrap;}
-.phone-pill.active{background:var(--accent); color:var(--on-accent);}
 .stat-strip{display:grid; grid-template-columns:repeat(5,1fr); gap:.3em; background:var(--surface-2); border-radius:14px; padding:.7em .2em; margin-bottom:.6em;}
 .stat-strip div{text-align:center;}
 .stat-strip .k{display:block; font-size:.56rem; color:var(--ink-faint); margin-bottom:.2em;}
 .stat-strip .v{font-family:var(--font-mono); font-weight:700; font-size:.76rem;}
-.trade-row{
-  display:flex; align-items:center; justify-content:space-between; gap:.6em;
-  background:var(--surface-2); border-left:3px solid var(--profit); border-radius:12px;
-  padding:.55em .7em; margin-bottom:.4em;
-}
-/* 売買方向で常に色が決まる（buy=緑/sell=赤）。損益の勝敗は別のバッジで示す */
-.trade-row.dir-sell{border-left-color:var(--loss);}
-.trade-row .pair{font-weight:700; font-size:.78rem;}
-.trade-row .side{font-size:.66rem; color:var(--profit);}
-.trade-row.dir-sell .side{color:var(--loss);}
-.trade-row .result-badge{font-size:.6rem; font-weight:700; padding:.15em .5em; border-radius:6px; margin-left:.4em;}
-.trade-row .result-badge.win{background:var(--profit-dim); color:var(--profit);}
-.trade-row .result-badge.lose{background:var(--loss-dim); color:var(--loss);}
-.trade-row .pips{font-family:var(--font-mono); font-weight:700; font-size:.86rem; color:var(--profit); text-align:right;}
-.trade-row .pips.neg{color:var(--loss);}
-.trade-row.loss .pips{color:var(--loss);}
 
 .float-chip{
   position:absolute; z-index:3; background:var(--surface); border:1px solid var(--line-strong);
@@ -281,39 +256,6 @@ section{padding:var(--space-7) 0;}
   background:var(--bg); border:1px solid var(--line); padding:.25em .8em; border-radius:999px;
   font-family:var(--font-mono); font-size:.7rem; color:var(--ink-faint);
 }
-
-/* entry form mock */
-.form-mock .row{display:flex; gap:.6em; margin-bottom:.7em;}
-.form-field{flex:1; background:var(--surface-2); border-radius:12px; padding:.75em .9em;}
-.form-field .fl{display:block; font-size:.68rem; color:var(--ink-faint); margin-bottom:.25em;}
-.form-field .fv{font-family:var(--font-mono); font-weight:700; font-size:.95rem;}
-.toggle-pair{display:flex; background:var(--surface-2); border-radius:12px; overflow:hidden; margin-bottom:.7em;}
-/* モック内の BUY/SELL は装飾で、押しても何も起きない。以前は実際の <button> で、
-   キーボード操作のユーザーが無反応のボタンに引っかかっていた。span に変えてある。 */
-.toggle-pair .mock-btn{flex:1; text-align:center; padding:.75em; font-weight:700; font-size:.85rem; color:var(--ink-faint); font-family:var(--font-body);}
-.toggle-pair .mock-btn.on-buy{background:var(--profit-dim); color:var(--profit);}
-.calc-box{background:var(--bg); border:1px dashed var(--line-strong); border-radius:12px; padding:.7em .9em .2em; margin-bottom:.7em;}
-.calc-label{display:block; font-size:.62rem; color:var(--ink-faint); margin-bottom:.5em;}
-.tag-label{display:block; width:100%; font-size:.68rem; color:var(--ink-faint); margin-bottom:.5em;}
-.tag-row{display:flex; gap:.4em; flex-wrap:wrap; margin-bottom:.9em;}
-.tag-chip{font-size:.72rem; background:var(--surface-2); color:var(--ink-dim); padding:.35em .8em; border-radius:999px;}
-.tag-chip.active{background:var(--accent-dim); color:var(--accent);}
-.save-btn{display:flex; align-items:center; justify-content:center; background:var(--accent); color:var(--on-accent); border-radius:12px; padding:.85em 1em; font-weight:700; font-size:.85rem;}
-
-/* analysis donut mock */
-.analysis-tabs{display:flex; gap:1em; font-size:.78rem; color:var(--ink-faint); margin-bottom:var(--space-4); overflow:hidden;}
-.analysis-tabs b{color:var(--accent); font-weight:700; padding-bottom:.5em; border-bottom:2px solid var(--accent);}
-.donut-row{display:flex; align-items:center; gap:var(--space-5); margin-bottom:var(--space-4);}
-.donut{width:128px; height:128px; flex:none;}
-.donut-figs{display:flex; flex-direction:column; gap:.65em;}
-.donut-figs .f-k{font-size:.7rem; color:var(--ink-faint);}
-.donut-figs .f-v{font-family:var(--font-mono); font-weight:700; font-size:1.15rem;}
-.bw-row{display:flex; gap:.7em;}
-.bw-card{flex:1; border:1px solid var(--profit); border-radius:12px; padding:.8em; text-align:center;}
-.bw-card.worst{border-color:var(--loss);}
-.bw-card .bwk{font-size:.68rem; color:var(--ink-faint); display:block; margin-bottom:.3em;}
-.bw-card .bwv{font-family:var(--font-mono); font-weight:700; color:var(--profit);}
-.bw-card.worst .bwv{color:var(--loss);}
 
 /* share card mock */
 .share-card{background:linear-gradient(160deg, var(--surface-2), var(--surface)); border-radius:20px; padding:var(--space-5); text-align:center; position:relative; overflow:hidden;}
