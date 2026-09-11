@@ -17,9 +17,32 @@ updates:
     open-pull-requests-limit: 5
     # Expo SDK は一括で上げる必要があり、Dependabot の個別PRでは壊れる。
     # SDK のアップグレードは npx expo install --fix で手動で行う。
+    #
+    # **Expo が版を固定している第三者パッケージもここに入れる。** これらは
+    # expo の bundledNativeModules.json でバージョンが決まっており、Dependabot が
+    # 出す「新しい版へ」のPRに従うと SDK との整合が壊れる。2026-09-11 に実際、
+    # datetimepicker 8.4.4→9.2.0 / picker 2.11.1→2.11.4 / @sentry/react-native
+    # 7→8 のPRが出ていたが、いずれも**現在の版こそが Expo の期待値**だった。
+    # 追随が必要かどうかは npx expo install --check が教えてくれる。
     ignore:
       - dependency-name: "expo"
       - dependency-name: "expo-*"
+      - dependency-name: "@expo/*"
       - dependency-name: "react-native"
       - dependency-name: "react"
       - dependency-name: "react-dom"
+      # bundledNativeModules.json で版が決まっているもの
+      - dependency-name: "@react-native-community/datetimepicker"
+      - dependency-name: "@react-native-picker/picker"
+      - dependency-name: "@sentry/react-native"
+      - dependency-name: "react-native-reanimated"
+      - dependency-name: "react-native-safe-area-context"
+      - dependency-name: "react-native-screens"
+      - dependency-name: "react-native-svg"
+      - dependency-name: "react-native-worklets"
+      # jest-expo が jest の版を規定する（jest-expo@54 は jest 29 が前提）
+      - dependency-name: "jest-expo"
+      - dependency-name: "jest"
+      - dependency-name: "@types/jest"
+      # expo install --check が期待版を持っている
+      - dependency-name: "typescript"
