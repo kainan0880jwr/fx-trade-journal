@@ -14,6 +14,16 @@ const KEYS = [
 ];
 
 const profile = process.env.EAS_BUILD_PROFILE;
+
+// スクリーンショット撮影モード(src/utils/screenshotMode.ts)が有効なまま出荷されるのを防ぐ。
+// 実装側は __DEV__ でも守っているので production ビルドでは動かないはずだが、
+// 「本番に混ざらない歯止め」を実装の1箇所だけに頼らない。デモデータの投入は
+// 既存の記録を DELETE するので、万一動くと利用者の記録が消える。
+if (profile === 'production' && process.env.EXPO_PUBLIC_SCREENSHOT_MODE === '1') {
+  console.error('[check-prod-keys] EXPO_PUBLIC_SCREENSHOT_MODE=1 のままです。撮影用デモデータが混入するため中止します。');
+  process.exit(1);
+}
+
 const missing = KEYS.filter((k) => isPlaceholder(process.env[k]));
 
 if (missing.length === 0) {

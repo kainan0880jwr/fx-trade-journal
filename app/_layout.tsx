@@ -10,6 +10,7 @@ import { getSetting } from '../src/db/queries';
 import { syncScheduledNotifications } from '../src/utils/notifications';
 import { recordAppOpen } from '../src/utils/retentionEvents';
 import { syncWidgetData } from '../src/utils/widgetSync';
+import { seedScreenshotData, isScreenshotMode } from '../src/utils/screenshotMode';
 import { useNotificationPrompt } from '../src/hooks/useNotificationPrompt';
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useTheme, useIsDark } from '../src/theme/useTheme';
@@ -69,6 +70,9 @@ function RootLayoutContent() {
     setKeyLost(false);
     try {
       await getDatabase();
+      // App Store 用スクショの撮影モード。__DEV__ かつ EXPO_PUBLIC_SCREENSHOT_MODE=1 の
+      // ときだけデモデータを入れる。それ以外では即 return するので本番に影響しない。
+      await seedScreenshotData();
       await loadAll();
       syncScheduledNotifications(); // OS側の通知予約が消えていた場合に備えて再同期（結果は待たない）
       recordAppOpen(); // リテンション自前計測（D1/D7）、結果は待たない
@@ -109,7 +113,10 @@ function RootLayoutContent() {
 
   useEffect(() => {
     initDb();
-    initializePurchases();
+    // 撮影モードでは RevenueCat を初期化しない。初期化が終わると isPremium が
+    // サーバ側の実状態（＝未購入）で上書きされ、seedScreenshotData() が立てた
+    // PRO 状態が消えて、設定画面と課金画面が未購入のまま写ってしまう。
+    if (!isScreenshotMode()) initializePurchases();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
