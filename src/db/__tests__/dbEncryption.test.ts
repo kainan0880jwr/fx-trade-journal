@@ -28,7 +28,7 @@ jest.mock('expo-crypto', () => ({
 }));
 
 import * as SecureStore from 'expo-secure-store';
-import { getEncryptionKey, getOrCreateEncryptionKey, ensureKeyIsBackupable, deleteEncryptionKey, KeychainUnavailableError } from '../dbEncryption';
+import { getEncryptionKey, getOrCreateEncryptionKey, ensureKeyIsBackupable, deleteEncryptionKey, KeychainUnavailableError, inspectKeySlots, getKeyBackupCopyState } from '../dbEncryption';
 
 const CURRENT = 'fx_db_encryption_key_v2';
 const LEGACY = 'fx_db_encryption_key';
@@ -130,5 +130,64 @@ describe('鍵の形式', () => {
     // 引用符・改行・バックスラッシュが混ざらないこと。database.ts の
     // assertKeyFormat がこの形式を前提に文字列結合の安全性を担保している。
     expect(key).toMatch(/^[0-9a-f]{64}$/);
+  });
+});
+
+/**
+ * Sentry へ載せる診断のためのテスト。
+ *
+ * ここが返す値だけが、`db:unopenable_encrypted_db` を見たときに
+ * 「対策前のバックアップからの復元」と「対策が効いていない」を分ける材料になる。
+ * 黙って壊れると、また件数だけ眺める状態に戻る。
+ */
+describe('診断用の状態', () => {
+  const restoreGetItem = () =>
+    (SecureStore.getItemAsync as jest.Mock).mockImplementation(
+      async (k: string) => store.get(k)?.value ?? null
+    );
+  afterEach(restoreGetItem);
+
+  it('スロットの有無を、鍵の値を返さずに報告する', async () => {
+    store.set(LEGACY, { value: 'abc', accessible: 'WHEN_UNLOCKED_THIS_DEVICE_ONLY' });
+    const slots = await inspectKeySlots();
+    expect(slots).toEqual({ current: 'absent', legacy: 'present' });
+    // 鍵そのものが混ざっていないこと。混ざれば Sentry 側で暗号化DBが開けてしまう。
+    expect(JSON.stringify(slots)).not.toContain('abc');
+  });
+
+  it('読めなかったスロットは「無い」ではなく unreadable として区別する', async () => {
+    (SecureStore.getItemAsync as jest.Mock).mockImplementation(async (k: string) => {
+      if (k === CURRENT) throw new Error('errSecInteractionNotAllowed');
+      return store.get(k)?.value ?? null;
+    });
+    await expect(inspectKeySlots()).resolves.toEqual({ current: 'unreadable', legacy: 'absent' });
+  });
+
+  it('調べること自体は決して throw しない（本来の失敗をすり替えない）', async () => {
+    (SecureStore.getItemAsync as jest.Mock).mockImplementation(async () => {
+      throw new Error('boom');
+    });
+    await expect(inspectKeySlots()).resolves.toEqual({ current: 'unreadable', legacy: 'unreadable' });
+  });
+
+  it('旧スロットからの複製が走ったことを copied として残す（＝旧端末は対策前の版）', async () => {
+    store.set(LEGACY, { value: 'abc', accessible: 'WHEN_UNLOCKED_THIS_DEVICE_ONLY' });
+    await ensureKeyIsBackupable('abc');
+    expect(getKeyBackupCopyState()).toBe('copied');
+  });
+
+  it('現行スロットに既にある鍵なら already_current（＝対策後の版で作られた鍵）', async () => {
+    store.set(CURRENT, { value: 'abc', accessible: 'WHEN_UNLOCKED' });
+    await ensureKeyIsBackupable('abc');
+    expect(getKeyBackupCopyState()).toBe('already_current');
+  });
+
+  it('複製に失敗しても例外はそのまま呼び出し側へ伝える（挙動を変えない）', async () => {
+    (SecureStore.setItemAsync as jest.Mock).mockImplementationOnce(async () => {
+      throw new Error('errSecInteractionNotAllowed');
+    });
+    store.set(LEGACY, { value: 'abc' });
+    await expect(ensureKeyIsBackupable('abc')).rejects.toThrow();
+    expect(getKeyBackupCopyState()).toBe('failed');
   });
 });
