@@ -44,6 +44,28 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   2. iOS's Local Network Privacy: without `NSLocalNetworkUsageDescription` (+ `NSBonjourServices: ["_expo._tcp"]`) in `ios.infoPlist`, iOS never shows a permission prompt and just silently blocks the dev client's connection to Metro — check **Settings → Privacy & Security → Local Network** in the Simulator; if the app isn't even listed there, this is the cause.
   - Fix for a local debugging session: add the two Info.plist keys above to `app.json`, then `npx expo prebuild --clean && npx expo run:ios` (Info.plist changes need a native rebuild, not just a Metro restart). **Info.plist の2キーは commit 前に必ず戻すこと** — Local Network の許可は本番では用途が無く、ユーザーに説明のつかないプライバシー確認を出してしまう。（コード署名の削除は恒久的な変更なので、こちらは戻さない。）
 
+- **Xcode 27 ではローカルの iOS ビルドと撮影の手順がまるごと変わる（2026-09-16 に確立）。** 9/11 までは `npx expo run:ios` 一発で済んでいたが、Xcode が 27.0 に上がって動かなくなった。**EAS のビルドは Xcode の版が固定されているので影響を受けない — 困るのはローカルだけ。** 以下は全部その日に実際に踏んで解決した順。
+  - **`expo run:ios` は使えない。Xcode 27 が Simulator.app を廃止し、DeviceHub.app に置き換えた。** 開発者向けアプリの置き場所も `Contents/Developer/Applications/` から `Contents/Applications/` へ移っている。Expo / React Native / Flutter が軒並み古いパスを直に見ているため同じ症状が出る（expo/eas-cli#4403 ほか）。**Xcode の再インストールでは直らない。ツール側の対応待ち。** 代わりに `xcodebuild` + `simctl` で組む:
+
+    ```bash
+    UDID=$(xcrun simctl list devices available | grep "iPad Pro 13-inch (M5)" | grep -oE '[0-9A-F-]{36}')
+    xcrun simctl boot "$UDID"                      # GUI 無しで起動できる
+    xcodebuild -workspace ios/FX.xcworkspace -scheme FX -configuration Debug \
+      -sdk iphonesimulator -destination "id=$UDID" -derivedDataPath /tmp/fxdd build
+    xcrun simctl install "$UDID" /tmp/fxdd/Build/Products/Debug-iphonesimulator/FX.app
+    xcrun simctl launch "$UDID" com.fxtradejournal.ios --args --initialUrl http://localhost:8081
+    ```
+
+  - **DerivedData を iCloud 同期下に置くと codesign が必ず失敗する。** このリポジトリは `~/Desktop` にあり、Desktop は iCloud Drive の同期対象。ファイルプロバイダがビルド成果物に `com.apple.FinderInfo` を付け、`codesign` が **`resource fork, Finder information, or similar detritus not allowed`** で拒否する（FXWidget.appex で出る）。`xattr -cr` で消しても同期のたびに付き直すので無意味。**`-derivedDataPath` は必ず `/tmp` など同期対象外を指すこと。** `expo run:ios` が既定で `~/Library/Developer/Xcode/DerivedData` を使っていたおかげで、これまで表面化していなかっただけ。
+  - **Pods の `IPHONEOS_DEPLOYMENT_TARGET` を 15.1 へ上げる必要がある。** Sentry(11.0) / ReachabilitySwift(12.0) / RNSVG-RNSVGFilters(12.4) / RevenueCat・PurchasesHybridCommon(13.0) が古く、**Xcode 27 は 15.0 未満を拒否する**。`sed -i '' -E 's/IPHONEOS_DEPLOYMENT_TARGET = (11\.0|12\.0|12\.4|13\.0|14\.0);/IPHONEOS_DEPLOYMENT_TARGET = 15.1;/g' ios/Pods/Pods.xcodeproj/project.pbxproj`。**`xcodebuild` の引数で全体に掛けてはいけない** — ウィジェットは iOS 17 の API（`Gauge` / `containerBackground`）を使っているので、そちらまで 15.1 に落ちてコンパイルできなくなる。Pods のプロジェクトだけを対象にすること。
+  - **`CODE_SIGNING_ALLOWED=NO` を付けてはいけない。** 署名が linker-signed になって**エンタイトルメントが空**になり、expo-secure-store が keychain を読めず `getValueWithKeyAsync has failed` で**DBの初期化が落ちる**（アプリが起動しない）。シミュレータ向けの既定（`Sign to Run Locally`）のままにすれば ad-hoc 署名とエンタイトルメントが付く。
+  - **dev client は `--initialUrl` で Metro に直結させる。** これを渡さないと dev launcher の一覧で止まり、そこから先へ進む手段が無い（下記のとおりタップできない）。`EXDevLauncherController.initialUrlFromProcessInfo` が読む起動引数。
+- **`simctl openurl` は iOS 26 以降このプロジェクトでは使えない（2026-09-16）。アプリが既に前面にあっても毎回「"アプリ名" で開きますか?」の確認ダイアログが出る。** 抑止する設定は存在せず、定石は「自動で押す」だが、**Xcode 27 には押す相手が無い**（Simulator.app は廃止、DeviceHub は CLI からデバイスのウィンドウを開けず `count windows` が 0、`simctl` にタップは無い）。**ディープリンクでの画面遷移は原理的に成立しない。**
+  - 代わりに **`src/utils/screenshotMode.ts` の `useScreenshotNavigator()`** がアプリのコンテナに置かれたファイル（`Documents/screenshot-goto.txt`）を 0.4 秒ごとに読んで自分で `router.replace()` する。ホストからは `xcrun simctl get_app_container <udid> <bundle> data` で取れる場所なので、普通のファイル書き込みで指示できる。**遷移したら同じ合図を `screenshot-here.txt` に書き戻すので、`scripts/capture-screenshots.sh` は時間ではなく到着を待ってから撮る** — 初回は JS バンドルの読み込みに20秒以上かかり、時間で待つ方式では前の画面が写る。
+  - この経路は `isScreenshotMode()`（`__DEV__` かつ `EXPO_PUBLIC_SCREENSHOT_MODE=1`）の内側にあり、**本番ビルドではポーリングすら始まらない。**
+- **iPad のスクリーンショットは iPad Pro 13-inch (M5) シミュレータで撮る。** ネイティブ解像度が **2064x2752** で、ASC の `APP_IPAD_PRO_3GEN_129` と完全に一致するため `scripts/prepare-screenshots.sh` による整形が要らない。2026-09-16 に全11ロケール×8枚を撮り直した（所要 約12分）。**それ以前は日本語ロケールにだけ 2026-09-02 撮影の6枚があり、他10ロケールは0枚**だったので、iPad ユーザーには全地域で古い日本語の画面が出ていた（ASC は主言語にフォールバックする）。
+  - ファイル名は `NN_name_v2.png`。**同名で中身だけ差し替えても `metadata:push` は何も送らない**ため、撮り直すたびに世代を上げること。iPhone 側が `_v3` なのと数字が揃わないが、サイズごとに独立した系列なので問題ない。
+
 ## Architecture
 
 **FX Trade Journal** — an Expo/React Native app (expo-router, TypeScript strict mode) for logging and reviewing forex trades. `app/` holds file-based routes; `src/` holds the actual logic.

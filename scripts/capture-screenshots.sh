@@ -25,7 +25,10 @@ shift 2
 LOCALES=("$@")
 
 BUNDLE_ID="com.fxtradejournal.ios"
-SCHEME="fx-trade-journal"
+SCHEME="fx-trade-journal"   # 参考。遷移には使わない（下の理由でディープリンクが使えない）
+# 撮影モードは __DEV__ が前提なので、JS は必ず Metro から来る。
+DEV_SERVER="${SCREENSHOT_DEV_SERVER:-http://localhost:8081}"
+SEQ=0
 
 # 以降は UDID で扱う。言語設定でデバイスの plist を直接触るため名前では足りない。
 if [[ "$SIM" =~ ^[0-9A-Fa-f-]{36}$ ]]; then
@@ -108,9 +111,14 @@ capture_one_locale() {
   fi
 
   # 端末の見た目を揃える。時計は 9:41、電波・電池は満杯、キャリア名は消す。
+  # iPad の Wi-Fi モデルにはセルラーが無く、そこだけ失敗しうる。set -e で全体を
+  # 落とさないよう握り潰す（見た目が少し揃わないだけで、撮影自体は続けられる）。
   xcrun simctl status_bar "$UDID" override \
     --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 \
-    --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
+    --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100 \
+    2>/dev/null || xcrun simctl status_bar "$UDID" override \
+    --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 \
+    --batteryState charged --batteryLevel 100 2>/dev/null || true
 
   # expo-dev-client は初回起動時に「developer menu」の説明ダイアログを全画面に出す。
   # タップして閉じる手段が無い（System Events は補助アクセス権限が無く -25211 で失敗する）ので、
@@ -119,12 +127,39 @@ capture_one_locale() {
 
   # アプリを入れ直さずに再起動する（デモデータは起動のたびに作り直される）
   xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
-  xcrun simctl launch "$UDID" "$BUNDLE_ID" >/dev/null
-  sleep 6   # DBを開いて22件を入れ終わるまで待つ
+  # --initialUrl は dev client を Metro に直結させる。これが無いと dev launcher の
+  # 一覧が出たままになり、そこから先へ進む手段が無い（下記のとおりタップできない）。
+  xcrun simctl launch "$UDID" "$BUNDLE_ID" --args --initialUrl "$DEV_SERVER" >/dev/null
+
+  # アプリのコンテナは再インストールで変わるので、起動のたびに取り直す。
+  local docs
+  docs="$(xcrun simctl get_app_container "$UDID" "$BUNDLE_ID" data)/Documents"
+  mkdir -p "$docs"
+  rm -f "$docs/screenshot-here.txt"
 
   for row in "${ROUTES[@]}"; do
     IFS=: read -r name path <<<"$row"
-    xcrun simctl openurl "$UDID" "$SCHEME://$path"
+    SEQ=$((SEQ + 1))
+    local token="${SEQ}:${path}"
+
+    # 行き先をファイルで渡す。**`simctl openurl` は使えない** — Xcode 27 / iOS 26 は
+    # アプリが前面にあっても毎回「"アプリ名" で開きますか?」の確認を出し、Xcode 27 が
+    # Simulator.app を廃止した（置き換えの DeviceHub はCLIからウィンドウを開けない）ため
+    # 押す手段が無い。アプリ側の useScreenshotNavigator() がこのファイルを見て遷移する。
+    echo -n "$token" > "$docs/screenshot-goto.txt"
+
+    # 遷移したという書き戻しを待つ。時間だけで待つと、初回はJSバンドルの読み込みで
+    # 間に合わず前の画面が写る。
+    local waited=0
+    while [ "$(cat "$docs/screenshot-here.txt" 2>/dev/null)" != "$token" ]; do
+      sleep 1
+      waited=$((waited + 1))
+      if [ "$waited" -ge 60 ]; then
+        echo "    !! $name: アプリが応答しない（Metro は動いているか）"
+        break
+      fi
+    done
+
     # CountUp のアニメーションが終わるのを待つ。ここを詰めすぎると
     # pips が「-」のまま写る（id/tr/hi/vi/pt-BR の既存素材が実際にそうなっている）。
     sleep 4

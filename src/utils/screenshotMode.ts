@@ -32,6 +32,9 @@
  * `i18n/__tests__/consistency.test.ts` の管理下にも入らない中途半端な翻訳が増えるため。
  * タグ・自己評価・ルールチェックで情報量を出している。
  */
+import { useEffect } from 'react';
+import { router } from 'expo-router';
+import { documentDirectory, readAsStringAsync, writeAsStringAsync } from 'expo-file-system/legacy';
 import { getDatabase } from '../db/database';
 import {
   insertTrade, setSetting, saveTradeRules, saveEntryTags,
@@ -177,4 +180,67 @@ export async function seedScreenshotData(): Promise<void> {
   // 課金画面と設定画面を PRO の状態で撮るため。RevenueCat のキーは開発ビルドでは
   // プレースホルダのままで initialize() が何もしないので、ここで直接立てる。
   usePurchaseStore.setState({ isPremium: true, isInitialized: true });
+}
+
+
+/**
+ * 撮影スクリプトから画面遷移を受け取る口。
+ *
+ * **なぜディープリンクではなくファイルなのか。** Xcode 27 / iOS 26 では
+ * `xcrun simctl openurl` が**毎回**「"アプリ名" で開きますか?」の確認ダイアログを出す
+ * （アプリが既に前面にあっても出る）。押さない限り URL は配送されない。しかも
+ * **Xcode 27 は Simulator.app を廃止して DeviceHub に置き換えており、DeviceHub は
+ * コマンドラインからデバイスのウィンドウを開けない**ため、そのダイアログを押す手段が
+ * 無い（`simctl` にタップは無い）。つまりディープリンクでの巡回は、この環境では
+ * 原理的に成立しない。2026-09-16 に一通り試して確認した。
+ *
+ * 代わりに、ホスト側はアプリのコンテナへ行き先を書き、アプリがそれを読んで自分で遷移する。
+ * コンテナのパスは `xcrun simctl get_app_container <udid> <bundle> data` で取れるので、
+ * ホストからは普通のファイル書き込みで済む。通信も権限もタップも要らない。
+ *
+ * 往復を確認できるよう、遷移したら同じ合図を HERE_FILE に書き戻す。スクリプトは
+ * それが一致するまで待ってから撮る（時間で待つとアニメーション途中で写る）。
+ */
+const GOTO_FILE = 'screenshot-goto.txt';
+const HERE_FILE = 'screenshot-here.txt';
+
+/** ファイルの中身（`<連番>:<ルート>`）を解釈する。連番は同じ画面を撮り直せるようにするため。 */
+function parseGoto(raw: string): { token: string; route: string } | null {
+  const text = raw.trim();
+  if (!text) return null;
+  const sep = text.indexOf(':');
+  if (sep < 0) return null;
+  return { token: text, route: text.slice(sep + 1) };
+}
+
+export function useScreenshotNavigator(): void {
+  useEffect(() => {
+    // 撮影モード以外では何もしない。isScreenshotMode() は __DEV__ も見ているので、
+    // 本番ビルドではこのポーリング自体が始まらない。
+    if (!isScreenshotMode()) return;
+
+    let stopped = false;
+    let lastToken = '';
+
+    const tick = async () => {
+      if (stopped || !documentDirectory) return;
+      try {
+        const raw = await readAsStringAsync(documentDirectory + GOTO_FILE);
+        const goto = parseGoto(raw);
+        if (!goto || goto.token === lastToken) return;
+        lastToken = goto.token;
+        // 空文字はホーム。expo-router の (tabs) はグループなので URL には出ない。
+        router.replace(('/' + goto.route) as never);
+        await writeAsStringAsync(documentDirectory + HERE_FILE, goto.token);
+      } catch {
+        // まだファイルが無いだけ。撮影スクリプトが最初の1件を書くまでは毎回ここに来る。
+      }
+    };
+
+    const id = setInterval(tick, 400);
+    return () => {
+      stopped = true;
+      clearInterval(id);
+    };
+  }, []);
 }

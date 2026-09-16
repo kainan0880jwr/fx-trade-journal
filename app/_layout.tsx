@@ -10,7 +10,7 @@ import { getSetting } from '../src/db/queries';
 import { syncScheduledNotifications } from '../src/utils/notifications';
 import { recordAppOpen } from '../src/utils/retentionEvents';
 import { syncWidgetData } from '../src/utils/widgetSync';
-import { seedScreenshotData, isScreenshotMode } from '../src/utils/screenshotMode';
+import { seedScreenshotData, isScreenshotMode, useScreenshotNavigator } from '../src/utils/screenshotMode';
 import { useNotificationPrompt } from '../src/hooks/useNotificationPrompt';
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useTheme, useIsDark } from '../src/theme/useTheme';
@@ -110,6 +110,10 @@ function RootLayoutContent() {
       setDbReady(true);
     }
   };
+
+  // App Store 用スクショの撮影スクリプトからの画面遷移を受け付ける。
+  // 撮影モード（__DEV__ かつ EXPO_PUBLIC_SCREENSHOT_MODE=1）以外では即 return する。
+  useScreenshotNavigator();
 
   useEffect(() => {
     initDb();
