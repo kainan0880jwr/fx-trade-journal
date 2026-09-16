@@ -1,9 +1,10 @@
 import * as Sentry from '@sentry/react-native';
 import * as SQLite from 'expo-sqlite';
-import { documentDirectory, deleteAsync, moveAsync, readDirectoryAsync } from 'expo-file-system/legacy';
+import { documentDirectory, deleteAsync, moveAsync, readDirectoryAsync, getInfoAsync } from 'expo-file-system/legacy';
 import * as SecureStore from 'expo-secure-store';
 import { tArr } from '../i18n';
-import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey, ensureKeyIsBackupable, getLegacyEncryptionKey } from './dbEncryption';
+import { getOrCreateEncryptionKey, getEncryptionKey, deleteEncryptionKey, ensureKeyIsBackupable, getLegacyEncryptionKey,
+  inspectKeySlots, getKeyBackupCopyState, type KeySlotState, type KeyBackupCopyState } from './dbEncryption';
 
 const OLD_DB_NAME = 'fx_journal.db'; // 旧・平文DB（SQLCipher導入前）
 const NEW_DB_NAME = 'fx_journal_v2.db'; // 新・SQLCipher暗号化DB
@@ -185,6 +186,121 @@ async function quarantineUnopenableDb(): Promise<void> {
   }
 }
 
+/**
+ * 鍵とDBファイルの食い違いを Sentry 上で切り分けるための状態。
+ *
+ * 2026-09-15 時点で `db:unopenable_encrypted_db` は、対策済みの 1.3.3 でも出続けている
+ * （直近7日で27人）。だがイベントにはメッセージしか入っておらず、
+ * **「2026-09-02 の対策より前に取られたバックアップから復元した端末」なのか
+ * 「対策そのものが効いていない」のか**を、件数をいくら眺めても判別できなかった。
+ * 増えても減っても原因に近づけないので、失敗の形を一緒に送る。
+ *
+ * 見たいのは3点。
+ *   - 鍵が**どちらのスロットにあったか**（旧スロットからの複製が走った＝旧端末は対策前の版）
+ *   - 移行フラグの値（フラグと鍵は SecureStore の別項目で、片方だけ欠けることが実際にある）
+ *   - 暗号化DBファイルが実在するか（無ければ失う記録も無い。同じイベントでも深刻度が違う）
+ *
+ * **鍵の値は絶対に載せない。** 載せれば Sentry 側に暗号化DBを開く材料が揃う。
+ * 送るのは有無を表す状態名と、ファイルの大きさだけ。
+ */
+type DbStateReason =
+  | 'key_missing_after_migration' // 移行済みのはずなのに鍵が1つも無い
+  | 'db_unreadable_with_key'      // 鍵はあるのにDBが開けない
+  | 'unopenable_encrypted_db';    // 移行フラグが無く、既存の暗号化DBも開けない
+
+type DbStateSnapshot = {
+  reason: DbStateReason;
+  keySlotCurrent: KeySlotState;
+  keySlotLegacy: KeySlotState;
+  keyBackupCopy: KeyBackupCopyState;
+  migrationFlag: string;
+  dbFile: 'present' | 'absent' | 'unknown';
+  dbBytes: number | null;
+  quarantined: number | null;
+  plainDb: 'present' | 'absent' | 'unknown';
+};
+
+/**
+ * 状態を集める。**この関数は決して throw しない。**
+ * 原因を記録しようとしたせいで本来の失敗が別のエラーにすり替わっては本末転倒なので、
+ * 個々の取得はすべて握り潰し、取れなかったものは 'unknown' / null で表す。
+ */
+async function collectDbState(reason: DbStateReason, migrationFlag: string | null): Promise<DbStateSnapshot> {
+  const snapshot: DbStateSnapshot = {
+    reason,
+    keySlotCurrent: 'unreadable',
+    keySlotLegacy: 'unreadable',
+    keyBackupCopy: getKeyBackupCopyState(),
+    migrationFlag: migrationFlag ?? 'absent',
+    dbFile: 'unknown',
+    dbBytes: null,
+    quarantined: null,
+    plainDb: 'unknown',
+  };
+  try {
+    const slots = await inspectKeySlots();
+    snapshot.keySlotCurrent = slots.current;
+    snapshot.keySlotLegacy = slots.legacy;
+  } catch { /* 取れないなら unreadable のまま */ }
+
+  try {
+    const dir = SQLite.defaultDatabaseDirectory?.replace(/\/+$/, '');
+    if (dir) {
+      const entries = await readDirectoryAsync(dir).catch(() => null);
+      if (entries) {
+        snapshot.dbFile = entries.includes(NEW_DB_NAME) ? 'present' : 'absent';
+        snapshot.plainDb = entries.includes(OLD_DB_NAME) ? 'present' : 'absent';
+        snapshot.quarantined = entries.filter((n) => n.startsWith(QUARANTINE_PREFIX)).length;
+      }
+      if (snapshot.dbFile === 'present') {
+        const info = await getInfoAsync(`${dir}/${NEW_DB_NAME}`).catch(() => null);
+        if (info && info.exists && typeof info.size === 'number') snapshot.dbBytes = info.size;
+      }
+    }
+  } catch { /* 同上 */ }
+
+  return snapshot;
+}
+
+/**
+ * 絞り込みに使うタグ。
+ *
+ * タグにするのは**無料プランで検索できるのがタグだけ**だから（コンテキストは
+ * 開けば見えるが、絞り込みにも集計にも使えない）。タグは値の種類が増えるほど
+ * 扱いが悪くなるので、どれも数種類に収まるものだけを選んである。
+ */
+function dbStateTags(snapshot: DbStateSnapshot): Record<string, string> {
+  return {
+    db_reason: snapshot.reason,
+    db_key_current: snapshot.keySlotCurrent,
+    db_key_legacy: snapshot.keySlotLegacy,
+    db_key_copy: snapshot.keyBackupCopy,
+    db_migrated: snapshot.migrationFlag === 'v1' ? 'v1' : snapshot.migrationFlag === 'absent' ? 'absent' : 'other',
+    db_file: snapshot.dbFile,
+  };
+}
+
+/**
+ * 集めた状態を Sentry の**スコープ**に載せる。
+ *
+ * これを使うのは、この直後に throw して**別の場所で送られる**とき
+ * （EncryptionKeyLostError を拾うのは app/_layout.tsx）に限る。スコープに置いた
+ * タグはセッションの以後の全イベントに付くので、送信まで自分で面倒を見られる
+ * captureMessage では使わないこと — 起動に成功して動き続けたセッションの
+ * 無関係なエラーにまで、DBの失敗を示すタグが付いてしまう。
+ */
+function applyDbStateToScope(snapshot: DbStateSnapshot): void {
+  try {
+    Sentry.setContext('db_state', { ...snapshot });
+    Sentry.setTags(dbStateTags(snapshot));
+  } catch { /* 監視できないだけなので握り潰す */ }
+}
+
+/** 集める→スコープに載せるまでを一度に行う（投げる直前に使う）。 */
+async function attachDbState(reason: DbStateReason, migrationFlag: string | null): Promise<void> {
+  applyDbStateToScope(await collectDbState(reason, migrationFlag));
+}
+
 async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
   const migrated = await SecureStore.getItemAsync(MIGRATION_FLAG_KEY);
 
@@ -194,7 +310,10 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
     // 二度と復号できない鍵で開こうとすることになる（＝実質的な全データ消失）。
     // 新規鍵は生成せず、専用のエラーとして呼び出し側に委ねる。
     const key = await getEncryptionKey();
-    if (!key) throw new EncryptionKeyLostError();
+    if (!key) {
+      await attachDbState('key_missing_after_migration', migrated);
+      throw new EncryptionKeyLostError();
+    }
     // 既存ユーザーの鍵は旧スロット（THIS_DEVICE_ONLY）にしか無いことがある。この経路は
     // getOrCreateEncryptionKey を通らないため、ここで複製しないと
     // 「機種変更で鍵だけ引き継がれない」状態がアップデート後も残り続ける。
@@ -230,6 +349,10 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
         return recovered;
       }
     }
+    // keyBackupCopy が 'not_attempted' でも「複製が走らなかった」とは限らない。
+    // 上の ensureKeyIsBackupable() は待たずに投げてあるので、ここに来るまでに
+    // 終わっていないことがある。読むときはそこを込みで見ること。
+    await attachDbState('db_unreadable_with_key', migrated);
     throw new EncryptionKeyLostError();
   }
 
@@ -255,14 +378,34 @@ async function openEncryptedDatabase(): Promise<SQLite.SQLiteDatabase> {
     }
   }
 
+  // 鍵の状態は getOrCreateEncryptionKey() の**前に**採る。あれは鍵が無ければ新しく作るので、
+  // 後から調べると「鍵はあった」ようにしか見えず、いちばん知りたい区別が消える。
+  const state = await collectDbState('unopenable_encrypted_db', migrated);
+
   const key = await getOrCreateEncryptionKey();
 
-  // ここまで来て初めて「開けない暗号化DBファイル」と判断できる。
+  // **実際に「開けないDBファイル」があるときだけ報告する。**
+  //
+  // この経路は失敗専用ではない。移行フラグも鍵も無い状態はここを通るので、
+  // **新規インストールと、平文DBからの初回移行（どちらも正常）も同じ行に到達する。**
+  // それを区別せず送っていたため、このイベントは障害ではなく**新規インストール数**を
+  // 数えていた疑いが強い（リリース別で最新の 1.3.3 が最多なのは、それで説明が付く）。
+  // 無料プランのイベント枠も食う。
+  //
+  // ファイルが**確実に無い**と分かったときだけ送らない。'unknown'（ディレクトリが
+  // 読めなかった）の場合は、本物の失敗を取りこぼさないよう送る側に倒す。
+  if (state.dbFile !== 'absent') {
+    try {
+      Sentry.captureMessage('db:unopenable_encrypted_db', {
+        level: 'warning',
+        tags: dbStateTags(state),
+        contexts: { db_state: { ...state } },
+      });
+    } catch { /* 同上 */ }
+  }
+
   // 旧バージョンのbackupDatabaseAsyncによる移行失敗で壊れたファイルが残っている場合で、
   // ATTACHがそれにぶつかって失敗しないよう、どかしてから作り直す。
-  try {
-    Sentry.captureMessage('db:unopenable_encrypted_db', { level: 'warning' });
-  } catch { /* 同上 */ }
   await quarantineUnopenableDb();
 
   let plainDb: SQLite.SQLiteDatabase | null = null;

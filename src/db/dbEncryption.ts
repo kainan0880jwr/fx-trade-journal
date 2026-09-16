@@ -25,6 +25,48 @@ const LEGACY_KEY_NAME = 'fx_db_encryption_key';
 const KEYCHAIN_ACCESSIBLE = SecureStore.WHEN_UNLOCKED;
 
 /**
+ * キーチェーンのスロットの状態。**鍵の値そのものは決してここから外に出さない。**
+ * 出せば、監視基盤（Sentry）側に暗号化DBを開く材料が揃ってしまう。
+ */
+export type KeySlotState = 'present' | 'absent' | 'unreadable';
+
+/**
+ * ensureKeyIsBackupable() が実際に何をしたか。
+ *
+ * これが診断の要になる。`copied` は「この端末の鍵は旧スロットにしか無かった」＝
+ * **旧端末は 2026-09-02 の対策より前の版だった**ことを意味する。`already_current` なら
+ * 対策後の版で作られた鍵が現行スロットに乗っている。鍵の失敗を Sentry で見たときに、
+ * 「対策が効いていない」のか「対策前のバックアップからの復元」なのかは、
+ * この区別が無いと永久に付かない。
+ */
+export type KeyBackupCopyState = 'not_attempted' | 'already_current' | 'copied' | 'failed';
+
+let lastBackupCopy: KeyBackupCopyState = 'not_attempted';
+
+/** 直近の ensureKeyIsBackupable() の結果。診断以外の用途で使わないこと。 */
+export function getKeyBackupCopyState(): KeyBackupCopyState {
+  return lastBackupCopy;
+}
+
+/**
+ * 両スロットの有無だけを調べる（鍵は返さない）。
+ *
+ * **鍵の取得経路と違い、読めなかったことを throw しない。** これは失敗の原因を
+ * 記録するためだけの関数で、ここで throw すると、調べようとしたせいで
+ * 本来の失敗が別のエラーにすり替わる。
+ */
+export async function inspectKeySlots(): Promise<{ current: KeySlotState; legacy: KeySlotState }> {
+  const probe = async (name: string): Promise<KeySlotState> => {
+    try {
+      return (await SecureStore.getItemAsync(name)) ? 'present' : 'absent';
+    } catch {
+      return 'unreadable';
+    }
+  };
+  return { current: await probe(KEY_NAME), legacy: await probe(LEGACY_KEY_NAME) };
+}
+
+/**
  * キーチェーンを読めなかった（鍵が無いのとは違う）状態。
  *
  * 呼び出し側はこれを EncryptionKeyLostError と区別すること。前者は再試行で
@@ -116,11 +158,22 @@ export async function getOrCreateEncryptionKey(): Promise<string> {
  * 対応する鍵で、次回起動時は開けずに同じ鍵で空DBが作り直されるだけなので実害は無い。
  */
 export async function ensureKeyIsBackupable(key: string): Promise<void> {
-  const current = await SecureStore.getItemAsync(KEY_NAME);
-  if (current === key) return; // 移行済み
-  await SecureStore.setItemAsync(KEY_NAME, key, {
-    keychainAccessible: KEYCHAIN_ACCESSIBLE,
-  });
+  // 結果の記録は診断のためだけのもの。呼び出し側から見た挙動（例外の伝播を含む）は
+  // 変えない — ここは全記録の生死が懸かる経路で、計装のために流れを変えてよい場所ではない。
+  try {
+    const current = await SecureStore.getItemAsync(KEY_NAME);
+    if (current === key) {
+      lastBackupCopy = 'already_current'; // 移行済み
+      return;
+    }
+    await SecureStore.setItemAsync(KEY_NAME, key, {
+      keychainAccessible: KEYCHAIN_ACCESSIBLE,
+    });
+    lastBackupCopy = 'copied';
+  } catch (e) {
+    lastBackupCopy = 'failed';
+    throw e;
+  }
 }
 
 /**
