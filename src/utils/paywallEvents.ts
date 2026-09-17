@@ -23,12 +23,22 @@
 
 import * as Sentry from '@sentry/react-native';
 
-/** ペイウォールへの流入元。低カーディナリティを保つため文字列リテラルで固定する */
-export type PaywallSource = 'gate' | 'trade_form_hint' | 'unknown';
+/**
+ * ペイウォールへの流入元。低カーディナリティを保つため文字列リテラルで固定する。
+ *
+ * **実際に router.push している値と必ず一致させること。** 2026-09-17 まで
+ * `settings` / `goals` / 画像上限からの流入がここに無く、すべて `unknown` に
+ * 丸められていた。設定画面のPROバナーは「自分から課金を見に来る」唯一の能動導線
+ * なのに、その効果が計測から消えていた。`paywallSourceUsage.test.ts` が
+ * 呼び出し側の文字列との一致を機械的に固定している。
+ */
+export type PaywallSource =
+  | 'gate' | 'trade_form_hint' | 'trade_form_images'
+  | 'settings' | 'goals' | 'unknown';
 
 /** ペイウォールを開いた原因になった機能。PremiumGateのfeatureKeyと対応する安定キー */
 export type PremiumFeatureKey =
-  | 'badges' | 'calculator' | 'bookmarks' | 'yearly'
+  | 'badges' | 'calculator' | 'bookmarks' | 'yearly' | 'images'
   | 'monthly_weekly' | 'monthly_insights'
   | 'analysis_time' | 'analysis_tags' | 'analysis_rr' | 'analysis_equity' | 'analysis_mental'
   | 'unknown';
@@ -47,7 +57,7 @@ function track(event: string, tags?: Record<string, string>) {
  * 呼び出し側は必ず安定キーを渡すこと（渡らなかった場合は 'unknown' に丸める）。
  */
 const KNOWN_FEATURES: ReadonlySet<string> = new Set<PremiumFeatureKey>([
-  'badges', 'calculator', 'bookmarks', 'yearly',
+  'badges', 'calculator', 'bookmarks', 'yearly', 'images',
   'monthly_weekly', 'monthly_insights',
   'analysis_time', 'analysis_tags', 'analysis_rr', 'analysis_equity', 'analysis_mental',
   'unknown',
@@ -58,7 +68,8 @@ export function normalizeFeatureKey(raw: string | undefined): PremiumFeatureKey 
 }
 
 const KNOWN_SOURCES: ReadonlySet<string> = new Set<PaywallSource>([
-  'gate', 'trade_form_hint', 'unknown',
+  'gate', 'trade_form_hint', 'trade_form_images',
+  'settings', 'goals', 'unknown',
 ]);
 
 export function normalizeSource(raw: string | undefined): PaywallSource {
@@ -97,8 +108,15 @@ export function recordPaywallViewed(source: string | undefined, featureKey: stri
  * 見えず、これまで一切観測できていなかった。トライアル0件の原因候補として
  * 明示的に潰せるようにする。
  */
-export function recordPaywallNoPackages(source: string | undefined): void {
-  track('no_packages', { paywall_source: normalizeSource(source) });
+export type NoPackagesReason =
+  | 'not_configured'      // RevenueCat の初期化前／キー不正。再試行しても永遠に成功しない
+  | 'fetch_error'         // getOfferings() が例外。通信かRC側の障害
+  | 'timeout'             // 10秒で応答なし
+  | 'no_current_offering' // 応答はあるが Current Offering が未設定（ダッシュボードの設定漏れ）
+  | 'empty_packages';     // Offering はあるが商品が0件（ストア側の商品未承認など）
+
+export function recordPaywallNoPackages(source: string | undefined, reason: NoPackagesReason): void {
+  track('no_packages', { paywall_source: normalizeSource(source), paywall_reason: reason });
 }
 
 /** 購入ボタンが押されたときに呼ぶ。planは 'annual' | 'monthly' | 'other' */

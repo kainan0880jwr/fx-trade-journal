@@ -35,12 +35,18 @@ const FEATURES = [
 // 無限に表示され続けるのを防ぐタイムアウト（ミリ秒）
 const OFFERINGS_TIMEOUT_MS = 10000;
 
-// タイムアウト後もリクエスト自体はキャンセルされないため、後から本来のPromiseが
-// 解決した場合はUIが正しい結果に更新される（呼び出し側のrequestId比較で古い結果は破棄）
-function withTimeout<T>(promise: Promise<T>, ms: number, fallback: T): Promise<T> {
+// **タイムアウト後に本来のPromiseが解決してもUIは更新されない。** Promise.race は
+// 先に settle した側で確定するため、後から来た結果を拾う経路が無い（2026-09-17 に
+// 以前のコメントの誤りを訂正）。タイムアウトしたら再試行を押してもらうしかない。
+//
+// fallback に専用の番兵を使うのは、「10秒で応答なし」と「getOfferings が null を
+// 返した（初期化前・例外）」を区別して Sentry に記録するため。両者は原因も打ち手も違う。
+const TIMED_OUT = Symbol('offerings_timeout');
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T | typeof TIMED_OUT> {
   return Promise.race([
     promise,
-    new Promise<T>((resolve) => setTimeout(() => resolve(fallback), ms)),
+    new Promise<typeof TIMED_OUT>((resolve) => setTimeout(() => resolve(TIMED_OUT), ms)),
   ]);
 }
 
@@ -51,7 +57,7 @@ export default function PaywallScreen() {
   // 流入元。PremiumGate経由なら 'gate' + どの機能でロックに当たったか、
   // 記録画面のヒント経由なら 'trade_form_hint' が入る（未指定なら 'unknown'）
   const { source, feature } = useLocalSearchParams<{ source?: string; feature?: string }>();
-  const { getOfferings, purchase, restore, isPremium } = usePurchaseStore();
+  const { getOfferings, purchase, restore, isPremium, isConfigured } = usePurchaseStore();
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
   const [selected, setSelected] = useState<PurchasesPackage | null>(null);
   const [eligibleTrialIds, setEligibleTrialIds] = useState<Set<string>>(new Set());
@@ -79,10 +85,12 @@ export default function PaywallScreen() {
   const loadOfferings = () => {
     const myRequestId = ++requestId.current;
     setLoadingPkgs(true);
-    withTimeout(getOfferings(), OFFERINGS_TIMEOUT_MS, null).then(async (offerings) => {
+    withTimeout(getOfferings(), OFFERINGS_TIMEOUT_MS).then(async (result) => {
       // 古い（後から呼ばれたリクエストより先に返ってきた）レスポンスは破棄
       if (!isMounted.current || myRequestId !== requestId.current) return;
 
+      const timedOut = result === TIMED_OUT;
+      const offerings = timedOut ? null : result;
       const pkgs = offerings?.current?.availablePackages ?? [];
       setPackages(pkgs);
       const yearly = pkgs.find(p => p.packageType === PACKAGE_TYPE.ANNUAL);
@@ -90,8 +98,17 @@ export default function PaywallScreen() {
       setLoadingPkgs(false);
 
       // 「ペイウォールは開いたが購入ボタンが1つも出ていない」状態は
-      // ユーザーからは無言の失敗にしか見えず、これまで観測できていなかった
-      if (pkgs.length === 0) recordPaywallNoPackages(source);
+      // ユーザーからは無言の失敗にしか見えない。**理由を必ず添える** — 2026-09-17 まで
+      // 理由が無く、2ユーザー12件が「初期化前」なのか「商品未承認」なのか
+      // 「通信」なのか判別できなかった。原因ごとに打ち手が全く違う。
+      if (pkgs.length === 0) {
+        recordPaywallNoPackages(source,
+          !isConfigured ? 'not_configured'
+          : timedOut ? 'timeout'
+          : offerings === null ? 'fetch_error'
+          : offerings.current === null ? 'no_current_offering'
+          : 'empty_packages');
+      }
 
       // トライアル資格は「不明」なら誤解を招くため非表示側に倒す（ELIGIBLEのみ表示）
       const trialProductIds = pkgs.filter(p => p.product.introPrice).map(p => p.product.identifier);

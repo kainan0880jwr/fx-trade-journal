@@ -1057,7 +1057,7 @@ export default function NewTradeScreen() {
                       // 「なぜ追加できないのか」が分からなかった。goals.tsx と同じ作法。
                       <TouchableOpacity
                         style={[styles.addImageBtn, styles.addImageBtnLocked]}
-                        onPress={() => router.push({ pathname: '/paywall', params: { feature: 'images' } })}
+                        onPress={() => router.push({ pathname: '/paywall', params: { source: 'trade_form_images', feature: 'images' } })}
                         accessibilityRole="button"
                         accessibilityLabel={`${t('add')} (${t('premium_badge')})`}
                       >

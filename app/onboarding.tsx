@@ -100,6 +100,9 @@ export default function OnboardingScreen() {
     try {
       await setSetting('onboarding_done', '1');
     } catch { /* 次回起動で再試行される */ }
+    // スキップも完了として送る。送らないとファネル上は離脱に見え、
+    // 「オンボーディングで何人減ったか」を読み違える。
+    recordOnboardingCompleted('skip');
     router.replace('/(tabs)');
   };
 

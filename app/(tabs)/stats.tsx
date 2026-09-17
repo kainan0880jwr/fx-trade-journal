@@ -109,6 +109,18 @@ export default function AnalysisScreen() {
   const mentalStats = useMemo(() => calcMentalStats(trades), [trades]);
   const ruleStats = useMemo(() => calcRuleStats(trades, tradeRules), [trades, tradeRules]);
 
+  // ロック対象なら PremiumGate で覆い、そうでなければそのまま返す。
+  // 覆う場合も中身は描画される（プレビューとして薄く見える）。
+  const renderGated = (content: React.ReactNode) =>
+    !isPremium && activeTab !== 'performance' ? (
+      <PremiumGate
+        feature={ANALYSIS_TABS().find(tb => tb.key === activeTab)?.label ?? ''}
+        featureKey={`analysis_${activeTab}`}
+      >
+        {content}
+      </PremiumGate>
+    ) : content;
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <MonthSelector month={currentMonth} onChange={setCurrentMonth} />
@@ -143,9 +155,15 @@ export default function AnalysisScreen() {
         </ScrollView>
       </View>
 
-      {!isPremium && activeTab !== 'performance' ? (
-        <PremiumGate feature={ANALYSIS_TABS().find(tb => tb.key === activeTab)?.label ?? ''} featureKey={`analysis_${activeTab}`}><View /></PremiumGate>
-      ) : (
+      {/* ロック時も**中身を描いてから**ゲートで覆う。以前は children に <View /> を
+          渡しており、PremiumGate の「薄く見せて価値を伝える」プレビューに
+          **何も映っていなかった**（2026-09-17 発見）。ロックに当たった人が見るのは
+          情報ゼロの壁で、自分のデータがどう分析されるのかを一度も見ないまま
+          課金を判断させていた。badges / calculator / bookmarks / yearly は
+          最初から実コンテンツを渡しているので、分析タブだけが例外だった。
+          プレビューは pointerEvents="none" かつ読み上げ対象外なので、
+          触れず・読み上げられずに「形だけ」が見える。 */}
+      {renderGated(
       <ScrollView contentContainerStyle={styles.scroll}>
         {trades.length === 0 ? (
           <View style={styles.empty}>

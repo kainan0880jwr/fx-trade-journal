@@ -19,26 +19,38 @@ import { getSetting, setSetting } from '../db/queries';
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
-function track(event: string) {
+function track(event: string, tags?: Record<string, string>) {
   try {
-    Sentry.captureMessage(`retention:${event}`, 'info');
+    Sentry.captureMessage(`retention:${event}`, { level: 'info', tags });
   } catch {
     // 計装はノンクリティカル — エラーは握り潰す
   }
 }
 
-/** オンボーディング完了時に呼ぶ */
-export function recordOnboardingCompleted(): void {
-  track('onboarding_completed');
+/**
+ * オンボーディング完了時に呼ぶ。
+ *
+ * **スキップも「完了」として送る。** 2026-09-17 まで3択を選んだ経路でしか
+ * 呼んでおらず、スキップした人が離脱扱いになって分母が狂っていた。
+ * どちらだったかは `retention_via` タグで区別する。
+ */
+export function recordOnboardingCompleted(via: 'choice' | 'skip' = 'choice'): void {
+  track('onboarding_completed', { retention_via: via });
 }
 
-/** トレード保存成功のたびに呼ぶ。実際に送信されるのは初回のみ（内部で判定） */
-export async function recordFirstTradeSaved(): Promise<void> {
+/**
+ * トレード保存成功のたびに呼ぶ。実際に送信されるのは初回のみ（内部で判定）。
+ *
+ * **CSVインポートからも呼ぶこと。** 2026-09-17 まで手入力フォームからしか
+ * 呼んでおらず、**MT4/MT5のCSVを一括で取り込む層がファネルに1人も入っていなかった。**
+ * このアプリで最もアクティブな層がまるごと計測外だった（CLAUDE.md 参照）。
+ */
+export async function recordFirstTradeSaved(via: 'form' | 'import' = 'form'): Promise<void> {
   try {
     const sent = await getSetting('retention_first_trade_sent');
     if (sent === '1') return;
     await setSetting('retention_first_trade_sent', '1');
-    track('first_trade_saved');
+    track('first_trade_saved', { retention_via: via });
   } catch {
     // 計装はノンクリティカル — エラーは握り潰す
   }

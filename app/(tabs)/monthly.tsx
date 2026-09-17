@@ -133,6 +133,18 @@ export default function MonthlyScreen() {
     );
   }
 
+  // ロック対象なら PremiumGate で覆い、そうでなければそのまま返す。
+  // 覆う場合も中身は描画される（プレビューとして薄く見える）。
+  const renderGated = (content: React.ReactNode) =>
+    !isPremium && (activeTab === 'weekly' || activeTab === 'insights') ? (
+      <PremiumGate
+        feature={SUB_TABS().find(tb => tb.key === activeTab)?.label ?? ''}
+        featureKey={`monthly_${activeTab}`}
+      >
+        {content}
+      </PremiumGate>
+    ) : content;
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <PeriodToggle period={period} onChange={setPeriod} styles={styles} C={C} />
@@ -214,9 +226,9 @@ export default function MonthlyScreen() {
         </ScrollView>
       </View>
 
-      {!isPremium && (activeTab === 'weekly' || activeTab === 'insights') ? (
-        <PremiumGate feature={SUB_TABS().find(tb => tb.key === activeTab)?.label ?? ''} featureKey={`monthly_${activeTab}`}><View /></PremiumGate>
-      ) : (
+      {/* stats.tsx と同じ理由で、ロック時も中身を描いてからゲートで覆う。
+          以前は <View /> を渡していたため、プレビューが常に空だった。 */}
+      {renderGated(
       <ScrollView contentContainerStyle={styles.scroll}>
         {trades.length === 0 ? (
           <View style={styles.empty}>

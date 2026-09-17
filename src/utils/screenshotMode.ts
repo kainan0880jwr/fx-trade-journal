@@ -129,7 +129,13 @@ export async function seedScreenshotData(): Promise<void> {
   const inserted: Trade[] = [];
   for (let i = 0; i < DEMO_TRADES.length; i++) {
     const d = DEMO_TRADES[i];
-    const date = `${year}-${pad(month)}-${pad(days[i])}`;
+    // **date には時刻まで入れる。** 実際のトレードは `toLocalISOString(now)`（クイック）
+    // または `${date}T${time}:00`（詳細）で保存しており、`calcTimeAnalysis` は
+    // `t.date.slice(11, 13)` で時刻を読む。デモデータだけ `YYYY-MM-DD` にしていたため、
+    // **時間帯・曜日の分析がデモでは常に空**になっていた（2026-09-17 発見）。
+    // PRO の目玉機能なのに、ゲートのプレビューもストアのスクショも空で撮れてしまう。
+    const day = `${year}-${pad(month)}-${pad(days[i])}`;
+    const date = `${day}T${pad(d.hour)}:${pad(d.minute)}:00`;
     const profitLoss = calcProfitLoss(d.pips, d.lot, LOT_UNIT);
     const trade: Trade = {
       id: `screenshot-${pad(i)}`,
@@ -151,7 +157,7 @@ export async function seedScreenshotData(): Promise<void> {
       mentalFocus: null, mentalCalm: null, mentalFear: null,
       ruleChecks: rules.slice(0, followedDays.has(days[i]) ? rules.length : d.rulesFollowed),
       tfWeekly: '', tfDaily: '', tf4h: '', tf1h: '',
-      createdAt: `${date}T${pad(d.hour)}:${pad(d.minute)}:00.000Z`,
+      createdAt: `${day}T${pad(d.hour)}:${pad(d.minute)}:00.000Z`,
     };
     await insertTrade(trade);
     inserted.push(trade);

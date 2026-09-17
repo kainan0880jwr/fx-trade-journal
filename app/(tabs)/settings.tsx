@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { useTradeStore } from '../../src/store/tradeStore';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
+import { recordFirstTradeSaved } from '../../src/utils/retentionEvents';
 import { generateId } from '../../src/utils/statsCalc';
 import { getAllTrades, getSetting, setSetting } from '../../src/db/queries';
 import { exportBackup, importBackup, getPreImportSnapshot, restorePreImportSnapshot, getLastBackupAt, backupFreshness, estimateBackupImages, MAX_TRADES_PER_BACKUP } from '../../src/utils/backup';
@@ -327,6 +328,10 @@ export default function SettingsScreen() {
     try {
       const result = await importMT4CSV();
       if (result.imported > 0) {
+        // インポートも「初回のトレード保存」に数える。手入力フォームからしか
+        // 呼んでいなかったため、CSVで一括取り込みする層がファネルから抜けていた。
+        recordFirstTradeSaved('import'); // 結果は待たない
+
         // skipped はこれまでどこにも表示されず、500行中480行が失敗しても
         // 「20件インポートしました」としか出なかった。以後の統計が実態と
         // 乖離したまま使われるため、必ずスキップ件数も伝える。

@@ -57,11 +57,26 @@ describe('ファネル各段のイベント', () => {
     );
   });
 
-  it('no_packages を送れる（買う手段が表示されなかったケース）', () => {
-    recordPaywallNoPackages('gate');
+  it('no_packages は理由を必ず添える（原因ごとに打ち手が違う）', () => {
+    recordPaywallNoPackages('gate', 'not_configured');
     expect(captureMessage).toHaveBeenCalledWith(
       'paywall:no_packages',
-      { level: 'info', tags: { paywall_source: 'gate' } },
+      { level: 'info', tags: { paywall_source: 'gate', paywall_reason: 'not_configured' } },
+    );
+  });
+
+  it('新しく足した流入元が unknown に丸められない', () => {
+    // 2026-09-17 まで settings / goals / 画像上限が丸められ、
+    // 「自分から課金を見に来た人」が集計から消えていた。
+    recordPaywallViewed('settings', 'images');
+    expect(captureMessage).toHaveBeenCalledWith(
+      'paywall:viewed',
+      { level: 'info', tags: { paywall_source: 'settings', paywall_feature: 'images' } },
+    );
+    recordPaywallViewed('trade_form_images', undefined);
+    expect(captureMessage).toHaveBeenCalledWith(
+      'paywall:viewed',
+      { level: 'info', tags: { paywall_source: 'trade_form_images', paywall_feature: 'unknown' } },
     );
   });
 
