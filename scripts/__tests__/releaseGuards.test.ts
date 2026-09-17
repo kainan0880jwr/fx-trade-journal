@@ -101,6 +101,21 @@ describe('check-ota-bundle（OTA 前のガード）', () => {
     expect(run('check-ota-bundle.js', {}, [dir]).code).toBe(0);
   });
 
+  it('UUID v4 のテンプレートを誤検知しない', () => {
+    // 依存ライブラリのバンドルに `xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx` が
+    // 含まれており、`xxxxxxxx` 単体で探すと**正常なバンドルの配信を止めてしまう**
+    // （2026-09-17 に実際に踏んだ）。誤検知するガードは、いずれ無視されるようになる。
+    bundle('var t="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";var k="appl_LooksReal";');
+    expect(run('check-ota-bundle.js', {}, [dir]).code).toBe(0);
+  });
+
+  it('Sentry DSN がプレースホルダーなら中止する', () => {
+    bundle('var d="https://xxxxxxxx@o1.ingest.sentry.io/1";');
+    const r = run('check-ota-bundle.js', {}, [dir]);
+    expect(r.code).toBe(1);
+    expect(r.out).toContain('プレースホルダー');
+  });
+
   it('プレースホルダーのキーが残っていたら中止する', () => {
     bundle('var k="appl_xxxxxxxxxxxx";');
     const r = run('check-ota-bundle.js', {}, [dir]);

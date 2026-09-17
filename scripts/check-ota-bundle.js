@@ -61,9 +61,14 @@ if (files.length === 0) {
 // 探す方式だと、キーの形が変わったときに黙って通してしまう）。
 const CHECKS = [
   {
-    // プレースホルダーのまま出荷 = 課金と監視が同時に死ぬ
+    // プレースホルダーのまま出荷 = 課金と監視が同時に死ぬ。
+    //
+    // **`xxxxxxxx` 単体で探してはいけない。** UUID v4 のテンプレート
+    // （`xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx`）が依存ライブラリのバンドルに
+    // 含まれており、誤検知で配信を止めてしまう（2026-09-17 に実際に踏んだ）。
+    // キーの接頭辞に続く場合と、Sentry DSN の形に限って探す。
     name: 'プレースホルダーのAPIキー',
-    re: /(appl|goog)_xxxx|xxxxxxxx/i,
+    re: /(appl|goog)_x{4,}|https:\/\/x{4,}@|SENTRY_DSN["']?\s*[:=]\s*["']?x{4,}/i,
     hint: 'RevenueCat / Sentry のキーがプレースホルダーのままです。環境変数の設定を確認してください。',
   },
   {
