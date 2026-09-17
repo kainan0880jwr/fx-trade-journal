@@ -44,6 +44,12 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   2. iOS's Local Network Privacy: without `NSLocalNetworkUsageDescription` (+ `NSBonjourServices: ["_expo._tcp"]`) in `ios.infoPlist`, iOS never shows a permission prompt and just silently blocks the dev client's connection to Metro — check **Settings → Privacy & Security → Local Network** in the Simulator; if the app isn't even listed there, this is the cause.
   - Fix for a local debugging session: add the two Info.plist keys above to `app.json`, then `npx expo prebuild --clean && npx expo run:ios` (Info.plist changes need a native rebuild, not just a Metro restart). **Info.plist の2キーは commit 前に必ず戻すこと** — Local Network の許可は本番では用途が無く、ユーザーに説明のつかないプライバシー確認を出してしまう。（コード署名の削除は恒久的な変更なので、こちらは戻さない。）
 
+- **OTA（`eas update`）を打つ前に必ず `npm run ota:check` を通すこと（2026-09-17 追加）。** `scripts/check-prod-keys.js` は `eas-build-pre-install` フックからしか呼ばれない — **つまり `eas update` では一度も走らない。** OTA はこのプロジェクトの主要な配信経路（9/2〜9/8 だけで9回）なので、既存の歯止めが最も使う経路で外れていた。
+  - 手元の環境変数がプレースホルダーのまま OTA を打つと、そのバンドルが production チャンネルの全インストールに届き、**RevenueCat が初期化されず課金済みユーザー全員が無料扱いにロックされる。同時に Sentry も初期化されないので、この事故自体が観測できない。** 静かに全滅する。
+  - `scripts/check-ota-bundle.js` は**環境変数ではなく成果物（`dist/` のバンドル）を直接検査する。** `EXPO_PUBLIC_*` はビルド時にインラインされるため、最終的に配られるのはバンドル内の文字列であり、環境変数を見るだけでは読み込み順や EAS 側の設定との食い違いを取りこぼす。検査するのは3点 — プレースホルダーのキー、RevenueCat の Secret Key (`sk_`)、撮影モードの有効化。
+  - 最後の砦として `purchaseStore.initialize()` が、**本番なのにキーがプレースホルダー**なら `purchase:rc_key_missing` を fatal で Sentry へ送る（DSN も欠けていれば届かないので、これだけには頼れない）。
+  - `check-prod-keys.js` も強化した。キーの**種別**を検証し（`appl_` / `goog_` / `https://`）、`sk_` はどのプロファイルでも即中止する。**撮影モードは profile を問わず中止する** — 以前は production のときだけ止めていたが、development ビルドでも撮影モードは動くので、そのビルドを渡した相手の記録が起動のたびに消える。意図的な撮影ビルドは `SCREENSHOT_BUILD=1` で明示的にオプトインする。
+  - 両ガードの挙動は `scripts/__tests__/releaseGuards.test.ts` が固定している（正常系・Secret Key・プラットフォーム取り違え・撮影モード・export 忘れ）。
 - **Xcode 27 ではローカルの iOS ビルドと撮影の手順がまるごと変わる（2026-09-16 に確立）。** 9/11 までは `npx expo run:ios` 一発で済んでいたが、Xcode が 27.0 に上がって動かなくなった。**EAS のビルドは Xcode の版が固定されているので影響を受けない — 困るのはローカルだけ。** 以下は全部その日に実際に踏んで解決した順。
   - **`expo run:ios` は使えない。Xcode 27 が Simulator.app を廃止し、DeviceHub.app に置き換えた。** 開発者向けアプリの置き場所も `Contents/Developer/Applications/` から `Contents/Applications/` へ移っている。Expo / React Native / Flutter が軒並み古いパスを直に見ているため同じ症状が出る（expo/eas-cli#4403 ほか）。**Xcode の再インストールでは直らない。ツール側の対応待ち。** 代わりに `xcodebuild` + `simctl` で組む:
 

@@ -75,7 +75,19 @@ export const usePurchaseStore = create<PurchaseStore>((set, get) => ({
     hasStartedInit = true;
 
     if (isPlaceholderKey(RC_API_KEY)) {
-      // 開発中はキー未設定のため初期化をスキップ
+      // 開発中はキー未設定のため初期化をスキップ。
+      //
+      // **ただし本番でここに来たら重大事故。** RevenueCat が初期化されないので
+      // 課金済みユーザー全員が無料扱いになり、「購入を復元」も効かない。
+      // 起こりうるのは `eas update`（OTA）— ビルドと違い `check-prod-keys.js` が
+      // 走らないため、手元の .env がプレースホルダーのままでも production
+      // チャンネルへ配信できてしまう（`scripts/check-ota-bundle.js` で塞いでいるが、
+      // 実行を忘れうるので最後の砦をここに置く）。
+      if (!__DEV__) {
+        try {
+          Sentry.captureMessage('purchase:rc_key_missing', { level: 'fatal' });
+        } catch { /* 計装の失敗は無視 */ }
+      }
       set({ isInitialized: true });
       return;
     }

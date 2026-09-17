@@ -55,7 +55,8 @@
     "web": "expo start --web",
     "test": "jest",
     "test:watch": "jest --watch",
-    "eas-build-pre-install": "node scripts/check-prod-keys.js"
+    "eas-build-pre-install": "node scripts/check-prod-keys.js",
+    "ota:check": "expo export --platform all && node scripts/check-ota-bundle.js dist"
   },
   "private": true,
   "jest": {
