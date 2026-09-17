@@ -101,3 +101,46 @@ describe('CSP', () => {
     expect(bad).toEqual([]);
   });
 });
+
+/**
+ * 有料プランの呼称が全言語で PRO に統一されていることを固定する。
+ *
+ * **これは同種の「一部だけ直した」事故の4件目。** 2026-09-09 にアプリ内の表示文字列を
+ * PRO へ統一したが（`consistency.test.ts` が i18n だけを見ている）、**法務文書11言語・
+ * 特商法表記・ASC の商品名は「プレミアム／Premium」のまま**だった。ユーザーは購入画面で
+ * 「PRO」を買い、規約を開くと別名の商品しか書かれていない、という状態になる。
+ *
+ * ただし**「旧称：プレミアム」の併記だけは意図的に残す。** 既存の購読者は Premium という
+ * 名前で契約しており、規約上で新旧の名前を結び付けておく必要がある。
+ */
+describe('有料プランの呼称', () => {
+  // 各言語の「旧称」併記。ここに列挙したものだけが残留を許される。
+  const FORMERLY = [
+    '（旧称：プレミアム）', '(formerly Premium)', '(früher Premium)',
+    '(anciennement Premium)', '(anteriormente Premium)', '(precedentemente Premium)',
+    '(sebelumnya Premium)', '(eski adıyla Premium)', '(trước đây là Premium)',
+    '(पहले प्रीमियम)',
+  ];
+
+  const targets = [
+    ...filesFor('terms'),
+    ...filesFor('privacy-policy'),
+    ...filesFor('support'),
+    'tokushoho.html',
+  ];
+
+  it('検出そのものが機能している（対象ファイルを見つけられる）', () => {
+    expect(targets.length).toBeGreaterThanOrEqual(23);
+  });
+
+  it('法務文書に「プレミアム／Premium」が残っていない（旧称の併記を除く）', () => {
+    const offenders: string[] = [];
+    for (const file of targets) {
+      let html = readFileSync(join(ROOT, file), 'utf8');
+      for (const ok of FORMERLY) html = html.split(ok).join('');
+      const hits = html.match(/プレミアム|Premium|प्रीमियम/g);
+      if (hits) offenders.push(`${file}: ${hits.length} 箇所`);
+    }
+    expect(offenders).toEqual([]);
+  });
+});
