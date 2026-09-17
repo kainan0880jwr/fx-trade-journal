@@ -144,3 +144,45 @@ describe('有料プランの呼称', () => {
     expect(offenders).toEqual([]);
   });
 });
+
+/**
+ * Android（Google Play）の解約手順が全言語に書かれていることを固定する。
+ *
+ * **Google Play でも配信しているのに、規約・サポートの解約手順が Apple のものだけ**
+ * だった（2026-09-17 発見）。Android ユーザーにとって、規約は「解約方法が書かれていない
+ * 文書」になっていた。特商法11条（役務提供契約の解除に関する事項）と Google Play の
+ * サブスクリプションポリシーの双方が解約方法の明示を求めている。
+ *
+ * 返金条項も同様に App Store だけに言及している言語が9つあった。
+ */
+describe('Android の解約手順', () => {
+  const targets = [...filesFor('terms'), ...filesFor('support')];
+
+  it('検出そのものが機能している', () => {
+    expect(targets.length).toBeGreaterThanOrEqual(22);
+  });
+
+  it('全言語の規約・サポートに Google Play の解約経路がある', () => {
+    const missing = targets.filter((f) => {
+      const html = readFileSync(join(ROOT, f), 'utf8');
+      return !/Google Play Store|Google Play ストア/.test(html);
+    });
+    expect(missing).toEqual([]);
+  });
+
+  it('返金について触れる条項が App Store だけを指していない', () => {
+    const offenders: string[] = [];
+    const refund = /refund|Rückerstattung|reembolso|remboursement|rimborso|pengembalian dana|para iadesi|hoàn tiền|रिफंड|返金/i;
+    for (const f of filesFor('terms')) {
+      const html = readFileSync(join(ROOT, f), 'utf8');
+      for (const m of html.matchAll(/<li>[^<]{0,300}<\/li>/g)) {
+        const t = m[0];
+        if (refund.test(t) && t.includes('App Store') && !t.includes('Google')) {
+          offenders.push(f);
+          break;
+        }
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+});
