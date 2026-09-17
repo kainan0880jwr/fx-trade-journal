@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { LineChart } from 'react-native-chart-kit';
 import Svg, { Circle } from 'react-native-svg';
 import { useTradeStore } from '../../src/store/tradeStore';
@@ -169,6 +170,20 @@ export default function AnalysisScreen() {
           <View style={styles.empty}>
             <Ionicons name="analytics-outline" size={52} color={C.text3} />
             <Text style={styles.emptyText}>{t('empty_monthly')}</Text>
+            {/* 記録が無い画面に、記録への導線が無かった。ホーム右下のFABまで
+                戻らないと先へ進めず、**インストールした104人のうち初回の記録に
+                到達したのは32人**（2026-09-17 の実測）。分析や月次を先に開いた人が
+                行き止まりに当たっている。 */}
+            <TouchableOpacity
+              style={styles.emptyCta}
+              onPress={() => router.push('/trade/new')}
+              activeOpacity={0.85}
+              accessibilityRole="button"
+              accessibilityLabel={t('add_trade')}
+            >
+              <Ionicons name="add" size={18} color={C.onAccent} />
+              <Text style={styles.emptyCtaText}>{t('add_trade')}</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <>
@@ -681,6 +696,12 @@ function makeStyles(C: ThemeColors, isTablet = false) {
     subTabLabelActive: { color: C.primary },
     scroll: { padding: ph, paddingBottom: 40 },
     empty: { alignItems: 'center', paddingTop: 60 },
+    emptyCta: {
+      flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 18,
+      backgroundColor: C.primary, borderRadius: 10,
+      paddingHorizontal: 20, paddingVertical: 12, minHeight: 44,
+    },
+    emptyCtaText: { color: C.onAccent, fontWeight: '700', fontSize: 14 },
     retryBtn: { marginTop: 14, backgroundColor: C.primary, borderRadius: 10, paddingHorizontal: 20, paddingVertical: 12, minHeight: 44, justifyContent: 'center' },
     retryBtnText: { color: C.onAccent, fontWeight: '700', fontSize: 14 },
     emptyHint: { alignItems: 'center', paddingTop: 40, gap: 12 },

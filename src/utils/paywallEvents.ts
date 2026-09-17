@@ -130,11 +130,36 @@ export function recordPurchaseTapped(plan: string, hasTrial: boolean): void {
  * トライアル付きのsuccessは trial_started としても別途送り、
  * RevenueCatのActive Trialsと突き合わせられるようにする。
  */
-export function recordPurchaseResult(result: string, plan: string, hasTrial: boolean): void {
-  track('purchase_result', { paywall_result: result, paywall_plan: plan });
+export function recordPurchaseResult(result: string, plan: string, hasTrial: boolean, errorCode?: string | null): void {
+  track('purchase_result', {
+    paywall_result: result,
+    paywall_plan: plan,
+    // 失敗の内訳が分からないと、価格の議論より先にやることがあるのかすら判断できない。
+    ...(errorCode ? { paywall_error_code: errorCode } : {}),
+  });
   if (result === 'success') {
     track(hasTrial ? 'trial_started' : 'purchase_completed', { paywall_plan: plan });
   }
+}
+
+/**
+ * 「購入を復元」の計測。
+ *
+ * **2026-09-17 まで復元経路にはイベントが1つも無かった。** 機種変更や再インストール
+ * をした課金済みユーザーが復元できずに無料扱いのまま放置されても、Sentry には何も
+ * 残らない。CLAUDE.md が収益と評価に直結する最悪ケースと位置づけている経路なのに、
+ * そこだけ観測が無いという状態だった。
+ */
+export function recordRestoreTapped(source: 'paywall' | 'settings'): void {
+  track('restore_tapped', { paywall_source: source });
+}
+
+export function recordRestoreResult(source: 'paywall' | 'settings', result: string, errorCode?: string | null): void {
+  track('restore_result', {
+    paywall_source: source,
+    paywall_result: result,
+    ...(errorCode ? { paywall_error_code: errorCode } : {}),
+  });
 }
 
 /** ペイウォールを購入せずに閉じたときに呼ぶ */

@@ -10,7 +10,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import Purchases, {
   type PurchasesPackage, PACKAGE_TYPE, INTRO_ELIGIBILITY_STATUS,
 } from 'react-native-purchases';
-import { usePurchaseStore } from '../src/store/purchaseStore';
+import { usePurchaseStore, getLastPurchaseErrorCode } from '../src/store/purchaseStore';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t } from '../src/i18n';
@@ -20,6 +20,8 @@ import { monthlyEquivalent, annualDiscountPct, trialLabel } from '../src/utils/p
 import {
   recordPaywallViewed, recordPaywallNoPackages, recordPurchaseTapped,
   recordPurchaseResult, recordPaywallDismissed,
+  recordRestoreTapped,
+  recordRestoreResult,
 } from '../src/utils/paywallEvents';
 
 // 機能リスト（5項目に圧縮・i18n化）。propsやstateに依存しないためモジュールレベルの定数にする
@@ -154,7 +156,7 @@ export default function PaywallScreen() {
     const result = await purchase(selected);
     purchasingRef.current = false;
     // アンマウント後でも結果自体は計上する（UI更新のみスキップ）
-    recordPurchaseResult(result, plan, withTrial);
+    recordPurchaseResult(result, plan, withTrial, result === 'error' ? getLastPurchaseErrorCode() : null);
     if (!isMounted.current) return;
     setLoading(false);
     switch (result) {
@@ -180,10 +182,13 @@ export default function PaywallScreen() {
 
   const handleRestore = async () => {
     if (restoringRef.current) return;
+    recordRestoreTapped('paywall');
     restoringRef.current = true;
     setRestoring(true);
     const result = await restore();
     restoringRef.current = false;
+    // アンマウント後でも結果自体は計上する（購入と同じ扱い）
+    recordRestoreResult('paywall', result, result === 'error' ? getLastPurchaseErrorCode() : null);
     if (!isMounted.current) return;
     setRestoring(false);
     if (result === 'success') {

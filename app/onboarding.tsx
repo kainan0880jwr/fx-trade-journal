@@ -114,7 +114,11 @@ export default function OnboardingScreen() {
         <View style={s.choiceWrap}>
           <Text style={s.choiceTitle}>{t('onboarding_choice_title')}</Text>
 
-          <TouchableOpacity style={s.choiceCard} onPress={handleChooseRecord} activeOpacity={0.85}>
+          {/* 3択が同じ見た目だと、迷った人は「見てみる」を選ぶ。選んだ先は空の画面で、
+              アプリの価値（勝率・pipsの可視化）を一度も体験しないまま閉じる。
+              **インストール104人のうち初回の記録に到達したのは32人**（2026-09-17 の実測）で、
+              最大の離脱はここに集中している。記録への導線を主ボタンとして立てる。 */}
+          <TouchableOpacity style={[s.choiceCard, s.choiceCardPrimary]} onPress={handleChooseRecord} activeOpacity={0.85}>
             <View style={[s.choiceIcon, { backgroundColor: C.yellow + '20' }]}>
               <Ionicons name="flash" size={26} color={C.yellow} />
             </View>
@@ -257,6 +261,10 @@ function makeStyles(C: ThemeColors) {
       backgroundColor: C.card, borderRadius: 16, padding: 16,
       borderWidth: 1, borderColor: C.border,
     },
+    // 主導線。枠線をアクセント色にして厚みを足すだけに留める（塗り分けはしない）。
+    // カード内の文字色は choiceCard と共通なので、背景を変えるとコントラストの
+    // 検証（contrast.test.ts）の前提から外れてしまう。
+    choiceCardPrimary: { borderColor: C.primary, borderWidth: 2 },
     choiceIcon: {
       width: 48, height: 48, borderRadius: 24,
       alignItems: 'center', justifyContent: 'center',

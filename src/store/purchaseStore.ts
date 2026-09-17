@@ -60,6 +60,40 @@ function hasPremium(info: CustomerInfo): boolean {
   return ENTITLEMENT_IDS.some((id) => !!info.entitlements.active[id]);
 }
 
+/**
+ * 直近の購入・復元の失敗コード。ペイウォール側が計測タグに載せるために読む。
+ * 値は RevenueCat の PURCHASES_ERROR_CODE（有限の enum）なのでタグに安全。
+ */
+let lastPurchaseErrorCode: string | null = null;
+export function getLastPurchaseErrorCode(): string | null {
+  return lastPurchaseErrorCode;
+}
+
+/**
+ * 「決済は通ったのに PRO にならない」を観測できるようにする。
+ *
+ * この状態は**お金を払ったのに使えない**という最悪の体験で、しかも 2026-09-17 まで
+ * Sentry に一切残っていなかった。原因の切り分けに要るのは「どの entitlement が
+ * active だったか」— 空なら本当に購入履歴が無く、何か入っていれば
+ * `ENTITLEMENT_IDS` との不一致（ダッシュボードでの改名など）を疑える。
+ *
+ * **entitlement の ID は個人情報ではなく低カーディナリティ**なのでタグに載せてよい。
+ * 購入者の識別子やレシートは載せない。
+ */
+function reportNoEntitlement(source: 'purchase' | 'restore', info: CustomerInfo): void {
+  try {
+    const active = Object.keys(info.entitlements.active);
+    Sentry.captureMessage('purchase:no_entitlement', {
+      level: 'error',
+      tags: {
+        area: 'purchase',
+        purchase_source: source,
+        active_entitlements: active.length === 0 ? 'none' : active.join(','),
+      },
+    });
+  } catch { /* 計装の失敗は無視 */ }
+}
+
 // StrictModeの二重マウントやuseEffectの多重発火でも configure/リスナー登録が
 // 一度しか実行されないようにするモジュールレベルのガード。
 // configure()自体が失敗した場合は再試行できるようfalseに戻す。
@@ -94,7 +128,22 @@ export const usePurchaseStore = create<PurchaseStore>((set, get) => ({
 
     try {
       if (__DEV__) Purchases.setLogLevel(LOG_LEVEL.DEBUG);
-      Purchases.configure({ apiKey: RC_API_KEY });
+      Purchases.configure({
+        apiKey: RC_API_KEY,
+        // **Trusted Entitlements（応答の署名検証）。** 既定は DISABLED で、その場合
+        // RevenueCat の応答は TLS で守られるだけ。端末に自分で CA を入れてプロキシを
+        // 噛ませれば（脱獄不要・一般的な手口）`entitlements.active` を偽造でき、
+        // SDK がそれをキャッシュして以後オフラインでも PRO として動く。
+        // 影響は収益のみ（PRO機能は全て端末内の計算で、他人のデータには触れない）だが、
+        // **無料で塞げる穴を開けたままにする理由が無い。**
+        //
+        // まず INFORMATIONAL（検証するが失敗しても通す）で入れて、
+        // `customerInfo.entitlements.verification` の分布を観測する。
+        // いきなり ENFORCED にすると、検証失敗時に SDK がエラーを返し、
+        // purchase/restore が 'error' に落ちて**正規の購入者を締め出しうる**。
+        // 分布を見てから上げること。**ダッシュボード側の有効化も別途必要。**
+        entitlementVerificationMode: Purchases.ENTITLEMENT_VERIFICATION_MODE.INFORMATIONAL,
+      });
     } catch (e) {
       // configure失敗は完全に無記録だった。これが起きると getOfferings/purchase/restore が
       // すべて機能せず、課金済みユーザーは「復元」を押しても復旧できないまま
@@ -124,6 +173,12 @@ export const usePurchaseStore = create<PurchaseStore>((set, get) => ({
     // 購入状態変更リスナー（他デバイスでの購入・復元を反映）
     Purchases.addCustomerInfoUpdateListener((info) => {
       set({ isPremium: hasPremium(info) });
+      // 署名検証の結果を観測する。VERIFIED / FAILED / NOT_REQUESTED の3値で
+      // 低カーディナリティ。FAILED が実際に出るかを見てから ENFORCED を検討する。
+      try {
+        const v = (info as unknown as { entitlements?: { verification?: string } })?.entitlements?.verification;
+        if (v) Sentry.setTag('rc_verification', String(v));
+      } catch { /* 計装の失敗は無視 */ }
     });
   },
 
@@ -152,11 +207,20 @@ export const usePurchaseStore = create<PurchaseStore>((set, get) => ({
       const { customerInfo } = await Purchases.purchasePackage(pkg);
       const premium = hasPremium(customerInfo);
       set({ isPremium: premium });
+      if (!premium) reportNoEntitlement('purchase', customerInfo);
       return premium ? 'success' : 'no_entitlement';
     } catch (e) {
       const err = e as PurchasesError;
       if (err?.userCancelled === true) return 'cancelled';
       if (err?.code === PURCHASES_ERROR_CODE.PAYMENT_PENDING_ERROR) return 'pending';
+      // **`error` に潰すと原因が永久に分からない。** RevenueCat のエラーコードは
+      // 有限の enum（低カーディナリティ）なのでタグに載せて安全。原因ごとに
+      // 打ち手が全く違う — 例えば PURCHASE_NOT_ALLOWED_ERROR はスクリーンタイムで
+      // アプリ内課金が禁止されている状態で、何度試しても成功しない。
+      lastPurchaseErrorCode = String(err?.code ?? 'unknown');
+      try {
+        Sentry.captureException(e, { tags: { area: 'purchase', kind: 'purchase_failed', purchase_error_code: lastPurchaseErrorCode } });
+      } catch { /* 計装の失敗は無視 */ }
       return 'error';
     }
   },
@@ -167,8 +231,19 @@ export const usePurchaseStore = create<PurchaseStore>((set, get) => ({
       const info = await Purchases.restorePurchases();
       const premium = hasPremium(info);
       set({ isPremium: premium });
+      if (!premium) {
+        // 「決済は通っているのに PRO にならない」は最悪の体験で、CLAUDE.md も
+        // 収益と評価に直結すると書いている。どの entitlement が active だったかを
+        // 残す — 空なら本当に購入履歴が無い、何か入っていれば ID の不一致を疑える。
+        reportNoEntitlement('restore', info);
+      }
       return premium ? 'success' : 'no_entitlement';
-    } catch {
+    } catch (e) {
+      const err = e as PurchasesError;
+      lastPurchaseErrorCode = String(err?.code ?? 'unknown');
+      try {
+        Sentry.captureException(e, { tags: { area: 'purchase', kind: 'restore_failed', purchase_error_code: lastPurchaseErrorCode } });
+      } catch { /* 計装の失敗は無視 */ }
       return 'error';
     }
   },

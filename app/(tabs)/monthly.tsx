@@ -22,6 +22,7 @@ import type { Trade } from '../../src/types';
 import { t, tArr, lang } from '../../src/i18n';
 import { formatWinRate, formatPips } from '../../src/utils/formatStats';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { formatPF } from '../../src/utils/calendarMetrics';
 import { formatMoney } from '../../src/utils/formatMoney';
 
@@ -234,6 +235,17 @@ export default function MonthlyScreen() {
           <View style={styles.empty}>
             <Ionicons name="calendar-outline" size={52} color={C.text3} />
             <Text style={styles.emptyText}>{t('empty_monthly')}</Text>
+            {/* stats.tsx と同じ理由。行き止まりを作らない。 */}
+            <TouchableOpacity
+              style={styles.emptyCta}
+              onPress={() => router.push('/trade/new')}
+              activeOpacity={0.85}
+              accessibilityRole="button"
+              accessibilityLabel={t('add_trade')}
+            >
+              <Ionicons name="add" size={18} color={C.onAccent} />
+              <Text style={styles.emptyCtaText}>{t('add_trade')}</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <>
@@ -766,6 +778,12 @@ function makeStyles(C: ThemeColors, isTablet = false) {
 
     scroll: { padding: ph, paddingBottom: 40 },
     empty: { alignItems: 'center', paddingTop: 60 },
+    emptyCta: {
+      flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 18,
+      backgroundColor: C.primary, borderRadius: 10,
+      paddingHorizontal: 20, paddingVertical: 12, minHeight: 44,
+    },
+    emptyCtaText: { color: C.onAccent, fontWeight: '700', fontSize: 14 },
     emptyText: { fontSize: 14, color: C.text2, marginTop: 14, textAlign: 'center' },
 
     row3: { flexDirection: 'row', gap: 12, marginBottom: 16 },

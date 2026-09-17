@@ -34,7 +34,17 @@ export enum PURCHASES_ERROR_CODE {
   PAYMENT_PENDING_ERROR = '20',
 }
 
+// 応答の署名検証モード。実SDKでは Purchases.ENTITLEMENT_VERIFICATION_MODE として
+// 静的プロパティに載っており、configure に渡す値をここから取る。
+// モックに無いと purchaseStore の initialize が例外で落ちる（実際に落とした）。
+export enum ENTITLEMENT_VERIFICATION_MODE {
+  DISABLED = 'DISABLED',
+  INFORMATIONAL = 'INFORMATIONAL',
+  ENFORCED = 'ENFORCED',
+}
+
 const Purchases = {
+  ENTITLEMENT_VERIFICATION_MODE,
   configure: jest.fn(),
   setLogLevel: jest.fn(),
   getCustomerInfo: jest.fn(),

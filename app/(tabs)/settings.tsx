@@ -14,7 +14,8 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import { useTradeStore } from '../../src/store/tradeStore';
-import { usePurchaseStore } from '../../src/store/purchaseStore';
+import { usePurchaseStore, getLastPurchaseErrorCode } from '../../src/store/purchaseStore';
+import { recordRestoreTapped, recordRestoreResult } from '../../src/utils/paywallEvents';
 import { recordFirstTradeSaved } from '../../src/utils/retentionEvents';
 import { generateId } from '../../src/utils/statsCalc';
 import { getAllTrades, getSetting, setSetting } from '../../src/db/queries';
@@ -569,9 +570,11 @@ export default function SettingsScreen() {
   // ロック機能を踏んでペイウォールに到達しないと復元できなかった。
   const handleRestore = async () => {
     if (restoring) return;
+    recordRestoreTapped('settings');
     setRestoring(true);
     try {
       const result = await restore();
+      recordRestoreResult('settings', result, result === 'error' ? getLastPurchaseErrorCode() : null);
       if (result === 'success') Alert.alert(t('restore_success_title'), t('restore_success_msg'));
       else if (result === 'no_entitlement') Alert.alert(t('restore_fail_title'), t('restore_fail_msg'));
       else Alert.alert(t('restore_error_title'), t('restore_error_msg'));
