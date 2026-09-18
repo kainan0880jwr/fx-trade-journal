@@ -610,7 +610,7 @@ export const id: LangStrings = {
   paywall_feature_analytics: 'Semua tab analisis (waktu, rasio risiko/hasil, kurva ekuitas, dll.)',
   paywall_feature_insights: 'Insight bulanan, statistik mingguan & laporan tahunan',
   paywall_feature_images: 'Lampirkan hingga 3 gambar chart per trade',
-  paywall_feature_mental: 'Catatan kondisi mental, catatan multi-timeframe & cek kepatuhan aturan',
+  paywall_feature_mental: 'Catatan kondisi mental & catatan multi-timeframe',
   paywall_feature_extras: 'Bookmark, badge, kalkulator lot & berbagi tanpa watermark',
   paywall_per_month: '/bln',
   paywall_legal_charge: 'Pembayaran dibebankan ke akun {store} Anda.',
@@ -628,7 +628,7 @@ export const id: LangStrings = {
   paywall_discount_badge: 'Hemat {pct}% dibanding bulanan',
 
   // Form (dehard-coded)
-  form_premium_hint: 'Buka catatan MTF, pelacakan mental & cek aturan dengan PRO',
+  form_premium_hint: 'Buka catatan MTF & pelacakan mental dengan PRO',
   discard_title: 'Buang perubahan?',
   discard_message: 'Entri yang belum disimpan akan hilang.',
   form_mode_switch_discard_msg: "Beralih ke entri cepat akan menghapus yang Anda isi di entri detail (harga, tag, gambar, catatan). Tetap beralih?",

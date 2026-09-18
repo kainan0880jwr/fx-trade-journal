@@ -610,7 +610,7 @@ export const fr: LangStrings = {
   paywall_feature_analytics: "Tous les onglets d'analyse (heure de la journée, ratio risque/rendement, courbe d'équité, etc.)",
   paywall_feature_insights: "Insights mensuels, statistiques hebdomadaires et rapport annuel",
   paywall_feature_images: "Joignez jusqu'à 3 images de graphique par trade",
-  paywall_feature_mental: "Journal de l'état mental, notes multi-unités de temps et vérifications de règles",
+  paywall_feature_mental: "Journal de l'état mental et notes multi-unités de temps",
   paywall_feature_extras: "Favoris, badges, calculatrice de lot et partage sans filigrane",
   paywall_per_month: "/mois",
   paywall_legal_charge: "Le paiement sera prélevé sur votre compte {store}.",
@@ -628,7 +628,7 @@ export const fr: LangStrings = {
   paywall_discount_badge: "Économisez {pct} % par rapport au mensuel",
 
   // Form (dehard-coded)
-  form_premium_hint: "Débloquez les notes multi-unités de temps, le suivi mental et les vérifications de règles avec PRO",
+  form_premium_hint: "Débloquez les notes multi-unités de temps et le suivi mental avec PRO",
   discard_title: "Abandonner les modifications ?",
   discard_message: "Votre saisie non enregistrée sera perdue.",
   form_mode_switch_discard_msg: "Passer à la saisie rapide supprimera ce que vous avez saisi en mode détaillé (cours, tags, images, notes). Continuer ?",

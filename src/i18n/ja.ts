@@ -608,7 +608,7 @@ export const ja = {
   paywall_feature_analytics: '全分析タブ（時間帯別・リスクリワード比・資産推移など）',
   paywall_feature_insights: '月次インサイト・週次集計・年間レポート',
   paywall_feature_images: 'チャート画像3枚添付',
-  paywall_feature_mental: 'メンタル記録・複数時間足のメモ・ルール遵守チェック',
+  paywall_feature_mental: 'メンタル記録・複数時間足のメモ',
   paywall_feature_extras: 'ブックマーク・バッジ・ロット計算機・シェア画像の透かし除去',
   paywall_per_month: '/月',
   paywall_legal_charge: '購入は{store}アカウントに課金されます。',
@@ -626,7 +626,7 @@ export const ja = {
   paywall_discount_badge: '月払いより{pct}%お得',
 
   // フォーム（ハードコード解消）
-  form_premium_hint: 'PROでMTFメモ・メンタル・ルールが使えます',
+  form_premium_hint: 'PROでMTFメモ・メンタル記録が使えます',
   discard_title: '入力内容を破棄しますか？',
   discard_message: '記録途中の内容は保存されません。',
   form_mode_switch_discard_msg: "クイック入力に切り替えると、詳細入力で入力した内容（レート・タグ・画像・振り返りなど）は保存されません。切り替えますか？",

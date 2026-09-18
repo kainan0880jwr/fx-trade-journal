@@ -610,7 +610,7 @@ export const es: LangStrings = {
   paywall_feature_analytics: "Todas las pestañas de análisis (hora del día, ratio riesgo/beneficio, curva de equidad, etc.)",
   paywall_feature_insights: "Insights mensuales, estadísticas semanales e informe anual",
   paywall_feature_images: "Adjunta hasta 3 imágenes de gráfico por operación",
-  paywall_feature_mental: "Registro de estado mental, notas multi-marco temporal y verificaciones de cumplimiento de reglas",
+  paywall_feature_mental: "Registro de estado mental y notas multi-marco temporal",
   paywall_feature_extras: "Marcadores, insignias, calculadora de lotes y uso compartido sin marca de agua",
   paywall_per_month: "/mes",
   paywall_legal_charge: "El pago se cargará a tu cuenta de {store}.",
@@ -628,7 +628,7 @@ export const es: LangStrings = {
   paywall_discount_badge: "Ahorra {pct} % frente al mensual",
 
   // Form (dehard-coded)
-  form_premium_hint: "Desbloquea notas multi-marco temporal, seguimiento mental y verificaciones de reglas con PRO",
+  form_premium_hint: "Desbloquea notas multi-marco temporal y seguimiento mental con PRO",
   discard_title: "¿Descartar cambios?",
   discard_message: "Se perderá tu entrada no guardada.",
   form_mode_switch_discard_msg: "Cambiar a la entrada rápida descartará lo que introdujiste en la entrada detallada (precios, etiquetas, imágenes, notas). ¿Cambiar igualmente?",

@@ -610,7 +610,7 @@ export const hi: LangStrings = {
   paywall_feature_analytics: 'सभी विश्लेषण टैब (समय, जोखिम/लाभ अनुपात, इक्विटी कर्व, आदि)',
   paywall_feature_insights: 'मासिक इनसाइट्स, साप्ताहिक आंकड़े और वार्षिक रिपोर्ट',
   paywall_feature_images: 'प्रति ट्रेड अधिकतम 3 चार्ट इमेज संलग्न करें',
-  paywall_feature_mental: 'मानसिक स्थिति लॉग, मल्टी-टाइमफ्रेम नोट्स और नियम अनुपालन जांच',
+  paywall_feature_mental: 'मानसिक स्थिति लॉग और मल्टी-टाइमफ्रेम नोट्स',
   paywall_feature_extras: 'बुकमार्क, बैज, लॉट कैलकुलेटर और वॉटरमार्क-फ्री शेयरिंग',
   paywall_per_month: '/माह',
   paywall_legal_charge: 'भुगतान आपके {store} खाते में लिया जाएगा।',
@@ -628,7 +628,7 @@ export const hi: LangStrings = {
   paywall_discount_badge: 'मासिक की तुलना में {pct}% बचाएं',
 
   // Form (dehard-coded)
-  form_premium_hint: 'PRO के साथ MTF नोट्स, मानसिक ट्रैकिंग और नियम जांच अनलॉक करें',
+  form_premium_hint: 'PRO के साथ MTF नोट्स और मानसिक ट्रैकिंग अनलॉक करें',
   discard_title: 'बदलाव छोड़ें?',
   discard_message: 'आपकी सेव न की गई एंट्री खो जाएगी।',
   form_mode_switch_discard_msg: "क्विक एंट्री पर जाने से विस्तृत एंट्री में भरी गई जानकारी (रेट, टैग, इमेज, नोट्स) सहेजी नहीं जाएगी। फिर भी बदलें?",

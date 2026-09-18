@@ -610,7 +610,7 @@ export const it: LangStrings = {
   paywall_feature_analytics: "Tutte le schede di analisi (ora del giorno, rapporto rischio/rendimento, curva equity, ecc.)",
   paywall_feature_insights: "Insights mensili, statistiche settimanali e report annuale",
   paywall_feature_images: "Allega fino a 3 immagini del grafico per operazione",
-  paywall_feature_mental: "Registro dello stato mentale, note multi-timeframe e controlli di rispetto delle regole",
+  paywall_feature_mental: "Registro dello stato mentale e note multi-timeframe",
   paywall_feature_extras: "Preferiti, badge, calcolatore di lotto e condivisione senza filigrana",
   paywall_per_month: "/mese",
   paywall_legal_charge: "Il pagamento verrà addebitato sul tuo account {store}.",
@@ -628,7 +628,7 @@ export const it: LangStrings = {
   paywall_discount_badge: "Risparmia il {pct}% rispetto al mensile",
 
   // Form (dehard-coded)
-  form_premium_hint: "Sblocca note multi-timeframe, monitoraggio mentale e controlli delle regole con PRO",
+  form_premium_hint: "Sblocca note multi-timeframe e monitoraggio mentale con PRO",
   discard_title: "Scartare le modifiche?",
   discard_message: "La voce non salvata andrà persa.",
   form_mode_switch_discard_msg: "Passando all’inserimento rapido perderai quanto inserito in quello dettagliato (prezzi, tag, immagini, note). Cambiare comunque?",

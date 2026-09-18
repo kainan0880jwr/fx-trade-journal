@@ -610,7 +610,7 @@ export const de: LangStrings = {
   paywall_feature_analytics: 'Alle Analyse-Tabs (Tageszeit, Risiko-Rendite-Verhältnis, Equity-Kurve usw.)',
   paywall_feature_insights: 'Monatliche Insights, wöchentliche Statistiken & Jahresbericht',
   paywall_feature_images: 'Füge bis zu 3 Chart-Bilder pro Trade hinzu',
-  paywall_feature_mental: 'Mentalzustand-Protokoll, Notizen über mehrere Zeitrahmen & Regeltreue-Prüfungen',
+  paywall_feature_mental: 'Mentalzustand-Protokoll & Notizen über mehrere Zeitrahmen',
   paywall_feature_extras: 'Lesezeichen, Abzeichen, Lot-Rechner & Teilen ohne Wasserzeichen',
   paywall_per_month: '/Monat',
   paywall_legal_charge: 'Die Zahlung wird deinem {store}-Konto belastet.',
@@ -628,7 +628,7 @@ export const de: LangStrings = {
   paywall_discount_badge: '{pct}% günstiger als monatlich',
 
   // Form (dehard-coded)
-  form_premium_hint: 'Schalte Multi-Timeframe-Notizen, Mental-Tracking & Regelprüfungen mit PRO frei',
+  form_premium_hint: 'Schalte Multi-Timeframe-Notizen & Mental-Tracking mit PRO frei',
   discard_title: 'Änderungen verwerfen?',
   discard_message: 'Dein nicht gespeicherter Eintrag geht verloren.',
   form_mode_switch_discard_msg: "Beim Wechsel zur Schnelleingabe gehen die in der Detaileingabe erfassten Angaben (Kurse, Tags, Bilder, Notizen) verloren. Trotzdem wechseln?",

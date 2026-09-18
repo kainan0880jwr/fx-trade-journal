@@ -610,7 +610,7 @@ export const tr: LangStrings = {
   paywall_feature_analytics: 'Tüm analiz sekmeleri (gün içi saat, risk/getiri oranı, özkaynak eğrisi vb.)',
   paywall_feature_insights: 'Aylık içgörüler, haftalık istatistikler ve yıllık rapor',
   paywall_feature_images: 'İşlem başına en fazla 3 grafik görseli ekleyin',
-  paywall_feature_mental: 'Mental durum kaydı, çoklu zaman dilimi notları ve kural uyum kontrolleri',
+  paywall_feature_mental: 'Mental durum kaydı ve çoklu zaman dilimi notları',
   paywall_feature_extras: 'Yer imleri, rozetler, lot hesaplayıcı ve filigransız paylaşım',
   paywall_per_month: '/ay',
   paywall_legal_charge: 'Ödeme {store} hesabınıza yansıtılır.',
@@ -628,7 +628,7 @@ export const tr: LangStrings = {
   paywall_discount_badge: 'Aylığa göre %{pct} tasarruf',
 
   // Form (dehard-coded)
-  form_premium_hint: 'PRO ile MTF notları, mental takip ve kural kontrollerinin kilidini açın',
+  form_premium_hint: 'PRO ile MTF notları ve mental takibin kilidini açın',
   discard_title: 'Değişiklikler silinsin mi?',
   discard_message: 'Kaydedilmemiş girişiniz kaybolacak.',
   form_mode_switch_discard_msg: "Hızlı girişe geçmek, ayrıntılı girişte yazdıklarınızı (fiyatlar, etiketler, görseller, notlar) silecek. Yine de geçilsin mi?",

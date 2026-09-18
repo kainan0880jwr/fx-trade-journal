@@ -156,6 +156,32 @@ describe('LP 11言語', () => {
       const missing = [...new Set(links)].filter((l) => !readdirSync(ROOT).includes(l));
       expect({ file, missing }).toEqual({ file, missing: [] });
     });
+
+    it('PRO の機能一覧がルール遵守チェックを挙げていない', () => {
+      // `RuleChecklist`（app/trade/new.tsx）は `isPremium` を見ておらず、無料で使える。
+      // それを PRO の売りとして並べると、買った人が「前から使えたのでは」となる。
+      // アプリ内文言側は src/i18n/__tests__/proFeatureClaims.test.ts が同じ検査をしている。
+      const card = html.match(/<ul class="price-list">[\s\S]*?<\/ul>\s*<a class="btn btn-primary"/);
+      expect({ file, found: card !== null }).toEqual({ file, found: true });
+      const words = ['ルール', 'rule', 'regel', 'regla', 'règle', 'regol', 'regra', 'kural', 'नियम', 'quy tắc', 'aturan'];
+      const lower = card![0].toLowerCase();
+      const hit = words.find((w) => lower.includes(w)) ?? null;
+      expect({ file, hit }).toEqual({ file, hit: null });
+    });
+
+    it('年額の割引表記がアプリと同じ計算（切り捨て）になっている', () => {
+      // アプリは実際のストア価格から `Math.floor((1 - 月換算/月額) * 100)` を出す
+      // （src/utils/paywallCalc.ts の annualDiscountPct）。LP がそれより大きい数字を
+      // 出すと、同じ人に別の割引率を見せることになり、切り上げ側の誇張にもなる。
+      // 価格を変えたら表記も自動で追随させるため、LP 自身の価格から計算して比べる。
+      const prices = [...html.matchAll(/pp-value mono">([^<]+)</g)].map((m) => Number(m[1].replace(/[^\d]/g, '')));
+      expect({ file, prices }).toEqual({ file, prices: [expect.any(Number), expect.any(Number)] });
+      const [monthly, yearly] = prices;
+      const expected = Math.floor((1 - yearly / 12 / monthly) * 100);
+      const claimed = html.match(/<span class="pp-label">[^<]*<em>([^<]*)<\/em>/)?.[1] ?? '';
+      const claimedPct = Number(claimed.replace(/[^\d]/g, ''));
+      expect({ file, claimed, claimedPct, expected }).toEqual({ file, claimed, claimedPct: expected, expected });
+    });
   });
 
   it('全11ファイルでセクションの骨格（class と id）が一致する', () => {

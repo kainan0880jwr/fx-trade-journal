@@ -610,7 +610,7 @@ export const en: LangStrings = {
   paywall_feature_analytics: 'All analysis tabs (time of day, risk/reward ratio, equity curve, etc.)',
   paywall_feature_insights: 'Monthly insights, weekly stats & yearly report',
   paywall_feature_images: 'Attach up to 3 chart images per trade',
-  paywall_feature_mental: 'Mental state log, notes across multiple timeframes & rule-compliance checks',
+  paywall_feature_mental: 'Mental state log & notes across multiple timeframes',
   paywall_feature_extras: 'Bookmarks, badges, lot calculator & watermark-free sharing',
   paywall_per_month: '/mo',
   paywall_legal_charge: 'Payment charged to your {store} account.',
@@ -628,7 +628,7 @@ export const en: LangStrings = {
   paywall_discount_badge: 'Save {pct}% vs monthly',
 
   // Form (dehard-coded)
-  form_premium_hint: 'Unlock MTF notes, mental tracking & rule checks with PRO',
+  form_premium_hint: 'Unlock MTF notes & mental tracking with PRO',
   discard_title: 'Discard changes?',
   discard_message: 'Your unsaved entry will be lost.',
   form_mode_switch_discard_msg: "Switching to Quick entry will discard what you entered in Detailed entry (rates, tags, images, notes). Switch anyway?",
