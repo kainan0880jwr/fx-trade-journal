@@ -611,7 +611,7 @@ export const id: LangStrings = {
   paywall_feature_insights: 'Insight bulanan, statistik mingguan & laporan tahunan',
   paywall_feature_images: 'Lampirkan hingga 3 gambar chart per trade',
   paywall_feature_mental: 'Catatan kondisi mental & catatan multi-timeframe',
-  paywall_feature_extras: 'Bookmark, badge, kalkulator lot & berbagi tanpa watermark',
+  paywall_feature_extras: 'Daftar bookmark & berbagi tanpa watermark',
   paywall_per_month: '/bln',
   paywall_legal_charge: 'Pembayaran dibebankan ke akun {store} Anda.',
   paywall_legal_renewal_ios: 'Langganan diperpanjang otomatis kecuali dibatalkan 24 jam sebelum akhir setiap periode.',

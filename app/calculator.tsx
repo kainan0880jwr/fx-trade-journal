@@ -7,7 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useSettingsStore } from '../src/store/settingsStore';
-import PremiumGate from '../src/components/PremiumGate';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t, lang } from '../src/i18n';
@@ -64,7 +63,6 @@ export default function CalculatorScreen() {
   }
 
   return (
-    <PremiumGate feature={t('calculator_title')} featureKey="calculator">
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
@@ -165,7 +163,6 @@ export default function CalculatorScreen() {
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-    </PremiumGate>
   );
 }
 

@@ -633,7 +633,6 @@ export default function SettingsScreen() {
           <View style={{ flex: 1, marginLeft: 12 }}>
             <View style={styles.rowTitleWrap}>
               <Text style={styles.exportTitle}>{t('settings_badges')}</Text>
-              {!isPremium && <Text style={styles.proTag}>{t('premium_badge')}</Text>}
             </View>
             <Text style={styles.exportSub}>{t('settings_badges_sub')}</Text>
           </View>
@@ -907,7 +906,6 @@ export default function SettingsScreen() {
           <View style={{ flex: 1, marginLeft: 12 }}>
             <View style={styles.rowTitleWrap}>
               <Text style={styles.calcTitle}>{t('settings_calculator')}</Text>
-              {!isPremium && <Text style={styles.proTag}>{t('premium_badge')}</Text>}
             </View>
             <Text style={styles.calcSubtitle}>{t('settings_calculator_sub')}</Text>
           </View>
@@ -1198,7 +1196,6 @@ function makeStyles(C: ThemeColors) {
     exportTitle: { fontSize: 15, fontWeight: '700', color: C.text },
     exportSub: { fontSize: 12, color: C.text2, marginTop: 2 },
     rowTitleWrap: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-    proTag: { fontSize: 10, fontWeight: '800', color: C.primary, letterSpacing: 1, backgroundColor: C.primary + '18', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 6 },
     notifNote: { fontSize: 13, color: C.text2, lineHeight: 20 },
     notifRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
     notifLabel: { fontSize: 14, color: C.text },

@@ -71,6 +71,18 @@ describe('PRO の訴求文言と実際のゲート', () => {
     expect(proSection(formSource)).not.toContain('RuleChecklist');
   });
 
+  // 2026-09-19 に無料へ降ろした。PRO が11個の雑多な小機能の袋になっており、
+  // ロット計算機と実績バッジは課金理由になりにくい一方、毎日触る道具・継続の
+  // 動機付けとして無料側にある方が働く、という判断（output/paywall-review-20260917.md）。
+  // 「PRO に戻す」のは経営判断なのでテストでは禁じないが、**黙って戻ること**は止める。
+  it.each([
+    ['app/calculator.tsx', 'ロット計算機'],
+    ['app/badges.tsx', '実績バッジ'],
+  ])('%s（%s）に PremiumGate が掛かっていない', file => {
+    const source = readFileSync(join(ROOT, file), 'utf8');
+    expect(source).not.toContain('<PremiumGate');
+  });
+
   it.each(LOCALES)('%s: PRO の訴求文言がルール遵守チェックを挙げていない', locale => {
     const source = readFileSync(join(ROOT, 'src', 'i18n', `${locale}.ts`), 'utf8');
     for (const key of PRO_CLAIM_KEYS) {

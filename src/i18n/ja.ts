@@ -609,7 +609,7 @@ export const ja = {
   paywall_feature_insights: '月次インサイト・週次集計・年間レポート',
   paywall_feature_images: 'チャート画像3枚添付',
   paywall_feature_mental: 'メンタル記録・複数時間足のメモ',
-  paywall_feature_extras: 'ブックマーク・バッジ・ロット計算機・シェア画像の透かし除去',
+  paywall_feature_extras: 'ブックマーク一覧・シェア画像の透かし除去',
   paywall_per_month: '/月',
   paywall_legal_charge: '購入は{store}アカウントに課金されます。',
   paywall_legal_renewal_ios: 'サブスクリプションは期間終了の24時間前までに解約しない限り自動更新されます。',

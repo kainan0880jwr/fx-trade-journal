@@ -611,7 +611,7 @@ export const de: LangStrings = {
   paywall_feature_insights: 'Monatliche Insights, wöchentliche Statistiken & Jahresbericht',
   paywall_feature_images: 'Füge bis zu 3 Chart-Bilder pro Trade hinzu',
   paywall_feature_mental: 'Mentalzustand-Protokoll & Notizen über mehrere Zeitrahmen',
-  paywall_feature_extras: 'Lesezeichen, Abzeichen, Lot-Rechner & Teilen ohne Wasserzeichen',
+  paywall_feature_extras: 'Lesezeichen-Liste & Teilen ohne Wasserzeichen',
   paywall_per_month: '/Monat',
   paywall_legal_charge: 'Die Zahlung wird deinem {store}-Konto belastet.',
   paywall_legal_renewal_ios: 'Das Abo verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ablauf des jeweiligen Zeitraums gekündigt wird.',

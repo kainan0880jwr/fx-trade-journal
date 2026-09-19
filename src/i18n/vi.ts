@@ -611,7 +611,7 @@ export const vi: LangStrings = {
   paywall_feature_insights: 'Thông tin chi tiết hàng tháng, thống kê hàng tuần & báo cáo hàng năm',
   paywall_feature_images: 'Đính kèm tối đa 3 ảnh biểu đồ mỗi giao dịch',
   paywall_feature_mental: 'Nhật ký trạng thái tâm lý & ghi chú đa khung thời gian',
-  paywall_feature_extras: 'Đánh dấu, huy hiệu, máy tính lot & chia sẻ không watermark',
+  paywall_feature_extras: 'Danh sách đánh dấu & chia sẻ không watermark',
   paywall_per_month: '/tháng',
   paywall_legal_charge: 'Thanh toán được tính vào tài khoản {store} của bạn.',
   paywall_legal_renewal_ios: 'Đăng ký tự động gia hạn trừ khi bị hủy trước 24 giờ khi kết thúc mỗi kỳ.',

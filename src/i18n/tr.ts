@@ -611,7 +611,7 @@ export const tr: LangStrings = {
   paywall_feature_insights: 'Aylık içgörüler, haftalık istatistikler ve yıllık rapor',
   paywall_feature_images: 'İşlem başına en fazla 3 grafik görseli ekleyin',
   paywall_feature_mental: 'Mental durum kaydı ve çoklu zaman dilimi notları',
-  paywall_feature_extras: 'Yer imleri, rozetler, lot hesaplayıcı ve filigransız paylaşım',
+  paywall_feature_extras: 'Yer imi listesi ve filigransız paylaşım',
   paywall_per_month: '/ay',
   paywall_legal_charge: 'Ödeme {store} hesabınıza yansıtılır.',
   paywall_legal_renewal_ios: 'Abonelik, her dönemin bitiminden 24 saat önce iptal edilmedikçe otomatik olarak yenilenir.',

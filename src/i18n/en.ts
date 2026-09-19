@@ -611,7 +611,7 @@ export const en: LangStrings = {
   paywall_feature_insights: 'Monthly insights, weekly stats & yearly report',
   paywall_feature_images: 'Attach up to 3 chart images per trade',
   paywall_feature_mental: 'Mental state log & notes across multiple timeframes',
-  paywall_feature_extras: 'Bookmarks, badges, lot calculator & watermark-free sharing',
+  paywall_feature_extras: 'Bookmark list & watermark-free sharing',
   paywall_per_month: '/mo',
   paywall_legal_charge: 'Payment charged to your {store} account.',
   paywall_legal_renewal_ios: 'Subscription auto-renews unless cancelled 24 hours before the end of each period.',

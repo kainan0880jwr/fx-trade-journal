@@ -6,7 +6,6 @@ import { router } from 'expo-router';
 import { useTradeStore } from '../src/store/tradeStore';
 import { calcBadges, nearlyUnlocked, type UnlockedBadge } from '../src/utils/badges';
 import { useSettingsStore } from '../src/store/settingsStore';
-import PremiumGate from '../src/components/PremiumGate';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t } from '../src/i18n';
@@ -53,7 +52,6 @@ export default function BadgesScreen() {
   const filtered = filter === 'all' ? badges : badges.filter(b => b.category === filter);
 
   return (
-    <PremiumGate feature={t('settings_badges')} featureKey="badges">
     <SafeAreaView style={s.container} edges={['top', 'bottom']}>
       <View style={s.header}>
         <Ionicons name="trophy-outline" size={28} color={C.yellow} />
@@ -114,7 +112,6 @@ export default function BadgesScreen() {
         </View>
       </ScrollView>
     </SafeAreaView>
-    </PremiumGate>
   );
 }
 

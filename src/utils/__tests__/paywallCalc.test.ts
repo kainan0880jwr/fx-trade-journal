@@ -48,4 +48,21 @@ describe('annualDiscountPct', () => {
     const monthly = makePkg({ price: 580 });
     expect(annualDiscountPct(yearly, monthly)).toBeNull();
   });
+
+  // Apple の価格帯は国ごとに独立して割り当てられる。2026-09-19 に配信中の144か国を
+  // 照合したところ、日本で16%の設定がチリ・韓国・台湾・香港では 2〜13% だった。
+  // 「おすすめ」バッジとトライアル年額限定はそのままに、数値だけ黙らせる。
+  it('割引が小さすぎる（10%未満）ならnullを返す', () => {
+    // チリ相当: 月 2,990 / 年 34,990（月割 2,915.83）→ 2%
+    expect(annualDiscountPct(makePkg({ pricePerMonth: 34990 / 12 }), makePkg({ price: 2990 }))).toBeNull();
+    // 韓国相当: 月 4,400 / 年 49,000（月割 4,083.33）→ 7%
+    expect(annualDiscountPct(makePkg({ pricePerMonth: 49000 / 12 }), makePkg({ price: 4400 }))).toBeNull();
+    // 香港相当: 月 22 / 年 228（月割 19）→ 13%
+    expect(annualDiscountPct(makePkg({ pricePerMonth: 228 / 12 }), makePkg({ price: 22 }))).toBe(13);
+  });
+
+  it('ちょうど10%は出す（境界）', () => {
+    expect(annualDiscountPct(makePkg({ pricePerMonth: 90 }), makePkg({ price: 100 }))).toBe(10);
+    expect(annualDiscountPct(makePkg({ pricePerMonth: 91 }), makePkg({ price: 100 }))).toBeNull();
+  });
 });

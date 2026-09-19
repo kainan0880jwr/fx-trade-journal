@@ -611,7 +611,7 @@ export const fr: LangStrings = {
   paywall_feature_insights: "Insights mensuels, statistiques hebdomadaires et rapport annuel",
   paywall_feature_images: "Joignez jusqu'à 3 images de graphique par trade",
   paywall_feature_mental: "Journal de l'état mental et notes multi-unités de temps",
-  paywall_feature_extras: "Favoris, badges, calculatrice de lot et partage sans filigrane",
+  paywall_feature_extras: "Liste de favoris et partage sans filigrane",
   paywall_per_month: "/mois",
   paywall_legal_charge: "Le paiement sera prélevé sur votre compte {store}.",
   paywall_legal_renewal_ios: "L'abonnement se renouvelle automatiquement sauf annulation au moins 24 heures avant la fin de chaque période.",

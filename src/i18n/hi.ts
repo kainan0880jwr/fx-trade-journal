@@ -611,7 +611,7 @@ export const hi: LangStrings = {
   paywall_feature_insights: 'मासिक इनसाइट्स, साप्ताहिक आंकड़े और वार्षिक रिपोर्ट',
   paywall_feature_images: 'प्रति ट्रेड अधिकतम 3 चार्ट इमेज संलग्न करें',
   paywall_feature_mental: 'मानसिक स्थिति लॉग और मल्टी-टाइमफ्रेम नोट्स',
-  paywall_feature_extras: 'बुकमार्क, बैज, लॉट कैलकुलेटर और वॉटरमार्क-फ्री शेयरिंग',
+  paywall_feature_extras: 'बुकमार्क सूची और वॉटरमार्क-फ्री शेयरिंग',
   paywall_per_month: '/माह',
   paywall_legal_charge: 'भुगतान आपके {store} खाते में लिया जाएगा।',
   paywall_legal_renewal_ios: 'हर अवधि के अंत से 24 घंटे पहले रद्द न किए जाने पर सब्सक्रिप्शन अपने आप रिन्यू हो जाती है।',
