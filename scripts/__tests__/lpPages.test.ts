@@ -464,8 +464,15 @@ describe('LP の料金表示', () => {
     for (const file of LP_FILES) {
       const html = read(file);
       if (file === 'index.html') continue;
+      // 金額そのものは日本語版と一致していれば良い（価格改定のたびに11ファイル＋
+      // このテストを直すのは、直し漏れを生むだけで守りにならない）。ここで見るのは
+      // 「JPY と明記され、桁区切りが , である」こと。金額の整合は
+      // 「年額の割引表記がアプリと同じ計算（切り捨て）になっている」が価格から計算して見る。
       const values = [...html.matchAll(/<span class="pp-value mono">([^<]*)/g)].map((m) => m[1]);
-      expect({ file, values }).toEqual({ file, values: ['JPY 500', 'JPY 5,000'] });
+      const jaValues = [...read('index.html').matchAll(/<span class="pp-value mono">([^<]*)/g)]
+        .map((m) => m[1].replace('¥', 'JPY '));
+      expect({ file, values }).toEqual({ file, values: jaValues });
+      for (const v of values) expect({ file, v, ok: /^JPY [0-9]{1,3}(,[0-9]{3})*$/.test(v) }).toEqual({ file, v, ok: true });
       // 注釈にも ¥ 表記の価格が残っていないこと（モックの損益 ¥3,920 は価格ではないので除く）
       const fineprint = html.match(/<p class="price-fineprint">[\s\S]*?<\/p>/)![0];
       expect({ file, yen: /¥[0-9]/.test(fineprint) }).toEqual({ file, yen: false });

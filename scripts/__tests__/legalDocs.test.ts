@@ -185,4 +185,22 @@ describe('Android の解約手順', () => {
     }
     expect(offenders).toEqual([]);
   });
+  it('特商法表記の販売価格が LP の価格カードと一致する', () => {
+    // 特商法11条の「販売価格」は法定表示で、実際の課金額と一致していなければならない。
+    // 2026-09-19 の年額改定（¥5,000 → ¥3,980）で tokushoho.html だけ更新から漏れており、
+    // 「LPは新価格・特商法は旧価格」という状態を一度作った。人力の突き合わせでは再発する。
+    const lp = readFileSync(join(ROOT, 'index.html'), 'utf8');
+    const [monthly, yearly] = [...lp.matchAll(/<span class="pp-value mono">¥([\d,]+)/g)].map((m) => m[1]);
+    expect({ monthly, yearly }).toEqual({ monthly: expect.any(String), yearly: expect.any(String) });
+
+    const tokushoho = readFileSync(join(ROOT, 'tokushoho.html'), 'utf8');
+    const prices = [...tokushoho.matchAll(/([\d,]+)円（税込）/g)].map((m) => m[1]);
+    expect({ prices, expected: [monthly, yearly] })
+      .toEqual({ prices: expect.arrayContaining([monthly, yearly]), expected: [monthly, yearly] });
+
+    // 旧価格が本文のどこかに残っていないこと（トライアル移行先の金額など）
+    const stale = [...tokushoho.matchAll(/([\d,]+)円/g)].map((m) => m[1])
+      .filter((p) => p !== monthly && p !== yearly);
+    expect({ stale }).toEqual({ stale: [] });
+  });
 });
