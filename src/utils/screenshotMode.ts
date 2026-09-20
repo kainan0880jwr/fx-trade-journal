@@ -22,6 +22,7 @@
  * まで立てる。本番経路から呼んでよいものではない。
  */
 import { useEffect } from 'react';
+import { create } from 'zustand';
 import { router } from 'expo-router';
 import { documentDirectory, readAsStringAsync, writeAsStringAsync } from 'expo-file-system/legacy';
 import { getDatabase } from '../db/database';
@@ -113,6 +114,32 @@ function parseGoto(raw: string): { token: string; route: string } | null {
   return { token: text, route: text.slice(sep + 1) };
 }
 
+/**
+ * 撮影スクリプトが指定した「画面の中の状態」（`stats?tab=time` の `tab` など）。
+ *
+ * **ルートのクエリをそのまま `useLocalSearchParams` で読む方式にしない。**
+ * `(tabs)` の画面は一度開くとマウントされたままなので、`useState` の初期値は
+ * 2回目以降の指定を受け取れない（4枚目で `tab=time`、5枚目で `tab=equity` を
+ * 撮りたいのに、5枚目が反映されない）。マウント済みの画面に同じルートで
+ * パラメータだけ変えて遷移したときにルータが params を更新するかどうかも、
+ * 実機で確かめるまで保証が無い。ここに写して購読させれば、その依存が消える。
+ */
+export const useScreenshotParams = create<{ params: Record<string, string> }>(() => ({ params: {} }));
+
+/** `stats?tab=time` を `{ route: 'stats', params: { tab: 'time' } }` に分ける。 */
+export function splitRoute(route: string): { route: string; params: Record<string, string> } {
+  const q = route.indexOf('?');
+  if (q < 0) return { route, params: {} };
+  const params: Record<string, string> = {};
+  for (const pair of route.slice(q + 1).split('&')) {
+    if (!pair) continue;
+    const eq = pair.indexOf('=');
+    const k = eq < 0 ? pair : pair.slice(0, eq);
+    params[decodeURIComponent(k)] = eq < 0 ? '' : decodeURIComponent(pair.slice(eq + 1));
+  }
+  return { route: route.slice(0, q), params };
+}
+
 export function useScreenshotNavigator(): void {
   useEffect(() => {
     // 撮影モード以外では何もしない。isScreenshotMode() は __DEV__ も見ているので、
@@ -129,8 +156,11 @@ export function useScreenshotNavigator(): void {
         const goto = parseGoto(raw);
         if (!goto || goto.token === lastToken) return;
         lastToken = goto.token;
+        // クエリは画面内の状態としてストアへ渡し、ルータにはパスだけを渡す。
+        const { route, params } = splitRoute(goto.route);
+        useScreenshotParams.setState({ params });
         // 空文字はホーム。expo-router の (tabs) はグループなので URL には出ない。
-        router.replace(('/' + goto.route) as never);
+        router.replace(('/' + route) as never);
         await writeAsStringAsync(documentDirectory + HERE_FILE, goto.token);
       } catch {
         // まだファイルが無いだけ。撮影スクリプトが最初の1件を書くまでは毎回ここに来る。

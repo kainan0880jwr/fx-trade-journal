@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { isScreenshotMode, useScreenshotParams } from '../../src/utils/screenshotMode';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, useWindowDimensions, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PieChart, LineChart } from 'react-native-chart-kit';
@@ -64,6 +65,15 @@ export default function MonthlyScreen() {
   const [shareVisible, setShareVisible] = useState(false);
   const [recordStreak, setRecordStreak] = useState(0);
   const navigation = useNavigation();
+
+  // 撮影スクリプトから共有カードを開くための口（`/monthly?share=1`）。
+  // **撮影モードのときだけ効く。** 本番でディープリンクからモーダルが勝手に
+  // 開くのは驚きでしかない。
+  const shotShare = useScreenshotParams(st => st.params.share);
+  useEffect(() => {
+    if (!isScreenshotMode()) return;
+    setShareVisible(shotShare === '1');
+  }, [shotShare]);
 
   useEffect(() => {
     getRecordStreak().then(setRecordStreak).catch(() => setRecordStreak(0));

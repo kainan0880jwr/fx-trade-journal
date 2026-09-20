@@ -42,15 +42,31 @@ GLOBAL_PLIST="$HOME/Library/Developer/CoreSimulator/Devices/$UDID/data/Library/P
 # 撮る画面と、それを開くディープリンク。順番がそのままファイル名の連番になり、
 # store.config.json での並び順（＝ストアでの表示順）になる。
 # expo-router の (tabs) はグループなので URL には出ない。
+# 並びの考え方（2026-09-20 に組み替え）:
+#   1〜3 は検索結果に出る位置。**ここに PRO を置かない。** 「何のアプリか」と
+#   「自分にも記録できそう」を伝える。実測で最大の減り所は初回記録の手前
+#   （first_open 138 → first_trade_saved 48）で、ストア→インストールではない。
+#   4〜5 で初めて PRO の中身（時間帯・曜日／資産推移）を見せる。キャプション帯で
+#   PRO と明示すること — 無印で載せると「あると思った機能がロックされていた」に
+#   なり、Guideline 2.3.1（正確なメタデータ）の観点でも良くない。
+#   設定画面と目標画面は外した。バッジは無料になったので「無料でここまで」の締めに使う。
+#
+# `?tab=` と `?share=1` は **撮影モードでしか効かない**（stats.tsx / monthly.tsx）。
+# サブタブと共有シートはローカル state で、ファイル経由の遷移からは触れないため。
+# 撮り直すたびに世代を上げる。**同名で中身だけ差し替えても `metadata:push` は
+# 何も送らない**（CLAUDE.md）。iPhone と iPad は別系列なので番号は揃っていなくてよい。
+#   iPhone: SHOT_SUFFIX=_v4   iPad: SHOT_SUFFIX=_v3
+SHOT_SUFFIX="${SHOT_SUFFIX:-}"
+
 ROUTES=(
   "01_home:"
-  "02_calendar:calendar"
-  "03_monthly:monthly"
-  "04_stats:stats"
-  "05_goals:goals"
-  "06_badges:badges"
-  "07_entry:trade/new"
-  "08_settings:settings"
+  "02_monthly:monthly"
+  "03_entry:trade/new"
+  "04_analysis_time:stats?tab=time"
+  "05_analysis_equity:stats?tab=equity"
+  "06_calendar:calendar"
+  "07_share:monthly?share=1"
+  "08_badges:badges"
 )
 
 # ロケール -> シミュレータに設定する言語/地域。アプリ側の i18n は
@@ -163,8 +179,8 @@ capture_one_locale() {
     # CountUp のアニメーションが終わるのを待つ。ここを詰めすぎると
     # pips が「-」のまま写る（id/tr/hi/vi/pt-BR の既存素材が実際にそうなっている）。
     sleep 4
-    xcrun simctl io "$UDID" screenshot --type png "$dest/$name.png" >/dev/null
-    echo "    $name.png"
+    xcrun simctl io "$UDID" screenshot --type png "$dest/${name}${SHOT_SUFFIX}.png" >/dev/null
+    echo "    ${name}${SHOT_SUFFIX}.png"
   done
 }
 

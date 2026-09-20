@@ -15,7 +15,9 @@ jest.mock('../../db/queries', () => ({
 }));
 jest.mock('../../store/purchaseStore', () => ({ usePurchaseStore: { setState: jest.fn() } }));
 
-import { DEMO_TRADES, assignDays } from '../screenshotMode';
+import { DEMO_TRADES, assignDays, splitRoute } from '../screenshotMode';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import { calcProfitLoss, determineResult } from '../profitCalc';
 import { calcStats } from '../statsCalc';
 import type { Trade } from '../../types';
@@ -110,5 +112,60 @@ describe('assignDays', () => {
 
   it('配列の最後は勝ちトレード（今日の勝率を100%にするため）', () => {
     expect(DEMO_TRADES[DEMO_TRADES.length - 1].pips).toBeGreaterThan(0);
+  });
+});
+
+describe('splitRoute', () => {
+  // `(tabs)` の画面はマウントされたままなので、クエリを `useLocalSearchParams` で
+  // 読む方式だと2枚目以降の指定が届かない。撮影スクリプトの指定はここで分解して
+  // ストアへ写す。壊れると「4枚目と5枚目が同じ画面」という形で表面化する。
+  it('クエリが無ければそのまま', () => {
+    expect(splitRoute('monthly')).toEqual({ route: 'monthly', params: {} });
+    expect(splitRoute('')).toEqual({ route: '', params: {} });
+  });
+
+  it('クエリを分解する', () => {
+    expect(splitRoute('stats?tab=time')).toEqual({ route: 'stats', params: { tab: 'time' } });
+    expect(splitRoute('monthly?share=1')).toEqual({ route: 'monthly', params: { share: '1' } });
+  });
+
+  it('複数のパラメータとエスケープを扱う', () => {
+    expect(splitRoute('x?a=1&b=%E3%81%82')).toEqual({ route: 'x', params: { a: '1', b: 'あ' } });
+  });
+
+  it('値の無いパラメータは空文字（ルート名に ? が混ざらない）', () => {
+    expect(splitRoute('x?flag')).toEqual({ route: 'x', params: { flag: '' } });
+  });
+});
+
+describe('撮影の並び（capture-screenshots.sh）', () => {
+  const SH = readFileSync(join(__dirname, '..', '..', '..', 'scripts', 'capture-screenshots.sh'), 'utf8');
+  const ROUTES = SH.match(/^ROUTES=\(\n([\s\S]*?)^\)/m)![1]
+    .split('\n').map(l => l.trim().replace(/^"|"$/g, '')).filter(Boolean);
+
+  it('8枚ある', () => {
+    expect(ROUTES).toHaveLength(8);
+  });
+
+  it('先頭3枚に PRO 専用の分析画面を置いていない', () => {
+    // 検索結果に出るのは先頭3枚。ここに PRO を置くと、中身を見る前に
+    // 「有料アプリだ」と判断される余地を作る。実測の詰まりは初回記録の手前で、
+    // ストア→インストールではない。
+    for (const row of ROUTES.slice(0, 3)) {
+      expect({ row, pro: /stats\?tab=(time|tags|rr|equity|mental)/.test(row) })
+        .toEqual({ row, pro: false });
+    }
+  });
+
+  it('PRO の分析画面を2枚含む', () => {
+    const pro = ROUTES.filter(r => /stats\?tab=(time|tags|rr|equity|mental)/.test(r));
+    expect(pro).toHaveLength(2);
+  });
+
+  it('クエリ付きのルートは撮影モードでしか効かない画面に限る', () => {
+    // `?tab=` は stats.tsx、`?share=1` は monthly.tsx が isScreenshotMode() の
+    // 内側で読む。増やすときは受け側も用意すること。
+    const queried = ROUTES.filter(r => r.includes('?')).map(r => r.split(':')[1]);
+    for (const q of queried) expect(q).toMatch(/^(stats\?tab=|monthly\?share=)/);
   });
 });

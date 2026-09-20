@@ -34,7 +34,11 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   - **`store.config.json` のバックアップは `~/Keys/fx-trade-journal/store.config.json.backup`。** git 追跡外にしたため、この1台にしか無い状態だった。11言語の説明文と2,678文字の審査メモが入っており、失うと書き直しのコストが大きい。
 - **App Store のメタデータは `store.config.json` で管理し、`eas metadata` で同期する（2026-08-30 導入）。** 画面での手入力ではなく、`npx eas-cli metadata:pull --profile production` で現状を取得し、`store.config.json` を編集して `npx eas-cli metadata:push --profile production` で反映する。11言語の説明文・キーワード・リリースノート・審査メモ・スクリーンショットがこの1ファイル（＋`store/`）に集約される。
   - **スクリーンショットは `store.config.json` のファイル名一覧が正本。** `store/apple/screenshot/<locale>/<size>/` にファイルを置き換えるだけでは `metadata:push` は何も送らない。`info.<locale>.screenshots.<size>` の配列も書き換えること（実際に2回空振りした）。並び順がそのままストアでの表示順になる。
-  - **公開済みバージョンのメタデータは更新できない。** `eas metadata:push` はバージョンを作成・更新しようとするため、リリース済みの版に対しては `Failed creating new version <ver>` で失敗する（プロモーション用テキストも含めて全フィールドが編集不可）。説明文やスクショを変えるには、`store.config.json` の `version` を次の番号にして新規バージョンを作る。バイナリの変更が不要ならビルド枠は消費しない。
+  - **公開済みバージョンのメタデータは `eas metadata` では更新できない。** `eas metadata:push` はバージョンを作成・更新しようとするため、リリース済みの版に対しては `Failed creating new version <ver>` で失敗する。説明文やスクショを変えるには、`store.config.json` の `version` を次の番号にして新規バージョンを作る。バイナリの変更が不要ならビルド枠は消費しない。
+    - **ただし「ASC 側でも編集不可」ではない。プロモーション用テキストは公開済みの版でも変更でき、審査も要らない**（2026-09-20 に11ロケール実施して確認）。以前ここに「プロモーション用テキストも含めて全フィールドが編集不可」と書いていたが、それは `eas metadata:push` の話であって ASC の制約ではなかった。
+    - 11ロケールを画面で手入力する代わりに、**ASC にログインしたタブから iris API を叩くのが速い**。`GET /iris/v1/apps/<appId>/appStoreVersions` で `READY_FOR_SALE` の版の id を取り、`GET /iris/v1/appStoreVersions/<id>/appStoreVersionLocalizations` で各ロケールの id を取ってから、`PATCH /iris/v1/appStoreVersionLocalizations/<locId>` に `{data:{type:'appStoreVersionLocalizations',id,attributes:{promotionalText:...}}}` を送る。ヘッダは `Content-Type: application/json` と **`X-Csrf-Itc: itc`**（これが無いと弾かれる）。
+    - **変えたら `store.config.json` にも同じ文面を書くこと。** そうしないと次の `metadata:push` で古い文面に戻る。
+    - プロモーション用テキストは**言語単位で、国単位ではない**。日本語を選んでいる米国在住者には ja のテキストと USD 価格が同時に出るので、**具体的な金額を書かないこと**（LP の割引率で同じ論点を踏んでいる）。
   - **push は本番のストア情報を上書きする。** 実行前に必ず `metadata:pull` して差分を確認すること。`store.config.json` の `version` が対象バージョンで、pull 直後は古い値が入っていることがある（実際に `1.2.6` のままだった）。ここを直さないと意図しないバージョンに書き込む。
   - `release.automaticRelease: true` のため、**審査に通ると自動で公開される**。段階的リリースにしたい場合はここを変える。
   - `/store/` はスクリーンショット約27MBで gitignore してある。ASC が正本なので、push する前に必ず pull すること。pull せずに push すると画像が見つからず失敗する。
@@ -156,7 +160,12 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   - **gtag.js は head に静的に置かない。** 同意を拒否した人でも取得リクエストが Google に飛び、IP・User-Agent・Referer が渡るため。`consent.js` の `startMeasurement()` が同意後に `<script>` を動的に作る。フッターの「アクセス解析の設定」（`id="consentReset"`）で撤回でき、`_ga` Cookie も失効させる。撤回導線はLPと使い方ガイドにしか無い（法務ページはGAを積んでいない）ので、ポリシー15節からはLPへリンクしている。
   - **LPの色トークンはアプリの `src/theme/colors.ts` と同じ考え方に揃えてある（2026-09-09）。** アクセント塗りの上の前景は `--on-accent`（`color:#fff` を直書きしない。ダークで白は 3.71:1 しか出ない）。ライトの `--profit`/`--loss` は AA を満たすまで濃くした結果、両者の輝度がほぼ同じ（相互比 1.00）になるため、**ローソク足の描画には `--profit-large`/`--loss-large` を使う**（`main.js` の `getVar`）。文字に `*-large` を使わないこと（4.5:1 に届かない）。`lpPages.test.ts` がティント合成込みで固定している。
   - **モックの成績数値は 勝率62% / PF1.50 / +84pips / 13件（8勝5敗）で11言語共通。** 旧値（78% / PF7.75）は現実のFXとして極端で、打消し表示が必要な水準だった。`sample-note` は5箇所（ヒーローの浮きバッジ・スマホ枠・分析・シェアカード・ウィジェット）。浮きバッジは `.hero-visual`（flex）の中で絶対配置されており、注記も `.chip-note` で絶対配置にしないとモックを押しのける。
-  - **アプリアイコンは `assets/icon-v2.png` を用意してあり、デザインは本人承認済み。ただしまだ配線していない（2026-09-10）。** 現行の `assets/icon.png` には**「FX LOG」という文字が焼き込まれており**、これがブランド名の4番目の表記になっていた（全ユーザーのホーム画面に常時出る、最も強いブランド面）。v2 は文字を外してローソク足だけにし、**角丸と外周グローも焼き込んでいない**（現行は焼き込まれており、iOSがさらにsquircleでマスクするため二重角丸の縁が出る）。生成は `scripts/make-icon.py`。**次の機能リリースで `app.json` の `icon` を `./assets/icon-v2.png` に差し替えるだけでよい**（デザインは 2026-09-10 に承認済み。判断は済んでいるので、次に触るときは実行してよい）。急ぎのパッチリリースで意図せず変わらないよう、あえて未配線にしてある。比較ページ: https://claude.ai/code/artifact/24324c2b-e5c1-41d0-bee7-30639b4e8e33
+  - **アプリアイコンは `assets/icon-v2.png`（文字なし）。`0d9bb46` で配線し、1.3.4 で配信済み（2026-09-15）。**
+    旧 `assets/icon.png` には「FX LOG」という文字が焼き込まれており、これがブランド名の4番目の表記に
+    なっていた（全ユーザーのホーム画面に常時出る、最も強いブランド面）。v2 は文字を外してローソク足だけにし、
+    **角丸と外周グローも焼き込んでいない**（旧版は焼き込まれており、iOSがさらにsquircleでマスクするため
+    二重角丸の縁が出ていた）。生成は `scripts/make-icon.py`。
+    比較ページ: https://claude.ai/code/artifact/24324c2b-e5c1-41d0-bee7-30639b4e8e33
   - **LPの favicon / manifest アイコンは v2 に差し替え済み（2026-09-10）。** こちらはビルド不要で即時反映できる。差し替え前はブラウザのタブとPWAのホーム画面アイコンが「FX LOG」を出し続けていた。あわせてファイルサイズが 214KB → 28KB になった（元は1024pxのアイコンをそのまま縮小したものだった）。
   - **git履歴の書き換えを実施した（2026-09-10）。** 自宅住所が**非日本語10言語のプライバシーポリシー**に、氏名+メール+電話が `store.config.json` に残っていた（当初「住所5コミット・電話2コミット」と見積もっていたのは過少）。`git filter-repo --replace-text` を2回に分けて実行し、main と dependabot の8ブランチを force-push した。**素の `git clone` で全2,603ブロブを走査して検出ゼロを確認済み。**
     - **2回目の置換が要った理由**: 過去の版の `scripts/__tests__/legalDocs.test.ts` が、検出用の正規表現に**住所・郵便番号・電話の形をリテラルで書いていた**（後に分割文字列へ直した経緯そのものが履歴に残っていた）。1回目はHTMLの住所行しか置換していないので取り残した。**PII を消す作業では、消すためのコード自身も対象になりうる。**

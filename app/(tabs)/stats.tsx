@@ -18,6 +18,7 @@ import {
 import PremiumGate from '../../src/components/PremiumGate';
 import HourDayHeatmap from '../../src/components/HourDayHeatmap';
 import { usePurchaseStore } from '../../src/store/purchaseStore';
+import { isScreenshotMode, useScreenshotParams } from '../../src/utils/screenshotMode';
 import { useTheme } from '../../src/theme/useTheme';
 import { withAlpha } from '../../src/theme/withAlpha';
 import { useIsTablet, useContentWidth } from '../../src/hooks/useIsTablet';
@@ -34,6 +35,9 @@ const STYLE_LABELS = () => ({
 } as Record<string, string>);
 
 type ATab = 'performance' | 'time' | 'tags' | 'rr' | 'equity' | 'mental';
+
+// 翻訳に依存しない安定キーの一覧。撮影時の `?tab=` の検証にも使う。
+const ANALYSIS_TAB_KEYS: ATab[] = ['performance', 'time', 'tags', 'rr', 'equity', 'mental'];
 
 // 翻訳文字列そのものをactiveTabの状態値にすると、訳語を1文字直しただけで
 // タブの比較(activeTab === t('analysis_xxx'))が壊れる。安定したキーで状態を持ち、
@@ -56,6 +60,14 @@ export default function AnalysisScreen() {
   const { settings, tradeRules } = useSettingsStore();
   const isPremium = usePurchaseStore(s => s.isPremium);
   const [activeTab, setActiveTab] = useState<ATab>('performance');
+
+  // 撮影スクリプトから開くタブを指定できるようにする（`/stats?tab=time` 等）。
+  // **撮影モードのときだけ効く。** 本番でディープリンクの口を増やす理由は無い。
+  const shotTab = useScreenshotParams(st => st.params.tab);
+  useEffect(() => {
+    if (!isScreenshotMode()) return;
+    if (ANALYSIS_TAB_KEYS.includes(shotTab as ATab)) setActiveTab(shotTab as ATab);
+  }, [shotTab]);
   const [allTrades, setAllTrades] = useState<typeof trades>([]);
   const [equityLoadFailed, setEquityLoadFailed] = useState(false);
   const [equityMode, setEquityMode] = useState<'month' | 'all'>('month');
