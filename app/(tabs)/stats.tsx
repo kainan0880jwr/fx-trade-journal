@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 import { LineChart } from 'react-native-chart-kit';
 import Svg, { Circle } from 'react-native-svg';
 import { useTradeStore } from '../../src/store/tradeStore';
+import SampleDataBanner from '../../src/components/SampleDataBanner';
 import { useSettingsStore } from '../../src/store/settingsStore';
 import MonthSelector from '../../src/components/MonthSelector';
 import {
@@ -125,6 +126,7 @@ export default function AnalysisScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <MonthSelector month={currentMonth} onChange={setCurrentMonth} />
+      <SampleDataBanner />
       <View style={styles.subTabBar}>
         <ScrollView
           horizontal showsHorizontalScrollIndicator={false}

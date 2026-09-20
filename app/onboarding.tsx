@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { setSetting } from '../src/db/queries';
 import { recordOnboardingCompleted } from '../src/utils/retentionEvents';
+import { useSampleDataStore } from '../src/store/sampleDataStore';
 import { useTheme } from '../src/theme/useTheme';
 import type { ThemeColors } from '../src/theme/colors';
 import { t } from '../src/i18n';
@@ -60,7 +61,7 @@ export default function OnboardingScreen() {
     }
   };
 
-  const completeOnboarding = async () => {
+  const completeOnboarding = async (via: 'choice' | 'sample' = 'choice') => {
     // setSetting が失敗すると未処理のPromise rejectionになり、後続の
     // router.replace に到達せず**ボタンを押しても何も起きない**状態になっていた。
     // しかもフラグが立たないため再起動しても毎回オンボーディングに戻る。
@@ -68,7 +69,7 @@ export default function OnboardingScreen() {
     try {
       await setSetting('onboarding_done', '1');
     } catch { /* 次回起動で再試行される */ }
-    recordOnboardingCompleted();
+    recordOnboardingCompleted(via);
   };
 
   // アプリロックの提案はここではなく、初回トレード保存後（useAppLockPrompt）に
@@ -88,8 +89,13 @@ export default function OnboardingScreen() {
     }, 300);
   };
 
+  // 「サンプルで中身を見る」。以前は完了フラグだけ立てて**空のホーム**に置いていた。
+  // 迷った人はこれを選ぶので、勝率もpipsのグラフも一度も見ないまま閉じることになり、
+  // 実測でもここが最大の減り所だった（first_open 138 → first_trade_saved 48）。
+  // 見本を入れてから遷移する。失敗しても空のホームに着くだけなので、遷移は止めない。
   const handleChooseBrowse = async () => {
-    await completeOnboarding();
+    await completeOnboarding('sample');
+    await useSampleDataStore.getState().insert();
     router.replace('/(tabs)');
   };
 

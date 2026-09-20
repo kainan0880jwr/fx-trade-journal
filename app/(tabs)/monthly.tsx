@@ -4,6 +4,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, useWindowDimensio
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PieChart, LineChart } from 'react-native-chart-kit';
 import { useTradeStore } from '../../src/store/tradeStore';
+import SampleDataBanner from '../../src/components/SampleDataBanner';
 import MonthSelector from '../../src/components/MonthSelector';
 import { calcMoneyStats, calcStats, calcDailyCumulativePips, calcRatingDistribution, calcMonthlyBreakdown } from '../../src/utils/statsCalc';
 import { formatCount } from '../../src/utils/formatCount';
@@ -149,6 +150,7 @@ export default function MonthlyScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <PeriodToggle period={period} onChange={setPeriod} styles={styles} C={C} />
+      <SampleDataBanner />
       <MonthSelector month={currentMonth} onChange={setCurrentMonth} />
       <ShareModal
         visible={shareVisible}

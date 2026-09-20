@@ -9,6 +9,7 @@ import { usePurchaseStore } from '../src/store/purchaseStore';
 import { getSetting } from '../src/db/queries';
 import { syncScheduledNotifications } from '../src/utils/notifications';
 import { recordAppOpen } from '../src/utils/retentionEvents';
+import { useSampleDataStore } from '../src/store/sampleDataStore';
 import { syncWidgetData } from '../src/utils/widgetSync';
 import { seedScreenshotData, isScreenshotMode, useScreenshotNavigator } from '../src/utils/screenshotMode';
 import { useNotificationPrompt } from '../src/hooks/useNotificationPrompt';
@@ -80,6 +81,9 @@ function RootLayoutContent() {
       // 設定画面を開かないユーザーの端末に残り続けるのを防ぐため。結果は待たない。
       purgeExpiredSnapshot().catch(() => {});
       syncWidgetData(); // ホーム画面ウィジェットに今月の成績を反映、結果は待たない
+      // 見本データが入ったままかを読み直す。バナーの表示条件なので、
+      // 再起動後も「これはサンプルです」を出し続ける必要がある。結果は待たない。
+      useSampleDataStore.getState().refresh();
       const onboardingDone = await getSetting('onboarding_done');
       if (onboardingDone !== '1') {
         // DB 準備完了後にオンボーディングへ誘導

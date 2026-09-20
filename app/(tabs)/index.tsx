@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import CountUp from '../../src/components/CountUp';
+import SampleDataBanner from '../../src/components/SampleDataBanner';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { router } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
@@ -79,6 +80,7 @@ export default function RecordScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <MonthSelector month={currentMonth} onChange={setCurrentMonth} />
+      <SampleDataBanner />
 
       <View style={styles.filterRow}>
         {STYLE_FILTERS.map(f => (

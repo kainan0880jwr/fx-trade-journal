@@ -33,8 +33,12 @@ function track(event: string, tags?: Record<string, string>) {
  * **スキップも「完了」として送る。** 2026-09-17 まで3択を選んだ経路でしか
  * 呼んでおらず、スキップした人が離脱扱いになって分母が狂っていた。
  * どちらだったかは `retention_via` タグで区別する。
+ *
+ * `sample` は「サンプルで中身を見る」を選んだ人（見本データを入れた経路）。
+ * 2026-09-19 に分けた。**ここを `choice` に混ぜてはいけない** — 見本データの
+ * 導入で初回記録が増えたかどうかは、この経路とそれ以外を比べてしか判断できない。
  */
-export function recordOnboardingCompleted(via: 'choice' | 'skip' = 'choice'): void {
+export function recordOnboardingCompleted(via: 'choice' | 'skip' | 'sample' = 'choice'): void {
   track('onboarding_completed', { retention_via: via });
 }
 
