@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { withoutAppLock } from '../../src/utils/appLockSuppress';
+import { isScreenshotMode } from '../../src/utils/screenshotMode';
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
   StyleSheet, Alert, Platform, KeyboardAvoidingView, Image, ActivityIndicator
@@ -363,6 +364,10 @@ export default function NewTradeScreen() {
 
   useEffect(() => {
     const unsub = navigation.addListener('beforeRemove', (e: any) => {
+      // 撮影中は止めない。この画面を撮ったあと次の画面へ移れず、以降のスクショが
+      // 全部この画面と破棄確認ダイアログになる（2026-09-20 に実際にそうなった）。
+      // 撮影モードのフォームは機械が入れた値なので、失うものが無い。
+      if (isScreenshotMode()) return;
       if (!isDirty || saving || justSavedRef.current) return; // 未入力・保存中・保存済みは通す
       e.preventDefault();
       Alert.alert(

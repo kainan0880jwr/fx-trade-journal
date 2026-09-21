@@ -222,6 +222,63 @@ describe('LP 11言語', () => {
   });
 });
 
+describe('LP の PRO / 無料の線引きが実装と合っているか', () => {
+  // **同じ壊れ方を3回している。**「LP は PRO と書いてあるが、アプリは課金判定を
+  // 見ていない（またはその逆）」という形で、いずれも日本語版を読んでいる限り
+  // 気づけなかった:
+  //   1. ルール遵守チェック（2026-09-19 発見。無料なのに PRO と書いていた）
+  //   2. 実績バッジ（2026-09-20 無料に降ろしたが LP の (PRO) が残っていた）
+  //   3. カレンダーの達成マーク（PRO なのに「月次の目標は無料」とだけ書いており、
+  //      無料ユーザーが印を期待して裏切られる状態だった）
+  // 文言そのものの正しさは機械では判定できないが、**11言語のうち一部だけ直した**
+  // という最も多い壊れ方は数で止まる。
+  // 数えるのは機能の箇条書き（<li>）だけ。料金カードの見出しやボタンの「PRO」は
+  // 線引きの主張ではないので混ぜない。
+  const bullets = (html: string) =>
+    [...html.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => m[1]).join('\n');
+  const markers = (html: string) => (bullets(html).match(/\(PRO\)|（PRO）/g) ?? []).length;
+  const mentions = (html: string) =>
+    (bullets(html).replace(/\(PRO\)|（PRO）/g, '').match(/PRO/g) ?? []).length;
+
+  const baseMarkers = markers(read('index.html'));
+  const baseMentions = mentions(read('index.html'));
+
+  it('日本語版の PRO 表記が想定どおり（マーカー1・言及3）', () => {
+    // マーカー = 分析タブ。言及 = ウォーターマーク / 画像枚数 / 目標とカレンダー。
+    // ここを変えるときは、アプリ側のゲートを確かめてから数字を更新すること。
+    expect({ markers: baseMarkers, mentions: baseMentions }).toEqual({ markers: 1, mentions: 3 });
+  });
+
+  it.each(LP_FILES)('%s の PRO 表記の数が日本語版と一致する', (file) => {
+    const html = read(file);
+    expect({ file, markers: markers(html), mentions: mentions(html) })
+      .toEqual({ file, markers: baseMarkers, mentions: baseMentions });
+  });
+
+  it('カレンダーの達成マークは実装では PRO 限定のまま', () => {
+    // 下の LP 側の検査の前提。無料に開放したなら LP の文言も直すこと。
+    const src = readFileSync(join(ROOT, 'app', '(tabs)', 'calendar.tsx'), 'utf8');
+    expect(src).toMatch(/isPremium\s*\n?\s*\?\s*buildGoalMarks/);
+  });
+
+  it.each(['index.html', 'index-en.html'])('%s: バッジの項目に PRO マーカーが無い', (file) => {
+    // 2026-09-20 に無料へ降ろした。課金理由になりにくく、継続の動機付けとして
+    // 無料側にある方が働くという判断（output/paywall-review-20260917.md）。
+    const li = [...read(file).matchAll(/<li>([\s\S]*?)<\/li>/g)]
+      .map((m) => m[1]).find((t) => /33/.test(t));
+    expect({ file, found: li !== undefined }).toEqual({ file, found: true });
+    expect({ file, li, pro: /\(PRO\)|（PRO）/.test(li!) }).toEqual({ file, li, pro: false });
+  });
+
+  it.each(['index.html', 'index-en.html'])('%s: 目標の項目がカレンダーの印を PRO と明示している', (file) => {
+    const li = [...read(file).matchAll(/<li>([\s\S]*?)<\/li>/g)]
+      .map((m) => m[1])
+      .find((t) => /カレンダー|calendar/i.test(t) && /目標|goals?/i.test(t));
+    expect({ file, found: li !== undefined }).toEqual({ file, found: true });
+    expect({ file, li, pro: /PRO/.test(li!) }).toEqual({ file, li, pro: true });
+  });
+});
+
 describe('LP のコントラスト（WCAG AA）', () => {
   // アプリ本体は src/theme/__tests__/contrast.test.ts で同じ検査をしている。
   // LP 側には無く、アプリで潰した「白 on アクセント = 3.71:1」がそのまま残っていた。

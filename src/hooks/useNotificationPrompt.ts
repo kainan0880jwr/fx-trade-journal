@@ -17,6 +17,7 @@
 import { useCallback } from 'react';
 import { Alert } from 'react-native';
 import { getSetting, setSetting } from '../db/queries';
+import { isScreenshotMode } from '../utils/screenshotMode';
 import { requestNotificationPermission, scheduleReminder } from '../utils/notifications';
 import { t } from '../i18n';
 
@@ -27,6 +28,10 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 export function useNotificationPrompt() {
   const promptNotificationIfNeeded = useCallback(async () => {
     try {
+      // 撮影中は出さない。ストア用スクショの先頭3枚に許可ダイアログが被る
+      // （2026-09-20 に実際に撮れてしまった）。__DEV__ が前提なので本番には影響しない。
+      if (isScreenshotMode()) return;
+
       const prompted = await getSetting('notif_prompted');
       if (prompted === '1') return;
 

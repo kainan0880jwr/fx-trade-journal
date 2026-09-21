@@ -31,11 +31,16 @@
 書体が入れ替わるので、`textshot` が実際に使ったフォント名を返し、要求と違ったら
 ここで失敗させる。
 
-■ ファイル名
+■ どのファイルに掛けるか
 
-キーは **`01_home` のように世代サフィックス（`_v4`）を含めない**。`<キー>*.png` で
-探す。撮り直しのたびに世代を上げる運用（CLAUDE.md、同名だと `metadata:push` が
-何も送らない）と、この表を切り離しておくため。
+キーは **`01_home` のように世代サフィックス（`_v4`）を含めない**。撮り直しのたびに
+世代を上げる運用（CLAUDE.md、同名だと `metadata:push` が何も送らない）と、この表を
+切り離しておくため。
+
+対象は **`store.config.json` に並んでいるファイル**から探す。ディレクトリを
+`<キー>*.png` で glob すると**旧世代（`01_home_v3.png`）にも当たって曖昧になり、
+11ロケールぶん黙って飛ばされた**（2026-09-21）。出荷されるのは config の一覧なので、
+そちらを正本にすれば曖昧さが消える。
 
 ■ 出力
 
@@ -50,7 +55,6 @@
 
 使い方: python3 scripts/caption-screenshots.py
 """
-import glob
 import json
 import os
 import shutil
@@ -222,16 +226,24 @@ def caption(src, lines, locale):
 
 def main():
     build_helper()
+    with open(os.path.join(ROOT, 'store.config.json'), encoding='utf-8') as f:
+        config = json.load(f)
+
     total = 0
     for locale, files in CAPTIONS.items():
         base = os.path.join(ROOT, 'store', 'apple', 'screenshot', locale, 'APP_IPHONE_65')
         orig = os.path.join(base, ORIG_DIR)
+        listed = [os.path.basename(x) for x in
+                  config['apple']['info'][locale]['screenshots']['APP_IPHONE_65']]
         for key, lines in files.items():
-            hits = sorted(f for f in glob.glob(os.path.join(base, key + '*.png')))
+            hits = [n for n in listed if n.startswith(key)]
             if len(hits) != 1:
-                print(f'  skip ({len(hits)}件ヒット): {locale}/{key}*.png')
+                print(f'  skip (store.config.json に {len(hits)}件): {locale}/{key}')
                 continue
-            p = hits[0]
+            p = os.path.join(base, hits[0])
+            if not os.path.exists(p):
+                print(f'  skip (ファイルが無い): {p}')
+                continue
             o = os.path.join(orig, os.path.basename(p))
             if not os.path.exists(o):
                 os.makedirs(orig, exist_ok=True)

@@ -70,6 +70,26 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   - **Pods の `IPHONEOS_DEPLOYMENT_TARGET` を 15.1 へ上げる必要がある。** Sentry(11.0) / ReachabilitySwift(12.0) / RNSVG-RNSVGFilters(12.4) / RevenueCat・PurchasesHybridCommon(13.0) が古く、**Xcode 27 は 15.0 未満を拒否する**。`sed -i '' -E 's/IPHONEOS_DEPLOYMENT_TARGET = (11\.0|12\.0|12\.4|13\.0|14\.0);/IPHONEOS_DEPLOYMENT_TARGET = 15.1;/g' ios/Pods/Pods.xcodeproj/project.pbxproj`。**`xcodebuild` の引数で全体に掛けてはいけない** — ウィジェットは iOS 17 の API（`Gauge` / `containerBackground`）を使っているので、そちらまで 15.1 に落ちてコンパイルできなくなる。Pods のプロジェクトだけを対象にすること。
   - **`CODE_SIGNING_ALLOWED=NO` を付けてはいけない。** 署名が linker-signed になって**エンタイトルメントが空**になり、expo-secure-store が keychain を読めず `getValueWithKeyAsync has failed` で**DBの初期化が落ちる**（アプリが起動しない）。シミュレータ向けの既定（`Sign to Run Locally`）のままにすれば ad-hoc 署名とエンタイトルメントが付く。
   - **dev client は `--initialUrl` で Metro に直結させる。** これを渡さないと dev launcher の一覧で止まり、そこから先へ進む手段が無い（下記のとおりタップできない）。`EXDevLauncherController.initialUrlFromProcessInfo` が読む起動引数。
+- **撮影中は「画面を覆うもの」「遷移を止めるもの」を撮影モードで抑止すること（2026-09-20 に2件踏んだ）。**
+  どちらも撮り終えてから画像を見るまで気づけない類で、88枚撮ったあとに全部やり直しになる。
+  - **通知の許可ダイアログ**（`useNotificationPrompt`）が先頭3枚に被った。D1（初回起動の翌日以降）に
+    出る作りなので、撮影用シミュレータが前日から残っていると必ず出る。
+  - **`app/trade/new.tsx` の破棄確認**（`beforeRemove`）が記録画面からの遷移を止め、
+    **4枚目以降が全部「記録画面＋破棄しますか？」になった。** 撮影モードのフォームは
+    機械が入れた値なので失うものが無い。`isScreenshotMode()` で素通しする。
+  - 新しい画面を撮影順に足すときは、**その画面から出るときに確認を挟む導線が無いか**を先に見ること。
+- **`stats` のサブタブと `monthly` の共有カードはローカル state なので、ファイル経由の遷移では開けない。**
+  `?tab=` / `?share=1` を付けるが、**`useLocalSearchParams` で読む方式にしてはいけない。**
+  `(tabs)` の画面は一度開くとマウントされたままで、`useState` の初期値は2回目以降の指定を
+  受け取れない（4枚目 `tab=time` の次に5枚目 `tab=equity` を撮れない）。
+  `useScreenshotParams`（`screenshotMode.ts`）にクエリを写して購読する。
+- **キャプション帯の文字は Pillow ではなく CoreText で描く（`scripts/textshot.swift`）。**
+  このマシンの Pillow は **libraqm 無し**でビルドされており、複雑文字体系のシェーピングをしない。
+  ヒンディー語が論理順のまま並び、「दिन」が「दनि」に、`दर्ज` の reph が落ち、`प्रॉफिट` の合字が崩れる。
+  **字形自体は存在するので、豆腐（.notdef）を探す検査では見つからない** — 実際、最初に書いた
+  検査は「問題なし」と答えた。配信先にインドが含まれる以上そのままでは出せない。
+  `swiftc` はXcodeに入っているので追加の依存は不要。**CoreText は欠けた文字を黙って別の
+  フォントで補う**ので、使われたフォント名を返させて要求と違えば失敗させている。
 - **`simctl openurl` は iOS 26 以降このプロジェクトでは使えない（2026-09-16）。アプリが既に前面にあっても毎回「"アプリ名" で開きますか?」の確認ダイアログが出る。** 抑止する設定は存在せず、定石は「自動で押す」だが、**Xcode 27 には押す相手が無い**（Simulator.app は廃止、DeviceHub は CLI からデバイスのウィンドウを開けず `count windows` が 0、`simctl` にタップは無い）。**ディープリンクでの画面遷移は原理的に成立しない。**
   - 代わりに **`src/utils/screenshotMode.ts` の `useScreenshotNavigator()`** がアプリのコンテナに置かれたファイル（`Documents/screenshot-goto.txt`）を 0.4 秒ごとに読んで自分で `router.replace()` する。ホストからは `xcrun simctl get_app_container <udid> <bundle> data` で取れる場所なので、普通のファイル書き込みで指示できる。**遷移したら同じ合図を `screenshot-here.txt` に書き戻すので、`scripts/capture-screenshots.sh` は時間ではなく到着を待ってから撮る** — 初回は JS バンドルの読み込みに20秒以上かかり、時間で待つ方式では前の画面が写る。
   - この経路は `isScreenshotMode()`（`__DEV__` かつ `EXPO_PUBLIC_SCREENSHOT_MODE=1`）の内側にあり、**本番ビルドではポーリングすら始まらない。**
@@ -159,7 +179,7 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
   - **App Store へのリンクは国コードを付けない。** `https://apps.apple.com/app/id6786188634?ct=lp-<lang>` に統一してある。国コード付き（`/de/app/...`）は、その国で配信していないと「ご利用いただけません」に着地する。EU非配信なので de/fr/it/es のCTAが全滅していた。地域中立URLなら Apple が閲覧者のストアフロントへ振り分けるので、配信国表と同期する必要が無くなる。`ct` は ASC の App Analytics で流入元を分けて見るためのもの（LPは `lp-<lang>`、使い方ガイドは `guide-ja`）。JSON-LD の `downloadUrl` には `ct` を付けない（正規URLなので）。
   - **gtag.js は head に静的に置かない。** 同意を拒否した人でも取得リクエストが Google に飛び、IP・User-Agent・Referer が渡るため。`consent.js` の `startMeasurement()` が同意後に `<script>` を動的に作る。フッターの「アクセス解析の設定」（`id="consentReset"`）で撤回でき、`_ga` Cookie も失効させる。撤回導線はLPと使い方ガイドにしか無い（法務ページはGAを積んでいない）ので、ポリシー15節からはLPへリンクしている。
   - **LPの色トークンはアプリの `src/theme/colors.ts` と同じ考え方に揃えてある（2026-09-09）。** アクセント塗りの上の前景は `--on-accent`（`color:#fff` を直書きしない。ダークで白は 3.71:1 しか出ない）。ライトの `--profit`/`--loss` は AA を満たすまで濃くした結果、両者の輝度がほぼ同じ（相互比 1.00）になるため、**ローソク足の描画には `--profit-large`/`--loss-large` を使う**（`main.js` の `getVar`）。文字に `*-large` を使わないこと（4.5:1 に届かない）。`lpPages.test.ts` がティント合成込みで固定している。
-  - **モックの成績数値は 勝率62% / PF1.50 / +84pips / 13件（8勝5敗）で11言語共通。** 旧値（78% / PF7.75）は現実のFXとして極端で、打消し表示が必要な水準だった。`sample-note` は5箇所（ヒーローの浮きバッジ・スマホ枠・分析・シェアカード・ウィジェット）。浮きバッジは `.hero-visual`（flex）の中で絶対配置されており、注記も `.chip-note` で絶対配置にしないとモックを押しのける。
+  - **モックの成績数値は 勝率59.1% / PF2.09 / +134pips / 22件（13勝9敗）で11言語共通。**撮影用デモデータ（`sampleData.ts` の `DEMO_TRADES`）と同じ数字で、ストアのスクショとも揃う。旧値（78% / PF7.75）は現実のFXとして極端で、打消し表示が必要な水準だった。`lpPages.test.ts` が 59.1% と 2.09 の出現回数を固定している（2026-09-21 時点でこの行には 62% / 1.50 と書いてあり、実物と食い違っていた）。`sample-note` は5箇所（ヒーローの浮きバッジ・スマホ枠・分析・シェアカード・ウィジェット）。浮きバッジは `.hero-visual`（flex）の中で絶対配置されており、注記も `.chip-note` で絶対配置にしないとモックを押しのける。
   - **アプリアイコンは `assets/icon-v2.png`（文字なし）。`0d9bb46` で配線し、1.3.4 で配信済み（2026-09-15）。**
     旧 `assets/icon.png` には「FX LOG」という文字が焼き込まれており、これがブランド名の4番目の表記に
     なっていた（全ユーザーのホーム画面に常時出る、最も強いブランド面）。v2 は文字を外してローソク足だけにし、
