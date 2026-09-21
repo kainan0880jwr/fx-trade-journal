@@ -20,36 +20,48 @@ function sign(n: number): string {
   return n > 0 ? '+' : '';
 }
 
-// ── テキストカード（Unicode ボックス描画）──────────────────────
+// ── テキストカード ────────────────────────────────────────────
+/**
+ * SNS へ貼るテキスト。
+ *
+ * **枠線（`┌──┐`）は 2026-09-21 にやめた。** 揃うのは等幅フォントのときだけで、
+ * 実際の共有先（X・LINE・Discord・Instagram）はどれもプロポーショナルなので
+ * **最初から揃っていなかった。** その上で、揃えようとした固定幅が実害を出していた:
+ *
+ *   - 見出しを19字で切っていたため、**日本語以外の10言語すべてで途中で切れていた**
+ *     （英語は `September 2026 Resu`、スペイン語は `Resultados septiemb`）。
+ *     日本語の `2026年9月の成績` だけが収まるので、日本語で確認している限り見えない。
+ *   - ラベルを12字で切っていたため、長い訳語も同様に欠けうる。
+ *   - 最終行だけ幅32で組んでおり、枠（内側26）より広かった。等幅で見ても崩れる。
+ *
+ * 幅を前提にしない素のテキストにすれば、切り詰めも桁合わせも要らなくなる。
+ * **ここに固定幅の pad を戻さないこと。**
+ */
 export function buildShareText(opts: ShareStatsOptions): string {
   const { stats, period, streak = 0, includeFinancials = false } = opts;
-  const BORDER_TOP    = '┌──────────────────────────┐';
-  const BORDER_BOT    = '└──────────────────────────┘';
-  const BORDER_DIV    = '├──────────────────────────┤';
-  const pad = (s: string, w: number) => s.padEnd(w, ' ').slice(0, w);
 
-  const row = (icon: string, label: string, value: string) =>
-    `│ ${icon} ${pad(label, 12)} ${pad(value, 10)} │`;
+  const row = (icon: string, label: string, value: string) => `${icon} ${label}: ${value}`;
 
   // 以前は日本語と英語の2分岐しかなく、他9言語のユーザーが月次成績をシェアすると
   // **英語（または日本語）の投稿になっていた**。共有は唯一の拡散導線なので、
-  // 到達先の言語で出す。ラベル幅は pad() で切るため、長い訳語でも枠は崩れない。
+  // 到達先の言語で出す。
   const lines = [
-    BORDER_TOP,
-    `│    📊 ${pad(t('share_headline').replace('{p}', period), 19)} │`,
-    BORDER_DIV,
+    `📊 ${t('share_headline').replace('{p}', period)}`,
+    '',
     row('✅', t('win_rate'), `${stats.winRate}%`),
-    row('📈', 'pips',        `${sign(stats.totalPips)}${stats.totalPips}`),
-    row('📉', t('pf'),       formatPF(stats.profitFactor, stats.totalTrades > 0)),
+    row('📈', 'pips', `${sign(stats.totalPips)}${stats.totalPips}`),
+    row('📉', t('pf'), formatPF(stats.profitFactor, stats.totalTrades > 0)),
     row('📋', t('trade_count'), String(stats.totalTrades)),
     row('🏆', t('share_wl'), `${stats.wins} / ${stats.losses}`),
     ...(includeFinancials && stats.totalProfitLoss !== 0
       ? [row('💴', t('share_pl'), `${sign(stats.totalProfitLoss)}${stats.totalProfitLoss.toLocaleString()}`)]
       : []),
-    ...(streak >= 2 ? [row('🔥', t('share_streak'), `${streak}${t('home_streak_days')}`)] : []),
-    BORDER_DIV,
-    `│ ${pad(`📱 ${t('app_name')}`, 32)} │`,
-    BORDER_BOT,
+    // 連続記録だけラベルを付けない。`home_streak_days` が既に「日連続 / day streak」
+    // なので、`t('share_streak')` を足すと全言語で語が重なる（`連続記録: 12日連続` /
+    // `Serie: 12 Tage in Folge`）。枠があった頃は桁を合わせるために要ったラベル。
+    ...(streak >= 2 ? [`🔥 ${streak}${t('home_streak_days')}`] : []),
+    '',
+    `📱 ${t('app_name')}`,
   ];
 
   return lines.join('\n') + '\n\n' + t('share_disclaimer');
