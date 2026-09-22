@@ -58,6 +58,13 @@ GLOBAL_PLIST="$HOME/Library/Developer/CoreSimulator/Devices/$UDID/data/Library/P
 #   iPhone: SHOT_SUFFIX=_v4   iPad: SHOT_SUFFIX=_v3
 SHOT_SUFFIX="${SHOT_SUFFIX:-}"
 
+# 一部の画面だけ撮り直したいとき（アプリ側を直して1枚だけ古くなった、など）。
+# 名前に対する grep -E のパターン。空なら全部撮る。
+#   SHOT_ONLY='^07_share$' scripts/capture-screenshots.sh ...
+# **連番は撮る枚数ではなく ROUTES の位置で決まる**ので、絞っても
+# ファイル名（＝ストアでの並び順）は変わらない。
+SHOT_ONLY="${SHOT_ONLY:-}"
+
 ROUTES=(
   "01_home:"
   "02_monthly:monthly"
@@ -156,6 +163,9 @@ capture_one_locale() {
   for row in "${ROUTES[@]}"; do
     IFS=: read -r name path <<<"$row"
     SEQ=$((SEQ + 1))
+    if [ -n "$SHOT_ONLY" ] && ! echo "$name" | grep -qE "$SHOT_ONLY"; then
+      continue
+    fi
     local token="${SEQ}:${path}"
 
     # 行き先をファイルで渡す。**`simctl openurl` は使えない** — Xcode 27 / iOS 26 は
