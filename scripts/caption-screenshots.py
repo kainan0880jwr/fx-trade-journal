@@ -46,6 +46,9 @@
 
 - 1284x2778 のまま（App Store の規格）。スクショを縮小して下に敷く。
 - 背景はアプリのダーク背景と同じ #05070C。LP・共有カードとも揃う。
+- **アルファは落とす（RGB で保存）。** App Store Connect はアルファ付きを受け付けない。
+  `simctl io screenshot` は RGBA で書き出すので、帯を付けない残りの画像は
+  `scripts/flatten-screenshots.py` で落とす。
 - **原本を `_originals/` に退避してから加工する。** 以前は原本を上書きしており、
   二度掛けると帯が二重になった。いまは原本から毎回描き直すので冪等。
   `_originals/` は `store.config.json` の一覧に載らないので push の対象外。
@@ -221,7 +224,10 @@ def caption(src, lines, locale):
             '書体が混ざったまま出荷しないよう、FONTS の割り当てを直すこと。')
     canvas.paste(text, ((W - text.width) // 2,
                         (CAP_TOP + CAP_BOTTOM) // 2 - text.height // 2), text)
-    return canvas
+    # **アルファを落として返す。** App Store Connect はアルファ付きを受け付けず、
+    # `eas metadata:push` が IMAGE_ALPHA_NOT_ALLOWED で止まる（2026-09-22 に実際に踏んだ）。
+    # 背景 BG は不透明なので、RGB にしても見た目は変わらない。
+    return canvas.convert('RGB')
 
 
 def main():

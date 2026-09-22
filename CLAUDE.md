@@ -193,6 +193,17 @@ npx jest src/utils/__tests__/paywallCalc.test.ts   # single test file
     - HEAD のツリーハッシュ・コミット数200・全コミットメッセージが書き換え前と一致することを確認してから push した。
     - **残る露出**: GitHub は force-push 後も到達不能オブジェクトを保持し、`/commit/<旧SHA>` で当面参照できる。**GitHub Support への削除依頼が要る**（下書きは `output/github-support-request.md`）。第三者アーカイブのコピーは回収できない。
     - バックアップは `Desktop/FXlog/fxlog-backup-pre-rewrite-<日時>.git`（書き換え直前のミラー）ほか2つ。**ここには旧履歴がそのまま入っているので、共有・公開しないこと。**
+  - **push の前に `python3 scripts/flatten-screenshots.py` を必ず通すこと（2026-09-22 追加）。**
+    App Store Connect は**アルファチャンネル付きの画像を受け付けない**。
+    `eas metadata:push` が `IMAGE_ALPHA_NOT_ALLOWED` で止まる。
+    **`xcrun simctl io screenshot` は RGBA で書き出す**ので、撮ったままのファイルは必ず該当する。
+    - **質が悪いのは `metadata:push` が「先に消してから上げる」順で動くこと。** 上げる側で
+      失敗すると、そのロケールのスクリーンショットが**消えたまま**残る。実際 en-US の8枚が
+      消えた状態で止まった（1.3.5 の下書きに対する操作だったので公開中の版は無傷）。
+      **途中で失敗しない状態にしてから走らせること。** `--check` を付けると変換せず検査だけする。
+    - `caption-screenshots.py` は 2026-09-22 に RGB 保存へ直した。帯を付けない残りの画像は
+      上のスクリプトで落とす。アルファは実測で全面不透明なので、落としても見た目は変わらない
+      （透明な画素があるファイルは黒地合成で見た目が変わるため、変換せず報告して止まる）。
   - **`store.config.json` のスクリーンショット配列はファイル名の昇順＋設定画面を最後に並べる（2026-09-09 是正）。** `metadata:pull` が ASC 側の登録順を書き戻すため順序が崩れており、**de/es/it は検索結果の2枚目がペイウォール、id/pt-BR/vi は2枚目が設定画面**になっていた。**ASC 側も崩れている可能性が高いので、次の push 前に pull して確認すること。**
   - **`store.config.json` の整合は `scripts/__tests__/storeMetadata.test.ts` が見る。** ただし**このファイルは git 追跡外**なので、無い環境（CI）ではスキップされる。**push 前にローカルで `npm test` を通すことが前提。** 検査しているのは、スクショの並び順・キーワード100字と `metatrader` の有無・title/subtitle/description の字数・サブスク節と規約URL（Review Guidelines 3.1.2）・効果を断定する表現・非円ペアの制限の開示・`marketingUrl` の言語一致。
 
