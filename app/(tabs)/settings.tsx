@@ -48,7 +48,7 @@ export default function SettingsScreen() {
     updateAccountBalance, updateDefaultRiskPct,
     addEntryTag, removeEntryTag,
     addTradeRule, removeTradeRule,
-    updateThemeMode, updateAppLockEnabled,
+    updateThemeMode, updateAppLockEnabled, updateWidgetWhileLocked,
     loadAll,
   } = useSettingsStore();
   const isPremium = usePurchaseStore(s => s.isPremium);
@@ -783,6 +783,29 @@ export default function SettingsScreen() {
                 trackColor={{ true: C.primary }}
               />
             </View>
+
+            {/* ロック中のウィジェット表示。**ロックが有効なときだけ出す** —
+                無効なら関係が無く、並べても意味が分からない。
+
+                既定はオフ（＝ウィジェットに成績を出さない）。ウィジェットは
+                ロック画面に置けるうえ、ホーム画面用の小・中サイズもロック画面から
+                右スワイプで開く Today View に出るため、「ホーム画面用だけ出す」では
+                安全にならない。出したい人が自分の判断で選ぶ形にしてある。 */}
+            {settings.appLockEnabled && (
+              <View style={[styles.notifRow, { borderTopWidth: 1, borderTopColor: C.border, paddingTop: 12, marginTop: 4 }]}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.notifLabel}>{t('settings_widget_while_locked')}</Text>
+                  <Text style={{ fontSize: 11, color: C.text3, marginTop: 2, lineHeight: 15 }}>
+                    {t('settings_widget_while_locked_sub')}
+                  </Text>
+                </View>
+                <Switch
+                  value={settings.widgetWhileLocked}
+                  onValueChange={(v) => { updateWidgetWhileLocked(v).catch(() => {}); }}
+                  trackColor={{ true: C.primary }}
+                />
+              </View>
+            )}
           </View>
         </View>
 

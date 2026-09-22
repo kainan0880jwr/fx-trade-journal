@@ -95,6 +95,9 @@ export const de: LangStrings = {
 
   // Month selector
   this_month: 'Jetzt',
+  widget_locked_title: 'App gesperrt',
+  settings_widget_while_locked: 'Statistik trotz Sperre zeigen',
+  settings_widget_while_locked_sub: 'Solange aus, blendet das Widget deine Zahlen aus. Eingeschaltet sind Trefferquote und G/V auch vom Sperrbildschirm und aus der Today-Ansicht lesbar.',
   month_names: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
 
   // Journal tab (index)

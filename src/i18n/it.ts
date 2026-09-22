@@ -95,6 +95,9 @@ export const it: LangStrings = {
 
   // Month selector
   this_month: "Ora",
+  widget_locked_title: 'App bloccata',
+  settings_widget_while_locked: 'Mostra i dati anche da bloccata',
+  settings_widget_while_locked_sub: 'Quando è disattivato, il widget nasconde i tuoi numeri. Attivandolo, win rate e P/P saranno leggibili dalla schermata di blocco e dalla vista Oggi.',
   month_names: ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],
 
   // Journal tab (index)

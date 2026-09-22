@@ -282,13 +282,14 @@ export type GoalField = keyof typeof GOAL_SETTING_KEYS;
 export async function getAllSettings(): Promise<AppSettings> {
   const goalFields = Object.keys(GOAL_SETTING_KEYS) as GoalField[];
   const [
-    [lotUnit, defaultLotSize, defaultStyle, accountBalance, defaultRiskPct, themeMode, appLockEnabled],
+    [lotUnit, defaultLotSize, defaultStyle, accountBalance, defaultRiskPct, themeMode, appLockEnabled, widgetWhileLocked],
     goalValues,
   ] = await Promise.all([
     Promise.all([
       getSetting('lot_unit'), getSetting('default_lot_size'), getSetting('default_style'),
       getSetting('account_balance'), getSetting('default_risk_pct'),
       getSetting('theme_mode'), getSetting('app_lock_enabled'),
+      getSetting('widget_while_locked'),
     ]),
     Promise.all(goalFields.map(f => getSetting(GOAL_SETTING_KEYS[f]))),
   ]);
@@ -305,6 +306,7 @@ export async function getAllSettings(): Promise<AppSettings> {
     ...goals,
     themeMode: (themeMode as AppSettings['themeMode']) ?? 'dark',
     appLockEnabled: appLockEnabled === '1',
+    widgetWhileLocked: widgetWhileLocked === '1',
   };
 }
 

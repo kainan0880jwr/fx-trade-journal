@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { CurrencyPair, AppSettings } from '../types';
+import { syncWidgetData } from '../utils/widgetSync';
 import {
   getCurrencyPairs, upsertCurrencyPair, deleteCurrencyPair,
   getAllSettings, setSetting, getEntryTags, saveEntryTags,
@@ -34,6 +35,7 @@ interface SettingsStore {
   removeTradeRule: (rule: string) => Promise<void>;
   updateThemeMode: (value: AppSettings['themeMode']) => Promise<void>;
   updateAppLockEnabled: (value: boolean) => Promise<void>;
+  updateWidgetWhileLocked: (value: boolean) => Promise<void>;
 }
 
 const defaultSettings: AppSettings = {
@@ -48,6 +50,7 @@ const defaultSettings: AppSettings = {
   yearlyRuleDaysGoal: 0, yearlyPipsGoal: 0, yearlyPLGoal: 0, yearlyWinRateGoal: 0,
   themeMode: 'dark',
   appLockEnabled: false,
+  widgetWhileLocked: false,
 };
 
 export const useSettingsStore = create<SettingsStore>((set, get) => ({
@@ -252,6 +255,19 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     try {
       await setSetting('app_lock_enabled', value ? '1' : '0');
       set(state => ({ settings: { ...state.settings, appLockEnabled: value }, error: null }));
+    } catch (e) {
+      set({ error: e instanceof Error ? e.message : '設定の保存に失敗しました' });
+      throw e;
+    }
+  },
+
+  updateWidgetWhileLocked: async (value) => {
+    try {
+      await setSetting('widget_while_locked', value ? '1' : '0');
+      set(state => ({ settings: { ...state.settings, widgetWhileLocked: value }, error: null }));
+      // 切り替えた瞬間にウィジェットへ反映する。次にトレードを保存するまで
+      // 変わらないと「設定が効いていない」と受け取られる。
+      syncWidgetData();
     } catch (e) {
       set({ error: e instanceof Error ? e.message : '設定の保存に失敗しました' });
       throw e;

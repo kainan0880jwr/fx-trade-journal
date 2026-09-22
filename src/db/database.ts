@@ -782,6 +782,7 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
     INSERT OR IGNORE INTO settings (key, value) VALUES ('monthly_pips_goal', '0');
     INSERT OR IGNORE INTO settings (key, value) VALUES ('monthly_win_rate_goal', '0');
     INSERT OR IGNORE INTO settings (key, value) VALUES ('app_lock_enabled', '0');
+    INSERT OR IGNORE INTO settings (key, value) VALUES ('widget_while_locked', '0');
   `);
   await database.runAsync(
     `INSERT OR IGNORE INTO settings (key, value) VALUES ('entry_tags', ?)`, [defaultTagsJson()]

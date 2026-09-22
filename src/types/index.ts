@@ -73,6 +73,10 @@ export interface AppSettings {
   yearlyWinRateGoal: number;
   themeMode: 'dark' | 'light' | 'system';
   appLockEnabled: boolean;      // 生体認証によるアプリロック
+  // アプリロック中もウィジェットに成績を出すか。既定は false（出さない）。
+  // ウィジェットはロック画面と Today View に置けるため、ロックしている人の
+  // 期待は「見えないこと」のはず。出したい人が自分で選ぶ形にする。
+  widgetWhileLocked: boolean;
 }
 
 export interface ReflectionTemplate {

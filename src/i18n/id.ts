@@ -95,6 +95,9 @@ export const id: LangStrings = {
 
   // Month selector
   this_month: 'Sekarang',
+  widget_locked_title: 'Aplikasi terkunci',
+  settings_widget_while_locked: 'Tampilkan data saat terkunci',
+  settings_widget_while_locked_sub: 'Saat mati, widget menyembunyikan data Anda. Saat dinyalakan, win rate dan L/R Anda bisa dibaca dari Layar Terkunci dan Today View.',
   month_names: ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],
 
   // Journal tab (index)

@@ -95,6 +95,9 @@ export const hi: LangStrings = {
 
   // Month selector
   this_month: 'अभी',
+  widget_locked_title: 'ऐप लॉक है',
+  settings_widget_while_locked: 'लॉक होने पर भी आंकड़े दिखाएँ',
+  settings_widget_while_locked_sub: 'बंद रहने पर विजेट आपके आंकड़े छिपाता है। चालू करने पर आपका विन रेट और लाभ/हानि लॉक स्क्रीन और Today View से पढ़े जा सकेंगे।',
   month_names: ['जन','फर','मार्च','अप्रैल','मई','जून','जुला','अग','सित','अक्टू','नव','दिस'],
 
   // Journal tab (index)

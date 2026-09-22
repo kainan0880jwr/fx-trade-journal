@@ -7,7 +7,7 @@ const BASE: AppSettings = {
   lotUnit: 10000, defaultLotSize: 0.1, defaultStyle: 'day',
   accountBalance: 0, defaultRiskPct: 2,
   monthlyPipsGoal: 0, monthlyWinRateGoal: 0, monthlyPLGoal: 0,
-  themeMode: 'dark', appLockEnabled: false,
+  themeMode: 'dark', appLockEnabled: false, widgetWhileLocked: false,
   dailyRuleGoal: false, dailyPipsGoal: 0, dailyPLGoal: 0,
   weeklyRuleDaysGoal: 0, weeklyPipsGoal: 0, weeklyPLGoal: 0,
   monthlyRuleDaysGoal: 0,

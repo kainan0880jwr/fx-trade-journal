@@ -47,12 +47,17 @@ let linkageReported = false;
  * ウィジェットの表示内容を「データなし」に戻す。
  * 値を消すのではなく hasData: 0 の正規のペイロードを書くことで、Swift 側の
  * デコード失敗（プレースホルダーの `--%`）と区別できる状態にしておく。
+ *
+ * `reason` に 'locked' を渡すと見出しを「アプリロック中」にする。
+ * **これが無いと「今月 / - / -」と出て、故障にしか見えない。**
+ * 実際、開発者本人が実機で見て不具合だと判断した（2026-09-23）。
+ * 意図した挙動でも、理由が画面に出ていなければ利用者には不具合である。
  */
-function clearWidgetData(): void {
+function clearWidgetData(reason: 'locked' | 'no_data' = 'no_data'): void {
   try {
     const storage = new ExtensionStorage(APP_GROUP);
     storage.set('monthlyStats', {
-      title: t('this_month'),
+      title: reason === 'locked' ? t('widget_locked_title') : t('this_month'),
       winRate: '-', winRateLabel: t('win_rate'),
       totalPips: '-', pipsLabel: 'pips', isPositive: 1,
       profitFactor: '-', profitFactorLabel: t('pf'),
@@ -85,16 +90,23 @@ export async function syncWidgetData(): Promise<void> {
     return;
   }
 
-  // アプリロックが有効なら実データを書かない。
+  // アプリロックが有効なら、既定では実データを書かない。
   //
   // ウィジェットは accessoryCircular / accessoryRectangular に対応しており
-  // **ロック画面に置ける**。生体認証でアプリを守っているのに、施錠された端末を
-  // 覗くだけで今月の勝率・損益・取引回数が読めるのでは、ロックの意味が薄い。
-  // 資産状況の推測につながる情報である以上、ロックを有効にした人の期待は
-  // 「見えないこと」のはず。App Group に書いた内容はバックアップにも入る。
+  // **ロック画面に置ける**。さらにホーム画面用の小・中サイズも、ロック画面から
+  // 右スワイプで開く Today View に出る（「ロック中にアクセスを許可」の既定はオン）。
+  // つまり**「ホーム画面用だけ出す」は安全にならない。** 生体認証でアプリを
+  // 守っているのに施錠された端末を覗くだけで勝率・損益・取引回数が読めるのでは、
+  // ロックの意味が薄い。App Group に書いた内容はバックアップにも入る。
+  //
+  // ただし**黙って空にするのはやめた**（2026-09-23）。見出しを「アプリロック中」に
+  // して理由を出し、`widget_while_locked` を立てた人には従来どおり出す。
+  // 既定は安全側のまま、出したい人が自分の判断で選ぶ形にする。
   try {
-    if ((await getSetting('app_lock_enabled')) === '1') {
-      clearWidgetData();
+    const locked = (await getSetting('app_lock_enabled')) === '1';
+    const allowWhileLocked = (await getSetting('widget_while_locked')) === '1';
+    if (locked && !allowWhileLocked) {
+      clearWidgetData('locked');
       return;
     }
   } catch {

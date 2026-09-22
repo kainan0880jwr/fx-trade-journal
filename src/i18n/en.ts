@@ -95,6 +95,9 @@ export const en: LangStrings = {
 
   // Month selector
   this_month: 'Now',
+  widget_locked_title: 'App locked',
+  settings_widget_while_locked: 'Show stats while locked',
+  settings_widget_while_locked_sub: 'While off, the widget hides your stats. Turning it on means your win rate and P/L can be read from the Lock Screen and Today View.',
   month_names: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
 
   // Journal tab (index)
