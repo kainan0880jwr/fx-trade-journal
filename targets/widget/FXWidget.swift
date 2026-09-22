@@ -5,6 +5,24 @@ import SwiftUI
 // Widget側では翻訳を持たず、受け取った文字列をそのまま表示する。
 // （ウィジェットギャラリーに出る名前と説明だけはRNから渡せないため、
 //   *.lproj/Localizable.strings で11言語に対応している）
+/// 今日 / 今週 / 今月の1期間ぶん。RN 側 `widgetPayload.ts` の `WidgetPeriod` と対。
+///
+/// **`ExtensionStorage.set` の値は文字列か数値しか受け付けない**（入れ子不可）ため、
+/// RN 側はこの配列を JSON 文字列にして `periodsJson` に載せる。ここで二段階にデコードする。
+struct WidgetPeriod: Codable {
+    let key: String            // "day" | "week" | "month"
+    let label: String
+    let winRate: String
+    let pips: String
+    let pf: String
+    let count: String
+    let isPositive: Int
+    let hasData: Int
+    let goalTotal: Int
+    let goalDone: Int
+    let goalProgress: Double
+}
+
 struct MonthlyStats: Codable {
     let title: String
     let winRate: String
@@ -25,6 +43,16 @@ struct MonthlyStats: Codable {
     let winRateValue: Double?
     let hasData: Int?
 
+    // 今日 / 今週 / 今月（1.3.5〜）。古いアプリが書いた古いペイロードでも
+    // デコードが落ちないよう、ここもすべてオプショナルにする。
+    let periodsJson: String?
+    /// **いつ時点の集計か。** 日付が変わってもアプリを開くまでペイロードは
+    /// 更新されないので、これと現在日時を突き合わせて陳腐化を判定する。
+    /// これが無いと「今日 +12.4 pips」と昨日の数字を出し続ける。
+    let computedDay: String?
+    let computedWeek: String?
+    let computedMonth: String?
+
     static let placeholder = MonthlyStats(
         title: "FX",
         winRate: "--%",
@@ -39,8 +67,83 @@ struct MonthlyStats: Codable {
         streak: "0",
         streakSuffix: "",
         winRateValue: 0,
-        hasData: 0
+        hasData: 0,
+        periodsJson: nil,
+        computedDay: nil,
+        computedWeek: nil,
+        computedMonth: nil
     )
+
+    var periods: [WidgetPeriod] {
+        guard let json = periodsJson, let data = json.data(using: .utf8),
+              let list = try? JSONDecoder().decode([WidgetPeriod].self, from: data)
+        else { return [] }
+        return list
+    }
+}
+
+// MARK: - 日付（陳腐化の判定に使う）
+
+private let gregorian = Calendar(identifier: .gregorian)
+
+private func ymdString(_ date: Date) -> String {
+    let c = gregorian.dateComponents([.year, .month, .day], from: date)
+    return String(format: "%04d-%02d-%02d", c.year ?? 0, c.month ?? 0, c.day ?? 0)
+}
+
+private func ymString(_ date: Date) -> String {
+    let c = gregorian.dateComponents([.year, .month], from: date)
+    return String(format: "%04d-%02d", c.year ?? 0, c.month ?? 0)
+}
+
+/// 週の頭（日曜）。
+///
+/// **`Calendar.current.firstWeekday` を使ってはいけない。** あれはロケール依存で、
+/// ドイツ語環境などでは月曜始まりになる。RN 側（`goals.ts` の `weekStart`）は
+/// `getDay()` を使っており**常に日曜始まり**なので、合わせないと週の判定が
+/// 1日ずれ、「今週」が勝手に古い扱いになる日ができる。
+private func weekStartString(_ date: Date) -> String {
+    let weekday = gregorian.component(.weekday, from: date)   // 1 = 日曜
+    let start = gregorian.date(byAdding: .day, value: -(weekday - 1), to: date) ?? date
+    return ymdString(start)
+}
+
+/// 画面に出す1期間。陳腐化していれば `stale` が立ち、数値の代わりに「—」を出す。
+struct DisplayPeriod {
+    let label: String
+    let winRate: String
+    let pips: String
+    let isPositive: Int
+    let hasData: Bool
+    let goalTotal: Int
+    let goalDone: Int
+    let goalProgress: Double
+    let stale: Bool
+}
+
+extension MonthlyStats {
+    /// 現在日時と突き合わせて、古くなった期間に印を付けて返す。
+    func displayPeriods(at now: Date) -> [DisplayPeriod] {
+        periods.map { p in
+            let stale: Bool
+            switch p.key {
+            case "day":   stale = (computedDay ?? "") != ymdString(now)
+            case "week":  stale = (computedWeek ?? "") != weekStartString(now)
+            default:      stale = (computedMonth ?? "") != ymString(now)
+            }
+            return DisplayPeriod(
+                label: p.label,
+                winRate: stale ? "—" : p.winRate,
+                pips: stale ? "—" : p.pips,
+                isPositive: p.isPositive,
+                hasData: !stale && p.hasData == 1,
+                goalTotal: stale ? 0 : p.goalTotal,
+                goalDone: p.goalDone,
+                goalProgress: stale ? 0 : p.goalProgress,
+                stale: stale
+            )
+        }
+    }
 }
 
 // アプリ本体のURLスキーム(app.jsonのscheme)。ウィジェットのタップ先に使う。
@@ -60,10 +163,20 @@ struct Provider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<StatsEntry>) -> Void) {
-        let entry = StatsEntry(date: Date(), stats: loadStats())
-        // RN側がトレードの追加/編集/削除のたびにExtensionStorage.reloadWidget()を
-        // 呼んで明示的に更新をかけるため、ここでの自動リフレッシュポリシーは.neverでよい。
-        completion(Timeline(entries: [entry], policy: .never))
+        let now = Date()
+        let entry = StatsEntry(date: now, stats: loadStats())
+        // RN側はトレードの追加/編集/削除のたびに ExtensionStorage.reloadWidget() を
+        // 呼ぶので、内容の変化はそれで拾える。**しかし日付の変化は拾えない。**
+        //
+        // 以前は .never だったため、日付が変わってもアプリを開くまで再描画されず、
+        // 「今日」の欄に昨日の数字が出たままになっていた（1.3.5 で3期間を出すように
+        // したことで表面化する）。日付が変わる瞬間に必ず組み直す。
+        // そこで displayPeriods(at:) が古い期間を「—」に倒す。
+        let nextMidnight = gregorian.nextDate(
+            after: now, matching: DateComponents(hour: 0, minute: 0, second: 5),
+            matchingPolicy: .nextTime
+        ) ?? now.addingTimeInterval(3600)
+        completion(Timeline(entries: [entry], policy: .after(nextMidnight)))
     }
 
     func loadStats() -> MonthlyStats {
@@ -168,24 +281,80 @@ struct MediumView: View {
                 }
             }
 
-            HStack(alignment: .top, spacing: 8) {
-                MediumStatCell(value: stats.winRate, label: stats.winRateLabel)
-                MediumStatCell(
-                    value: stats.totalPips,
-                    label: stats.pipsLabel,
-                    color: pipsColor(stats.isPositive)
-                )
-                MediumStatCell(
-                    value: stats.profitFactor ?? "-",
-                    label: stats.profitFactorLabel ?? "PF"
-                )
-                MediumStatCell(
-                    value: stats.tradeCount ?? "-",
-                    label: stats.tradeCountLabel ?? ""
-                )
+            // 今日 / 今週 / 今月を横に並べる。「まとめて確認したい」への答えがこれ。
+            // 3期間が届かない場合（古いペイロード）は従来の4指標にそのまま落とす。
+            let periods = stats.displayPeriods(at: Date())
+            if periods.isEmpty {
+                HStack(alignment: .top, spacing: 8) {
+                    MediumStatCell(value: stats.winRate, label: stats.winRateLabel)
+                    MediumStatCell(
+                        value: stats.totalPips,
+                        label: stats.pipsLabel,
+                        color: pipsColor(stats.isPositive)
+                    )
+                    MediumStatCell(
+                        value: stats.profitFactor ?? "-",
+                        label: stats.profitFactorLabel ?? "PF"
+                    )
+                    MediumStatCell(
+                        value: stats.tradeCount ?? "-",
+                        label: stats.tradeCountLabel ?? ""
+                    )
+                }
+            } else {
+                HStack(alignment: .top, spacing: 12) {
+                    ForEach(Array(periods.enumerated()), id: \.offset) { _, p in
+                        PeriodColumn(period: p)
+                    }
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    }
+}
+
+/// 中サイズの1列ぶん。目標が設定されていればリングを重ねて「あとどれくらいか」を出す。
+struct PeriodColumn: View {
+    let period: DisplayPeriod
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(period.label)
+                .font(.caption2)
+                .foregroundStyle(.white.opacity(0.55))
+                .lineLimit(1)
+
+            HStack(spacing: 6) {
+                Text(period.winRate)
+                    .font(.system(size: 19, weight: .heavy, design: .rounded))
+                    .foregroundStyle(.white)
+                    .minimumScaleFactor(0.6)
+                    .lineLimit(1)
+
+                // 目標が1つも設定されていなければリングを出さない。
+                // 日・週の目標は PRO でしか設定できないので、ここで課金状態を
+                // 見なくても自然に線引きが揃う（見ると初期化待ちでちらつく）。
+                if period.goalTotal > 0 {
+                    Gauge(value: period.goalProgress) { EmptyView() }
+                        .gaugeStyle(.accessoryCircularCapacity)
+                        .scaleEffect(0.38)
+                        .frame(width: 22, height: 22)
+                        .tint(.white.opacity(0.9))
+                }
+            }
+
+            Text(period.pips)
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(period.hasData ? pipsColor(period.isPositive) : .white.opacity(0.4))
+                .lineLimit(1)
+
+            if period.goalTotal > 0 {
+                Text("\(period.goalDone)/\(period.goalTotal)")
+                    .font(.system(size: 9, weight: .semibold))
+                    .foregroundStyle(.white.opacity(0.5))
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

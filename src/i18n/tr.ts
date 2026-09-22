@@ -96,6 +96,9 @@ export const tr: LangStrings = {
   // Month selector
   this_month: 'Şimdi',
   widget_locked_title: 'Uygulama kilitli',
+  widget_period_day: 'Bugün',
+  widget_period_week: 'Bu hafta',
+  widget_period_month: 'Bu ay',
   settings_widget_while_locked: 'Kilitliyken de verileri göster',
   settings_widget_while_locked_sub: "Kapalıyken widget verilerinizi gizler. Açtığınızda kazanma oranınız ve K/Z'niz kilit ekranından ve Bugün görünümünden okunabilir.",
   month_names: ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'],

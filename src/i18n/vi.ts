@@ -96,6 +96,9 @@ export const vi: LangStrings = {
   // Month selector
   this_month: 'Hiện tại',
   widget_locked_title: 'Ứng dụng đang khoá',
+  widget_period_day: 'Hôm nay',
+  widget_period_week: 'Tuần này',
+  widget_period_month: 'Tháng này',
   settings_widget_while_locked: 'Hiện số liệu khi đang khoá',
   settings_widget_while_locked_sub: 'Khi tắt, tiện ích sẽ ẩn số liệu của bạn. Khi bật, tỷ lệ thắng và lãi/lỗ có thể đọc được từ màn hình khoá và Today View.',
   month_names: ['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'],

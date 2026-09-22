@@ -1,8 +1,10 @@
 import { Platform } from 'react-native';
 import * as Sentry from '@sentry/react-native';
 import { ExtensionStorage } from '@bacons/apple-targets';
-import { getTradesByMonth, getRecordStreak, getSetting } from '../db/queries';
+import { getTradesByMonth, getRecordStreak, getSetting, getTradeRules } from '../db/queries';
+import { getAllSettings } from '../db/queries';
 import { calcStats } from './statsCalc';
+import { buildWidgetPeriods, monthsNeededForWeek, isInThisWeek } from './widgetPayload';
 import { t } from '../i18n';
 
 // app.jsonのios.entitlementsおよびtargets/widget/expo-target.config.jsと
@@ -118,6 +120,32 @@ export async function syncWidgetData(): Promise<void> {
     const stats = calcStats(trades);
     const hasTrades = stats.totalTrades > 0;
 
+    // 今日・今週・今月の3期間ぶん。**週は月をまたぐ**ので、必要なら前月も取る
+    // （9/28(日)〜10/4(土) のような週で、当月ぶんだけ見ると週の前半が丸ごと落ちる）。
+    // ここが失敗しても既存の「今月」の表示は守りたいので、単独で握り潰す。
+    let periods: ReturnType<typeof buildWidgetPeriods> | null = null;
+    try {
+      const months = monthsNeededForWeek();
+      const perMonth = await Promise.all(
+        months.map(m => (m === todayYearMonth() ? Promise.resolve(trades) : getTradesByMonth(m)))
+      );
+      const weekTrades = perMonth.flat().filter(tr => isInThisWeek(tr.date));
+      const [settings, rules] = await Promise.all([getAllSettings(), getTradeRules()]);
+      periods = buildWidgetPeriods({
+        monthTrades: trades,
+        weekTrades,
+        settings,
+        rules,
+        labels: {
+          day: t('widget_period_day'),
+          week: t('widget_period_week'),
+          month: t('widget_period_month'),
+        },
+      });
+    } catch {
+      // 3期間が作れなくても、下の「今月」だけのペイロードは書く
+    }
+
     // 連続記録日数は「あると嬉しい」程度の付加情報にすぎない。ここで throw させて
     // 勝率やpipsの同期ごと巻き添えにするのは割に合わないため、単独で握り潰す。
     let streak = 0;
@@ -157,6 +185,19 @@ export async function syncWidgetData(): Promise<void> {
       // 表示用文字列(winRate)から数値を復元するとロケール差で壊れるため分離する。
       winRateValue: hasTrades ? stats.winRate / 100 : 0,
       hasData: hasTrades ? 1 : 0,
+
+      // ── 今日 / 今週 / 今月（1.3.5〜）──
+      // 既存フィールドは「今月」を入れたまま残す。古いウィジェットが新しい
+      // ペイロードを読んでも壊れないようにするため（CLAUDE.md の約束）。
+      //
+      // **`ExtensionStorage.set` の値は文字列か数値しか受け付けない**（入れ子不可）。
+      // 期間の配列は JSON 文字列にして載せ、Swift 側で二段階にデコードする。
+      ...(periods ? {
+        periodsJson: JSON.stringify(periods.periods),
+        computedDay: periods.computedDay,
+        computedWeek: periods.computedWeek,
+        computedMonth: periods.computedMonth,
+      } : {}),
     });
     ExtensionStorage.reloadWidget();
   } catch (e) {

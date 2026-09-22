@@ -96,6 +96,9 @@ export const es: LangStrings = {
   // Month selector
   this_month: "Ahora",
   widget_locked_title: 'App bloqueada',
+  widget_period_day: 'Hoy',
+  widget_period_week: 'Esta semana',
+  widget_period_month: 'Este mes',
   settings_widget_while_locked: 'Mostrar datos con la app bloqueada',
   settings_widget_while_locked_sub: 'Mientras está desactivado, el widget oculta tus cifras. Al activarlo, tu tasa de acierto y P/G se podrán leer desde la pantalla bloqueada y la vista Hoy.',
   month_names: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],

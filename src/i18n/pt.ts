@@ -96,6 +96,9 @@ export const pt: LangStrings = {
   // Month selector
   this_month: 'Agora',
   widget_locked_title: 'App bloqueado',
+  widget_period_day: 'Hoje',
+  widget_period_week: 'Esta semana',
+  widget_period_month: 'Este mês',
   settings_widget_while_locked: 'Mostrar dados com o app bloqueado',
   settings_widget_while_locked_sub: 'Enquanto estiver desligado, o widget oculta seus números. Ao ligar, sua taxa de acerto e L/P poderão ser lidas na tela bloqueada e na Visualização Hoje.',
   month_names: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],

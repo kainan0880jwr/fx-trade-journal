@@ -94,6 +94,9 @@ export const ja = {
   // 月セレクター
   this_month: '今月',
   widget_locked_title: 'アプリロック中',
+  widget_period_day: '今日',
+  widget_period_week: '今週',
+  widget_period_month: '今月',
   settings_widget_while_locked: 'ロック中も成績を表示',
   settings_widget_while_locked_sub: 'オフのあいだ、ウィジェットは成績を出しません。オンにすると、ロック画面やToday Viewからも勝率・損益が見える状態になります。',
   month_names: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],

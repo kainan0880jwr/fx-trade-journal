@@ -96,6 +96,9 @@ export const fr: LangStrings = {
   // Month selector
   this_month: "Maintenant",
   widget_locked_title: 'App verrouillée',
+  widget_period_day: 'Aujourd’hui',
+  widget_period_week: 'Cette semaine',
+  widget_period_month: 'Ce mois-ci',
   settings_widget_while_locked: 'Afficher les stats même verrouillée',
   settings_widget_while_locked_sub: "Désactivé, le widget masque vos chiffres. Activé, votre taux de réussite et vos P/P seront lisibles depuis l'écran verrouillé et la vue Aujourd'hui.",
   month_names: ['Janv','Févr','Mars','Avr','Mai','Juin','Juil','Août','Sept','Oct','Nov','Déc'],
