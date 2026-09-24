@@ -1,10 +1,20 @@
-/* FXWidget — ウィジェットギャラリー(追加画面)に表示される名前と説明。
-   キーはSwift側のリテラルそのもの。.configurationDisplayName("...") は
-   文字列リテラルを LocalizedStringKey として解決するため、Swiftの変更は不要。
+/* FXWidget — ウィジェットギャラリーに出る名前と説明、および
+   「期間を選ぶ」ウィジェットの設定項目（AppIntents）の表示名。
+   キーはSwift側の文字列リテラルそのもの。.configurationDisplayName(...) や
+   DisplayRepresentation(...) は文字列リテラルを LocalizedStringResource として
+   解決するため、Swiftの変更は不要。
    キーを日本語のままにしているのは、万一この.stringsがバンドルに含まれなかった
    場合でも従来どおり日本語が出るだけで済み、キー文字列が露出しないため。
-   ウィジェット内の実データ(今月/勝率/pips)はRN側(widgetSync.ts)が翻訳済みの
-   文字列を書き込むので、ここでは扱わない。 */
+   ウィジェット内の実データ(今日/今週/今月・勝率・pips)はRN側(widgetSync.ts)が
+   翻訳済みの文字列を書き込むので、ここでは扱わない。 */
 
-"今月の成績" = "Bulan Ini";
-"今月の勝率と合計pipsをホーム画面に表示します。" = "Tampilkan win rate dan total pips bulan ini di Layar Utama.";
+"成績サマリー" = "Ringkasan performa";
+"今日・今週・今月の成績をまとめて表示します。" = "Menampilkan hari ini, minggu ini, dan bulan ini sekilas.";
+"期間を選ぶ" = "Pilih periode";
+"今日・今週・今月から選んで成績を表示します。長押し→ウィジェットを編集で切り替えられます。" = "Menampilkan periode pilihan Anda. Tekan lama lalu pilih “Edit Widget” untuk mengganti.";
+"期間" = "Periode";
+"今日" = "Hari ini";
+"今週" = "Minggu ini";
+"今月" = "Bulan ini";
+"表示する期間" = "Periode yang ditampilkan";
+"ウィジェットに出す期間を選びます。" = "Pilih periode yang ditampilkan widget.";

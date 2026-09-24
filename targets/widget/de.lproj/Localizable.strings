@@ -1,10 +1,20 @@
-/* FXWidget — ウィジェットギャラリー(追加画面)に表示される名前と説明。
-   キーはSwift側のリテラルそのもの。.configurationDisplayName("...") は
-   文字列リテラルを LocalizedStringKey として解決するため、Swiftの変更は不要。
+/* FXWidget — ウィジェットギャラリーに出る名前と説明、および
+   「期間を選ぶ」ウィジェットの設定項目（AppIntents）の表示名。
+   キーはSwift側の文字列リテラルそのもの。.configurationDisplayName(...) や
+   DisplayRepresentation(...) は文字列リテラルを LocalizedStringResource として
+   解決するため、Swiftの変更は不要。
    キーを日本語のままにしているのは、万一この.stringsがバンドルに含まれなかった
    場合でも従来どおり日本語が出るだけで済み、キー文字列が露出しないため。
-   ウィジェット内の実データ(今月/勝率/pips)はRN側(widgetSync.ts)が翻訳済みの
-   文字列を書き込むので、ここでは扱わない。 */
+   ウィジェット内の実データ(今日/今週/今月・勝率・pips)はRN側(widgetSync.ts)が
+   翻訳済みの文字列を書き込むので、ここでは扱わない。 */
 
-"今月の成績" = "Dieser Monat";
-"今月の勝率と合計pipsをホーム画面に表示します。" = "Gewinnrate und Gesamt-Pips des Monats auf dem Home-Bildschirm anzeigen.";
+"成績サマリー" = "Statistik-Übersicht";
+"今日・今週・今月の成績をまとめて表示します。" = "Zeigt heute, diese Woche und diesen Monat auf einen Blick.";
+"期間を選ぶ" = "Zeitraum wählen";
+"今日・今週・今月から選んで成績を表示します。長押し→ウィジェットを編集で切り替えられます。" = "Zeigt einen Zeitraum deiner Wahl. Zum Wechseln lange drücken und „Widget bearbeiten“ wählen.";
+"期間" = "Zeitraum";
+"今日" = "Heute";
+"今週" = "Diese Woche";
+"今月" = "Dieser Monat";
+"表示する期間" = "Angezeigter Zeitraum";
+"ウィジェットに出す期間を選びます。" = "Wähle, welchen Zeitraum das Widget zeigt.";

@@ -1,5 +1,6 @@
 import WidgetKit
 import SwiftUI
+import AppIntents
 
 // RN側(src/utils/widgetSync.ts)が既にt()で翻訳済みの文字列を書き込むため、
 // Widget側では翻訳を持たず、受け取った文字列をそのまま表示する。
@@ -424,7 +425,188 @@ struct FXWidgetEntryView: View {
     }
 }
 
-@main
+
+// MARK: - 期間を選べるウィジェット（1.3.5〜）
+
+/// **既存の `FXWidget` を `AppIntentConfiguration` に作り替えていないのは意図的。**
+/// 同じ kind で構成方式を変えると、すでにホーム画面に置かれているウィジェットが
+/// 消えたり既定値に戻ったりしうる。手元で検証できない以上、既存の配置を壊す賭けは
+/// しない。目的も違う（まとめて見る / 1期間を大きく見る）ので、ギャラリーに
+/// 2つ並ぶことに意味がある。
+
+enum PeriodOption: String, AppEnum, CaseIterable {
+    case day, week, month
+
+    // ここの文字列リテラルがそのまま .strings のキーになる（既存の
+    // configurationDisplayName と同じ仕組み）。11言語ぶんを各 .lproj に置く。
+    static var typeDisplayRepresentation: TypeDisplayRepresentation = "期間"
+    static var caseDisplayRepresentations: [PeriodOption: DisplayRepresentation] = [
+        .day: "今日",
+        .week: "今週",
+        .month: "今月",
+    ]
+}
+
+struct SelectPeriodIntent: WidgetConfigurationIntent {
+    static var title: LocalizedStringResource = "表示する期間"
+    static var description = IntentDescription("ウィジェットに出す期間を選びます。")
+
+    @Parameter(title: "期間", default: PeriodOption.month)
+    var period: PeriodOption
+}
+
+struct PeriodEntry: TimelineEntry {
+    let date: Date
+    let stats: MonthlyStats
+    let option: PeriodOption
+}
+
+struct PeriodProvider: AppIntentTimelineProvider {
+    let appGroup = "group.com.fxtradejournal.ios"
+    let storageKey = "monthlyStats"
+
+    func placeholder(in context: Context) -> PeriodEntry {
+        PeriodEntry(date: Date(), stats: .placeholder, option: .month)
+    }
+
+    func snapshot(for configuration: SelectPeriodIntent, in context: Context) async -> PeriodEntry {
+        PeriodEntry(date: Date(), stats: loadStats(), option: configuration.period)
+    }
+
+    func timeline(for configuration: SelectPeriodIntent, in context: Context) async -> Timeline<PeriodEntry> {
+        let now = Date()
+        let entry = PeriodEntry(date: now, stats: loadStats(), option: configuration.period)
+        // 日付が変わる瞬間に組み直す。理由は Provider.getTimeline と同じで、
+        // これが無いと「今日」の欄に昨日の数字が出たままになる。
+        let nextMidnight = gregorian.nextDate(
+            after: now, matching: DateComponents(hour: 0, minute: 0, second: 5),
+            matchingPolicy: .nextTime
+        ) ?? now.addingTimeInterval(3600)
+        return Timeline(entries: [entry], policy: .after(nextMidnight))
+    }
+
+    private func loadStats() -> MonthlyStats {
+        guard
+            let defaults = UserDefaults(suiteName: appGroup),
+            let data = defaults.data(forKey: storageKey),
+            let stats = try? JSONDecoder().decode(MonthlyStats.self, from: data)
+        else { return .placeholder }
+        return stats
+    }
+}
+
+extension MonthlyStats {
+    /// 選ばれた期間の表示用データ。3期間が届いていない古いペイロードのときは
+    /// 既存フィールド（今月）で組み立てて、ウィジェットが空にならないようにする。
+    func displayPeriod(_ option: PeriodOption, at now: Date) -> DisplayPeriod {
+        let all = displayPeriods(at: now)
+        if let hit = all.first(where: { periodKey($0.label, option: option, all: all) }) { return hit }
+        return DisplayPeriod(
+            label: title, winRate: winRate, pips: totalPips, isPositive: isPositive,
+            hasData: (hasData ?? 0) == 1, goalTotal: 0, goalDone: 0, goalProgress: 0, stale: false
+        )
+    }
+
+    private func periodKey(_ label: String, option: PeriodOption, all: [DisplayPeriod]) -> Bool {
+        // displayPeriods は periods と同じ順（day, week, month）で返す。
+        // ラベルは翻訳済みで比較に使えないため、位置で対応づける。
+        guard let index = all.firstIndex(where: { $0.label == label }) else { return false }
+        switch option {
+        case .day: return index == 0
+        case .week: return index == 1
+        case .month: return index == 2
+        }
+    }
+}
+
+/// 小サイズ。選んだ期間だけを大きく出す。
+struct PeriodSmallView: View {
+    let period: DisplayPeriod
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(period.label)
+                .font(.caption2)
+                .foregroundStyle(.white.opacity(0.6))
+
+            Spacer(minLength: 4)
+
+            Text(period.winRate)
+                .font(.system(size: 30, weight: .heavy, design: .rounded))
+                .foregroundStyle(.white)
+                .minimumScaleFactor(0.6)
+                .lineLimit(1)
+
+            Text(period.pips)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(period.hasData ? pipsColor(period.isPositive) : .white.opacity(0.4))
+
+            if period.goalTotal > 0 {
+                HStack(spacing: 5) {
+                    Gauge(value: period.goalProgress) { EmptyView() }
+                        .gaugeStyle(.accessoryCircularCapacity)
+                        .scaleEffect(0.34)
+                        .frame(width: 20, height: 20)
+                        .tint(.white.opacity(0.9))
+                    Text("\(period.goalDone)/\(period.goalTotal)")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.55))
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    }
+}
+
+struct FXPeriodWidgetEntryView: View {
+    @Environment(\.widgetFamily) var family
+    var entry: PeriodProvider.Entry
+
+    var body: some View {
+        let p = entry.stats.displayPeriod(entry.option, at: Date())
+        switch family {
+        case .accessoryCircular:
+            Gauge(value: min(max(p.goalTotal > 0 ? p.goalProgress : 0, 0), 1)) {
+                Text(p.label)
+            } currentValueLabel: {
+                Text(p.winRate).minimumScaleFactor(0.6).lineLimit(1)
+            }
+            .gaugeStyle(.accessoryCircularCapacity)
+            .containerBackground(for: .widget) { Color.clear }
+        case .accessoryRectangular:
+            VStack(alignment: .leading, spacing: 1) {
+                Text(p.label).font(.caption2).widgetAccentable()
+                Text(p.winRate).font(.headline)
+                Text(p.pips).font(.caption.weight(.semibold))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .containerBackground(for: .widget) { Color.clear }
+        default:
+            PeriodSmallView(period: p)
+                .padding()
+                .containerBackground(for: .widget) { Color("$widgetBackground") }
+        }
+    }
+}
+
+struct FXPeriodWidget: Widget {
+    let kind: String = "FXPeriodWidget"
+
+    var body: some WidgetConfiguration {
+        AppIntentConfiguration(kind: kind, intent: SelectPeriodIntent.self, provider: PeriodProvider()) { entry in
+            FXPeriodWidgetEntryView(entry: entry)
+                .widgetURL(newTradeURL)
+        }
+        .configurationDisplayName("期間を選ぶ")
+        .description("今日・今週・今月から選んで成績を表示します。長押し→ウィジェットを編集で切り替えられます。")
+        .supportedFamilies([
+            .systemSmall,
+            .accessoryCircular,
+            .accessoryRectangular,
+        ])
+    }
+}
+
 struct FXWidget: Widget {
     let kind: String = "FXWidget"
 
@@ -435,13 +617,24 @@ struct FXWidget: Widget {
                 // 「初回オープン→初回取引保存 43%」に効かせるのが狙い。
                 .widgetURL(newTradeURL)
         }
-        .configurationDisplayName("今月の成績")
-        .description("今月の勝率と合計pipsをホーム画面に表示します。")
+        .configurationDisplayName("成績サマリー")
+        .description("今日・今週・今月の成績をまとめて表示します。")
         .supportedFamilies([
             .systemSmall,
             .systemMedium,
             .accessoryCircular,
             .accessoryRectangular,
         ])
+    }
+}
+
+/// **ウィジェットが2つあるので `@main` は Bundle 側に付ける。**
+/// 個々の Widget に付けたままだと、そちらしかギャラリーに出ない
+/// （追加したウィジェットが「存在するのに見つからない」形になる）。
+@main
+struct FXWidgetBundle: WidgetBundle {
+    var body: some Widget {
+        FXWidget()
+        FXPeriodWidget()
     }
 }
