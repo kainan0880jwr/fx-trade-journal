@@ -175,7 +175,7 @@
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">FXトレード記録・分析アプリ</p>
-      <h1>記録するだけで、<br>勝率・pips・PFが<em>見えてくる</em>。</h1>
+      <h1>記録するだけで、<br>勝率・pips・PFが<span class="nobr"><em>見えてくる</em>。</span></h1>
       <p class="hero-sub">
         1タップの記録と、MT4/MT5のCSV取込に対応。記録は端末の中に保存され、サーバーには送りません。アカウント登録も不要です。
       </p>
@@ -205,7 +205,7 @@
       <div class="phone">
         <picture>
           <source srcset="lp-assets/shots/home-ja.avif" type="image/avif">
-          <img class="shot" src="lp-assets/shots/home-ja.webp" width="560" height="1075" alt="記録タブ。今月の勝率・pips・PFと、トレードの一覧" loading="eager" fetchpriority="high" decoding="async">
+          <img class="shot" src="lp-assets/shots/home-ja.webp" width="560" height="1093" alt="記録タブ。今月の勝率・pips・PFと、トレードの一覧" loading="eager" fetchpriority="high" decoding="async">
         </picture>
         <p class="sample-note">この画面はサンプルです。実際の運用成績ではありません。</p>
       </div>
@@ -244,10 +244,10 @@
     <div class="feature-row reveal" id="analysis">
       <div class="feature-visual">
         <div class="panel">
-          <span class="panel-tag">分析</span>
+          <span class="panel-tag">分析（PRO）</span>
           <picture>
             <source srcset="lp-assets/shots/analysis-ja.avif" type="image/avif">
-            <img class="shot" src="lp-assets/shots/analysis-ja.webp" width="560" height="1127" alt="分析タブ。勝率と、時間帯・タグ・RRなどの分析" loading="lazy" decoding="async">
+            <img class="shot" src="lp-assets/shots/analysis-ja.webp" width="560" height="1146" alt="分析タブ（PRO）。曜日×時間帯のヒートマップと、時間帯ごとの勝率・pips" loading="lazy" decoding="async">
           </picture>
           <p class="sample-note">この画面はサンプルです。実際の運用成績ではありません。</p>
         </div>
@@ -294,7 +294,7 @@
           <span class="panel-tag">記録する</span>
           <picture>
             <source srcset="lp-assets/shots/entry-ja.avif" type="image/avif">
-            <img class="shot" src="lp-assets/shots/entry-ja.webp" width="560" height="1124" alt="記録フォーム。通貨ペアとロットを選ぶとpipsを自動計算" loading="lazy" decoding="async">
+            <img class="shot" src="lp-assets/shots/entry-ja.webp" width="560" height="1146" alt="記録フォーム。通貨ペアとロットを選ぶとpipsを自動計算" loading="lazy" decoding="async">
           </picture>
         </div>
     </div>
@@ -340,7 +340,6 @@
         </ul>
       </div>
     </div>
-  </div>
     <div class="feature-row reveal" id="widget">
       <div class="feature-visual">
         <div class="panel">
@@ -365,7 +364,7 @@
         </ul>
       </div>
     </div>
-
+  </div>
 </section>
 
 <section class="stat-band">
@@ -396,6 +395,9 @@
           <li>月次ダッシュボード（勝率・pips・PF）</li>
           <li>成績シェアカード（ウォーターマーク入り）</li>
           <li>ロット計算機・実績バッジ</li>
+          <li>ホーム画面ウィジェット（iOS）</li>
+          <li>月次の目標と連続記録ストリーク</li>
+          <li>生体認証ロック・暗号化・JSONバックアップ</li>
         </ul>
         <a class="btn btn-ghost" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">無料で始める</a>
       </div>
@@ -407,23 +409,24 @@
           <div class="price-plan">
             <span class="pp-label">月額</span>
             <span class="pp-value mono">¥500<span class="pp-unit">/月</span></span>
-            <span class="pp-trial">初回1週間無料トライアル</span>
+            <span class="pp-trial">初回7日間無料トライアル</span>
           </div>
           <div class="price-plan pp-best">
             <span class="pp-label">年額<em>約33%お得</em></span>
             <span class="pp-value mono">¥3,980<span class="pp-unit">/年</span></span>
-            <span class="pp-trial">初回1週間無料トライアル</span>
+            <span class="pp-trial">初回7日間無料トライアル</span>
           </div>
         </div>
         <ul class="price-list">
           <li>全分析タブ（時間帯・曜日／タグ分析／RR分析／エクイティ／メンタル）</li>
           <li>月次・週次インサイト、年間レポート</li>
+          <li>日・週・年の目標設定とカレンダーの達成マーク</li>
           <li>メンタル記録・複数時間足のメモ</li>
           <li>チャート画像3枚添付</li>
           <li>ウォーターマーク除去・ブックマーク一覧</li>
         </ul>
         <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">PROを見る</a>
-        <p class="price-fineprint">価格は日本（¥・税込表示）の場合です。国・地域により異なります。月額・年額プランとも、初回1週間の無料期間中に解約すれば料金は発生しません（無料期間はいずれか一方のプランで1回限り）。無料期間が終わると、選んだプラン（月額¥500／年額¥3,980）が自動で課金されます。サブスクリプションは自動更新され、期間終了の24時間前までに設定アプリから解約できます。詳しくは<a href="terms.html">利用規約</a>・<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
+        <p class="price-fineprint">価格は日本（¥・税込表示）の場合です。国・地域により異なります。月額・年額プランとも、初回7日間の無料期間中に解約すれば料金は発生しません（無料期間はいずれか一方のプランで1回限り）。無料期間が終わると、選んだプラン（月額¥500／年額¥3,980）が自動で課金されます。サブスクリプションは自動更新され、期間終了の24時間前までに設定アプリから解約できます。詳しくは<a href="terms.html">利用規約</a>・<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
       </div>
     </div>
   </div>

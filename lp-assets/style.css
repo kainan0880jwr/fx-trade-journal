@@ -180,6 +180,9 @@ p{margin:0;}
 
 .hero h1{font-size:clamp(2.1rem, 4.6vw, 3.6rem); line-height:1.16;}
 .hero h1 em{font-style:normal; color:var(--accent);}
+/* 日本語の見出しはどこでも折り返せるため、スマホ幅で「見／えてくる」と語の途中で
+   切れていた。強調語と句点をひとかたまりにして、折り返すなら語の前で折り返す。 */
+.nobr{white-space:nowrap;}
 .hero-sub{margin-top:var(--space-4); font-size:1.08rem; color:var(--ink-dim); max-width:46ch;}
 .hero-actions{display:flex; align-items:center; gap:var(--space-4); margin-top:var(--space-5); flex-wrap:wrap;}
 .hero-trust{margin-top:var(--space-5); display:flex; gap:var(--space-4); flex-wrap:wrap; font-family:var(--font-mono); font-size:.8rem; color:var(--ink-faint);}
@@ -193,7 +196,9 @@ p{margin:0;}
   border:1px solid var(--line-strong); box-shadow:var(--shadow-card); padding:.9em;
 }
 @keyframes floatY{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
-.stat-strip{display:grid; grid-template-columns:repeat(5,1fr); gap:.3em; background:var(--surface-2); border-radius:14px; padding:.7em .2em; margin-bottom:.6em;}
+/* 項目は4つ（勝率・pips・PF・記録）。5列にすると1列ぶん空き、残り4列が狭くなって
+   スマホ幅で「12日連\n続」「12\nTage」と値が折れていた。 */
+.stat-strip{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.3em; background:var(--surface-2); border-radius:14px; padding:.7em .2em; margin-bottom:.6em;}
 .stat-strip div{text-align:center;}
 .stat-strip .k{display:block; font-size:.56rem; color:var(--ink-faint); margin-bottom:.2em;}
 .stat-strip .v{font-family:var(--font-mono); font-weight:700; font-size:.76rem;}
@@ -212,9 +217,14 @@ p{margin:0;}
 @media (max-width:560px){ .float-chip{display:none;} }
 /* 浮きバッジ用のサンプル注記。.hero-visual は flex なので通常フローに置くと
    スマホモックを押しのける。バッジと同じく絶対配置にし、バッジが消える幅では
-   一緒に消す（数値が出ていないところに注記だけ残らないように）。 */
-.chip-note{position:absolute; left:0; right:0; bottom:2%; z-index:3; margin:0;}
+   一緒に消す（数値が出ていないところに注記だけ残らないように）。
+   置き場所はスマホ枠の**下**（top:100%）。以前は bottom:2% で、.hero-visual の高さが
+   スマホ枠と同じため、枠内の注記（.phone .sample-note）の真上に重なって二重に
+   読めない文字になっていた。この幅では枠内の注記を隠し、下の1本に集約する
+   （注記の対象はバッジと枠の両方なので文面は同じ）。 */
+.chip-note{position:absolute; left:0; right:0; top:100%; margin:.6em 0 0; z-index:3;}
 @media (max-width:560px){ .chip-note{display:none;} }
+@media (min-width:561px){ .phone .sample-note{display:none;} }
 
 /* ============ Section shell ============ */
 section{padding:var(--space-7) 0;}
@@ -234,17 +244,21 @@ section{padding:var(--space-7) 0;}
 .problem-copy p + p{margin-top:1em;}
 
 /* ============ Feature rows ============ */
-.feature-row{display:grid; grid-template-columns:1fr 1fr; gap:var(--space-6); align-items:center; padding:var(--space-6) 0; border-top:1px solid var(--line);}
+/* 列は minmax(0,1fr)、子は min-width:0。素の 1fr は中身の min-content より縮まないので、
+   長い語（ドイツ語の複合語など）が1つあるだけで列が画面より広がり、ページが横に
+   スクロールしていた（de のセキュリティ節で実測 406px）。溢れた語は折り返す。 */
+.feature-row{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-6); align-items:center; padding:var(--space-6) 0; border-top:1px solid var(--line);}
 .feature-row:first-of-type{border-top:none;}
 .feature-row.reverse .feature-visual{order:2;}
+.feature-visual,.feature-copy,.panel{min-width:0;}
 @media (max-width:900px){
-  .feature-row{grid-template-columns:1fr;}
+  .feature-row{grid-template-columns:minmax(0,1fr);}
   .feature-row.reverse .feature-visual{order:0;}
 }
-.feature-copy h3{font-size:clamp(1.35rem,2.6vw,1.75rem); margin-bottom:var(--space-3);}
-.feature-copy p{color:var(--ink-dim); font-size:1rem; max-width:48ch;}
+.feature-copy h3{font-size:clamp(1.35rem,2.6vw,1.75rem); margin-bottom:var(--space-3); overflow-wrap:anywhere;}
+.feature-copy p{color:var(--ink-dim); font-size:1rem; max-width:48ch; overflow-wrap:anywhere;}
 .feature-list{list-style:none; margin:var(--space-4) 0 0; padding:0; display:flex; flex-direction:column; gap:.7em;}
-.feature-list li{display:flex; gap:.7em; font-size:.94rem; color:var(--ink-dim);}
+.feature-list li{display:flex; gap:.7em; font-size:.94rem; color:var(--ink-dim); min-width:0; overflow-wrap:anywhere;}
 .feature-list li::before{content:"›"; color:var(--accent); font-weight:700;}
 
 .panel{
@@ -261,7 +275,7 @@ section{padding:var(--space-7) 0;}
 .share-card{background:linear-gradient(160deg, var(--surface-2), var(--surface)); border-radius:20px; padding:var(--space-5); text-align:center; position:relative; overflow:hidden;}
 .share-card .month{font-family:var(--font-mono); font-size:.75rem; color:var(--ink-faint); letter-spacing:.05em;}
 .share-card .big{font-family:var(--font-mono); font-weight:800; font-size:3rem; color:var(--profit); margin:.2em 0;}
-.share-card .sub-figs{display:flex; justify-content:center; gap:var(--space-4); font-family:var(--font-mono); font-size:.85rem; color:var(--ink-dim); margin-top:.6em;}
+.share-card .sub-figs{display:flex; flex-wrap:wrap; justify-content:center; gap:.4em var(--space-4); font-family:var(--font-mono); font-size:.85rem; color:var(--ink-dim); margin-top:.6em;}
 .watermark-chip{position:absolute; bottom:.8em; right:.9em; font-size:.6rem; color:var(--ink-faint); background:var(--bg); padding:.25em .6em; border-radius:999px; border:1px solid var(--line);}
 
 /* security mock */
@@ -270,10 +284,13 @@ section{padding:var(--space-7) 0;}
 .sec-icon{width:34px; height:34px; border-radius:10px; background:var(--accent-dim); display:flex; align-items:center; justify-content:center; flex:none;}
 .switch{width:44px; height:26px; border-radius:999px; background:var(--profit); position:relative; flex:none;}
 .switch::after{content:""; position:absolute; width:20px; height:20px; border-radius:50%; background:#fff; top:3px; right:3px;}
-.sec-note{font-size:.82rem; color:var(--ink-faint); display:flex; gap:.6em; align-items:flex-start; margin-top:.9em;}
+.sec-note{font-size:.82rem; color:var(--ink-faint); display:flex; gap:.6em; align-items:flex-start; margin-top:.9em; min-width:0; overflow-wrap:anywhere;}
 .sec-note::before{content:"✓"; color:var(--profit); font-weight:700;}
 /* 送信しているデータの開示注記。チェックマークは付けず、本文より控えめに見せる */
-.sec-note-disclosure{opacity:.75; margin-top:1.1em; font-size:.78rem;}
+/* display:block にする。.sec-note は flex なので、中に <a> があると「リンク前の文 | リンク |
+   リンク後の文」の3つのフレックス項目として横に並び、リンクと末尾の文が細い列に
+   1文字ずつ折り返されていた（11言語とも。デスクトップでも起きる）。 */
+.sec-note-disclosure{display:block; opacity:.75; margin-top:1.1em; font-size:.78rem;}
 .sec-note-disclosure::before{content:none;}
 .sec-note-disclosure a{color:inherit; text-decoration:underline;}
 
@@ -282,16 +299,19 @@ section{padding:var(--space-7) 0;}
 .stat-band{
   background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);
 }
-.stat-band-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-5);}
-@media (max-width:760px){ .stat-band-grid{grid-template-columns:repeat(2,1fr);} }
-.stat-band-item{text-align:left; padding:var(--space-3) 0;}
-.stat-band-item .num{font-family:var(--font-mono); font-weight:800; font-size:clamp(2rem,4vw,2.7rem); color:var(--ink); display:block;}
-.stat-band-item .lbl{color:var(--ink-dim); font-size:.88rem; margin-top:.4em; display:block;}
+/* 列は minmax(0,1fr)。素の 1fr は min-content より縮まないので、「AES-256」「MT4/MT5」や
+   「(JA/EN/DE/…/PT)」のように折り返せない語で列が広がり、390px 幅で右端が切れて
+   ページ全体が横スクロールしていた（body の overflow-x:hidden は iOS Safari では効かない）。 */
+.stat-band-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--space-5);}
+@media (max-width:760px){ .stat-band-grid{grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-4);} }
+.stat-band-item{text-align:left; padding:var(--space-3) 0; min-width:0;}
+.stat-band-item .num{font-family:var(--font-mono); font-weight:800; font-size:clamp(1.7rem,4vw,2.7rem); color:var(--ink); display:block;}
+.stat-band-item .lbl{color:var(--ink-dim); font-size:.88rem; margin-top:.4em; display:block; overflow-wrap:anywhere;}
 
 /* ============ Pricing ============ */
-.pricing-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--space-5);}
-@media (max-width:820px){ .pricing-grid{grid-template-columns:1fr;} }
-.price-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-l); padding:var(--space-5); display:flex; flex-direction:column;}
+.pricing-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-5);}
+@media (max-width:820px){ .pricing-grid{grid-template-columns:minmax(0,1fr);} }
+.price-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-l); padding:var(--space-5); display:flex; flex-direction:column; min-width:0;}
 .price-card.hi{border-color:var(--accent); position:relative; box-shadow:0 24px 60px -30px var(--accent-dim);}
 .price-badge{position:absolute; top:-14px; right:var(--space-5); background:var(--accent); color:var(--on-accent); font-size:.72rem; font-weight:700; padding:.35em .9em; border-radius:999px;}
 .price-name{font-family:var(--font-display); font-weight:800; font-size:1.3rem;}
@@ -301,12 +321,17 @@ section{padding:var(--space-7) 0;}
 .price-list li{display:flex; gap:.7em; font-size:.92rem; color:var(--ink-dim);}
 .price-list li::before{content:"✓"; color:var(--profit); font-weight:700;}
 .price-card .btn{margin-top:var(--space-5); width:100%;}
-.price-plan-row{display:flex; gap:.8em; margin-top:var(--space-4);}
-.price-plan{flex:1; background:var(--surface-2); border-radius:14px; padding:.9em 1em; border:1px solid transparent;}
+/* 月額・年額の枠は 140px を下回るなら縦に積む。非日本語版は「JPY 3,980/Jahr」のように
+   金額が長く、390px 幅で2列に並べると枠からはみ出し、カードごと画面の右へ突き抜けて
+   ページが横スクロールしていた（de で実測 424px）。 */
+.price-plan-row{display:flex; flex-wrap:wrap; gap:.8em; margin-top:var(--space-4);}
+.price-plan{flex:1 1 140px; min-width:0; background:var(--surface-2); border-radius:14px; padding:.9em 1em; border:1px solid transparent;}
 .price-plan.pp-best{border-color:var(--accent);}
 .pp-label{display:flex; align-items:center; gap:.5em; font-size:.78rem; color:var(--ink-dim);}
 .pp-label em{font-style:normal; background:var(--accent-dim); color:var(--accent); font-size:.68rem; font-weight:700; padding:.15em .5em; border-radius:999px;}
-.pp-value{display:block; font-weight:700; font-size:1.25rem; margin-top:.35em;}
+/* 「JPY 3,980」は半角スペースで折り返せるため、スマホ幅の2列では JPY と金額が
+   2行に割れていた。金額は1行に固定し、狭い幅では少し小さくして収める。 */
+.pp-value{display:block; font-weight:700; font-size:clamp(1.05rem,4.2vw,1.25rem); margin-top:.35em; white-space:nowrap;}
 .pp-unit{font-size:.7rem; font-weight:400; color:var(--ink-faint);}
 .pp-trial{display:block; margin-top:.4em; font-size:.72rem; color:var(--profit); font-weight:600;}
 .price-fineprint{margin-top:var(--space-4); font-size:.74rem; color:var(--ink-faint); line-height:1.7;}
@@ -328,7 +353,9 @@ section{padding:var(--space-7) 0;}
 .final-cta{position:relative; text-align:center; padding:var(--space-8) 0; overflow:hidden;}
 .final-cta canvas{position:absolute; inset:0; width:100%; height:100%; opacity:.28;}
 .final-cta .inner{position:relative; z-index:2;}
-.final-cta h2{font-size:clamp(1.9rem,4.4vw,3rem); max-width:16ch; margin:0 auto;}
+/* 長い語（de「Entscheidungsgrund」など）が 390px 幅で見出しの箱からはみ出していた。
+   最小サイズを少し下げ、入り切らない語は分綴（hyphens）で折る。 */
+.final-cta h2{font-size:clamp(1.7rem,4.4vw,3rem); max-width:16ch; margin:0 auto; overflow-wrap:anywhere; hyphens:auto;}
 .final-cta p{color:var(--ink-dim); margin-top:var(--space-3); font-size:1.05rem;}
 .final-cta .hero-actions{justify-content:center; margin-top:var(--space-5);}
 
@@ -365,6 +392,13 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
 .consent-actions{display:flex; gap:.7em; flex:none; width:100%;}
 @media (min-width:521px){ .consent-actions{width:auto;} }
 .consent-actions .btn{padding:.85em 1.3em; font-size:.86rem; min-height:44px; flex:1;}
+/* スマホでは同意バナーが画面の 1/3 以上（844px 中 約300px）を覆い、ヒーローの本文と
+   CTA を隠していた。訪問者の大半がスマホなので、文字と余白を詰めて高さを抑える
+   （ボタンは 44px のまま。文面は変えない）。 */
+@media (max-width:520px){
+  .consent-inner{padding:var(--space-2) var(--space-4); gap:var(--space-2);}
+  .consent-inner p{font-size:.78rem; line-height:1.55;}
+}
 @media (min-width:521px){ .consent-actions .btn{flex:none;} }
 .btn-neutral{background:var(--surface-2); color:var(--ink); border-color:var(--line-strong);}
 .btn-neutral:hover{border-color:var(--accent);}
@@ -418,7 +452,7 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
 
 /* ============ Region unavailability notice ============ */
 .region-notice{background:var(--surface-2); border-bottom:1px solid var(--line-strong); padding:.9em 0; text-align:center;}
-.region-notice p{color:var(--ink-dim); font-size:.86rem; max-width:70ch; margin:0 auto;}
+.region-notice p{color:var(--ink-dim); font-size:.86rem; max-width:70ch; margin:0 auto; text-wrap:balance;}
 
 /* Android 版テスター募集。boot.js が Android の端末で html.android を付けたときだけ出す。
    JS が動かない環境では出ない（App Store の導線はそのまま残る）。 */
