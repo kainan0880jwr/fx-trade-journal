@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
+     style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
+     34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
+     'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>Supporto — FX Trade Journal</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
+    h1 { font-size: 22px; border-bottom: 1px solid #ddd; padding-bottom: 12px; }
+    h2 { font-size: 16px; margin-top: 28px; }
+    p, li { font-size: 14px; }
+    ul { padding-left: 20px; }
+    a { color: #3E6EE8; }
+    footer { margin-top: 40px; font-size: 12px; color: #888; }
+  </style>
+</head>
+<body>
+  <h1>Supporto</h1>
+
+  <p>Grazie per aver scelto FX Trade Journal.
+     Per qualsiasi domanda o problema, contattaci utilizzando i recapiti indicati di seguito.</p>
+
+  <h2>Contattaci</h2>
+  <p>Email: <a href="mailto:kainan0880jwr@gmail.com">kainan0880jwr@gmail.com</a></p>
+  <p>Quando ci contatti, indica il tuo dispositivo (iOS), la versione del sistema operativo e
+     più dettagli possibili sul problema riscontrato. In genere rispondiamo entro 2 giorni lavorativi.</p>
+
+  <h2>Domande frequenti</h2>
+
+  <p><strong>D. Dove vengono salvati i miei dati registrati?</strong><br>
+     R. I tuoi dati di trading e le immagini dei grafici vengono salvati localmente sul tuo dispositivo e non
+     vengono mai inviati a un server esterno. Quando cambi dispositivo, usa la funzione di backup JSON
+     nelle Impostazioni per esportare i tuoi dati, quindi importali sul nuovo dispositivo. Tieni presente che
+     segnalazioni di arresti anomali e informazioni di utilizzo limitate vengono inviate a servizi di terze
+     parti per rilevare i bug ed elaborare gli acquisti in-app — consulta la nostra
+     <a href="privacy-policy-it.html">Informativa sulla privacy</a> per i dettagli.</p>
+
+  <p><strong>D. Come annullo il mio abbonamento?</strong><br>
+     R. iOS: Impostazioni → ID Apple → Abbonamenti / Android: Google Play Store → Profilo → Pagamenti e abbonamenti → Abbonamenti → FX Trade Journal.</p>
+
+  <p><strong>D. Il mio acquisto non risulta.</strong><br>
+     R. Prova il pulsante "Ripristina acquisti" nell'app. Se il problema persiste, contattaci
+     specificando il tuo dispositivo e la versione del sistema operativo.</p>
+
+  <p><strong>D. Posso importare lo storico operazioni MT4/MT5?</strong><br>
+     R. Sì: vai su Impostazioni per importare un file CSV in formato MT4. I formati variano da broker a
+     broker, quindi alcuni file potrebbero non importarsi correttamente.</p>
+
+  <footer>© 2026 Daiki Ikebata</footer>
+</body>
+</html>

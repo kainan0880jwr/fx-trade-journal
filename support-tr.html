@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
+     style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
+     34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
+     'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>Destek — FX Trade Journal</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
+    h1 { font-size: 22px; border-bottom: 1px solid #ddd; padding-bottom: 12px; }
+    h2 { font-size: 16px; margin-top: 28px; }
+    p, li { font-size: 14px; }
+    ul { padding-left: 20px; }
+    a { color: #3E6EE8; }
+    footer { margin-top: 40px; font-size: 12px; color: #888; }
+  </style>
+</head>
+<body>
+  <h1>Destek</h1>
+
+  <p>FX Trade Journal'ı kullandığınız için teşekkür ederiz.
+     Herhangi bir sorunuz varsa veya bir sorunla karşılaşırsanız, lütfen aşağıdaki iletişim bilgilerini kullanarak bize ulaşın.</p>
+
+  <h2>Bize Ulaşın</h2>
+  <p>E-posta: <a href="mailto:kainan0880jwr@gmail.com">kainan0880jwr@gmail.com</a></p>
+  <p>Bizimle iletişime geçerken, lütfen cihazınızı (iOS), OS sürümünüzü ve yaşadığınız sorun hakkında
+     mümkün olduğunca fazla ayrıntı ekleyin. Genellikle 2 iş günü içinde yanıt veririz.</p>
+
+  <h2>Sıkça Sorulan Sorular</h2>
+
+  <p><strong>S. Kaydettiğim veriler nerede saklanır?</strong><br>
+     C. İşlem kayıtlarınız ve grafik görselleriniz cihazınızda yerel olarak saklanır ve asla harici bir sunucuya
+     gönderilmez. Cihaz değiştirirken, verilerinizi dışa aktarmak için Ayarlar'daki JSON yedekleme özelliğini
+     kullanın, ardından yeni cihazınızda içe aktarın. Hataları tespit etmek ve uygulama içi satın alımları
+     işlemek amacıyla çökme raporlarının ve sınırlı kullanım bilgilerinin üçüncü taraf hizmetlere gönderildiğini
+     unutmayın — ayrıntılar için <a href="privacy-policy-tr.html">Gizlilik Politikamıza</a> bakın.</p>
+
+  <p><strong>S. Aboneliğimi nasıl iptal ederim?</strong><br>
+     C. iOS: Ayarlar → Apple ID → Abonelikler / Android: Google Play Store → Profil → Ödemeler ve abonelikler → Abonelikler → FX Trade Journal.</p>
+
+  <p><strong>S. Satın alımım görünmüyor.</strong><br>
+     C. Uygulamadaki "Satın Alımları Geri Yükle" düğmesini deneyin. Sorun devam ederse, lütfen cihazınız ve
+     OS sürümünüzle ilgili ayrıntılarla bizimle iletişime geçin.</p>
+
+  <p><strong>S. MT4/MT5 işlem geçmişini içe aktarabilir miyim?</strong><br>
+     C. Evet — MT4 formatında bir CSV dosyasını içe aktarmak için Ayarlar'a gidin. Formatlar brokerler arasında
+     farklılık gösterir, bu nedenle bazı dosyalar doğru şekilde içe aktarılamayabilir.</p>
+
+  <footer>© 2026 Daiki Ikebata</footer>
+</body>
+</html>
