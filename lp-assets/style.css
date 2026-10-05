@@ -456,7 +456,7 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
 
 /* Android 版テスター募集。boot.js が Android の端末で html.android を付けたときだけ出す。
    JS が動かない環境では出ない（App Store の導線はそのまま残る）。 */
-.android-notice{display:none;}
+.android-notice{display:none; scroll-margin-top:80px;} /* #android で飛んだとき、固定メニューに見出しが隠れないように */
 .android .android-notice{display:block; background:var(--surface-2); border-bottom:1px solid var(--line-strong); padding:1em 0;}
 .android-notice .wrap{max-width:70ch;}
 .android-notice p{color:var(--ink-dim); font-size:.9rem; margin:0 0 .5em;}
