@@ -11,4 +11,6 @@ document.documentElement.classList.add('js');
 
 // Android 版はクローズドテスト中のため、Android の端末にだけテスター募集の案内を出す
 // （.android-notice。CSS 側で html.android のときだけ表示する）。
-if (/Android/i.test(navigator.userAgent)) document.documentElement.classList.add('android');
+// 募集の投稿は `#android` 付きのリンクで来るので、そのときは端末に関係なく出す。
+// 以前は iPhone や PC で投稿のリンクを開くと、何の案内も無い LP に着地していた（2026-10-05）。
+if (/Android/i.test(navigator.userAgent) || location.hash === '#android') document.documentElement.classList.add('android');
