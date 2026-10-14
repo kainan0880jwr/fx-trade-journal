@@ -62,7 +62,7 @@
     "price": "0",
     "priceCurrency": "JPY"
   },
-  "description": "MT4/MT5対応のFXトレード日記アプリ。記録するだけで勝率・pips・プロフィットファクターを自動集計し、成績をSNSシェアできます。データは端末内に暗号化保存され、クラウド同期は行いません。"
+  "description": "MT4/MT5対応のFXトレード日記アプリ。記録するだけで勝率・pips・プロフィットファクターを自動集計し、成績をSNSシェアできます。トレード記録は端末内に暗号化して保存し（チャート画像を除く）、クラウド同期は行いません。"
 }
 </script>
 
@@ -76,7 +76,7 @@
       "name": "取引データはどこに保存されますか？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "トレード記録は暗号化されたうえでお使いの端末内にのみ保存されます（添付したチャート画像は暗号化されず端末内に保存されます）。クラウド同期は行わず、記録と分析はオフラインで利用できます。通信するのは、PROの購入・復元、アプリの更新の確認、匿名の不具合・利用状況の記録（Sentry）のときで、トレード記録の内容は送信しません。iCloudバックアップを有効にしている場合は、バックアップにも含まれます。"
+        "text": "トレード記録は暗号化されたうえでお使いの端末内にのみ保存されます（添付したチャート画像は暗号化されず端末内に保存されます）。クラウド同期は行わず、記録と分析はオフラインで利用できます。通信するのは、PROの購入・復元、アプリの更新の確認、不具合・利用状況の記録（Sentry。端末ごとのランダムな識別子付きで、氏名やトレード記録の内容は含みません）のときで、トレード記録の内容は送信しません。iCloudバックアップを有効にしている場合は、バックアップにも含まれます。"
       }
     },
     {
@@ -160,20 +160,20 @@
       <li><a href="fx-trade-journal-guide.html">使い方ガイド</a></li>
     </ul>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">App Storeで入手</a>
+      <a class="btn btn-primary" data-cta="nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-ja-nav&mt=8">App Storeで入手</a>
     </div>
   </div>
 </header>
 
-<!-- Android 版はクローズドテスト中（配信国は日本のみ）。Android の端末で開いたときだけ表示する
+<!-- Android 版はクローズドテスト中（配信国は App Store と同じ。EU・英国などは対象外）。Android の端末で開いたときだけ表示する
      （boot.js が <html> に .android を付け、style.css で出し分ける）。 -->
 <div class="android-notice" id="android">
   <div class="wrap">
     <p class="android-notice-title">Android版のテスターを募集しています</p>
-    <p>Google Play での正式公開に向けて、先に使っていただける方を募集しています（日本の Google Play のみ）。アプリは無料でダウンロードできます（PRO機能は有料・7日間の無料トライアルあり）。</p>
+    <p>Google Play での正式公開に向けて、先に使っていただける方を募集しています。アプリは無料でダウンロードできます（PRO機能は有料・7日間の無料トライアルあり）。</p>
     <ol>
       <li><a href="https://groups.google.com/g/fx-trade-journal-testers">テスター用の Google グループ</a>を開き、「グループに参加」を押す</li>
-      <li><a href="https://play.google.com/apps/testing/com.fxtradejournal.app">テスト参加ページ</a>で「テスターになる」を押し、Google Play からインストール</li>
+      <li><a data-cta="android-notice" href="https://play.google.com/apps/testing/com.fxtradejournal.app">テスト参加ページ</a>で「テスターになる」を押し、Google Play からインストール</li>
     </ol>
     <p class="android-notice-note">グループへの参加が反映されるまで数分かかることがあります。参加後は14日以上インストールしたままにしていただけると助かります。</p>
     <p class="android-notice-note">iPhone をお使いの方は、App Store 版をご利用ください（このページの「App Storeで入手」から）。</p>
@@ -184,14 +184,16 @@
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">FXトレード記録・分析アプリ</p>
-      <h1>記録するだけで、<br>勝率・pips・PFが<span class="nobr"><em>見えてくる</em>。</span></h1>
+      <h1>FXの<span class="nobr">トレード日記</span>を、<br><em>3タップ</em>で。</h1>
       <p class="hero-sub">
-        最短3タップの記録と、MT4/MT5のCSV取込に対応。記録は端末の中に保存され、サーバーには送りません。アカウント登録も不要です。
+        最短3タップで記録でき、勝率・pips・PF（プロフィットファクター）は自動で集計。MT4/MT5のCSV取込にも対応しています。記録は端末の中に保存され、サーバーには送りません。アカウント登録も不要です。
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">App Storeで無料ダウンロード</a>
+        <a class="btn btn-primary" data-cta="hero" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-ja-hero&mt=8">App Storeで無料ダウンロード</a>
+        <a class="btn btn-primary android-only" data-cta="android-hero" href="#android">Android版のテスターになる（無料）</a>
         <a class="btn btn-ghost" href="#features">機能を見る</a>
       </div>
+      <p class="android-teaser"><a href="#android">Android版はテスターを募集しています →</a></p>
       <div class="hero-trust">
         <span>スマホ・タブレットで完結</span>
         <span>成績をSNSシェア</span>
@@ -262,7 +264,7 @@
         </div>
     </div>
       <div class="feature-copy">
-        <h3>数字が、次の一手を教えてくれる。</h3>
+        <h3>数字が、振り返りの手がかりになる。</h3>
         <p>記録するだけで、月次の勝率・pips・プロフィットファクターを自動集計。時間帯・曜日・通貨ペア別の傾向まで一目でわかります。</p>
         <ul class="feature-list">
           <li>月次の勝率・pips・PFは無料版でも自動集計</li>
@@ -308,11 +310,11 @@
         </div>
     </div>
       <div class="feature-copy">
-        <h3>PCもExcelも、もういらない。</h3>
+        <h3>記録は、スマホだけで続けられる。</h3>
         <p>通勤中でも、決済した直後でも。クイック記録なら3タップで保存まで終わるから、スマホやタブレットだけでトレード日記が続けられます。</p>
         <ul class="feature-list">
-          <li>エントリーと決済のレートからpipsを自動計算。損益額もpipsとロットから自動計算（クロス円ペアのみ）</li>
-          <li>設定画面からMT4 / MT5の取引履歴CSVを一括インポート（無料版から利用可能）</li>
+          <li>エントリーと決済のレートからpipsを自動計算。損益額もpipsとロットから自動計算（決済通貨が口座通貨のペア。円口座ならクロス円。口座通貨は設定で選べます）</li>
+          <li>設定画面からMT4 / MT5の取引履歴CSVを一括インポート（無料版から利用可能。CSV は PC 版の MT4 / MT5 などで書き出します）</li>
           <li>エントリー根拠をタグで複数選択、チャート画像を添付（無料版1枚・PRO3枚）</li>
           <li>初回起動時に「サンプルで中身を見る」を選べば、見本の記録で分析画面まで確認できる（ワンタップで削除）</li>
         </ul>
@@ -333,7 +335,7 @@
             <div class="switch"></div>
           </div>
           <div class="sec-note">設定でいつでもオン/オフを切り替え可能（初期状態はオフ）</div>
-          <div class="sec-note">SQLCipherによるデータベース暗号化（鍵はOSのキーチェーンで保護）</div>
+          <div class="sec-note">SQLCipherによるデータベース暗号化（鍵はOSの安全な保管領域で保護。iOSはキーチェーン、AndroidはKeystore）</div>
           <div class="sec-note">クラウド同期なし。記録と分析はオフラインで動作</div>
           <div class="sec-note">アカウント登録不要、トレード記録は端末外に送信されません</div>
           <div class="sec-note sec-note-disclosure">※ 不具合の把握と品質改善のため、クラッシュ情報とアプリの利用状況（氏名やトレード内容を含まない、端末ごとの識別子付きの利用イベント）を送信しています。詳しくは<a href="privacy-policy.html">プライバシーポリシー</a>をご覧ください。</div>
@@ -343,8 +345,8 @@
         <h3>取引データは、あなたの端末だけのもの。</h3>
         <p>FXの取引履歴は、資産状況が推測できる機微な情報です。だからこそ暗号化と生体認証ロックを標準搭載しました。</p>
         <ul class="feature-list">
-          <li>Face ID / Touch IDでアプリをロック（設定でオンに切り替え）</li>
-          <li>暗号化キーはOSのキーチェーンで保護（iOSは機種変更時に引き継ぎ）</li>
+          <li>Face ID / Touch ID（Androidは指紋・顔認証など）でアプリをロック（設定でオンに切り替え）</li>
+          <li>暗号化キーはOSの安全な保管領域で保護（iOSはキーチェーンで、機種変更時に引き継ぎ）</li>
           <li>トレード記録をサーバーに送信しない設計</li>
         </ul>
       </div>
@@ -366,7 +368,7 @@
         <h3>アプリを開かなくても、今月がわかる。</h3>
         <p>ホーム画面に置くだけで、今月の成績が視界に入ります。数字が見えていると、記録を続ける理由が生まれます。</p>
         <ul class="feature-list">
-          <li>ホーム画面ウィジェットで今日・今週・今月の成績をまとめて確認。目標を設定していれば達成率のリングも出ます（無料版から利用可能）</li>
+          <li>ホーム画面ウィジェットで今日・今週・今月の成績をまとめて確認。目標を設定していれば達成率のリングも出ます（iPhone・iPad。無料版から利用可能）</li>
           <li>小サイズとロック画面のウィジェットは、長押し→「ウィジェットを編集」で表示する期間を選べます。タップすると記録画面が直接開く</li>
           <li>月次の目標（pips・勝率・損益）は無料。日・週・年の目標と、達成した日のカレンダー表示は PRO</li>
           <li>33種類の実績バッジ。ルールを守れたか、目標を達成できたかで解除（無料）</li>
@@ -396,7 +398,7 @@
     <div class="pricing-grid reveal">
       <div class="price-card">
         <div class="price-name">無料プラン</div>
-        <p class="price-desc">記録習慣をつけたい方に。主要な機能はずっと無料です。</p>
+        <p class="price-desc">記録習慣をつけたい方に。主要な機能は無料で使えます。</p>
         <p class="price-tag mono">無料</p>
         <ul class="price-list">
           <li>最短3タップのトレード記録</li>
@@ -408,7 +410,7 @@
           <li>月次の目標と連続記録ストリーク</li>
           <li>生体認証ロック・暗号化・JSONバックアップ</li>
         </ul>
-        <a class="btn btn-ghost" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">無料で始める</a>
+        <a class="btn btn-ghost" data-cta="free" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-ja-free&mt=8">無料で始める</a>
       </div>
       <div class="price-card hi">
         <span class="price-badge">おすすめ</span>
@@ -434,7 +436,7 @@
           <li>チャート画像3枚添付</li>
           <li>ウォーターマーク除去・ブックマーク一覧</li>
         </ul>
-        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">PROを見る</a>
+        <a class="btn btn-primary" data-cta="pro" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-ja-pro&mt=8">PROを見る</a>
         <p class="price-fineprint">価格は日本（¥・税込表示）の場合です。国・地域により異なります。月額・年額プランとも、初回7日間の無料期間中に解約すれば料金は発生しません（無料期間はいずれか一方のプランで1回限り）。無料期間が終わると、選んだプラン（月額¥500／年額¥3,980）が自動で課金されます。サブスクリプションは自動更新されます。App Store では期間終了の24時間前まで、Google Play では次回更新日の前までに解約すれば、次の期間の料金はかかりません。詳しくは<a href="terms.html">利用規約</a>・<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
       </div>
     </div>
@@ -450,7 +452,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>取引データはどこに保存されますか？</summary>
-        <div class="faq-a">トレード記録は暗号化されたうえでお使いの端末内にのみ保存されます（添付したチャート画像は暗号化されず端末内に保存されます）。クラウド同期は行わず、記録と分析はオフラインで利用できます。通信するのは、PROの購入・復元、アプリの更新の確認、匿名の不具合・利用状況の記録（Sentry）のときで、トレード記録の内容は送信しません。iCloudバックアップを有効にしている場合は、バックアップにも含まれます。</div>
+        <div class="faq-a">トレード記録は暗号化されたうえでお使いの端末内にのみ保存されます（添付したチャート画像は暗号化されず端末内に保存されます）。クラウド同期は行わず、記録と分析はオフラインで利用できます。通信するのは、PROの購入・復元、アプリの更新の確認、不具合・利用状況の記録（Sentry。端末ごとのランダムな識別子付きで、氏名やトレード記録の内容は含みません）のときで、トレード記録の内容は送信しません。iCloudバックアップを有効にしている場合は、バックアップにも含まれます。</div>
       </details>
       <details class="faq-item">
         <summary>アプリを削除すると記録はどうなりますか？</summary>
@@ -478,7 +480,8 @@
     <h2>次の記録が、<br>次の判断材料になる。</h2>
     <p>今日の1トレードから、振り返りを始めましょう。</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-ja">App Storeで無料ダウンロード</a>
+      <a class="btn btn-primary" data-cta="final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-ja-final&mt=8">App Storeで無料ダウンロード</a>
+      <a class="btn btn-primary android-only" data-cta="android-final" href="#android">Android版のテスターになる（無料）</a>
     </div>
     <div class="cta-qr">
       <img src="lp-assets/qr-ja.svg" width="132" height="132" alt="App Storeを開くQRコード" loading="lazy" decoding="async">
@@ -492,7 +495,7 @@
 
 <div class="region-notice">
   <div class="wrap">
-    <p>配信地域: 日本・米国・スイスなど16の国と地域。EU・EEA・英国のApp Storeでは配信していません。</p>
+    <p>配信地域: 日本・米国・カナダ・スイス・オーストラリア・インドなど144の国と地域。EU・EEA・英国・中国本土のApp Storeでは配信していません。</p>
   </div>
 </div>
 

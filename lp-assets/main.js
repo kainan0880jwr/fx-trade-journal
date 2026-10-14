@@ -211,3 +211,4 @@
   try { drawCandles(document.getElementById('heroChart'), {seed:11}); } catch(e) {}
   try { drawCandles(document.getElementById('ctaChart'), {seed:42}); } catch(e) {}
 })();
+// ストアへのボタンのクリック計測は consent.js に移した（ガイド記事でも数えるため。2026-10-09）

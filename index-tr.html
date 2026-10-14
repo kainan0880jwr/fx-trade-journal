@@ -61,7 +61,7 @@
     "price": "0",
     "priceCurrency": "JPY"
   },
-  "description": "MT4/MT5 destekli bir FX işlem günlüğü uygulaması. Sadece işlemlerinizi kaydedin; kazanma oranı, pip ve kâr faktörü otomatik olarak hesaplanır ve sonuçlarınızı sosyal medyada paylaşabilirsiniz. Veriler şifrelenir ve yalnızca cihazda saklanır, bulut senkronizasyonu yoktur."
+  "description": "MT4/MT5 destekli bir FX işlem günlüğü uygulaması. Sadece işlemlerinizi kaydedin; kazanma oranı, pip ve kâr faktörü otomatik olarak hesaplanır ve sonuçlarınızı sosyal medyada paylaşabilirsiniz. İşlem kayıtları şifrelenir ve yalnızca cihazda saklanır (grafik görselleri şifrelenmez), bulut senkronizasyonu yoktur."
 }
 </script>
 
@@ -75,7 +75,7 @@
       "name": "İşlem verilerim nerede saklanır?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "İşlem kayıtlarınız şifrelenir ve yalnızca cihazınızda saklanır (eklenen grafik görselleri cihazda şifrelenmeden saklanır). Bulut senkronizasyonu yoktur; kayıt ve analiz internet bağlantısı olmadan çalışır. Uygulama yalnızca PRO satın almak veya geri yüklemek, uygulama güncellemelerini denetlemek ve anonim çökme ve kullanım raporları (Sentry) göndermek için bağlanır; işlem kayıtlarınızın içeriği asla gönderilmez. iCloud Yedekleme açıksa, bunlar o yedeğe de dahil edilir."
+        "text": "İşlem kayıtlarınız şifrelenir ve yalnızca cihazınızda saklanır (eklenen grafik görselleri cihazda şifrelenmeden saklanır). Bulut senkronizasyonu yoktur; kayıt ve analiz internet bağlantısı olmadan çalışır. Uygulama yalnızca PRO satın almak veya geri yüklemek, uygulama güncellemelerini denetlemek ve çökme ve kullanım raporları (Sentry, cihaza özel rastgele bir kimlikle; adınız veya işlem içerikleriniz asla gönderilmez) göndermek için bağlanır; işlem kayıtlarınızın içeriği asla gönderilmez. iCloud Yedekleme açıksa, bunlar o yedeğe de dahil edilir."
       }
     },
     {
@@ -158,23 +158,40 @@
       <li><a href="#faq">SSS</a></li>
     </ul>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-tr">App Store'da edinin</a>
+      <a class="btn btn-primary" data-cta="nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-tr-nav&mt=8">App Store'da edinin</a>
     </div>
   </div>
 </header>
+
+<!-- Android 版はクローズドテスト中（配信国は App Store と同じ。EU・英国などは対象外）。Android の端末で開いたときだけ表示する
+     （boot.js が <html> に .android を付け、style.css で出し分ける）。 -->
+<div class="android-notice" id="android">
+  <div class="wrap">
+    <p class="android-notice-title">Android sürümü için test kullanıcıları arıyoruz</p>
+    <p>Google Play’deki resmi yayından önce uygulamayı ilk deneyecek kişiler arıyoruz. Uygulama ücretsizdir (PRO özellikler ücretlidir, 7 günlük ücretsiz deneme vardır).</p>
+    <ol>
+      <li><a href="https://groups.google.com/g/fx-trade-journal-testers">Test kullanıcıları Google Grubu</a>’nu açın ve “Gruba katıl”a dokunun</li>
+      <li><a data-cta="android-notice" href="https://play.google.com/apps/testing/com.fxtradejournal.app">Teste katılma sayfasında</a> “Test kullanıcısı ol”a dokunup Google Play’den yükleyin</li>
+    </ol>
+    <p class="android-notice-note">Gruba katılımın etkinleşmesi birkaç dakika sürebilir. Katıldıktan sonra uygulamayı en az 14 gün yüklü tutarsanız seviniriz.</p>
+    <p class="android-notice-note">iPhone’da lütfen App Store sürümünü kullanın (bu sayfadaki “App Store’dan indirin”).</p>
+  </div>
+</div>
 
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">İşlem günlüğü ve analiz uygulaması</p>
-      <h1>İşlemi kaydedin,<br><em>kazanma oranı, pip ve kâr faktörü</em> görünsün.</h1>
+      <h1>Forex işlem günlüğünüz,<br><em>3 dokunuşta</em>.</h1>
       <p class="hero-sub">
-        Yalnızca 3 dokunuşla kayıt ve MT4/MT5 CSV içe aktarma. Verileriniz cihazınızda kalır, hiçbir sunucuya yüklenmez. Hesap gerekmez.
+        İşlemi yalnızca 3 dokunuşla kaydedin; kazanma oranı, pip ve kâr faktörü otomatik hesaplanır. MT4/MT5 CSV içe aktarma da var. Verileriniz cihazınızda kalır, hiçbir sunucuya yüklenmez. Hesap gerekmez.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-tr">App Store'dan ücretsiz indirin</a>
+        <a class="btn btn-primary" data-cta="hero" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-tr-hero&mt=8">App Store'dan ücretsiz indirin</a>
+        <a class="btn btn-primary android-only" data-cta="android-hero" href="#android">Android test kullanıcısı olun (ücretsiz)</a>
         <a class="btn btn-ghost" href="#features">Özellikleri görün</a>
       </div>
+      <p class="android-teaser"><a href="#android">Android sürümü: test kullanıcıları arıyoruz →</a></p>
       <div class="hero-trust">
         <span>Tamamen telefon/tablette çalışır</span>
         <span>Sonuçları sosyal medyada paylaşın</span>
@@ -245,7 +262,7 @@
         </div>
     </div>
       <div class="feature-copy">
-        <h3>Rakamlar bir sonraki hamlenizi gösterir.</h3>
+        <h3>Rakamlar neyi gözden geçirmeniz gerektiğini gösterir.</h3>
         <p>Sadece işlemlerinizi kaydederek aylık kazanma oranınız, pip'leriniz ve kâr faktörünüz otomatik olarak hesaplanır. Saat, gün ve parite bazındaki kalıpları tek bakışta görün.</p>
         <ul class="feature-list">
           <li>Aylık kazanma oranı, pip ve KF, ücretsiz planda bile otomatik hesaplanır</li>
@@ -291,11 +308,11 @@
         </div>
     </div>
       <div class="feature-copy">
-        <h3>Artık bilgisayar yok, Excel yok.</h3>
+        <h3>Günlüğünüzü yalnızca telefonunuzla tutun.</h3>
         <p>İşe giderken ya da bir işlemi kapattıktan hemen sonra — hızlı mod işlemi 3 dokunuşla kaydeder, böylece işlem günlüğünüzü yalnızca telefonunuzu veya tabletinizi kullanarak tutabilirsiniz.</p>
         <ul class="feature-list">
-          <li>Pip, giriş ve çıkış fiyatlarından otomatik hesaplanır; K/Z tutarı ise pip ve lottan (yalnızca JPY pariteleri)</li>
-          <li>Ayarlar'dan MT4/MT5 işlem geçmişi CSV'lerini toplu içe aktarın (ücretsiz planda da mevcut)</li>
+          <li>Pip, giriş ve çıkış fiyatlarından otomatik hesaplanır; K/Z tutarı ise hesap para biriminizle kote edilen paritelerde pip ve lottan (Ayarlar’dan seçilir, ör. USD veya JPY)</li>
+          <li>Ayarlar'dan MT4/MT5 işlem geçmişi CSV'lerini toplu içe aktarın (ücretsiz planda da mevcut; CSV, bilgisayardaki MT4/MT5 gibi araçlardan dışa aktarılır)</li>
           <li>Giriş nedenleri için çoklu seçim etiketleri ve grafik görselleri ekleyin (ücretsizde 1, PRO'da 3)</li>
           <li>İlk açılışta “Örnek verilerle incele” seçeneğiyle analiz ekranlarını dolu görebilirsiniz — tek dokunuşla silinir</li>
         </ul>
@@ -316,7 +333,7 @@
             <div class="switch"></div>
           </div>
           <div class="sec-note">Ayarlar'dan istediğiniz zaman açıp kapatın (varsayılan olarak kapalı)</div>
-          <div class="sec-note">SQLCipher ile veritabanı şifreleme (anahtar, sistemin anahtar zincirinde korunur)</div>
+          <div class="sec-note">SQLCipher ile veritabanı şifreleme (anahtar, sistemin güvenli deposunda korunur: iOS’ta Anahtar Zinciri, Android’de Keystore)</div>
           <div class="sec-note">Bulut senkronizasyonu yok. Kayıt ve analiz çevrimdışı çalışır</div>
           <div class="sec-note">Hesap gerekmez, işlem kayıtlarınız cihazınızdan asla çıkmaz</div>
           <div class="sec-note sec-note-disclosure">* Sorunları tespit etmek ve kaliteyi artırmak için çökme raporları ve cihaza özgü bir tanımlayıcı içeren kullanım olayları gönderiyoruz; bunlar adınızı veya işlemlerinizi asla içermez. Ayrıntılar için <a href="privacy-policy-tr.html">gizlilik politikamıza</a> bakın.</div>
@@ -326,8 +343,8 @@
         <h3>İşlem verileriniz yalnızca cihazınıza aittir.</h3>
         <p>FX işlem geçmişi, finansal durumunuzu ortaya çıkarabilecek hassas bir veridir. Bu yüzden şifreleme ve biyometrik kilit standart olarak sunulur.</p>
         <ul class="feature-list">
-          <li>Uygulamayı Face ID / Touch ID ile kilitleyin (Ayarlar'dan istediğiniz zaman etkinleştirin)</li>
-          <li>Şifreleme anahtarı sistemin anahtar zincirinde korunur (iOS'ta cihaz değişiminde aktarılır)</li>
+          <li>Uygulamayı Face ID / Touch ID ile kilitleyin (Android’de parmak izi veya yüz tanıma; Ayarlar'dan istediğiniz zaman etkinleştirin)</li>
+          <li>Şifreleme anahtarı sistemin güvenli deposunda korunur (iOS'ta Anahtar Zinciri cihaz değişiminde aktarır)</li>
           <li>İşlem kayıtlarınızın hiçbir sunucuya gönderilmeyeceği şekilde tasarlanmıştır</li>
         </ul>
       </div>
@@ -349,7 +366,7 @@
         <h3>Uygulamayı açmadan bu ayı görün.</h3>
         <p>Ana ekrana koyun, içinde bulunduğunuz ay hep görüşte kalsın. Görünen sayılar, kaydetmeyi sürdürmek için bir neden olur.</p>
         <ul class="feature-list">
-          <li>Ana Ekran widget’ı bugünü, bu haftayı ve bu ayı birlikte gösterir; belirlediğiniz hedefler için ilerleme halkası da çıkar (ücretsiz planda da var)</li>
+          <li>Ana Ekran widget’ı bugünü, bu haftayı ve bu ayı birlikte gösterir; belirlediğiniz hedefler için ilerleme halkası da çıkar (iPhone ve iPad; ücretsiz planda da var)</li>
           <li>Küçük widget ve Kilit Ekranı’nda dönemi seçebilirsiniz: basılı tutup “Widget’ı düzenle”yi seçin. Dokununca doğrudan kayıt ekranı açılır</li>
           <li>Aylık hedefler (pip, kazanma oranı, K/Z) ücretsizdir. Günlük, haftalık ve yıllık hedefler ile takvimdeki işaretler PRO kapsamındadır</li>
           <li>33 başarı rozeti, kurallara uyarak ve hedefleri tutturarak açılır (ücretsiz)</li>
@@ -379,7 +396,7 @@
     <div class="pricing-grid reveal">
       <div class="price-card">
         <div class="price-name">Ücretsiz</div>
-        <p class="price-desc">Kayıt alışkanlığı oluşturmak için. Temel özellikler sonsuza dek ücretsiz kalır.</p>
+        <p class="price-desc">Kayıt alışkanlığı oluşturmak için. Temel özellikler ücretsiz kullanılabilir.</p>
         <p class="price-tag mono">Ücretsiz</p>
         <ul class="price-list">
           <li>3 dokunuşla işlem kaydı</li>
@@ -391,7 +408,7 @@
           <li>Aylık hedefler ve kayıt serisi</li>
           <li>Biyometrik kilit, şifreleme ve JSON yedekleme</li>
         </ul>
-        <a class="btn btn-ghost" href="https://apps.apple.com/app/id6786188634?ct=lp-tr">Ücretsiz başlayın</a>
+        <a class="btn btn-ghost" data-cta="free" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-tr-free&mt=8">Ücretsiz başlayın</a>
       </div>
       <div class="price-card hi">
         <span class="price-badge">Önerilen</span>
@@ -400,12 +417,12 @@
         <div class="price-plan-row">
           <div class="price-plan">
             <span class="pp-label">Aylık</span>
-            <span class="pp-value mono">JPY 500<span class="pp-unit">/mo</span></span>
+            <span class="pp-value pp-local">App Store'da kendi para biriminizde fiyat</span>
             <span class="pp-trial">7 gün ücretsiz deneme</span>
           </div>
           <div class="price-plan pp-best">
             <span class="pp-label">Yıllık<em>En avantajlı</em></span>
-            <span class="pp-value mono">JPY 3,980<span class="pp-unit">/yr</span></span>
+            <span class="pp-value pp-local">App Store'da kendi para biriminizde fiyat</span>
             <span class="pp-trial">7 gün ücretsiz deneme</span>
           </div>
         </div>
@@ -417,8 +434,8 @@
           <li>3 grafik görseli eki</li>
           <li>Filigransız paylaşım ve yer imi listesi</li>
         </ul>
-        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-tr">PRO'u inceleyin</a>
-        <p class="price-fineprint">Gösterilen fiyatlar Japonya (JPY, vergi dahil) içindir. App Store'da görüntülenen fiyat ülkeye/bölgeye göre değişir. Aylık ve yıllık planlar 7 günlük ücretsiz denemeyle başlar (kişi başı, planlardan birinde bir kez); deneme süresinde iptal ederseniz ücretlendirilmezsiniz. Deneme sona erdiğinde seçtiğiniz plan için otomatik olarak ücretlendirilirsiniz (aylık JPY 500 veya yıllık JPY 3,980). Abonelikler otomatik olarak yenilenir. App Store'da dönemin bitiminden en az 24 saat önce veya Google Play'de bir sonraki yenileme tarihinden önce iptal ederseniz sonraki dönem için ücret alınmaz. Ayrıntılar için <a href="terms-tr.html">Kullanım Koşulları</a> ve <a href="privacy-policy-tr.html">Gizlilik Politikası</a>'na bakın.</p>
+        <a class="btn btn-primary" data-cta="pro" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-tr-pro&mt=8">PRO'u inceleyin</a>
+        <p class="price-fineprint">Fiyatlar App Store'da yerel para biriminizde gösterilir ve ülkeye/bölgeye göre değişir. Aylık ve yıllık planlar 7 günlük ücretsiz denemeyle başlar (kişi başı, planlardan birinde bir kez); deneme süresinde iptal ederseniz ücretlendirilmezsiniz. Deneme sona erdiğinde seçtiğiniz plan için otomatik olarak ücretlendirilirsiniz. Abonelikler otomatik olarak yenilenir. App Store'da dönemin bitiminden en az 24 saat önce veya Google Play'de bir sonraki yenileme tarihinden önce iptal ederseniz sonraki dönem için ücret alınmaz. Ayrıntılar için <a href="terms-tr.html">Kullanım Koşulları</a> ve <a href="privacy-policy-tr.html">Gizlilik Politikası</a>'na bakın.</p>
       </div>
     </div>
   </div>
@@ -433,7 +450,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>İşlem verilerim nerede saklanır?</summary>
-        <div class="faq-a">İşlem kayıtlarınız şifrelenir ve yalnızca cihazınızda saklanır (eklenen grafik görselleri cihazda şifrelenmeden saklanır). Bulut senkronizasyonu yoktur; kayıt ve analiz internet bağlantısı olmadan çalışır. Uygulama yalnızca PRO satın almak veya geri yüklemek, uygulama güncellemelerini denetlemek ve anonim çökme ve kullanım raporları (Sentry) göndermek için bağlanır; işlem kayıtlarınızın içeriği asla gönderilmez. iCloud Yedekleme açıksa, bunlar o yedeğe de dahil edilir.</div>
+        <div class="faq-a">İşlem kayıtlarınız şifrelenir ve yalnızca cihazınızda saklanır (eklenen grafik görselleri cihazda şifrelenmeden saklanır). Bulut senkronizasyonu yoktur; kayıt ve analiz internet bağlantısı olmadan çalışır. Uygulama yalnızca PRO satın almak veya geri yüklemek, uygulama güncellemelerini denetlemek ve çökme ve kullanım raporları (Sentry, cihaza özel rastgele bir kimlikle; adınız veya işlem içerikleriniz asla gönderilmez) göndermek için bağlanır; işlem kayıtlarınızın içeriği asla gönderilmez. iCloud Yedekleme açıksa, bunlar o yedeğe de dahil edilir.</div>
       </details>
       <details class="faq-item">
         <summary>Uygulamayı silersem işlemlerime ne olur?</summary>
@@ -461,7 +478,8 @@
     <h2>Bir sonraki kaydınız,<br>bir sonraki analiz veriniz olur.</h2>
     <p>İncelemeye bugün, bir sonraki işleminizle başlayın.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-tr">App Store'dan ücretsiz indirin</a>
+      <a class="btn btn-primary" data-cta="final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-tr-final&mt=8">App Store'dan ücretsiz indirin</a>
+      <a class="btn btn-primary android-only" data-cta="android-final" href="#android">Android test kullanıcısı olun (ücretsiz)</a>
     </div>
     <div class="cta-qr">
       <img src="lp-assets/qr-tr.svg" width="132" height="132" alt="Telefonunuzda açın" loading="lazy" decoding="async">
@@ -475,7 +493,7 @@
 
 <div class="region-notice">
   <div class="wrap">
-    <p>Japonya, ABD ve İsviçre dahil 16 ülke ve bölgede sunulmaktadır. AB, AEA ve Birleşik Krallık App Store'unda sunulmamaktadır.</p>
+    <p>Japonya, ABD, Kanada, İsviçre, Avustralya ve Hindistan dahil 144 ülke ve bölgede sunulmaktadır. AB, AEA, Birleşik Krallık ve Çin anakarası App Store'unda sunulmamaktadır.</p>
   </div>
 </div>
 

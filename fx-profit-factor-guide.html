@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>プロフィットファクター（PF）とは|FXでの計算方法と読み方</title>
+<meta name="description" content="FXのプロフィットファクター（PF）とは何か、計算方法を仮の数値例つきで解説。勝率・リスクリワードとの関係、件数が少ないときの注意点、スワップや手数料の扱いなど集計の落とし穴までまとめました。">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FXトレードログ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="プロフィットファクター（PF）とは|FXでの計算方法と読み方">
+<meta property="og:description" content="PFの定義と計算方法を仮の数値例で解説。勝率・リスクリワードとの関係、件数が少ないときの注意点、集計の落とし穴までまとめました。">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FXトレードログ — 記録画面と、勝率・pips・PFの自動集計">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="プロフィットファクター（PF）とは|FXでの計算方法と読み方">
+<meta name="twitter:description" content="PFの定義と計算方法を仮の数値例で解説。勝率・リスクリワードとの関係や集計の落とし穴まで。">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "プロフィットファクター（PF）とは|FXでの計算方法と読み方",
+  "description": "FXのプロフィットファクター（PF）とは何か、計算方法を仮の数値例つきで解説。勝率・リスクリワードとの関係、件数が少ないときの注意点、スワップや手数料の扱いなど集計の落とし穴までまとめました。",
+  "author": { "@type": "Person", "name": "Daiki Ikebata" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FXトレードログ",
+    "logo": { "@type": "ImageObject", "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png" }
+  },
+  "datePublished": "2026-10-08",
+  "dateModified": "2026-10-08",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "FXトレードログ", "item": "https://kainan0880jwr.github.io/fx-trade-journal/" },
+    { "@type": "ListItem", "position": 2, "name": "プロフィットファクター（PF）とは", "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide.html" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "プロフィットファクターはいくつ以上あればよいですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "一律の基準はありません。1.0を上回っていれば、その期間の合計がプラスだったことを示しますが、それ以上の線引きはトレードスタイル、件数、手数料やスワップを含めるかどうかで意味が変わります。また、過去の記録から計算したPFは、将来の成績を示すものではありません。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "プロフィットファクターと勝率はどちらを見ればよいですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "どちらか一方だけでは記録の中身を判断できません。PFは勝率と、平均利益と平均損失の比（リスクリワード）の組み合わせで決まるため、3つを並べて見ると、数字がどの要素から来ているのかを読み取りやすくなります。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "損失が0のとき、プロフィットファクターはどうなりますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "総損失が0だと割り算ができないため、PFは計算できません。ツールによっては「∞」「—」「負けなし」などと表示されます。記録がまだ少ない段階ではよくあることで、負けた取引が1件記録された時点で具体的な数値になります。"
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) を呼ばず、
+     gtag.js の読み込みもしない（consent.js が同意後に <script> を動的に作る）。
+     これにより「同意しない」場合はCookieなしの計測ピングも含めて一切送信されない。 -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="アクセス解析への同意" hidden>
+  <div class="wrap consent-inner">
+    <p>本サイトでは、アクセス状況を把握するためGoogleアナリティクスを利用しています。詳細は<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">同意しない</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">同意する</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FXトレードログ
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#features">機能</a></li>
+      <li><a href="index.html#pricing">料金</a></li>
+      <li><a href="index.html#faq">よくある質問</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="guide-nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-ja-pf&mt=8">App Storeで入手</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="index.html">FXトレードログ</a><span aria-hidden="true">/</span><span aria-current="page">プロフィットファクター（PF）とは</span>
+      </nav>
+      <p class="eyebrow">使い方ガイド</p>
+      <h1>プロフィットファクター（PF）とは<br>FXでの計算方法と読み方</h1>
+      <p class="article-meta">
+        <span>公開日: 2026年10月8日</span>
+        <span>想定読了時間: 8分</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">本記事は、FXの取引記録から指標を計算し、読み取る方法を紹介するものであり、投資助言・売買推奨ではありません。記載の手法や指標が利益や勝率の向上を保証するものではなく、投資判断はご自身の責任で行ってください。記事中の数値はすべて説明のための架空の例です。</p>
+
+      <p>トレード記録を振り返るとき、勝率や合計pipsと並んでよく使われるのが「プロフィットファクター（PF）」です。名前は難しそうですが、中身は割り算1回で求められる単純な指標です。一方で、何を分子・分母に入れるか、何件の記録から計算したかによって、同じ記録からでも数字が大きく変わります。この記事では、PFの定義と計算方法を架空の数値例で確認したうえで、勝率・リスクリワードとの関係、件数が少ないときの注意点、集計でよくある落とし穴を順に整理します。</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#definition">プロフィットファクター（PF）とは</a></li>
+          <li><a href="#formula">PFの計算方法と計算例</a></li>
+          <li><a href="#reading">PFの読み方：1.0が境目</a></li>
+          <li><a href="#with-winrate">勝率・リスクリワードと合わせて読む</a></li>
+          <li><a href="#sample">件数が少ないとPFは大きく揺れる</a></li>
+          <li><a href="#pitfalls">集計でよくある落とし穴</a></li>
+          <li><a href="#steps">自分の記録からPFを出す手順</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+        </ol>
+      </div>
+
+      <h2 id="definition">プロフィットファクター（PF）とは</h2>
+      <p>プロフィットファクター（Profit Factor、略してPF）は、ある期間の<strong>利益が出た取引の合計（総利益）</strong>を、<strong>損失が出た取引の合計（総損失）</strong>で割った値です。「損失1に対して、利益がいくつあったか」を1つの数字で表します。</p>
+      <p>勝率が「何回勝ったか」という回数の指標であるのに対し、PFは「勝ち負けの大きさ」も含めた金額（またはpips）の指標です。勝率が同じ50%でも、勝つときに大きく負けるときに小さい記録と、その逆の記録とでは、PFはまったく違う値になります。回数と大きさの両方をまとめて見られるのが、PFがトレード記録の振り返りでよく使われる理由です。</p>
+
+      <h2 id="formula">PFの計算方法と計算例</h2>
+      <p>計算式は次のとおりです。</p>
+      <p><strong>PF ＝ 総利益 ÷ 総損失（絶対値）</strong></p>
+      <p>総損失はマイナスの値の合計なので、符号を外した絶対値で割ります。たとえば次の10件の記録があったとします（説明のための架空の例です）。</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr><th>区分</th><th>各取引のpips</th><th>合計</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>利益が出た取引（4件）</td><td>+40、+55、+30、+35</td><td>+160 pips</td></tr>
+            <tr><td>損失が出た取引（6件）</td><td>−20、−15、−25、−10、−20、−10</td><td>−100 pips</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>この場合、総利益は160 pips、総損失は100 pipsなので、<strong>PF ＝ 160 ÷ 100 ＝ 1.60</strong>です。勝率は10件中4件で40%、合計は＋60 pipsになります。勝率は半分を下回っていても、1件あたりの利益が損失より大きいため、PFは1.0を上回っています。</p>
+      <p>PFは金額でもpipsでも計算できます。ただし、同じ記録でもロット数が取引ごとに違えば、金額で計算したPFとpipsで計算したPFは一致しません。どちらで計算したかを、数字と一緒に書き残しておくと後で比べやすくなります。</p>
+
+      <h2 id="reading">PFの読み方：1.0が境目</h2>
+      <p>PFを読むときの基準になるのは1.0です。</p>
+      <ul>
+        <li><strong>1.0より大きい</strong> — その期間の総利益が総損失を上回り、合計がプラスだったことを示します。</li>
+        <li><strong>ちょうど1.0</strong> — 総利益と総損失が同じで、合計はゼロです。</li>
+        <li><strong>1.0より小さい</strong> — 総損失が総利益を上回り、合計がマイナスだったことを示します。</li>
+      </ul>
+      <p>1.0という境目には明確な意味がありますが、「1.5以上なら十分」といった線引きには一律の根拠はありません。売買回数が多いスタイルと少ないスタイル、手数料を含めた計算と含めない計算では、同じ1.3でも意味合いが変わるためです。PFは他人と比べるよりも、<strong>同じ条件で計算した自分の過去の記録同士</strong>を比べるときに読み取りやすい指標です。</p>
+      <p>また、PFは「その期間に起きたこと」をまとめた数字であり、次の期間の結果を示すものではありません。過去の記録から計算したPFが高かったとしても、それが今後も続くとは限らない点は押さえておきましょう。</p>
+
+      <h2 id="with-winrate">勝率・リスクリワードと合わせて読む</h2>
+      <p>PFは、勝率と「平均利益÷平均損失」（実績のリスクリワード、以下RR）の2つから決まります。引き分けを除いて考えると、次の関係が成り立ちます。</p>
+      <p><strong>PF ＝ 勝率 ÷（1 − 勝率）× RR</strong></p>
+      <p>先ほどの例に当てはめると、勝率40%、平均利益40 pips（160÷4）、平均損失約16.7 pips（100÷6）でRRは2.4。0.4 ÷ 0.6 × 2.4 ＝ 1.60となり、直接計算した値と一致します。</p>
+      <p>この式から分かるのは、<strong>同じPFでも中身はまったく違うことがある</strong>という点です。次の表は、いずれもPFが1.5になる勝率とRRの組み合わせです。</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr><th>勝率</th><th>RR（平均利益÷平均損失）</th><th>PF</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>60%</td><td>1.0</td><td>1.5</td></tr>
+            <tr><td>50%</td><td>1.5</td><td>1.5</td></tr>
+            <tr><td>40%</td><td>2.25</td><td>1.5</td></tr>
+            <tr><td>30%</td><td>3.5</td><td>1.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>勝率60%・RR1.0の記録と、勝率30%・RR3.5の記録とでは、連敗の起きやすさも、1回の勝ちが全体に占める重みも違います。PFだけを見ていると、この違いに気づけません。振り返りでは<strong>PF・勝率・RRの3つを並べて</strong>、数字がどの要素から来ているのかを確認するのがおすすめです。勝率とRRの関係は「<a href="fx-win-rate-risk-reward-guide.html">FXの勝率とリスクリワードの関係</a>」で詳しく扱っています。</p>
+
+      <h2 id="sample">件数が少ないとPFは大きく揺れる</h2>
+      <p>PFは割り算なので、分母（総損失）が小さいうちは、1件の取引で値が大きく動きます。たとえば次の5件の記録があったとします（架空の例です）。</p>
+      <ul>
+        <li>＋30、−10、−10、＋5、−10 pips → 総利益35、総損失30で<strong>PF ≒ 1.17</strong></li>
+      </ul>
+      <p>ここに−20 pipsの取引が1件加わると、総損失は50になり<strong>PFは0.70</strong>まで下がります。逆に＋40 pipsの取引が1件加われば、総利益は75になり<strong>PFは2.50</strong>です。たった1件の差で、1.0の上にも下にも振れてしまいます。</p>
+      <p>何件あれば十分かは、取引の頻度や1件ごとの損益のばらつきによって変わるため、一律には言えません。少なくとも、件数が少ない時期のPFは「まだ揺れやすい数字」として扱い、月ごとの値を並べて推移を見る、件数と一緒に記録しておく、といった読み方をすると、1件の大勝ち・大負けに引きずられにくくなります。</p>
+
+      <h2 id="pitfalls">集計でよくある落とし穴</h2>
+      <h3>決済済みの取引だけを数えている</h3>
+      <p>PFは通常、決済が終わった取引から計算します。そのため、含み損を抱えたままのポジションは、どれだけ損失が膨らんでいても計算に入りません。損切りを先送りしている期間ほど、PFが実態より良く見えることがあります。期間の区切りで保有中のポジションがあるときは、その含み損益を別に書き添えておくと、数字の読み違いを防げます。</p>
+      <h3>通貨や単位を混ぜている</h3>
+      <p>円建ての口座とドル建ての口座の記録を、換算せずにそのまま足し合わせると、PFは意味のない数字になります。同じように、ある取引は金額、別の取引はpipsで記録していると、総利益と総損失の単位がそろいません。口座ごとに分けて計算するか、どちらかの単位にそろえてから計算しましょう。なお、pipsは通貨ペアごとに1 pipsあたりの金額が違うため、pipsのPFと金額のPFは一致しないのが普通です。</p>
+      <h3>スワップと手数料を含めるかどうかが決まっていない</h3>
+      <p>MT4/MT5の取引履歴では、売買の損益とは別に、手数料（Commission）とスワップ（Swap）が記録されることがあります。これらを含めた「純損益」で計算するか、含めない「売買損益」で計算するかで、PFは変わります。特に売買回数が多いスタイルでは、1件ごとの手数料は小さくても、合計すると総利益・総損失に対して無視できない大きさになることがあります。どちらで計算するかを決めて、期間をまたいでそろえておくことが大切です。</p>
+      <h3>引き分けや損益ゼロの取引の扱い</h3>
+      <p>建値で決済した取引は、総利益にも総損失にも入らないため、PFには影響しません。一方で勝率の計算では、分母に含めるかどうかで値が変わります。PFと勝率を並べて読むときは、引き分けをどう扱ったかもそろえておきましょう。</p>
+
+      <h2 id="steps">自分の記録からPFを出す手順</h2>
+      <p>表計算ソフトで記録をつけている場合は、次の手順で計算できます。</p>
+      <ol>
+        <li>期間を決めて、決済済みの取引を1行1件で並べる（損益の列は、利益をプラス、損失をマイナスで入力）。</li>
+        <li>単位（金額かpipsか）と、手数料・スワップを含めるかどうかを決め、全行をそろえる。</li>
+        <li>総利益をプラスの値だけの合計で出す（例：<strong>=SUMIF(C:C,"&gt;0")</strong>）。</li>
+        <li>総損失をマイナスの値だけの合計の絶対値で出す（例：<strong>=ABS(SUMIF(C:C,"&lt;0"))</strong>）。</li>
+        <li>総利益を総損失で割る。総損失が0のときは計算できないので、空欄や「—」にしておく。</li>
+        <li>計算に使った件数を、PFの横に一緒に書いておく。</li>
+      </ol>
+      <p>月ごとにこの値を並べておくと、PFがどの月にどう動いたか、その月の勝率やRRがどうだったかを、あとから同じ条件で見比べられます。</p>
+
+      <div class="article-callout">
+        <h3>勝率・pips・PFの集計をアプリに任せる</h3>
+        <p>「FXトレードログ」は、記録した取引から月次の勝率・pips・プロフィットファクターを自動集計するFXトレード日記アプリです（月次の集計は無料版から利用可能）。MT4/MT5の取引履歴CSVインポートに対応しており、時間帯・曜日／タグ分析／RR分析などの分析タブはPROで利用できます。</p>
+        <a class="btn btn-primary" data-cta="guide-body" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-ja-pf&mt=8">App Storeで無料ダウンロード</a>
+      </div>
+
+      <h2 id="related">関連記事</h2>
+      <ul>
+        <li><a href="fx-trade-journal-guide.html">FXトレード日記の書き方完全ガイド｜続けるコツと7つの記録項目</a> — PFを計算する前提になる、記録の付け方と振り返りの手順。</li>
+        <li><a href="fx-win-rate-risk-reward-guide.html">FXの勝率とリスクリワードの関係｜損益分岐勝率の計算方法</a> — PFを形づくる勝率とRRの関係と、損益分岐勝率の求め方。</li>
+      </ul>
+
+      <h2 id="faq">よくある質問</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>プロフィットファクターはいくつ以上あればよいですか？</summary>
+          <div class="faq-a">一律の基準はありません。1.0を上回っていれば、その期間の合計がプラスだったことを示しますが、それ以上の線引きはトレードスタイル、件数、手数料やスワップを含めるかどうかで意味が変わります。また、過去の記録から計算したPFは、将来の成績を示すものではありません。</div>
+        </details>
+        <details class="faq-item">
+          <summary>プロフィットファクターと勝率はどちらを見ればよいですか？</summary>
+          <div class="faq-a">どちらか一方だけでは記録の中身を判断できません。PFは勝率と、平均利益と平均損失の比（リスクリワード）の組み合わせで決まるため、3つを並べて見ると、数字がどの要素から来ているのかを読み取りやすくなります。</div>
+        </details>
+        <details class="faq-item">
+          <summary>損失が0のとき、プロフィットファクターはどうなりますか？</summary>
+          <div class="faq-a">総損失が0だと割り算ができないため、PFは計算できません。ツールによっては「∞」「—」「負けなし」などと表示されます。記録がまだ少ない段階ではよくあることで、負けた取引が1件記録された時点で具体的な数値になります。</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>記録から、自分のPFを確かめてみましょう。</h2>
+      <p>「FXトレードログ」なら、記録した取引から月次の勝率・pips・プロフィットファクターが自動で集計されます。</p>
+      <a class="btn btn-primary" data-cta="guide-final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-ja-pf&mt=8">App Storeで無料ダウンロード</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FXトレードログ
+        </div>
+        <p class="foot-tag">スマホ・タブレットで完結するFXトレード日記。記録して、分析して、次の判断へ。</p>
+      </div>
+      <div class="foot-col">
+        <h4>プロダクト</h4>
+        <ul>
+          <li><a href="index.html#features">機能</a></li>
+          <li><a href="index.html#pricing">料金</a></li>
+          <li><a href="index.html#faq">よくある質問</a></li>
+          <li><a href="fx-trade-journal-guide.html">使い方ガイド</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>サポート・法的情報</h4>
+        <ul>
+          <li><a href="support.html">お問い合わせ</a></li>
+          <li><a href="#" id="consentReset">アクセス解析の設定</a></li>
+          <li><a href="privacy-policy.html">プライバシーポリシー</a></li>
+          <li><a href="terms.html">利用規約</a></li>
+          <li><a href="tokushoho.html">特定商取引法に基づく表記</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      本アプリの分析機能は投資助言・特定の金融商品の勧誘を目的とするものではありません。投資に関する最終判断はご自身の責任で行ってください。<br>
+      過去の記録・成績は将来の成果を保証するものではありません。<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -6,7 +6,7 @@
 
 - 名称: FXトレードログ / FX Trade Journal
 - プラットフォーム: iOS（App Store, id6786188634）。Android版はGoogle Playでクローズドテスト中。
-- 配信地域: 日本・米国・スイスなど16の国と地域。EU・EEA・英国では配信していない。
+- 配信地域: 日本・米国・カナダ・スイス・オーストラリア・インドなど144の国と地域。EU・EEA・英国・中国本土では配信していない。
 - 対応言語: 日本語・英語・ドイツ語・フランス語・スペイン語・イタリア語・インドネシア語・トルコ語・ヒンディー語・ベトナム語・ポルトガル語（11言語）
 - 料金: 無料プランあり。有料版（PRO）は日本で月額¥500 / 年額¥3,980（税込。月額・年額とも7日間の無料トライアルあり、いずれか一方のプランで1回限り）。価格は国・地域により異なる。
 - 主な機能: トレード記録（クイック記録は最短3タップ。pipsはエントリー・決済レートから、損益額はpipsとロットから自動計算）、MT4/MT5 CSVインポート、月次・週次・年間の成績分析（時間帯・曜日別、タグ分析、RR分析、エクイティカーブ、メンタル記録）、成績のシェア（テキスト／カード出力）、ロット計算機、実績バッジ、生体認証によるアプリロック。
@@ -16,6 +16,19 @@
 
 - [トップページ（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/): 機能紹介・料金・FAQ
 - [English](https://kainan0880jwr.github.io/fx-trade-journal/index-en.html)
+- [Deutsch](https://kainan0880jwr.github.io/fx-trade-journal/index-de.html)
+- [Français](https://kainan0880jwr.github.io/fx-trade-journal/index-fr.html)
+- [Español](https://kainan0880jwr.github.io/fx-trade-journal/index-es.html)
+- [Italiano](https://kainan0880jwr.github.io/fx-trade-journal/index-it.html)
+- [Bahasa Indonesia](https://kainan0880jwr.github.io/fx-trade-journal/index-id.html)
+- [Türkçe](https://kainan0880jwr.github.io/fx-trade-journal/index-tr.html)
+- [हिन्दी](https://kainan0880jwr.github.io/fx-trade-journal/index-hi.html)
+- [Tiếng Việt](https://kainan0880jwr.github.io/fx-trade-journal/index-vi.html)
+- [Português (Brasil)](https://kainan0880jwr.github.io/fx-trade-journal/index-pt.html)
+- [使い方ガイド（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-trade-journal-guide.html): FXトレード日記の付け方と、アプリでの記録・振り返りの手順
+- [Guide (English)](https://kainan0880jwr.github.io/fx-trade-journal/fx-trade-journal-guide-en.html): How to keep a forex trading journal — what to record and how to review it
+- [プロフィットファクター（PF）とは（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide.html): PFの定義と計算方法、勝率・リスクリワードとの関係、集計の落とし穴
+- [FXの勝率とリスクリワードの関係（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide.html): 損益分岐勝率の公式と早見表、自分の記録から勝率・RRを計算する手順
 - [利用規約](https://kainan0880jwr.github.io/fx-trade-journal/terms.html)
 - [プライバシーポリシー](https://kainan0880jwr.github.io/fx-trade-journal/privacy-policy.html)
 - [お問い合わせ](https://kainan0880jwr.github.io/fx-trade-journal/support.html)

@@ -61,7 +61,7 @@
     "price": "0",
     "priceCurrency": "JPY"
   },
-  "description": "Um diário de trading para FX com suporte a MT4/MT5. Basta registrar suas operações para que a taxa de acerto, os pips e o fator de lucro sejam calculados automaticamente, e você pode compartilhar seus resultados nas redes sociais. Os dados são criptografados e armazenados apenas no dispositivo, sem sincronização em nuvem."
+  "description": "Um diário de trading para FX com suporte a MT4/MT5. Basta registrar suas operações para que a taxa de acerto, os pips e o fator de lucro sejam calculados automaticamente, e você pode compartilhar seus resultados nas redes sociais. Os registros são criptografados e armazenados apenas no dispositivo (imagens de gráficos não são criptografadas), sem sincronização em nuvem."
 }
 </script>
 
@@ -75,7 +75,7 @@
       "name": "Onde meus dados de operações são armazenados?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Seus registros de operações são criptografados e armazenados apenas no seu dispositivo (as imagens de gráficos anexadas são salvas no dispositivo sem criptografia). Não há sincronização em nuvem; o registro e a análise funcionam sem conexão à internet. O app só se conecta para comprar ou restaurar o PRO, verificar atualizações do app e enviar relatórios anônimos de falhas e de uso (Sentry); o conteúdo dos seus registros de operações nunca é enviado. Se você tiver o Backup do iCloud ativado, eles também são incluídos nesse backup."
+        "text": "Seus registros de operações são criptografados e armazenados apenas no seu dispositivo (as imagens de gráficos anexadas são salvas no dispositivo sem criptografia). Não há sincronização em nuvem; o registro e a análise funcionam sem conexão à internet. O app só se conecta para comprar ou restaurar o PRO, verificar atualizações do app e enviar relatórios de falhas e de uso (Sentry, com um ID aleatório por dispositivo; nunca seu nome nem o conteúdo das operações); o conteúdo dos seus registros de operações nunca é enviado. Se você tiver o Backup do iCloud ativado, eles também são incluídos nesse backup."
       }
     },
     {
@@ -158,23 +158,40 @@
       <li><a href="#faq">Perguntas frequentes</a></li>
     </ul>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-pt">Baixar na App Store</a>
+      <a class="btn btn-primary" data-cta="nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-pt-nav&mt=8">Baixar na App Store</a>
     </div>
   </div>
 </header>
+
+<!-- Android 版はクローズドテスト中（配信国は App Store と同じ。EU・英国などは対象外）。Android の端末で開いたときだけ表示する
+     （boot.js が <html> に .android を付け、style.css で出し分ける）。 -->
+<div class="android-notice" id="android">
+  <div class="wrap">
+    <p class="android-notice-title">Procuramos testadores para a versão Android</p>
+    <p>Antes do lançamento oficial no Google Play, procuramos pessoas para experimentar o app primeiro. O app é gratuito (os recursos PRO são pagos, com 7 dias de teste grátis).</p>
+    <ol>
+      <li>Abra o <a href="https://groups.google.com/g/fx-trade-journal-testers">Grupo do Google para testadores</a> e toque em “Participar do grupo”</li>
+      <li>Na <a data-cta="android-notice" href="https://play.google.com/apps/testing/com.fxtradejournal.app">página de participação no teste</a>, toque em “Tornar-se testador” e instale pelo Google Play</li>
+    </ol>
+    <p class="android-notice-note">A entrada no grupo pode levar alguns minutos para valer. Agradecemos se você mantiver o app instalado por pelo menos 14 dias.</p>
+    <p class="android-notice-note">No iPhone, use a versão da App Store (“Baixar na App Store” nesta página).</p>
+  </div>
+</div>
 
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">Diário de trading e app de análise</p>
-      <h1>Registre uma operação.<br>Veja sua <em>taxa de acerto, pips e fator de lucro</em>.</h1>
+      <h1>Seu diário de trading forex,<br><em>em 3 toques</em>.</h1>
       <p class="hero-sub">
-        Registro em só 3 toques e importação de CSV do MT4/MT5. Seus dados ficam no aparelho e não são enviados a nenhum servidor. Sem criar conta.
+        Registre uma operação em só 3 toques e veja taxa de acerto, pips e fator de lucro calculados automaticamente. Com importação de CSV do MT4/MT5. Seus dados ficam no aparelho e não são enviados a nenhum servidor. Sem criar conta.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-pt">Baixar grátis na App Store</a>
+        <a class="btn btn-primary" data-cta="hero" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-pt-hero&mt=8">Baixar grátis na App Store</a>
+        <a class="btn btn-primary android-only" data-cta="android-hero" href="#android">Seja testador do Android (grátis)</a>
         <a class="btn btn-ghost" href="#features">Ver recursos</a>
       </div>
+      <p class="android-teaser"><a href="#android">Versão Android: procuramos testadores →</a></p>
       <div class="hero-trust">
         <span>Funciona inteiramente no celular/tablet</span>
         <span>Compartilhe resultados nas redes sociais</span>
@@ -245,7 +262,7 @@
         </div>
     </div>
       <div class="feature-copy">
-        <h3>Os números apontam seu próximo passo.</h3>
+        <h3>Os números mostram o que revisar.</h3>
         <p>Só de registrar suas operações, sua taxa de acerto mensal, pips e fator de lucro são calculados automaticamente. Veja padrões por horário do dia, dia da semana e par de moedas rapidamente.</p>
         <ul class="feature-list">
           <li>Taxa de acerto mensal, pips e FL calculados automaticamente, mesmo no plano gratuito</li>
@@ -291,11 +308,11 @@
         </div>
     </div>
       <div class="feature-copy">
-        <h3>Chega de PC, chega de Excel.</h3>
+        <h3>Mantenha seu diário só com o celular.</h3>
         <p>No trajeto de volta para casa ou logo após fechar uma operação — o modo rápido salva uma operação em 3 toques, para você manter seu diário de trading usando apenas o celular ou tablet.</p>
         <ul class="feature-list">
-          <li>Os pips são calculados automaticamente a partir dos preços de entrada e saída; o L/P, a partir dos pips e do lote (só pares com JPY)</li>
-          <li>Importe em massa arquivos CSV do histórico do MT4/MT5 pelas Configurações (disponível no plano gratuito)</li>
+          <li>Os pips são calculados automaticamente a partir dos preços de entrada e saída; o L/P, a partir dos pips e do lote nos pares cotados na moeda da sua conta (escolha em Configurações, ex.: USD ou JPY)</li>
+          <li>Importe em massa arquivos CSV do histórico do MT4/MT5 pelas Configurações (disponível no plano gratuito; o CSV é exportado do MT4/MT5 no PC ou similar)</li>
           <li>Tags de seleção múltipla para os motivos de entrada, e anexe imagens de gráfico (1 no gratuito, 3 no PRO)</li>
           <li>Na primeira abertura você pode escolher “Ver com dados de exemplo” e ver as telas de análise preenchidas — apaga com um toque</li>
         </ul>
@@ -316,7 +333,7 @@
             <div class="switch"></div>
           </div>
           <div class="sec-note">Ative ou desative a qualquer momento nas Configurações (desativado por padrão)</div>
-          <div class="sec-note">Criptografia do banco de dados via SQLCipher (chave protegida pelo chaveiro do sistema)</div>
+          <div class="sec-note">Criptografia do banco de dados via SQLCipher (chave protegida pelo armazenamento seguro do sistema: Keychain no iOS, Keystore no Android)</div>
           <div class="sec-note">Sem sincronização em nuvem. Registro e análise funcionam offline</div>
           <div class="sec-note">Sem necessidade de conta, seus registros de operações nunca saem do seu dispositivo</div>
           <div class="sec-note sec-note-disclosure">* Para detectar problemas e melhorar a qualidade, enviamos relatórios de falhas e eventos de uso com um identificador por dispositivo; eles nunca incluem seu nome nem suas operações. Veja nossa <a href="privacy-policy-pt.html">política de privacidade</a>.</div>
@@ -326,8 +343,8 @@
         <h3>Seus dados de operações pertencem só ao seu dispositivo.</h3>
         <p>O histórico de operações em FX é um dado sensível que pode revelar sua situação financeira. É por isso que a criptografia e o bloqueio biométrico vêm de série.</p>
         <ul class="feature-list">
-          <li>Bloqueie o app com Face ID / Touch ID (ative a qualquer momento nas Configurações)</li>
-          <li>Chave de criptografia protegida pelo chaveiro do sistema (é transferida ao trocar de aparelho no iOS)</li>
+          <li>Bloqueie o app com Face ID / Touch ID (impressão digital ou desbloqueio facial no Android; ative a qualquer momento nas Configurações)</li>
+          <li>Chave de criptografia protegida pelo armazenamento seguro do sistema (no iOS, o Keychain a transfere ao trocar de aparelho)</li>
           <li>Projetado para nunca enviar seus registros de operações a um servidor</li>
         </ul>
       </div>
@@ -349,7 +366,7 @@
         <h3>Ver o mês sem abrir o app.</h3>
         <p>Na Tela de Início, o mês em curso fica sempre à vista. Números visíveis são o motivo para continuar registrando.</p>
         <ul class="feature-list">
-          <li>O widget da Tela de Início mostra hoje, esta semana e este mês juntos, com um anel de progresso para as metas que você definir (disponível no plano gratuito)</li>
+          <li>O widget da Tela de Início mostra hoje, esta semana e este mês juntos, com um anel de progresso para as metas que você definir (iPhone e iPad; disponível no plano gratuito)</li>
           <li>No widget pequeno e na Tela Bloqueada dá para escolher o período: toque e segure e escolha “Editar widget”. Um toque abre direto o registro</li>
           <li>As metas mensais (pips, taxa de acerto, L/P) são grátis. As metas diárias, semanais e anuais e as marcas no calendário fazem parte do PRO</li>
           <li>33 medalhas de conquista, desbloqueadas ao seguir suas regras e atingir suas metas (grátis)</li>
@@ -379,7 +396,7 @@
     <div class="pricing-grid reveal">
       <div class="price-card">
         <div class="price-name">Gratuito</div>
-        <p class="price-desc">Para criar o hábito de registrar. Os recursos essenciais são gratuitos para sempre.</p>
+        <p class="price-desc">Para criar o hábito de registrar. Os recursos essenciais podem ser usados gratuitamente.</p>
         <p class="price-tag mono">Grátis</p>
         <ul class="price-list">
           <li>Registro de operações em 3 toques</li>
@@ -391,7 +408,7 @@
           <li>Metas mensais e sequência de registros</li>
           <li>Bloqueio biométrico, criptografia e backup JSON</li>
         </ul>
-        <a class="btn btn-ghost" href="https://apps.apple.com/app/id6786188634?ct=lp-pt">Começar grátis</a>
+        <a class="btn btn-ghost" data-cta="free" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-pt-free&mt=8">Começar grátis</a>
       </div>
       <div class="price-card hi">
         <span class="price-badge">Recomendado</span>
@@ -400,12 +417,12 @@
         <div class="price-plan-row">
           <div class="price-plan">
             <span class="pp-label">Mensal</span>
-            <span class="pp-value mono">JPY 500<span class="pp-unit">/mês</span></span>
+            <span class="pp-value pp-local">Preço na sua moeda na App Store</span>
             <span class="pp-trial">7 dias grátis</span>
           </div>
           <div class="price-plan pp-best">
             <span class="pp-label">Anual<em>Mais econômico</em></span>
-            <span class="pp-value mono">JPY 3,980<span class="pp-unit">/ano</span></span>
+            <span class="pp-value pp-local">Preço na sua moeda na App Store</span>
             <span class="pp-trial">7 dias grátis</span>
           </div>
         </div>
@@ -417,8 +434,8 @@
           <li>3 anexos de imagem de gráfico</li>
           <li>Sem marca d'água e lista de favoritos</li>
         </ul>
-        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-pt">Ver o PRO</a>
-        <p class="price-fineprint">Os preços exibidos são referentes ao Japão (JPY, impostos inclusos). O preço exibido na App Store varia de acordo com o país/região. Os planos mensal e anual começam com 7 dias grátis (uma vez por pessoa, em um dos dois planos); se você cancelar durante o teste, não será cobrado. Ao final do teste, você será cobrado automaticamente pelo plano escolhido (JPY 500/mês ou JPY 3,980/ano). As assinaturas renovam automaticamente. Se você cancelar pelo menos 24 horas antes do fim do período na App Store, ou antes da próxima data de renovação no Google Play, o próximo período não será cobrado. Consulte nossos <a href="terms-pt.html">Termos de Uso</a> e nossa <a href="privacy-policy-pt.html">Política de Privacidade</a> para mais detalhes.</p>
+        <a class="btn btn-primary" data-cta="pro" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-pt-pro&mt=8">Ver o PRO</a>
+        <p class="price-fineprint">Os preços são exibidos na sua moeda local na App Store e variam de acordo com o país/região. Os planos mensal e anual começam com 7 dias grátis (uma vez por pessoa, em um dos dois planos); se você cancelar durante o teste, não será cobrado. Ao final do teste, você será cobrado automaticamente pelo plano escolhido. As assinaturas renovam automaticamente. Se você cancelar pelo menos 24 horas antes do fim do período na App Store, ou antes da próxima data de renovação no Google Play, o próximo período não será cobrado. Consulte nossos <a href="terms-pt.html">Termos de Uso</a> e nossa <a href="privacy-policy-pt.html">Política de Privacidade</a> para mais detalhes.</p>
       </div>
     </div>
   </div>
@@ -433,7 +450,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>Onde meus dados de operações são armazenados?</summary>
-        <div class="faq-a">Seus registros de operações são criptografados e armazenados apenas no seu dispositivo (as imagens de gráficos anexadas são salvas no dispositivo sem criptografia). Não há sincronização em nuvem; o registro e a análise funcionam sem conexão à internet. O app só se conecta para comprar ou restaurar o PRO, verificar atualizações do app e enviar relatórios anônimos de falhas e de uso (Sentry); o conteúdo dos seus registros de operações nunca é enviado. Se você tiver o Backup do iCloud ativado, eles também são incluídos nesse backup.</div>
+        <div class="faq-a">Seus registros de operações são criptografados e armazenados apenas no seu dispositivo (as imagens de gráficos anexadas são salvas no dispositivo sem criptografia). Não há sincronização em nuvem; o registro e a análise funcionam sem conexão à internet. O app só se conecta para comprar ou restaurar o PRO, verificar atualizações do app e enviar relatórios de falhas e de uso (Sentry, com um ID aleatório por dispositivo; nunca seu nome nem o conteúdo das operações); o conteúdo dos seus registros de operações nunca é enviado. Se você tiver o Backup do iCloud ativado, eles também são incluídos nesse backup.</div>
       </details>
       <details class="faq-item">
         <summary>O que acontece com minhas operações se eu excluir o app?</summary>
@@ -461,7 +478,8 @@
     <h2>Seu próximo registro se torna<br>seu próximo dado de análise.</h2>
     <p>Comece a revisar hoje, a partir da sua próxima operação.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-pt">Baixar grátis na App Store</a>
+      <a class="btn btn-primary" data-cta="final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-pt-final&mt=8">Baixar grátis na App Store</a>
+      <a class="btn btn-primary android-only" data-cta="android-final" href="#android">Seja testador do Android (grátis)</a>
     </div>
     <div class="cta-qr">
       <img src="lp-assets/qr-pt.svg" width="132" height="132" alt="Abrir no celular" loading="lazy" decoding="async">
@@ -475,7 +493,7 @@
 
 <div class="region-notice">
   <div class="wrap">
-    <p>Disponível em 16 países e regiões, incluindo Japão, Estados Unidos e Suíça. Não disponível na App Store na UE, no EEE ou no Reino Unido.</p>
+    <p>Disponível em 144 países e regiões, incluindo Japão, Estados Unidos, Canadá, Suíça, Austrália e Índia. Não disponível na App Store na UE, no EEE, no Reino Unido ou na China continental.</p>
   </div>
 </div>
 

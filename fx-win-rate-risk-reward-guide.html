@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FXの勝率とリスクリワードの関係|損益分岐勝率の計算方法</title>
+<meta name="description" content="FXの勝率とリスクリワード（RR）の関係を、損益分岐勝率の公式「1÷(1＋RR)」と早見表で解説。自分の取引記録から勝率・RRを計算する手順、計画RRと実績RRの違いなど集計の落とし穴までまとめました。">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FXトレードログ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="FXの勝率とリスクリワードの関係|損益分岐勝率の計算方法">
+<meta property="og:description" content="損益分岐勝率の公式「1÷(1＋RR)」と早見表、自分の記録から勝率・RRを計算する手順、集計の落とし穴をまとめました。">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FXトレードログ — 記録画面と、勝率・pips・PFの自動集計">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FXの勝率とリスクリワードの関係|損益分岐勝率の計算方法">
+<meta name="twitter:description" content="損益分岐勝率の公式と早見表、自分の記録から勝率・RRを計算する手順まで。">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "FXの勝率とリスクリワードの関係|損益分岐勝率の計算方法",
+  "description": "FXの勝率とリスクリワード（RR）の関係を、損益分岐勝率の公式「1÷(1＋RR)」と早見表で解説。自分の取引記録から勝率・RRを計算する手順、計画RRと実績RRの違いなど集計の落とし穴までまとめました。",
+  "author": { "@type": "Person", "name": "Daiki Ikebata" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FXトレードログ",
+    "logo": { "@type": "ImageObject", "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png" }
+  },
+  "datePublished": "2026-10-08",
+  "dateModified": "2026-10-08",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "FXトレードログ", "item": "https://kainan0880jwr.github.io/fx-trade-journal/" },
+    { "@type": "ListItem", "position": 2, "name": "FXの勝率とリスクリワードの関係", "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide.html" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "損益分岐勝率とは何ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "あるリスクリワード（平均利益÷平均損失）のもとで、合計の損益がちょうどゼロになる勝率のことです。引き分けを除き、損益分岐勝率＝1÷（1＋リスクリワード）で求められます。たとえばリスクリワードが2なら約33.3%です。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "リスクリワードは1:2以上にしたほうがよいですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "一律の正解はありません。リスクリワードを大きく設定すると損益分岐勝率は下がりますが、利確の目標が遠くなるぶん、実際の勝率も変わりえます。どの組み合わせが自分の記録に合っているかは、計画したリスクリワードと実際の結果を記録して確かめるしかありません。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "自分で計算した勝率とツールの勝率が合わないのはなぜですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "多くの場合、引き分け（建値決済）の扱いが違うためです。引き分けを分母に含めるか除くかで勝率は変わります。ほかに、期間の区切り方、決済済みの取引だけを数えているかどうか、手数料で損益の符号が変わる取引の扱いなども確認してみてください。"
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) を呼ばず、
+     gtag.js の読み込みもしない（consent.js が同意後に <script> を動的に作る）。
+     これにより「同意しない」場合はCookieなしの計測ピングも含めて一切送信されない。 -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="アクセス解析への同意" hidden>
+  <div class="wrap consent-inner">
+    <p>本サイトでは、アクセス状況を把握するためGoogleアナリティクスを利用しています。詳細は<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">同意しない</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">同意する</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FXトレードログ
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#features">機能</a></li>
+      <li><a href="index.html#pricing">料金</a></li>
+      <li><a href="index.html#faq">よくある質問</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="guide-nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-ja-rr&mt=8">App Storeで入手</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="index.html">FXトレードログ</a><span aria-hidden="true">/</span><span aria-current="page">FXの勝率とリスクリワードの関係</span>
+      </nav>
+      <p class="eyebrow">使い方ガイド</p>
+      <h1>FXの勝率とリスクリワードの関係<br>損益分岐勝率の計算方法</h1>
+      <p class="article-meta">
+        <span>公開日: 2026年10月8日</span>
+        <span>想定読了時間: 8分</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">本記事は、FXの取引記録から指標を計算し、読み取る方法を紹介するものであり、投資助言・売買推奨ではありません。記載の手法や指標が利益や勝率の向上を保証するものではなく、投資判断はご自身の責任で行ってください。記事中の数値はすべて説明のための架空の例です。</p>
+
+      <p>「勝率は高いのに、合計はマイナス」「勝率は低いのに、合計はプラス」——トレード記録を振り返ると、こうした一見ちぐはぐな結果に出会うことがあります。勝率だけ、あるいはリスクリワードだけを見ていると、この理由は分かりません。2つの数字には、合計がちょうどゼロになる境目を表す「損益分岐勝率」という関係があります。この記事では、勝率とリスクリワードの定義から、損益分岐勝率の公式と早見表、自分の記録から両方を計算する手順、集計でよくある落とし穴までを整理します。</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#definition">勝率とリスクリワードの定義</a></li>
+          <li><a href="#breakeven">損益分岐勝率の公式と早見表</a></li>
+          <li><a href="#tradeoff">勝率とリスクリワードは一緒に動く</a></li>
+          <li><a href="#calc">自分の記録から勝率とリスクリワードを出す</a></li>
+          <li><a href="#pitfalls">集計でよくある落とし穴</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+        </ol>
+      </div>
+
+      <h2 id="definition">勝率とリスクリワードの定義</h2>
+      <h3>勝率</h3>
+      <p>勝率は、決済した取引のうち利益で終わった取引の割合です。</p>
+      <p><strong>勝率 ＝ 勝ち数 ÷ 取引数</strong></p>
+      <p>回数だけを数える指標なので、1回の勝ちが大きいか小さいかは反映されません。また、建値で決済した「引き分け」を取引数に含めるかどうかで値が変わります（後述）。</p>
+      <h3>リスクリワード（RR）</h3>
+      <p>リスクリワード（リスクリワードレシオ、RR）は、損失の大きさに対する利益の大きさの比です。「1:2」のように表記し、損失1に対して利益2を意味します。この記事では、比の右側の数字（損失を1としたときの利益）をRRと呼びます。RRには2つの使われ方があります。</p>
+      <ul>
+        <li><strong>計画RR</strong> — エントリー時に決めた利確幅÷損切り幅。たとえば損切り20 pips・利確40 pipsならRRは2です。</li>
+        <li><strong>実績RR</strong> — 実際に決済した結果から計算する、平均利益÷平均損失。途中で手動決済したり、損切りの位置を動かしたりすると、計画RRとずれていきます。</li>
+      </ul>
+      <p>損益分岐勝率の計算や記録の振り返りで使うのは、基本的に<strong>実績RR</strong>です。計画RRとの差は、別の振り返りの材料になります（後述）。</p>
+
+      <h2 id="breakeven">損益分岐勝率の公式と早見表</h2>
+      <p>損益分岐勝率は、あるRRのもとで、合計の損益がちょうどゼロになる勝率です。引き分けを除いて考えると、1回あたりの平均損失を1、平均利益をRRとしたとき、勝率をpとすると</p>
+      <p><strong>p × RR ＝（1 − p）× 1</strong></p>
+      <p>が成り立つところが損益ゼロの境目です。これをpについて解くと、次の式になります。</p>
+      <p><strong>損益分岐勝率 ＝ 1 ÷（1 ＋ RR）</strong></p>
+      <p>主なRRについて計算すると、次のとおりです（小数第2位を四捨五入）。</p>
+      <div class="table-scroll">
+        <table class="compare-table" id="breakeven-table">
+          <thead>
+            <tr><th>RR（平均利益÷平均損失）</th><th>表記</th><th>損益分岐勝率</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0.5</td><td>1:0.5</td><td>66.7%</td></tr>
+            <tr><td>1</td><td>1:1</td><td>50.0%</td></tr>
+            <tr><td>1.5</td><td>1:1.5</td><td>40.0%</td></tr>
+            <tr><td>2</td><td>1:2</td><td>33.3%</td></tr>
+            <tr><td>3</td><td>1:3</td><td>25.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>たとえばRRが0.5（利益が損失の半分）の記録では、勝率が66.7%を上回らないと合計はプラスになりません。逆にRRが3の記録では、勝率25%が境目です。「勝率が高いのに合計がマイナス」という状態は、実績RRが小さく、勝率が損益分岐勝率に届いていないときに起こります。</p>
+      <p>同じ式を逆向きに使うと、ある勝率で合計がゼロになるRRも求められます。</p>
+      <p><strong>損益分岐RR ＝（1 − 勝率）÷ 勝率</strong></p>
+      <p>勝率40%なら（1 − 0.4）÷ 0.4 ＝ 1.5、勝率60%なら約0.67です。自分の勝率から見て、実績RRがこの値の上にあるか下にあるかを確認する、という使い方ができます。</p>
+
+      <h2 id="tradeoff">勝率とリスクリワードは一緒に動く</h2>
+      <p>早見表だけを見ると、「RRを大きくすれば損益分岐勝率が下がるのだから、RRは大きいほどよい」と考えたくなります。しかし、勝率とRRは別々に決められる数字ではありません。</p>
+      <p>同じエントリーでも、利確の目標を遠くに置けば、価格がそこに届く前に損切りに掛かる取引が増えることがあります。反対に、利確を近くに置けば利確に届く回数は増えうる一方で、1回あたりの利益は小さくなります。つまり、RRを変えると勝率も一緒に動くことが多く、表の上で損益分岐勝率が下がっても、実際の勝率がそれ以上に下がれば合計は変わりません。</p>
+      <p>どの組み合わせが自分の取引に合っているかは、一般論では決められません。確かめる方法は、計画RRと実績RR、勝率を記録し続け、同じ条件の取引同士で比べることです。両者をまとめた指標として、プロフィットファクター（PF）を使うこともできます。PFとの関係は「<a href="fx-profit-factor-guide.html">プロフィットファクター（PF）とは</a>」で詳しく扱っています。</p>
+
+      <h2 id="calc">自分の記録から勝率とリスクリワードを出す</h2>
+      <p>決済済みの取引を1件1行で並べ、損益（金額またはpips）を利益はプラス、損失はマイナスで入力しておけば、次の順に計算できます。</p>
+      <ol>
+        <li><strong>勝ち数・負け数・引き分け数</strong>を数える。</li>
+        <li><strong>勝率</strong> ＝ 勝ち数 ÷（勝ち数 ＋ 負け数）。引き分けを含めるかどうかは、どちらかに決めてそろえる。</li>
+        <li><strong>平均利益</strong> ＝ 勝ちの合計 ÷ 勝ち数、<strong>平均損失</strong> ＝ 負けの合計の絶対値 ÷ 負け数。</li>
+        <li><strong>実績RR</strong> ＝ 平均利益 ÷ 平均損失。</li>
+        <li><strong>損益分岐勝率</strong> ＝ 1 ÷（1 ＋ 実績RR）を計算し、2の勝率と比べる。</li>
+      </ol>
+      <p>架空の例で確かめてみます。ある月の記録が20件（引き分けなし）で、勝ち9件の平均利益が24 pips、負け11件の平均損失が15 pipsだったとします。</p>
+      <ul>
+        <li>勝率 ＝ 9 ÷ 20 ＝ <strong>45%</strong></li>
+        <li>実績RR ＝ 24 ÷ 15 ＝ <strong>1.6</strong></li>
+        <li>損益分岐勝率 ＝ 1 ÷（1 ＋ 1.6）≒ <strong>38.5%</strong></li>
+        <li>合計 ＝ 9 × 24 − 11 × 15 ＝ ＋51 pips（1件あたり＋2.55 pips）</li>
+      </ul>
+      <p>この月の勝率45%は、損益分岐勝率38.5%を6.5ポイント上回っており、合計がプラスになったことと整合します。1件あたりの平均は、勝率 × 平均利益 −（1 − 勝率）× 平均損失 ＝ 0.45 × 24 − 0.55 × 15 ＝ 2.55 pipsでも求められます。</p>
+      <p>このように「勝率」「実績RR」「損益分岐勝率」の3つを並べると、合計がプラスやマイナスになった理由を、勝率の側から来たのか、RRの側から来たのかに分けて読むことができます。月ごとに並べれば、どちらがどう動いたかも追えます。ただし、これはあくまで過去の記録の読み方であり、次の月の結果を示すものではありません。</p>
+
+      <h2 id="pitfalls">集計でよくある落とし穴</h2>
+      <h3>計画RRと実績RRを混同する</h3>
+      <p>エントリー時に「1:2で入った」としても、途中で手動決済したり、損切りを広げたりすると、実際の結果は1:2になりません。計画RRで損益分岐勝率を計算すると、実態より楽観的な数字になることがあります。計画RRと実績RRは別々に記録し、差がどこで生まれたかは決済理由のメモと合わせて振り返ると読み取りやすくなります。</p>
+      <h3>引き分けの扱いがそろっていない</h3>
+      <p>建値決済を取引数に含めると勝率は下がり、除くと上がります。損益分岐勝率の式は引き分けを除いた前提なので、比べるときは勝率も引き分けを除いて計算するのが素直です。どちらにするにしても、期間をまたいで同じ扱いにしておきましょう。</p>
+      <h3>件数が少ない</h3>
+      <p>10件や20件の記録では、1件の大きな勝ち・負けで平均利益や平均損失が大きく動き、実績RRも損益分岐勝率も揺れます。何件あれば十分かは取引頻度や損益のばらつきによるため一律には言えませんが、件数と一緒に記録し、少ないうちは推移を見る程度にとどめるのが無難です。</p>
+      <h3>手数料・スワップの扱い</h3>
+      <p>スプレッドはレートに含まれていますが、取引ごとの手数料やスワップは別に記録されることがあります。これらを含めると平均利益は小さく、平均損失は大きくなり、実績RRは下がります。わずかな利益で決済した取引が、手数料を引くと損失に変わることもあり、その場合は勝ち数そのものが変わります。どちらで計算するかを決めておきましょう。</p>
+      <h3>異なる手法や通貨をまとめて計算する</h3>
+      <p>短時間で売買を繰り返す取引と、数日保有する取引では、勝率もRRも大きく違うのが普通です。まとめて計算すると、どちらの特徴も見えにくくなります。通貨の異なる口座の金額を換算せずに足すのも同様です。手法や口座ごとに分けて計算すると、数字の意味がはっきりします。</p>
+
+      <div class="article-callout">
+        <h3>勝率の集計と、RRの振り返りをアプリで</h3>
+        <p>「FXトレードログ」は、記録した取引から月次の勝率・pips・プロフィットファクターを自動集計するFXトレード日記アプリです（月次の集計は無料版から利用可能）。損切り（SL）と利確（TP）を入力した記録は、RR分析タブ（PRO）で、計画したリスクリワードと実際の結果の差を確認できます。MT4/MT5の取引履歴CSVインポートにも対応しています。</p>
+        <a class="btn btn-primary" data-cta="guide-body" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-ja-rr&mt=8">App Storeで無料ダウンロード</a>
+      </div>
+
+      <h2 id="related">関連記事</h2>
+      <ul>
+        <li><a href="fx-trade-journal-guide.html">FXトレード日記の書き方完全ガイド｜続けるコツと7つの記録項目</a> — 勝率やRRを計算する前提になる、記録の付け方と振り返りの手順。</li>
+        <li><a href="fx-profit-factor-guide.html">プロフィットファクター（PF）とは｜FXでの計算方法と読み方</a> — 勝率とRRをまとめて表す指標、PFの計算方法と読み方。</li>
+      </ul>
+
+      <h2 id="faq">よくある質問</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>損益分岐勝率とは何ですか？</summary>
+          <div class="faq-a">あるリスクリワード（平均利益÷平均損失）のもとで、合計の損益がちょうどゼロになる勝率のことです。引き分けを除き、損益分岐勝率＝1÷（1＋リスクリワード）で求められます。たとえばリスクリワードが2なら約33.3%です。</div>
+        </details>
+        <details class="faq-item">
+          <summary>リスクリワードは1:2以上にしたほうがよいですか？</summary>
+          <div class="faq-a">一律の正解はありません。リスクリワードを大きく設定すると損益分岐勝率は下がりますが、利確の目標が遠くなるぶん、実際の勝率も変わりえます。どの組み合わせが自分の記録に合っているかは、計画したリスクリワードと実際の結果を記録して確かめるしかありません。</div>
+        </details>
+        <details class="faq-item">
+          <summary>自分で計算した勝率とツールの勝率が合わないのはなぜですか？</summary>
+          <div class="faq-a">多くの場合、引き分け（建値決済）の扱いが違うためです。引き分けを分母に含めるか除くかで勝率は変わります。ほかに、期間の区切り方、決済済みの取引だけを数えているかどうか、手数料で損益の符号が変わる取引の扱いなども確認してみてください。</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>自分の勝率とリスクリワードを、記録から確かめましょう。</h2>
+      <p>「FXトレードログ」なら、記録した取引から月次の勝率・pips・プロフィットファクターが自動で集計されます。</p>
+      <a class="btn btn-primary" data-cta="guide-final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-ja-rr&mt=8">App Storeで無料ダウンロード</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FXトレードログ
+        </div>
+        <p class="foot-tag">スマホ・タブレットで完結するFXトレード日記。記録して、分析して、次の判断へ。</p>
+      </div>
+      <div class="foot-col">
+        <h4>プロダクト</h4>
+        <ul>
+          <li><a href="index.html#features">機能</a></li>
+          <li><a href="index.html#pricing">料金</a></li>
+          <li><a href="index.html#faq">よくある質問</a></li>
+          <li><a href="fx-trade-journal-guide.html">使い方ガイド</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>サポート・法的情報</h4>
+        <ul>
+          <li><a href="support.html">お問い合わせ</a></li>
+          <li><a href="#" id="consentReset">アクセス解析の設定</a></li>
+          <li><a href="privacy-policy.html">プライバシーポリシー</a></li>
+          <li><a href="terms.html">利用規約</a></li>
+          <li><a href="tokushoho.html">特定商取引法に基づく表記</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      本アプリの分析機能は投資助言・特定の金融商品の勧誘を目的とするものではありません。投資に関する最終判断はご自身の責任で行ってください。<br>
+      過去の記録・成績は将来の成果を保証するものではありません。<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

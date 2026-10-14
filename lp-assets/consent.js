@@ -61,3 +61,26 @@
     location.reload();
   });
 })();
+
+// ---- ストアへのボタンのクリック計測（2026-10-08。10/9 に main.js から移した） ----
+// ガイド記事は main.js を読まないので、ガイドのボタン（data-cta="guide-*"）が数えられていなかった。
+// consent.js は LP とガイドの両方が読む。
+// それまで LP からインストールまでの流れが見えなかった（5か所のボタンが同じ ct で、クリックも送っていなかった）。
+// 位置は data-cta、送るのは同意済み（consent.js が ga_consent=granted を保存）のときだけ。
+// ページを離れる直前の送信なので beacon で送る。ほかの処理と独立させ、ここで失敗しても本文に影響しない。
+(function(){
+  document.addEventListener('click', function(e){
+    try {
+      var a = e.target && e.target.closest ? e.target.closest('a[data-cta]') : null;
+      if (!a) return;
+      if (localStorage.getItem('ga_consent') !== 'granted' || typeof gtag !== 'function') return;
+      var href = a.getAttribute('href') || '';
+      gtag('event', 'cta_click', {
+        cta_position: a.getAttribute('data-cta'),
+        store: href.indexOf('play.google.com') >= 0 ? 'google_play'
+          : href.charAt(0) === '#' ? 'android_notice' : 'app_store',
+        transport_type: 'beacon'
+      });
+    } catch (err) {}
+  });
+})();

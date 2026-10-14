@@ -61,7 +61,7 @@
     "price": "0",
     "priceCurrency": "JPY"
   },
-  "description": "Un journal de trading FX compatible MT4/MT5. Il suffit de noter vos trades pour que le taux de réussite, les pips et le profit factor soient calculés automatiquement, et vos résultats peuvent être partagés sur les réseaux sociaux. Les données sont chiffrées et stockées uniquement sur l'appareil, sans synchronisation cloud."
+  "description": "Un journal de trading FX compatible MT4/MT5. Il suffit de noter vos trades pour que le taux de réussite, les pips et le profit factor soient calculés automatiquement, et vos résultats peuvent être partagés sur les réseaux sociaux. Les enregistrements sont chiffrés et stockés uniquement sur l'appareil (images de graphiques non chiffrées), sans synchronisation cloud."
 }
 </script>
 
@@ -75,7 +75,7 @@
       "name": "Où sont stockées mes données de trading ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Vos enregistrements de trades sont chiffrés et stockés uniquement sur votre appareil (les images de graphiques jointes sont stockées sur l'appareil sans chiffrement). Il n'y a aucune synchronisation cloud ; la saisie et l'analyse fonctionnent sans connexion internet. L'app ne se connecte que pour acheter ou restaurer PRO, vérifier les mises à jour de l'app et envoyer des rapports anonymes de plantage et d'utilisation (Sentry) ; le contenu de vos enregistrements de trades n'est jamais envoyé. Si la sauvegarde iCloud est activée, ils sont également inclus dans cette sauvegarde."
+        "text": "Vos enregistrements de trades sont chiffrés et stockés uniquement sur votre appareil (les images de graphiques jointes sont stockées sur l'appareil sans chiffrement). Il n'y a aucune synchronisation cloud ; la saisie et l'analyse fonctionnent sans connexion internet. L'app ne se connecte que pour acheter ou restaurer PRO, vérifier les mises à jour de l'app et envoyer des rapports de plantage et d'utilisation (Sentry, avec un identifiant aléatoire par appareil ; jamais votre nom ni le contenu de vos trades) ; le contenu de vos enregistrements de trades n'est jamais envoyé. Si la sauvegarde iCloud est activée, ils sont également inclus dans cette sauvegarde."
       }
     },
     {
@@ -158,23 +158,40 @@
       <li><a href="#faq">FAQ</a></li>
     </ul>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-fr">Obtenir sur l'App Store</a>
+      <a class="btn btn-primary" data-cta="nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-fr-nav&mt=8">Obtenir sur l'App Store</a>
     </div>
   </div>
 </header>
+
+<!-- Android 版はクローズドテスト中（配信国は App Store と同じ。EU・英国などは対象外）。Android の端末で開いたときだけ表示する
+     （boot.js が <html> に .android を付け、style.css で出し分ける）。 -->
+<div class="android-notice" id="android">
+  <div class="wrap">
+    <p class="android-notice-title">Nous recherchons des testeurs Android</p>
+    <p>Avant la sortie officielle sur Google Play, nous recherchons des personnes pour essayer l'application en avant-première. L'application est gratuite (les fonctions PRO sont payantes, avec 7 jours d'essai gratuit).</p>
+    <ol>
+      <li>Ouvrez le <a href="https://groups.google.com/g/fx-trade-journal-testers">groupe Google des testeurs</a> et appuyez sur « Rejoindre le groupe »</li>
+      <li>Sur la <a data-cta="android-notice" href="https://play.google.com/apps/testing/com.fxtradejournal.app">page de participation au test</a>, appuyez sur « Devenir testeur », puis installez l’application depuis Google Play</li>
+    </ol>
+    <p class="android-notice-note">La prise en compte de votre adhésion au groupe peut prendre quelques minutes. Merci de garder l’application installée au moins 14 jours après votre inscription.</p>
+    <p class="android-notice-note">Sur iPhone, utilisez la version App Store (« Télécharger dans l’App Store » sur cette page).</p>
+  </div>
+</div>
 
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">Journal de trading &amp; app d'analyse</p>
-      <h1>Notez un trade.<br>Voyez votre <em>taux de réussite, vos pips et votre profit factor</em>.</h1>
+      <h1>Votre journal de trading forex,<br><em>en 3 appuis</em>.</h1>
       <p class="hero-sub">
-        Saisie en 3 appuis seulement et import CSV depuis MT4/MT5. Vos données restent sur l'appareil et ne sont jamais envoyées sur un serveur. Aucun compte requis.
+        Notez un trade en 3 appuis seulement : taux de réussite, pips et profit factor sont calculés automatiquement. Import CSV depuis MT4/MT5 inclus. Vos données restent sur l'appareil et ne sont jamais envoyées sur un serveur. Aucun compte requis.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-fr">Télécharger gratuitement</a>
+        <a class="btn btn-primary" data-cta="hero" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-fr-hero&mt=8">Télécharger gratuitement</a>
+        <a class="btn btn-primary android-only" data-cta="android-hero" href="#android">Devenir testeur Android (gratuit)</a>
         <a class="btn btn-ghost" href="#features">Voir les fonctionnalités</a>
       </div>
+      <p class="android-teaser"><a href="#android">Version Android : nous recherchons des testeurs →</a></p>
       <div class="hero-trust">
         <span>Fonctionne entièrement sur smartphone/tablette</span>
         <span>Partagez vos résultats sur les réseaux sociaux</span>
@@ -245,7 +262,7 @@
         </div>
     </div>
       <div class="feature-copy">
-        <h3>Les chiffres indiquent votre prochain coup.</h3>
+        <h3>Les chiffres vous montrent quoi revoir.</h3>
         <p>Il suffit de noter vos trades pour que le taux de réussite mensuel, les pips et le profit factor soient calculés automatiquement. Repérez les tendances par horaire, jour et paire de devises en un coup d'œil.</p>
         <ul class="feature-list">
           <li>Taux de réussite, pips et PF mensuels calculés automatiquement, même en formule gratuite</li>
@@ -291,11 +308,11 @@
         </div>
     </div>
       <div class="feature-copy">
-        <h3>Plus besoin de PC ni d'Excel.</h3>
+        <h3>Tenez votre journal avec votre seul téléphone.</h3>
         <p>Pendant vos trajets ou juste après avoir clôturé un trade : le mode rapide enregistre un trade en 3 appuis, afin de continuer votre journal de trading avec seulement un smartphone ou une tablette.</p>
         <ul class="feature-list">
-          <li>Les pips sont calculés automatiquement à partir des cours d'entrée et de sortie ; le P/P l'est à partir des pips et du lot (paires en JPY uniquement)</li>
-          <li>Importez en masse l'historique CSV MT4/MT5 depuis les réglages (disponible en formule gratuite)</li>
+          <li>Les pips sont calculés automatiquement à partir des cours d'entrée et de sortie ; le P/P l'est à partir des pips et du lot pour les paires cotées dans la devise de votre compte (à choisir dans les Réglages, p. ex. USD ou JPY)</li>
+          <li>Importez en masse l'historique CSV MT4/MT5 depuis les réglages (disponible en formule gratuite ; le CSV s'exporte depuis MT4/MT5 sur PC, par exemple)</li>
           <li>Sélectionnez plusieurs tags pour les raisons d'entrée, et joignez une image de graphique (1 en gratuit, 3 en PRO)</li>
           <li>Au premier lancement, choisissez « Découvrir avec des exemples » pour voir les écrans d'analyse remplis — supprimez-les d'un geste</li>
         </ul>
@@ -316,7 +333,7 @@
             <div class="switch"></div>
           </div>
           <div class="sec-note">Activable/désactivable à tout moment dans les réglages (désactivé par défaut)</div>
-          <div class="sec-note">Chiffrement de la base de données via SQLCipher (clé protégée par le trousseau du système)</div>
+          <div class="sec-note">Chiffrement de la base de données via SQLCipher (clé protégée par le stockage sécurisé du système : trousseau sur iOS, Keystore sur Android)</div>
           <div class="sec-note">Aucune synchronisation cloud. La saisie et l'analyse fonctionnent hors ligne</div>
           <div class="sec-note">Aucun compte requis, vos enregistrements de trades ne quittent jamais votre appareil</div>
           <div class="sec-note sec-note-disclosure">* Pour détecter les problèmes et améliorer la qualité, nous envoyons des rapports de plantage et des événements d’usage associés à un identifiant propre à l’appareil ; ils n’incluent jamais votre nom ni vos trades. Voir notre <a href="privacy-policy-fr.html">politique de confidentialité</a>.</div>
@@ -326,8 +343,8 @@
         <h3>Vos données de trading n'appartiennent qu'à votre appareil.</h3>
         <p>L'historique de trading FX est une information sensible qui peut révéler votre situation financière. C'est pourquoi le chiffrement et le verrouillage biométrique sont inclus par défaut.</p>
         <ul class="feature-list">
-          <li>Verrouillez l'app avec Face ID / Touch ID (activable à tout moment dans les réglages)</li>
-          <li>Clé de chiffrement protégée par le trousseau du système (transférée lors d'un changement d'appareil sur iOS)</li>
+          <li>Verrouillez l'app avec Face ID / Touch ID (empreinte ou reconnaissance faciale sur Android ; activable à tout moment dans les réglages)</li>
+          <li>Clé de chiffrement protégée par le stockage sécurisé du système (sur iOS, le trousseau la transfère lors d'un changement d'appareil)</li>
           <li>Conçu pour ne jamais envoyer vos enregistrements de trades à un serveur</li>
         </ul>
       </div>
@@ -349,7 +366,7 @@
         <h3>Voir le mois sans ouvrir l'app.</h3>
         <p>Posé sur l'écran d'accueil, le mois en cours reste sous les yeux. Des chiffres visibles donnent une raison de continuer à noter.</p>
         <ul class="feature-list">
-          <li>Le widget d'écran d'accueil affiche aujourd'hui, cette semaine et ce mois-ci ensemble, avec un anneau de progression pour les objectifs définis (disponible en version gratuite)</li>
+          <li>Le widget d'écran d'accueil affiche aujourd'hui, cette semaine et ce mois-ci ensemble, avec un anneau de progression pour les objectifs définis (iPhone et iPad ; disponible en version gratuite)</li>
           <li>Sur le petit widget et l'écran verrouillé, choisissez la période : appui long puis « Modifier le widget ». Un appui ouvre directement la saisie</li>
           <li>Les objectifs mensuels (pips, taux de réussite, P/P) sont gratuits. Les objectifs quotidiens, hebdomadaires et annuels ainsi que les marques au calendrier relèvent de PRO</li>
           <li>33 badges, débloqués en respectant vos règles et en atteignant vos objectifs (gratuit)</li>
@@ -379,7 +396,7 @@
     <div class="pricing-grid reveal">
       <div class="price-card">
         <div class="price-name">Gratuit</div>
-        <p class="price-desc">Pour prendre l'habitude de noter. Les fonctionnalités essentielles restent gratuites pour toujours.</p>
+        <p class="price-desc">Pour prendre l'habitude de noter. Les fonctionnalités essentielles sont utilisables gratuitement.</p>
         <p class="price-tag mono">Gratuit</p>
         <ul class="price-list">
           <li>Saisie de trade en 3 appuis</li>
@@ -391,7 +408,7 @@
           <li>Objectifs mensuels et série d’enregistrement</li>
           <li>Verrou biométrique, chiffrement et sauvegarde JSON</li>
         </ul>
-        <a class="btn btn-ghost" href="https://apps.apple.com/app/id6786188634?ct=lp-fr">Commencer gratuitement</a>
+        <a class="btn btn-ghost" data-cta="free" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-fr-free&mt=8">Commencer gratuitement</a>
       </div>
       <div class="price-card hi">
         <span class="price-badge">Recommandé</span>
@@ -400,12 +417,12 @@
         <div class="price-plan-row">
           <div class="price-plan">
             <span class="pp-label">Mensuel</span>
-            <span class="pp-value mono">JPY 500<span class="pp-unit">/mois</span></span>
+            <span class="pp-value pp-local">Prix dans votre devise sur l'App Store</span>
             <span class="pp-trial">Essai gratuit de 7 jours</span>
           </div>
           <div class="price-plan pp-best">
             <span class="pp-label">Annuel<em>Meilleur prix</em></span>
-            <span class="pp-value mono">JPY 3,980<span class="pp-unit">/an</span></span>
+            <span class="pp-value pp-local">Prix dans votre devise sur l'App Store</span>
             <span class="pp-trial">Essai gratuit de 7 jours</span>
           </div>
         </div>
@@ -417,8 +434,8 @@
           <li>3 images de graphique jointes</li>
           <li>Sans filigrane et liste de favoris</li>
         </ul>
-        <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-fr">Voir PRO</a>
-        <p class="price-fineprint">Les prix indiqués sont ceux du Japon (¥, TTC). Le prix affiché sur l'App Store varie selon le pays/la région. Les formules mensuelle et annuelle commencent par un essai gratuit de 7 jours (une seule fois par personne, sur l'une ou l'autre) ; si vous annulez pendant l'essai, aucun montant ne sera prélevé. À la fin de l'essai, la formule choisie est facturée automatiquement (JPY 500/mois ou JPY 3,980/an). Les abonnements se renouvellent automatiquement. Si vous annulez au moins 24 heures avant la fin de la période sur l'App Store, ou avant la prochaine date de renouvellement sur Google Play, la période suivante ne vous sera pas facturée. Voir nos <a href="terms-fr.html">Conditions d'utilisation</a> et notre <a href="privacy-policy-fr.html">politique de confidentialité</a> pour plus de détails.</p>
+        <a class="btn btn-primary" data-cta="pro" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-fr-pro&mt=8">Voir PRO</a>
+        <p class="price-fineprint">Les prix sont affichés dans votre devise locale sur l'App Store et varient selon le pays/la région. Les formules mensuelle et annuelle commencent par un essai gratuit de 7 jours (une seule fois par personne, sur l'une ou l'autre) ; si vous annulez pendant l'essai, aucun montant ne sera prélevé. À la fin de l'essai, la formule choisie est facturée automatiquement. Les abonnements se renouvellent automatiquement. Si vous annulez au moins 24 heures avant la fin de la période sur l'App Store, ou avant la prochaine date de renouvellement sur Google Play, la période suivante ne vous sera pas facturée. Voir nos <a href="terms-fr.html">Conditions d'utilisation</a> et notre <a href="privacy-policy-fr.html">politique de confidentialité</a> pour plus de détails.</p>
       </div>
     </div>
   </div>
@@ -433,7 +450,7 @@
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>Où sont stockées mes données de trading ?</summary>
-        <div class="faq-a">Vos enregistrements de trades sont chiffrés et stockés uniquement sur votre appareil (les images de graphiques jointes sont stockées sur l'appareil sans chiffrement). Il n'y a aucune synchronisation cloud ; la saisie et l'analyse fonctionnent sans connexion internet. L'app ne se connecte que pour acheter ou restaurer PRO, vérifier les mises à jour de l'app et envoyer des rapports anonymes de plantage et d'utilisation (Sentry) ; le contenu de vos enregistrements de trades n'est jamais envoyé. Si la sauvegarde iCloud est activée, ils sont également inclus dans cette sauvegarde.</div>
+        <div class="faq-a">Vos enregistrements de trades sont chiffrés et stockés uniquement sur votre appareil (les images de graphiques jointes sont stockées sur l'appareil sans chiffrement). Il n'y a aucune synchronisation cloud ; la saisie et l'analyse fonctionnent sans connexion internet. L'app ne se connecte que pour acheter ou restaurer PRO, vérifier les mises à jour de l'app et envoyer des rapports de plantage et d'utilisation (Sentry, avec un identifiant aléatoire par appareil ; jamais votre nom ni le contenu de vos trades) ; le contenu de vos enregistrements de trades n'est jamais envoyé. Si la sauvegarde iCloud est activée, ils sont également inclus dans cette sauvegarde.</div>
       </details>
       <details class="faq-item">
         <summary>Que deviennent mes trades si je supprime l'app ?</summary>
@@ -461,7 +478,8 @@
     <h2>Votre prochaine note devient<br>votre prochain élément d'analyse.</h2>
     <p>Commencez le suivi dès aujourd'hui, dès votre prochain trade.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="https://apps.apple.com/app/id6786188634?ct=lp-fr">Télécharger gratuitement</a>
+      <a class="btn btn-primary" data-cta="final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-fr-final&mt=8">Télécharger gratuitement</a>
+      <a class="btn btn-primary android-only" data-cta="android-final" href="#android">Devenir testeur Android (gratuit)</a>
     </div>
     <div class="cta-qr">
       <img src="lp-assets/qr-fr.svg" width="132" height="132" alt="Ouvrir sur votre téléphone" loading="lazy" decoding="async">
@@ -475,7 +493,7 @@
 
 <div class="region-notice">
   <div class="wrap">
-    <p>Disponible dans 16 pays et régions, dont le Japon, les États-Unis et la Suisse. Non disponible sur l'App Store dans l'UE, l'EEE et au Royaume-Uni.</p>
+    <p>Disponible dans 144 pays et régions, dont le Japon, les États-Unis, le Canada, la Suisse, l'Australie et l'Inde. Non disponible sur l'App Store dans l'UE, l'EEE, au Royaume-Uni et en Chine continentale.</p>
   </div>
 </div>
 
