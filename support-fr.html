@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Assistance — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -53,6 +53,9 @@
 
   <p><strong>Q. Comment demander un remboursement ?</strong><br>
      R. Pour l'App Store, rendez-vous sur <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>. Pour Google Play : Google Play Store → Profil → Paiements et abonnements → Budget et historique, puis choisissez l'achat. Les remboursements relèvent de la politique de chaque store ; nous ne pouvons pas rembourser directement.</p>
+
+  <p><strong>Q. J'ai oublié le mot de passe de ma sauvegarde.</strong><br>
+     R. Une sauvegarde chiffrée ne peut pas être restaurée sans son mot de passe. Le mot de passe n'est conservé ni sur l'appareil ni par nous : nous ne pouvons ni le retrouver ni le réinitialiser. Si vous avez encore l'appareil d'origine, créez une nouvelle sauvegarde avec un nouveau mot de passe.</p>
 
   <footer>© 2026 Daiki Ikebata</footer>
 </body>

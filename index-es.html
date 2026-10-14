@@ -2,6 +2,7 @@
 <html lang="es-419">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FX Trade Journal — Diario de trading Forex (importación MT4/MT5)</title>
 <meta name="description" content="Solo con registrar un trade, tu tasa de acierto, pips y profit factor se calculan automáticamente. Tus resultados se convierten en una tarjeta para compartir. Un diario de trading que funciona por completo en tu móvil o tablet. Compatible con importación CSV de MT4/MT5.">
@@ -20,11 +21,6 @@
 <link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/">
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<!-- GitHub Pages (build heredado) no permite establecer cabeceras de respuesta, por lo que la CSP
-     se aplica mediante una etiqueta meta. Todo el CSS/JS está externalizado en lp-assets/, por lo
-     que script-src / style-src no necesitan 'unsafe-inline' (y no lo conceden). Los destinos de
-     conexión se limitan a dominios de Google Analytics. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -59,8 +55,9 @@
   "offers": {
     "@type": "Offer",
     "price": "0",
-    "priceCurrency": "JPY"
+    "priceCurrency": "USD"
   },
+  "featureList": "Registro de operaciones en solo tres toques, Tasa de acierto, pips y factor de beneficio automáticos, Calendario, Informes mensuales, Importación del historial de MT4/MT5, Tarjetas de estadísticas para compartir, Calculadora de tamaño de posición, Insignias de logros, Widgets, Bloqueo biométrico de la app, Análisis por hora, etiquetas, riesgo/beneficio y capital (PRO)",
   "description": "Un diario de trading de FX compatible con MT4/MT5. Solo con registrar tus trades, la tasa de acierto, los pips y el profit factor se calculan automáticamente, y puedes compartir tus resultados en redes sociales. Los registros se cifran y se guardan solo en el dispositivo (las imágenes de gráficos no se cifran), sin sincronización en la nube."
 }
 </script>
@@ -83,7 +80,7 @@
       "name": "¿Qué pasa con mis operaciones si elimino la app?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Tus operaciones solo se guardan en tu dispositivo, así que al eliminar la app también se eliminan y no podemos recuperarlas. Antes de cambiar de teléfono o eliminar la app, crea una copia en «Copia de seguridad de datos» en los Ajustes de la app. Los archivos de copia no están cifrados, así que guárdalos en un lugar seguro."
+        "text": "Tus operaciones solo se guardan en tu dispositivo, así que al eliminar la app también se eliminan y no podemos recuperarlas. Antes de cambiar de teléfono o eliminar la app, crea una copia en «Copia de seguridad de datos» en los Ajustes de la app. Puedes cifrar la copia con una contraseña (si la olvidas, no se podrá restaurar)."
       }
     },
     {
@@ -114,12 +111,8 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
-     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
-     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
 <script src="lp-assets/ga-init.js"></script>
 
-<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
 <meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
 <script src="lp-assets/boot.js"></script>
@@ -163,8 +156,6 @@
   </div>
 </header>
 
-<!-- Android 版はクローズドテスト中（配信国は App Store と同じ。EU・英国などは対象外）。Android の端末で開いたときだけ表示する
-     （boot.js が <html> に .android を付け、style.css で出し分ける）。 -->
 <div class="android-notice" id="android">
   <div class="wrap">
     <p class="android-notice-title">Buscamos testers para Android</p>
@@ -432,7 +423,7 @@
           <li>Metas diarias, semanales y anuales con marcas en el calendario</li>
           <li>Registro de mentalidad y notas multi-marco temporal</li>
           <li>3 imágenes de gráfico adjuntas</li>
-          <li>Sin marca de agua y lista de marcadores</li>
+          <li>Compartir sin marca de agua</li>
         </ul>
         <a class="btn btn-primary" data-cta="pro" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-es-pro&mt=8">Ver PRO</a>
         <p class="price-fineprint">Los precios se muestran en tu moneda local en el App Store y varían según el país o región. Los planes mensual y anual incluyen una prueba gratuita de 7 días (una sola vez por persona, en cualquiera de los dos); si cancelas durante la prueba, no se te cobrará nada. Al finalizar, se te cobrará automáticamente el plan elegido. Las suscripciones se renuevan automáticamente. Si cancelas al menos 24 horas antes de que termine el periodo en App Store, o antes de la próxima fecha de renovación en Google Play, no se te cobrará el siguiente periodo. Consulta nuestros <a href="terms-es.html">Términos de servicio</a> y nuestra <a href="privacy-policy-es.html">Política de Privacidad</a> para más detalles.</p>
@@ -454,7 +445,7 @@
       </details>
       <details class="faq-item">
         <summary>¿Qué pasa con mis operaciones si elimino la app?</summary>
-        <div class="faq-a">Tus operaciones solo se guardan en tu dispositivo, así que al eliminar la app también se eliminan y no podemos recuperarlas. Antes de cambiar de teléfono o eliminar la app, crea una copia en «Copia de seguridad de datos» en los Ajustes de la app. Los archivos de copia no están cifrados, así que guárdalos en un lugar seguro.</div>
+        <div class="faq-a">Tus operaciones solo se guardan en tu dispositivo, así que al eliminar la app también se eliminan y no podemos recuperarlas. Antes de cambiar de teléfono o eliminar la app, crea una copia en «Copia de seguridad de datos» en los Ajustes de la app. Puedes cifrar la copia con una contraseña (si la olvidas, no se podrá restaurar).</div>
       </details>
       <details class="faq-item">
         <summary>¿Puedo usarla con un bróker distinto de MT4/MT5?</summary>

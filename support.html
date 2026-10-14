@@ -2,12 +2,12 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>サポート — FXトレードログ</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -46,6 +46,9 @@
 
   <p><strong>Q. 返金を受けたいです。</strong><br>
      A. App Store は <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a> から、Google Play は「Google Play ストア」→「プロフィール」→「お支払いと定期購入」→「予算と履歴」から該当の購入を選んで申請できます。返金の可否は各ストアの規定によります。運営者が直接返金を行うことはできません。</p>
+
+  <p><strong>Q. バックアップのパスワードを忘れました。</strong><br>
+     A. パスワードで暗号化したバックアップは、そのパスワードが無いと復元できません。パスワードは端末にも運営者にも保存されないため、こちらで調べたり再発行したりすることもできません。元の端末が手元にあれば、新しいパスワードでバックアップを作り直してください。</p>
 
   <footer>© 2026 Daiki Ikebata</footer>
 </body>

@@ -2,12 +2,12 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Kebijakan Privasi — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -23,7 +23,7 @@
 </head>
 <body>
   <h1>Kebijakan Privasi</h1>
-  <p>Terakhir diperbarui: 2 Oktober 2026</p>
+  <p>Terakhir diperbarui: 14 Oktober 2026</p>
 
   <p>"FX Trade Journal" ("Aplikasi") membantu trader individu mencatat dan meninjau transaksi FX mereka.
      Kebijakan Privasi ini menjelaskan informasi apa yang ditangani Aplikasi dan bagaimana informasi tersebut digunakan.</p>
@@ -88,7 +88,7 @@
   <h2>4. Akses Pustaka Foto</h2>
   <p>Aplikasi meminta akses ke pustaka foto perangkat Anda agar Anda dapat melampirkan gambar chart ke catatan trade Anda.
      Gambar yang dipilih disalin ke penyimpanan Aplikasi sendiri. Aplikasi tidak memindai seluruh pustaka Anda
-     atau mengakses gambar apa pun selain yang Anda pilih.</p>
+     atau mengakses gambar apa pun selain yang Anda pilih. Saat Anda menyimpan kartu berbagi ke Foto, Aplikasi hanya menggunakan izin menambahkan ke pustaka foto (tidak membaca isinya).</p>
 
   <h2>5. Akses File Riwayat Trade (Impor CSV MT4/MT5)</h2>
   <p>Aplikasi meminta akses ke file yang Anda pilih untuk mengimpor file CSV riwayat trade MT4 atau MT5.
@@ -102,7 +102,7 @@
   <h2>7. Pengelolaan Data</h2>
   <p>Semua catatan trade dan pengaturan disimpan dalam database SQLite lokal di perangkat Anda.
      Menghapus instalasi Aplikasi akan menghapus semua data ini.
-     Untuk backup, Anda dapat mengekspor file CSV atau membuat file backup (format JSON) yang berisi catatan, pengaturan, dan gambar chart Anda. Anda sendiri yang memilih tempat menyimpan atau mengirimnya. File backup tidak dienkripsi, jadi perhatikan di mana Anda menyimpannya.</p>
+     Untuk backup, Anda dapat mengekspor file CSV atau membuat file backup yang berisi catatan, pengaturan, dan gambar chart Anda. Anda sendiri yang memilih tempat menyimpan atau mengirimnya. File backup dapat dienkripsi dengan kata sandi pilihan Anda (kata sandi tidak disimpan di perangkat maupun oleh kami, dan tidak dapat dipulihkan jika lupa). File yang dibuat tanpa kata sandi (format JSON) dan file CSV tidak dienkripsi, jadi perhatikan di mana Anda menyimpannya.</p>
   <p>Jika Cadangan iCloud diaktifkan di iOS, basis data yang berisi catatan trading Anda dan kunci enkripsi untuk mendekripsinya ikut disertakan dalam cadangan iCloud milik Apple, sehingga data Anda berpindah ke perangkat baru saat Anda berganti ponsel. Cadangan tersebut disimpan dan dienkripsi oleh Apple, dan kami tidak dapat mengakses isinya. Jika Cadangan iCloud dinonaktifkan, tidak ada yang disertakan. Di Android, data aplikasi dikecualikan dari cadangan sistem operasi sehingga tidak ikut berpindah saat Anda berganti perangkat atau memasang ulang. Dalam kedua kasus tersebut, menggunakan fitur pencadangan di dalam aplikasi adalah cara paling andal untuk mengamankan catatan Anda.</p>
   <p>Jangka waktu penyimpanan: catatan transaksi, gambar grafik, dan pengaturan di perangkat Anda tersimpan sampai Anda menghapusnya atau mencopot aplikasi. Kami tidak menghapusnya setelah jangka waktu tertentu dan tidak menyimpan salinannya. Dari data pada bagian 3, laporan kerusakan dan peristiwa penggunaan hanya disimpan selama diperlukan untuk perbaikan, paling lama 90 hari. Informasi pembelian dan penagihan disimpan, sesuai ketentuan masing-masing penyedia, selama diperlukan untuk memulihkan pembelian dan memenuhi kewajiban pembukuan. Alamat email yang dikumpulkan untuk pengujian dihapus saat pengujian berakhir, atau dalam 2 hari kerja sejak permintaan penghapusan.</p>
   <p>Jika Anda mengaktifkan Perlindungan Data Tingkat Lanjut untuk iCloud, cadangan Anda dilindungi dengan enkripsi ujung-ke-ujung yang bahkan Apple pun tidak dapat mendekripsinya. Pertimbangkan untuk mengaktifkannya di pengaturan perangkat jika ingin perlindungan yang lebih kuat.</p>

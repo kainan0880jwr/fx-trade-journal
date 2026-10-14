@@ -2,12 +2,12 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Support — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -54,6 +54,9 @@
 
   <p><strong>F: Wie beantrage ich eine Erstattung?</strong><br>
      A: Für den App Store über <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>. Für Google Play: Google Play Store → Profil → Zahlungen &amp; Abos → Budget &amp; Verlauf, dann den Kauf auswählen. Über Erstattungen entscheidet der jeweilige Store; wir können nicht direkt erstatten.</p>
+
+  <p><strong>F: Ich habe das Passwort meines Backups vergessen.</strong><br>
+     A: Ein mit Passwort verschlüsseltes Backup lässt sich ohne dieses Passwort nicht wiederherstellen. Das Passwort wird weder auf dem Gerät noch von uns gespeichert, daher können wir es weder nachschlagen noch zurücksetzen. Wenn du das ursprüngliche Gerät noch hast, erstelle ein neues Backup mit einem neuen Passwort.</p>
 
   <footer>© 2026 Daiki Ikebata</footer>
 </body>

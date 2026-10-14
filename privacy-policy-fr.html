@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Politique de confidentialité — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -23,7 +23,7 @@
 </head>
 <body>
   <h1>Politique de confidentialité</h1>
-  <p>Dernière mise à jour : 2 octobre 2026</p>
+  <p>Dernière mise à jour : 14 octobre 2026</p>
 
   <p>« FX Trade Journal » (l'« Application ») aide les traders particuliers à enregistrer et examiner
      leurs opérations de change. Cette politique de confidentialité explique quelles informations
@@ -90,7 +90,7 @@
   <p>L'Application demande l'accès à la photothèque de votre appareil afin que vous puissiez joindre des
      images de graphiques à vos enregistrements de trades. Les images sélectionnées sont copiées dans le
      stockage propre de l'Application. L'Application n'analyse pas l'intégralité de votre photothèque et
-     n'accède à aucune image autre que celles que vous sélectionnez.</p>
+     n'accède à aucune image autre que celles que vous sélectionnez. Lorsque vous enregistrez une carte de partage dans Photos, l'Application utilise uniquement l'autorisation d'ajout à la photothèque (elle n'en lit pas le contenu).</p>
 
   <h2>5. Accès aux fichiers d'historique de trading (import CSV MT4/MT5)</h2>
   <p>L'Application demande l'accès aux fichiers que vous choisissez afin d'importer des fichiers CSV
@@ -105,7 +105,7 @@
 
   <h2>7. Gestion des données</h2>
   <p>Tous les enregistrements de trades et réglages sont stockés dans une base de données SQLite locale
-     sur votre appareil. La désinstallation de l'Application supprime toutes ces données. Pour vos sauvegardes, vous pouvez exporter un fichier CSV ou créer un fichier de sauvegarde (au format JSON) contenant vos enregistrements, réglages et images de graphiques. Vous choisissez vous-même où il est enregistré ou envoyé. Les fichiers de sauvegarde ne sont pas chiffrés ; veillez donc à l'endroit où vous les conservez.</p>
+     sur votre appareil. La désinstallation de l'Application supprime toutes ces données. Pour vos sauvegardes, vous pouvez exporter un fichier CSV ou créer un fichier de sauvegarde contenant vos enregistrements, réglages et images de graphiques. Vous choisissez vous-même où il est enregistré ou envoyé. Les fichiers de sauvegarde peuvent être chiffrés avec un mot de passe de votre choix (le mot de passe n'est conservé ni sur l'appareil ni par nous, et ne peut pas être récupéré en cas d'oubli). Les fichiers créés sans mot de passe (au format JSON) et les fichiers CSV ne sont pas chiffrés ; veillez donc à l'endroit où vous les conservez.</p>
   <p>Si la sauvegarde iCloud est activée sur iOS, la base de données contenant vos enregistrements de trading ainsi que la clé de chiffrement servant à la déchiffrer sont incluses dans la sauvegarde iCloud d'Apple, ce qui permet de transférer vos données lors d'un changement d'appareil. La sauvegarde est stockée et chiffrée par Apple, et nous n'avons pas accès à son contenu. Si la sauvegarde iCloud est désactivée, rien n'est inclus. Sur Android, les données de l'application sont exclues de la sauvegarde du système d'exploitation et ne sont donc pas transférées lors d'un changement d'appareil ou d'une réinstallation. Dans tous les cas, la fonction de sauvegarde intégrée à l'application reste le moyen le plus fiable de protéger vos enregistrements.</p>
   <p>Durée de conservation : les enregistrements de trades, les images de graphiques et les réglages présents sur votre appareil y restent jusqu'à ce que vous les supprimiez ou désinstalliez l'application. Nous ne les supprimons pas à l'expiration d'un délai et n'en conservons aucune copie. Parmi les données citées à la section 3, les rapports de plantage et les événements d'usage ne sont conservés que le temps nécessaire à la correction des anomalies, et au maximum 90 jours. Les informations d'achat et de facturation sont conservées, selon les conditions de chaque prestataire, le temps nécessaire à la restauration des achats et au respect des obligations comptables. Les adresses e-mail recueillies pour la phase de test sont supprimées à la fin de celle-ci, ou dans les 2 jours ouvrés suivant une demande de suppression.</p>
   <p>Si vous activez la protection avancée des données pour iCloud, votre sauvegarde est protégée par un chiffrement de bout en bout qu'Apple elle-même ne peut pas déchiffrer. Envisagez de l'activer dans les réglages de votre appareil pour mieux protéger le contenu de la sauvegarde.</p>

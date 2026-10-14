@@ -2,12 +2,12 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Política de Privacidade — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -23,7 +23,7 @@
 </head>
 <body>
   <h1>Política de Privacidade</h1>
-  <p>Última atualização: 2 de outubro de 2026</p>
+  <p>Última atualização: 14 de outubro de 2026</p>
 
   <p>O "FX Trade Journal" (o "Aplicativo") ajuda traders individuais a registrar e revisar suas operações de FX.
      Esta Política de Privacidade explica quais informações o Aplicativo processa e como são usadas.</p>
@@ -88,7 +88,7 @@
   <h2>4. Acesso à Biblioteca de Fotos</h2>
   <p>O Aplicativo solicita acesso à biblioteca de fotos do seu dispositivo para que você possa anexar imagens de
      gráficos aos seus registros de operações. As imagens selecionadas são copiadas para o armazenamento próprio do
-     Aplicativo. O Aplicativo não verifica toda a sua biblioteca nem acessa nenhuma imagem além das que você selecionar.</p>
+     Aplicativo. O Aplicativo não verifica toda a sua biblioteca nem acessa nenhuma imagem além das que você selecionar. Ao salvar um cartão de compartilhamento em Fotos, o Aplicativo usa apenas a permissão para adicionar à biblioteca (não lê o conteúdo dela).</p>
 
   <h2>5. Acesso a Arquivos de Histórico de Operações (Importação de CSV do MT4/MT5)</h2>
   <p>O Aplicativo solicita acesso aos arquivos que você escolher para importar arquivos CSV de histórico de operações
@@ -102,7 +102,7 @@
   <h2>7. Gerenciamento de Dados</h2>
   <p>Todos os registros de operações e configurações são armazenados em um banco de dados SQLite local no seu
      dispositivo. Desinstalar o Aplicativo exclui todos esses dados.
-     Para backup, você pode exportar um arquivo CSV ou criar um arquivo de backup (formato JSON) com seus registros, configurações e imagens de gráficos. Você escolhe onde ele é salvo ou para onde é enviado. Os arquivos de backup não são criptografados, portanto tenha cuidado com o local onde os guarda.</p>
+     Para backup, você pode exportar um arquivo CSV ou criar um arquivo de backup com seus registros, configurações e imagens de gráficos. Você escolhe onde ele é salvo ou para onde é enviado. Os backups podem ser criptografados com uma senha escolhida por você (a senha não é armazenada no aparelho nem por nós, e não pode ser recuperada se for esquecida). Os arquivos criados sem senha (formato JSON) e os arquivos CSV não são criptografados, portanto tenha cuidado com o local onde os guarda.</p>
   <p>Se o Backup do iCloud estiver ativado no iOS, o banco de dados com seus registros de operações e a chave de criptografia usada para descriptografá-lo são incluídos no backup do iCloud da Apple, de modo que seus dados são transferidos para o novo aparelho quando você troca de celular. O backup é armazenado e criptografado pela Apple, e não temos acesso ao seu conteúdo. Se o Backup do iCloud estiver desativado, nada é incluído. No Android, os dados do aplicativo são excluídos do backup do sistema operacional e, portanto, não são transferidos ao trocar de aparelho ou reinstalar. Em ambos os casos, usar o recurso de backup do próprio aplicativo é a maneira mais confiável de proteger seus registros.</p>
   <p>Prazo de retenção: os registros de operações, as imagens de gráficos e as configurações no seu aparelho permanecem até que você os apague ou desinstale o aplicativo. Não os excluímos após um prazo nem guardamos cópias. Entre os dados citados na seção 3, os relatórios de falha e os eventos de uso são mantidos apenas pelo tempo necessário para corrigir problemas, no máximo 90 dias. As informações de compra e cobrança são mantidas, conforme os termos de cada fornecedor, pelo tempo necessário para restaurar compras e cumprir obrigações contábeis. Os e-mails coletados para os testes são excluídos ao final destes, ou em até 2 dias úteis após um pedido de exclusão.</p>
   <p>Se você ativar a Proteção Avançada de Dados do iCloud, seu backup fica protegido com criptografia de ponta a ponta que nem a Apple consegue descriptografar. Considere ativá-la nas configurações do aparelho se quiser proteger melhor o conteúdo do backup.</p>

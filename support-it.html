@@ -2,12 +2,12 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Supporto — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -53,6 +53,9 @@
 
   <p><strong>D. Come richiedo un rimborso?</strong><br>
      R. Per l'App Store vai su <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>. Per Google Play: Google Play Store → Profilo → Pagamenti e abbonamenti → Budget e cronologia, poi scegli l'acquisto. I rimborsi dipendono dalle regole di ciascuno store; non possiamo rimborsare direttamente.</p>
+
+  <p><strong>D. Ho dimenticato la password del backup.</strong><br>
+     R. Un backup crittografato non può essere ripristinato senza la sua password. La password non viene salvata né sul dispositivo né da noi, quindi non possiamo recuperarla né reimpostarla. Se hai ancora il dispositivo originale, crea un nuovo backup con una nuova password.</p>
 
   <footer>© 2026 Daiki Ikebata</footer>
 </body>

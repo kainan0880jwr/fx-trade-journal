@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FX Trade Journal — Forex Trading Journal App with MT4/MT5 Import</title>
 <meta name="description" content="Just log your trades and your win rate, pips, and profit factor are tracked automatically. Turn your results into a shareable card. A trading journal app that works entirely on your phone or tablet. MT4/MT5 CSV import supported.">
@@ -20,11 +21,6 @@
 <link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/">
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<!-- GitHub Pages (legacy build) can't set response headers, so CSP is applied via a meta tag.
-     All CSS/JS is externalized under lp-assets/, so script-src / style-src don't
-     need 'unsafe-inline' (and don't grant it). Connection targets are restricted
-     to Google Analytics domains only. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -59,8 +55,9 @@
   "offers": {
     "@type": "Offer",
     "price": "0",
-    "priceCurrency": "JPY"
+    "priceCurrency": "USD"
   },
+  "featureList": "Trade logging in as few as three taps, Automatic win rate, pips and profit factor, Calendar, Monthly reports, MT4/MT5 trade history import, Shareable stats cards, Position size calculator, Achievement badges, Widgets, Biometric App Lock, Time-of-day, tag, risk-reward and equity analysis (PRO)",
   "description": "A trading journal app for FX with MT4/MT5 support. Just log your trades and win rate, pips, and profit factor are tallied automatically, and you can share your results on social media. Trade records are encrypted and stored on-device only (chart images are not encrypted), with no cloud sync."
 }
 </script>
@@ -83,7 +80,7 @@
       "name": "What happens to my trades if I delete the app?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Your trades are stored only on your device, so deleting the app deletes them too, and we cannot restore them. Before changing phones or deleting the app, create a backup under \"Data Backup\" in the app's Settings. Backup files are not encrypted, so keep them somewhere safe."
+        "text": "Your trades are stored only on your device, so deleting the app deletes them too, and we cannot restore them. Before changing phones or deleting the app, create a backup under \"Data Backup\" in the app's Settings. You can encrypt the backup with a password (if you forget it, the backup cannot be restored)."
       }
     },
     {
@@ -114,12 +111,8 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
-     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
-     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
 <script src="lp-assets/ga-init.js"></script>
 
-<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
 <meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
 <script src="lp-assets/boot.js"></script>
@@ -164,8 +157,6 @@
   </div>
 </header>
 
-<!-- Android 版はクローズドテスト中（配信国は App Store と同じ。EU・英国などは対象外）。Android の端末で開いたときだけ表示する
-     （boot.js が <html> に .android を付け、style.css で出し分ける）。 -->
 <div class="android-notice" id="android">
   <div class="wrap">
     <p class="android-notice-title">We are looking for Android testers</p>
@@ -433,7 +424,7 @@
           <li>Daily, weekly and yearly goals with calendar achievement marks</li>
           <li>Mindset log &amp; multi-timeframe notes</li>
           <li>3 chart image attachments</li>
-          <li>No watermark &amp; bookmark list</li>
+          <li>Watermark-free sharing</li>
         </ul>
         <a class="btn btn-primary" data-cta="pro" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-en-pro&mt=8">See PRO</a>
         <p class="price-fineprint">Prices are shown in your local currency on the App Store and vary by country/region. Both the monthly and annual plans start with a 7-day free trial (one trial per person, on either plan); cancel during the trial and you will not be charged. Once the trial ends, you will automatically be charged for the plan you chose. Subscriptions renew automatically. Cancel at least 24 hours before the period ends on the App Store, or before the next renewal date on Google Play, and you will not be charged for the next period. See our <a href="terms-en.html">Terms of Use</a> and <a href="privacy-policy-en.html">Privacy Policy</a> for details.</p>
@@ -455,7 +446,7 @@
       </details>
       <details class="faq-item">
         <summary>What happens to my trades if I delete the app?</summary>
-        <div class="faq-a">Your trades are stored only on your device, so deleting the app deletes them too, and we cannot restore them. Before changing phones or deleting the app, create a backup under "Data Backup" in the app's Settings. Backup files are not encrypted, so keep them somewhere safe.</div>
+        <div class="faq-a">Your trades are stored only on your device, so deleting the app deletes them too, and we cannot restore them. Before changing phones or deleting the app, create a backup under "Data Backup" in the app's Settings. You can encrypt the backup with a password (if you forget it, the backup cannot be restored).</div>
       </details>
       <details class="faq-item">
         <summary>Can I use it with a broker other than MT4/MT5?</summary>

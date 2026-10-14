@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Support — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -52,6 +52,9 @@
 
   <p><strong>Q. How do I request a refund?</strong><br>
      A. For the App Store, go to <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>. For Google Play, open the Google Play Store → Profile → Payments &amp; subscriptions → Budget &amp; history, then choose the purchase. Refunds are decided under each store's policy; we cannot issue refunds directly.</p>
+
+  <p><strong>Q. I forgot my backup password.</strong><br>
+     A. A backup encrypted with a password cannot be restored without that password. The password is not stored on the device or by us, so we cannot look it up or reset it. If you still have the original device, create a new backup with a new password.</p>
 
   <footer>© 2026 Daiki Ikebata</footer>
 </body>

@@ -2,12 +2,12 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Chính Sách Bảo Mật — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -23,7 +23,7 @@
 </head>
 <body>
   <h1>Chính Sách Bảo Mật</h1>
-  <p>Cập nhật lần cuối: 2 tháng 10, 2026</p>
+  <p>Cập nhật lần cuối: 14 tháng 10, 2026</p>
 
   <p>"FX Trade Journal" ("Ứng dụng") giúp các trader cá nhân ghi lại và xem xét các giao dịch FX của họ.
      Chính Sách Bảo Mật này giải thích thông tin nào Ứng dụng xử lý và cách sử dụng thông tin đó.</p>
@@ -88,7 +88,7 @@
   <h2>4. Truy Cập Thư Viện Ảnh</h2>
   <p>Ứng dụng yêu cầu quyền truy cập vào thư viện ảnh trên thiết bị của bạn để bạn có thể đính kèm ảnh biểu đồ vào
      bản ghi giao dịch của mình. Ảnh được chọn sẽ được sao chép vào bộ nhớ riêng của Ứng dụng. Ứng dụng không quét
-     toàn bộ thư viện của bạn hoặc truy cập bất kỳ ảnh nào khác ngoài những ảnh bạn chọn.</p>
+     toàn bộ thư viện của bạn hoặc truy cập bất kỳ ảnh nào khác ngoài những ảnh bạn chọn. Khi bạn lưu thẻ chia sẻ vào Ảnh, Ứng dụng chỉ dùng quyền thêm vào thư viện ảnh (không đọc nội dung thư viện).</p>
 
   <h2>5. Truy Cập File Lịch Sử Giao Dịch (Nhập CSV MT4/MT5)</h2>
   <p>Ứng dụng yêu cầu quyền truy cập vào các file bạn chọn để nhập file CSV lịch sử giao dịch MT4 hoặc MT5.
@@ -102,7 +102,7 @@
   <h2>7. Quản Lý Dữ Liệu</h2>
   <p>Tất cả bản ghi giao dịch và cài đặt được lưu trong cơ sở dữ liệu SQLite cục bộ trên thiết bị của bạn.
      Gỡ cài đặt Ứng dụng sẽ xóa tất cả dữ liệu này.
-     Để sao lưu, bạn có thể xuất tệp CSV hoặc tạo tệp sao lưu (định dạng JSON) chứa bản ghi, cài đặt và hình ảnh biểu đồ của mình. Bạn tự chọn nơi lưu hoặc nơi gửi. Tệp sao lưu không được mã hóa, vì vậy hãy lưu ý nơi bạn cất giữ chúng.</p>
+     Để sao lưu, bạn có thể xuất tệp CSV hoặc tạo tệp sao lưu chứa bản ghi, cài đặt và hình ảnh biểu đồ của mình. Bạn tự chọn nơi lưu hoặc nơi gửi. Tệp sao lưu có thể được mã hóa bằng mật khẩu do bạn đặt (mật khẩu không được lưu trên thiết bị hay bởi chúng tôi, và không thể khôi phục nếu quên). Tệp tạo không có mật khẩu (định dạng JSON) và tệp CSV không được mã hóa, vì vậy hãy lưu ý nơi bạn cất giữ chúng.</p>
   <p>Nếu bạn bật Sao lưu iCloud trên iOS, cơ sở dữ liệu chứa nhật ký giao dịch và khóa mã hóa dùng để giải mã nó sẽ nằm trong bản sao lưu iCloud của Apple, nhờ đó dữ liệu được chuyển sang máy mới khi bạn đổi thiết bị. Bản sao lưu do Apple lưu trữ và mã hóa; chúng tôi không thể truy cập nội dung của nó. Nếu bạn tắt Sao lưu iCloud thì không có gì được đưa vào. Trên Android, dữ liệu của ứng dụng được loại khỏi bản sao lưu của hệ điều hành nên sẽ không được chuyển sang khi bạn đổi máy hoặc cài đặt lại. Trong cả hai trường hợp, dùng tính năng sao lưu có sẵn trong ứng dụng là cách đáng tin cậy nhất để giữ an toàn cho dữ liệu của bạn.</p>
   <p>Thời hạn lưu giữ: nhật ký giao dịch, ảnh biểu đồ và thiết lập trên thiết bị của bạn được giữ cho đến khi bạn xóa chúng hoặc gỡ ứng dụng. Chúng tôi không tự động xóa sau một thời hạn nào và không giữ bản sao. Trong số dữ liệu nêu ở mục 3, báo cáo sự cố và sự kiện sử dụng chỉ được giữ trong thời gian cần thiết để khắc phục lỗi, tối đa 90 ngày. Thông tin mua hàng và thanh toán được giữ theo điều khoản của từng nhà cung cấp, trong thời gian cần thiết để khôi phục giao dịch mua và đáp ứng nghĩa vụ lưu trữ kế toán. Địa chỉ email thu thập cho việc thử nghiệm sẽ bị xóa khi kết thúc thử nghiệm, hoặc trong vòng 2 ngày làm việc kể từ khi có yêu cầu xóa.</p>
   <p>Nếu bạn bật Bảo vệ Dữ liệu Nâng cao cho iCloud, bản sao lưu sẽ được bảo vệ bằng mã hóa đầu cuối mà ngay cả Apple cũng không thể giải mã. Hãy cân nhắc bật tính năng này trong cài đặt thiết bị nếu muốn bảo vệ mạnh hơn nội dung của bản sao lưu.</p>

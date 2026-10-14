@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-site-verification" content="IavBgMy1ngc5AR4bJVFGfvv6jiOWJNefcgi2mCF9Tp8">
 <title>FXトレードログ｜FXトレード日記・記録アプリ（MT4/MT5対応）</title>
@@ -21,11 +22,6 @@
 <link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/">
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<!-- GitHub Pages(legacy build)はレスポンスヘッダーを制御できないため、metaタグでCSPを付与する。
-     CSS/JSはすべてlp-assets配下の外部ファイルに切り出し済みのため、
-     script-src / style-src とも 'unsafe-inline' は不要（付与していない）。
-     接続先・埋め込み元はGoogleアナリティクス関連ドメインのみに限定している。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -62,6 +58,7 @@
     "price": "0",
     "priceCurrency": "JPY"
   },
+  "featureList": "トレード記録（最短3タップ）, 勝率・pips・プロフィットファクターの自動集計, カレンダー, 月次レポート, MT4/MT5の取引履歴の取り込み, 成績カードのシェア, ロット計算機, 実績バッジ, ウィジェット, 生体認証のアプリロック, 時間帯・曜日・タグ・RR・エクイティの分析（PRO）",
   "description": "MT4/MT5対応のFXトレード日記アプリ。記録するだけで勝率・pips・プロフィットファクターを自動集計し、成績をSNSシェアできます。トレード記録は端末内に暗号化して保存し（チャート画像を除く）、クラウド同期は行いません。"
 }
 </script>
@@ -84,7 +81,7 @@
       "name": "アプリを削除すると記録はどうなりますか？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "記録はお使いの端末の中にだけ保存されているため、アプリを削除すると記録も削除され、運営者の側から元に戻すことはできません。機種変更の前やアプリを削除する前に、アプリの設定にある「データバックアップ」からバックアップを作成してください。バックアップファイルは暗号化されないため、保管場所にご注意ください。"
+        "text": "記録はお使いの端末の中にだけ保存されているため、アプリを削除すると記録も削除され、運営者の側から元に戻すことはできません。機種変更の前やアプリを削除する前に、アプリの設定にある「データバックアップ」からバックアップを作成してください。バックアップはパスワードで暗号化して作れます（パスワードを忘れると復元できません）。"
       }
     },
     {
@@ -115,12 +112,8 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) を呼ばず、
-     gtag.js の読み込みもしない（consent.js が同意後に <script> を動的に作る）。
-     これにより「同意しない」場合はCookieなしの計測ピングも含めて一切送信されない。 -->
 <script src="lp-assets/ga-init.js"></script>
 
-<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
 <meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
 <script src="lp-assets/boot.js"></script>
@@ -165,8 +158,6 @@
   </div>
 </header>
 
-<!-- Android 版はクローズドテスト中（配信国は App Store と同じ。EU・英国などは対象外）。Android の端末で開いたときだけ表示する
-     （boot.js が <html> に .android を付け、style.css で出し分ける）。 -->
 <div class="android-notice" id="android">
   <div class="wrap">
     <p class="android-notice-title">Android版のテスターを募集しています</p>
@@ -434,7 +425,7 @@
           <li>日・週・年の目標設定とカレンダーの達成マーク</li>
           <li>メンタル記録・複数時間足のメモ</li>
           <li>チャート画像3枚添付</li>
-          <li>ウォーターマーク除去・ブックマーク一覧</li>
+          <li>シェア画像のウォーターマーク除去</li>
         </ul>
         <a class="btn btn-primary" data-cta="pro" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-ja-pro&mt=8">PROを見る</a>
         <p class="price-fineprint">価格は日本（¥・税込表示）の場合です。国・地域により異なります。月額・年額プランとも、初回7日間の無料期間中に解約すれば料金は発生しません（無料期間はいずれか一方のプランで1回限り）。無料期間が終わると、選んだプラン（月額¥500／年額¥3,980）が自動で課金されます。サブスクリプションは自動更新されます。App Store では期間終了の24時間前まで、Google Play では次回更新日の前までに解約すれば、次の期間の料金はかかりません。詳しくは<a href="terms.html">利用規約</a>・<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
@@ -456,7 +447,7 @@
       </details>
       <details class="faq-item">
         <summary>アプリを削除すると記録はどうなりますか？</summary>
-        <div class="faq-a">記録はお使いの端末の中にだけ保存されているため、アプリを削除すると記録も削除され、運営者の側から元に戻すことはできません。機種変更の前やアプリを削除する前に、アプリの設定にある「データバックアップ」からバックアップを作成してください。バックアップファイルは暗号化されないため、保管場所にご注意ください。</div>
+        <div class="faq-a">記録はお使いの端末の中にだけ保存されているため、アプリを削除すると記録も削除され、運営者の側から元に戻すことはできません。機種変更の前やアプリを削除する前に、アプリの設定にある「データバックアップ」からバックアップを作成してください。バックアップはパスワードで暗号化して作れます（パスワードを忘れると復元できません）。</div>
       </details>
       <details class="faq-item">
         <summary>MT4/MT5以外の口座でも使えますか？</summary>

@@ -53,8 +53,10 @@
   // 撤回リンクはフッターにあり、このスクリプトの実行時点ではまだ DOM に無い。
   // 読み込み順に依存しないよう document 側で拾う。
   document.addEventListener('click', function(e){
-    var t = e.target;
-    if (!t || t.id !== 'consentReset') return;
+    // closest で判定する。リンクの中に span やアイコンを入れると e.target が子要素になり、
+    // id の一致だけでは撤回が黙って効かなくなる
+    var t = e.target && e.target.closest ? e.target.closest('#consentReset') : null;
+    if (!t) return;
     e.preventDefault();
     try { localStorage.removeItem(KEY); } catch(err) {}
     clearGaCookies();

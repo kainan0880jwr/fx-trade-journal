@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FX Trade Journal — Forex İşlem Günlüğü (MT4/MT5 içe aktarma)</title>
 <meta name="description" content="Sadece işlemlerinizi kaydedin; kazanma oranınız, pip'leriniz ve kâr faktörünüz otomatik olarak hesaplansın. Sonuçlarınızı paylaşılabilir bir karta dönüştürün. Tamamen telefonunuzda veya tabletinizde çalışan bir işlem günlüğü uygulaması. MT4/MT5 CSV içe aktarma destekli.">
@@ -20,11 +21,6 @@
 <link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/">
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<!-- GitHub Pages (legacy build) can't set response headers, so CSP is applied via a meta tag.
-     All CSS/JS is externalized under lp-assets/, so script-src / style-src don't
-     need 'unsafe-inline' (and don't grant it). Connection targets are restricted
-     to Google Analytics domains only. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -59,8 +55,9 @@
   "offers": {
     "@type": "Offer",
     "price": "0",
-    "priceCurrency": "JPY"
+    "priceCurrency": "TRY"
   },
+  "featureList": "Üç dokunuşta işlem kaydı, Otomatik kazanma oranı, pip ve kâr faktörü, Takvim, Aylık raporlar, MT4/MT5 işlem geçmişi içe aktarma, Paylaşılabilir istatistik kartları, Pozisyon büyüklüğü hesaplayıcı, Başarı rozetleri, Widget’lar, Biyometrik uygulama kilidi, Saat, etiket, risk-ödül ve bakiye analizi (PRO)",
   "description": "MT4/MT5 destekli bir FX işlem günlüğü uygulaması. Sadece işlemlerinizi kaydedin; kazanma oranı, pip ve kâr faktörü otomatik olarak hesaplanır ve sonuçlarınızı sosyal medyada paylaşabilirsiniz. İşlem kayıtları şifrelenir ve yalnızca cihazda saklanır (grafik görselleri şifrelenmez), bulut senkronizasyonu yoktur."
 }
 </script>
@@ -83,7 +80,7 @@
       "name": "Uygulamayı silersem işlemlerime ne olur?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "İşlemleriniz yalnızca cihazınızda saklanır; uygulamayı silerseniz onlar da silinir ve biz geri getiremeyiz. Telefon değiştirmeden veya uygulamayı silmeden önce, uygulamanın Ayarlar'ındaki \"Veri Yedekleme\" bölümünden yedek oluşturun. Yedek dosyaları şifrelenmez; güvenli bir yerde saklayın."
+        "text": "İşlemleriniz yalnızca cihazınızda saklanır; uygulamayı silerseniz onlar da silinir ve biz geri getiremeyiz. Telefon değiştirmeden veya uygulamayı silmeden önce, uygulamanın Ayarlar'ındaki \"Veri Yedekleme\" bölümünden yedek oluşturun. Yedeği bir şifreyle şifreleyebilirsiniz (şifreyi unutursanız yedek geri yüklenemez)."
       }
     },
     {
@@ -114,12 +111,8 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
-     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
-     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
 <script src="lp-assets/ga-init.js"></script>
 
-<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
 <meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
 <script src="lp-assets/boot.js"></script>
@@ -163,8 +156,6 @@
   </div>
 </header>
 
-<!-- Android 版はクローズドテスト中（配信国は App Store と同じ。EU・英国などは対象外）。Android の端末で開いたときだけ表示する
-     （boot.js が <html> に .android を付け、style.css で出し分ける）。 -->
 <div class="android-notice" id="android">
   <div class="wrap">
     <p class="android-notice-title">Android sürümü için test kullanıcıları arıyoruz</p>
@@ -432,7 +423,7 @@
           <li>Takvimde başarı işaretleriyle günlük, haftalık ve yıllık hedefler</li>
           <li>Zihniyet günlüğü ve çoklu zaman dilimi notları</li>
           <li>3 grafik görseli eki</li>
-          <li>Filigransız paylaşım ve yer imi listesi</li>
+          <li>Filigransız paylaşım</li>
         </ul>
         <a class="btn btn-primary" data-cta="pro" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-tr-pro&mt=8">PRO'u inceleyin</a>
         <p class="price-fineprint">Fiyatlar App Store'da yerel para biriminizde gösterilir ve ülkeye/bölgeye göre değişir. Aylık ve yıllık planlar 7 günlük ücretsiz denemeyle başlar (kişi başı, planlardan birinde bir kez); deneme süresinde iptal ederseniz ücretlendirilmezsiniz. Deneme sona erdiğinde seçtiğiniz plan için otomatik olarak ücretlendirilirsiniz. Abonelikler otomatik olarak yenilenir. App Store'da dönemin bitiminden en az 24 saat önce veya Google Play'de bir sonraki yenileme tarihinden önce iptal ederseniz sonraki dönem için ücret alınmaz. Ayrıntılar için <a href="terms-tr.html">Kullanım Koşulları</a> ve <a href="privacy-policy-tr.html">Gizlilik Politikası</a>'na bakın.</p>
@@ -454,7 +445,7 @@
       </details>
       <details class="faq-item">
         <summary>Uygulamayı silersem işlemlerime ne olur?</summary>
-        <div class="faq-a">İşlemleriniz yalnızca cihazınızda saklanır; uygulamayı silerseniz onlar da silinir ve biz geri getiremeyiz. Telefon değiştirmeden veya uygulamayı silmeden önce, uygulamanın Ayarlar'ındaki "Veri Yedekleme" bölümünden yedek oluşturun. Yedek dosyaları şifrelenmez; güvenli bir yerde saklayın.</div>
+        <div class="faq-a">İşlemleriniz yalnızca cihazınızda saklanır; uygulamayı silerseniz onlar da silinir ve biz geri getiremeyiz. Telefon değiştirmeden veya uygulamayı silmeden önce, uygulamanın Ayarlar'ındaki "Veri Yedekleme" bölümünden yedek oluşturun. Yedeği bir şifreyle şifreleyebilirsiniz (şifreyi unutursanız yedek geri yüklenemez).</div>
       </details>
       <details class="faq-item">
         <summary>MT4/MT5 dışında bir brokerle kullanabilir miyim?</summary>

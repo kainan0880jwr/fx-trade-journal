@@ -2,12 +2,12 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>सहायता — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -52,6 +52,9 @@
 
   <p><strong>प्र. रिफ़ंड कैसे माँगें?</strong><br>
      उ. App Store के लिए <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a> पर जाएँ। Google Play के लिए: Google Play Store → प्रोफ़ाइल → पेमेंट और सब्सक्रिप्शन → बजट और इतिहास, फिर खरीदारी चुनें। रिफ़ंड हर स्टोर की नीति के अनुसार तय होता है; हम सीधे रिफ़ंड नहीं कर सकते।</p>
+
+  <p><strong>प्र. मैं बैकअप का पासवर्ड भूल गया।</strong><br>
+     उ. पासवर्ड से एन्क्रिप्ट किया गया बैकअप उस पासवर्ड के बिना रीस्टोर नहीं हो सकता। पासवर्ड न डिवाइस पर और न हमारे पास सेव होता है, इसलिए हम उसे न खोज सकते हैं न रीसेट कर सकते हैं। अगर पुराना डिवाइस अभी आपके पास है, तो नए पासवर्ड से नया बैकअप बनाएं।</p>
 
   <footer>© 2026 Daiki Ikebata</footer>
 </body>

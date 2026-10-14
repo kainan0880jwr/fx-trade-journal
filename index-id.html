@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FX Trade Journal — Aplikasi Jurnal Trading Forex (impor MT4/MT5)</title>
 <meta name="description" content="Cukup catat transaksi Anda, win rate, pips, dan profit factor langsung terlacak otomatis. Ubah hasil Anda menjadi kartu yang bisa dibagikan. Aplikasi jurnal trading yang berjalan sepenuhnya di ponsel atau tablet Anda. Mendukung impor CSV MT4/MT5.">
@@ -20,11 +21,6 @@
 <link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/">
 <meta name="theme-color" content="#05070C">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<!-- GitHub Pages (build lama) tidak bisa mengatur header respons, sehingga CSP diterapkan
-     lewat tag meta. Semua CSS/JS dieksternalisasi di lp-assets/, jadi script-src / style-src
-     tidak memerlukan 'unsafe-inline' (dan tidak memberikannya). Target koneksi dibatasi
-     hanya ke domain Google Analytics. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -59,8 +55,9 @@
   "offers": {
     "@type": "Offer",
     "price": "0",
-    "priceCurrency": "JPY"
+    "priceCurrency": "IDR"
   },
+  "featureList": "Catat trade hanya dengan tiga ketukan, Win rate, pips, dan profit factor otomatis, Kalender, Laporan bulanan, Impor riwayat trading MT4/MT5, Kartu statistik untuk dibagikan, Kalkulator ukuran posisi, Lencana pencapaian, Widget, Kunci aplikasi biometrik, Analisis per jam, tag, risk-reward, dan ekuitas (PRO)",
   "description": "Aplikasi jurnal trading untuk FX dengan dukungan MT4/MT5. Cukup catat transaksi Anda, win rate, pips, dan profit factor dihitung otomatis, dan Anda bisa membagikan hasil di media sosial. Catatan transaksi dienkripsi dan disimpan hanya di perangkat (gambar chart tidak dienkripsi), tanpa sinkronisasi cloud."
 }
 </script>
@@ -83,7 +80,7 @@
       "name": "Apa yang terjadi pada catatan trading saya jika aplikasi dihapus?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Catatan trading Anda hanya tersimpan di perangkat, jadi menghapus aplikasi juga menghapusnya dan kami tidak dapat memulihkannya. Sebelum ganti ponsel atau menghapus aplikasi, buat backup di \"Backup Data\" pada Pengaturan aplikasi. File backup tidak dienkripsi, jadi simpan di tempat yang aman."
+        "text": "Catatan trading Anda hanya tersimpan di perangkat, jadi menghapus aplikasi juga menghapusnya dan kami tidak dapat memulihkannya. Sebelum ganti ponsel atau menghapus aplikasi, buat backup di \"Backup Data\" pada Pengaturan aplikasi. Cadangan dapat dienkripsi dengan kata sandi (jika lupa, cadangan tidak dapat dipulihkan)."
       }
     },
     {
@@ -114,12 +111,8 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
-     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
-     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
 <script src="lp-assets/ga-init.js"></script>
 
-<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
 <meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
 
 <script src="lp-assets/boot.js"></script>
@@ -163,8 +156,6 @@
   </div>
 </header>
 
-<!-- Android 版はクローズドテスト中（配信国は App Store と同じ。EU・英国などは対象外）。Android の端末で開いたときだけ表示する
-     （boot.js が <html> に .android を付け、style.css で出し分ける）。 -->
 <div class="android-notice" id="android">
   <div class="wrap">
     <p class="android-notice-title">Kami mencari penguji versi Android</p>
@@ -432,7 +423,7 @@
           <li>Target harian, mingguan, dan tahunan dengan tanda pencapaian di kalender</li>
           <li>Catatan mindset &amp; catatan multi-timeframe</li>
           <li>3 lampiran gambar chart</li>
-          <li>Tanpa watermark &amp; daftar bookmark</li>
+          <li>Berbagi tanpa watermark</li>
         </ul>
         <a class="btn btn-primary" data-cta="pro" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=lp-id-pro&mt=8">Lihat PRO</a>
         <p class="price-fineprint">Harga ditampilkan dalam mata uang lokal Anda di App Store dan berbeda tergantung negara/wilayah. Paket bulanan dan tahunan diawali uji coba gratis 7 hari (sekali per orang, pada salah satu paket); jika Anda membatalkan selama uji coba, Anda tidak akan dikenakan biaya. Setelah uji coba berakhir, Anda akan otomatis dikenakan biaya untuk paket yang dipilih. Langganan diperpanjang otomatis. Jika Anda membatalkan paling lambat 24 jam sebelum periode berakhir di App Store, atau sebelum tanggal perpanjangan berikutnya di Google Play, periode berikutnya tidak akan ditagih. Lihat <a href="terms-id.html">Ketentuan Layanan</a> dan <a href="privacy-policy-id.html">Kebijakan Privasi</a> kami untuk detailnya.</p>
@@ -454,7 +445,7 @@
       </details>
       <details class="faq-item">
         <summary>Apa yang terjadi pada catatan trading saya jika aplikasi dihapus?</summary>
-        <div class="faq-a">Catatan trading Anda hanya tersimpan di perangkat, jadi menghapus aplikasi juga menghapusnya dan kami tidak dapat memulihkannya. Sebelum ganti ponsel atau menghapus aplikasi, buat backup di "Backup Data" pada Pengaturan aplikasi. File backup tidak dienkripsi, jadi simpan di tempat yang aman.</div>
+        <div class="faq-a">Catatan trading Anda hanya tersimpan di perangkat, jadi menghapus aplikasi juga menghapusnya dan kami tidak dapat memulihkannya. Sebelum ganti ponsel atau menghapus aplikasi, buat backup di "Backup Data" pada Pengaturan aplikasi. Cadangan dapat dienkripsi dengan kata sandi (jika lupa, cadangan tidak dapat dipulihkan).</div>
       </details>
       <details class="faq-item">
         <summary>Bisakah saya menggunakannya dengan broker selain MT4/MT5?</summary>

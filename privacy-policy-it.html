@@ -2,12 +2,12 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Informativa sulla privacy — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -23,7 +23,7 @@
 </head>
 <body>
   <h1>Informativa sulla privacy</h1>
-  <p>Ultimo aggiornamento: 2 ottobre 2026</p>
+  <p>Ultimo aggiornamento: 14 ottobre 2026</p>
 
   <p>"FX Trade Journal" (l'"App") aiuta i trader privati a registrare e rivedere le proprie operazioni
      forex. Questa informativa sulla privacy spiega quali informazioni l'App gestisce e come vengono
@@ -90,7 +90,7 @@
   <p>L'App richiede l'accesso alla libreria foto del tuo dispositivo per consentirti di allegare
      immagini dei grafici alle tue registrazioni di operazioni. Le immagini selezionate vengono copiate
      nell'archivio proprio dell'App. L'App non analizza l'intera libreria e non accede a immagini
-     diverse da quelle selezionate.</p>
+     diverse da quelle selezionate. Quando salvi una scheda di condivisione in Foto, l'App usa solo il permesso di aggiunta alla libreria (non ne legge il contenuto).</p>
 
   <h2>5. Accesso ai file dello storico operazioni (importazione CSV MT4/MT5)</h2>
   <p>L'App richiede l'accesso ai file che scegli per importare i file CSV dello storico operazioni MT4 o
@@ -105,7 +105,7 @@
 
   <h2>7. Gestione dei dati</h2>
   <p>Tutte le registrazioni delle operazioni e le impostazioni sono salvate in un database SQLite locale
-     sul tuo dispositivo. Disinstallando l'App questi dati vengono eliminati. Per i backup puoi esportare un file CSV oppure creare un file di backup (in formato JSON) con le tue registrazioni, impostazioni e immagini dei grafici. Scegli tu dove salvarlo o inviarlo. I file di backup non sono crittografati, quindi fai attenzione a dove li conservi.</p>
+     sul tuo dispositivo. Disinstallando l'App questi dati vengono eliminati. Per i backup puoi esportare un file CSV oppure creare un file di backup con le tue registrazioni, impostazioni e immagini dei grafici. Scegli tu dove salvarlo o inviarlo. I backup possono essere crittografati con una password scelta da te (la password non viene salvata né sul dispositivo né da noi e, se la dimentichi, non può essere recuperata). I file creati senza password (in formato JSON) e i file CSV non sono crittografati, quindi fai attenzione a dove li conservi.</p>
   <p>Se il backup di iCloud è attivo su iOS, il database con i tuoi trade e la chiave di cifratura usata per decifrarlo sono inclusi nel backup iCloud di Apple, così i tuoi dati vengono trasferiti sul nuovo dispositivo quando cambi telefono. Il backup è conservato e cifrato da Apple e noi non possiamo accedere al suo contenuto. Se il backup di iCloud è disattivato, non viene incluso nulla. Su Android i dati dell'app sono esclusi dal backup del sistema operativo e quindi non vengono trasferiti in caso di cambio dispositivo o reinstallazione. In entrambi i casi, la funzione di backup dell'app è il modo più affidabile per mettere al sicuro i tuoi dati.</p>
   <p>Periodo di conservazione: i record delle operazioni, le immagini dei grafici e le impostazioni presenti sul tuo dispositivo restano finché non li elimini o disinstalli l'app. Non li cancelliamo allo scadere di un termine e non ne conserviamo copie. Tra i dati indicati alla sezione 3, i rapporti di arresto anomalo e gli eventi d'uso sono conservati solo per il tempo necessario a correggere i problemi e comunque per un massimo di 90 giorni. Le informazioni di acquisto e fatturazione sono conservate, secondo le condizioni di ciascun fornitore, per il tempo necessario al ripristino degli acquisti e agli obblighi contabili. Gli indirizzi e-mail raccolti per il test sono eliminati al termine dello stesso o entro 2 giorni lavorativi da una richiesta di cancellazione.</p>
   <p>Se attivi la Protezione dati avanzata per iCloud, il backup viene protetto con crittografia end-to-end che nemmeno Apple può decifrare. Valuta di attivarla nelle impostazioni del dispositivo per proteggere meglio ciò che il backup contiene.</p>

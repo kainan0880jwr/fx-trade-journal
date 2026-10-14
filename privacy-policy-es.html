@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- このページは外部リソースもスクリプトも使わないので、LPより厳しく当てられる。
      style-src の 'unsafe-inline' は各ページの小さな <style> のため（外出しは
      34ページぶんのリクエスト増に見合わない）。眼目は script-src を default-src
      'none' で塞ぐこと。なお frame-ancestors は meta では効かない（仕様）。 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'">
   <title>Política de privacidad — FX Trade Journal</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px 16px; color: #111; line-height: 1.7; }
@@ -23,7 +23,7 @@
 </head>
 <body>
   <h1>Política de privacidad</h1>
-  <p>Última actualización: 2 de octubre de 2026</p>
+  <p>Última actualización: 14 de octubre de 2026</p>
 
   <p>«FX Trade Journal» (la «Aplicación») ayuda a traders particulares a registrar y revisar sus
      operaciones de forex. Esta política de privacidad explica qué información gestiona la
@@ -90,7 +90,7 @@
   <p>La Aplicación solicita acceso a la fototeca de tu dispositivo para que puedas adjuntar imágenes de
      gráficos a tus registros de operaciones. Las imágenes seleccionadas se copian al almacenamiento
      propio de la Aplicación. La Aplicación no escanea toda tu fototeca ni accede a ninguna imagen que
-     no sea la que tú selecciones.</p>
+     no sea la que tú selecciones. Al guardar una tarjeta para compartir en Fotos, la Aplicación solo usa el permiso para añadir a la fototeca (no lee su contenido).</p>
 
   <h2>5. Acceso a archivos de historial de operaciones (importación CSV de MT4/MT5)</h2>
   <p>La Aplicación solicita acceso a los archivos que elijas para importar archivos CSV del historial de
@@ -105,7 +105,7 @@
 
   <h2>7. Gestión de datos</h2>
   <p>Todos los registros de operaciones y ajustes se almacenan en una base de datos SQLite local en tu
-     dispositivo. Al desinstalar la Aplicación se eliminan todos estos datos. Para hacer copias de seguridad, puedes exportar un archivo CSV o crear un archivo de copia de seguridad (formato JSON) con tus registros, ajustes e imágenes de gráficos. Tú eliges dónde se guarda o a dónde se envía. Los archivos de copia de seguridad no están cifrados, así que ten cuidado con dónde los guardas.</p>
+     dispositivo. Al desinstalar la Aplicación se eliminan todos estos datos. Para hacer copias de seguridad, puedes exportar un archivo CSV o crear un archivo de copia de seguridad con tus registros, ajustes e imágenes de gráficos. Tú eliges dónde se guarda o a dónde se envía. Las copias de seguridad pueden cifrarse con una contraseña que tú eliges (la contraseña no se guarda en el dispositivo ni la guardamos nosotros, y no se puede recuperar si la olvidas). Los archivos creados sin contraseña (formato JSON) y los archivos CSV no están cifrados, así que ten cuidado con dónde los guardas.</p>
   <p>Si la copia de seguridad de iCloud está activada en iOS, la base de datos con tus registros de operaciones y la clave de cifrado utilizada para descifrarla se incluyen en la copia de seguridad de iCloud de Apple, de modo que tus datos se transfieren al nuevo dispositivo cuando cambias de teléfono. Apple almacena y cifra la copia de seguridad, y nosotros no podemos acceder a su contenido. Si tienes desactivada la copia de seguridad de iCloud, no se incluye nada. En Android, los datos de la aplicación están excluidos de la copia de seguridad del sistema operativo, por lo que no se transfieren al cambiar de dispositivo ni al reinstalar. En cualquier caso, usar la función de copia de seguridad de la propia aplicación es la forma más fiable de proteger tus registros.</p>
   <p>Plazo de conservación: los registros de operaciones, las imágenes de gráficos y los ajustes guardados en tu dispositivo permanecen hasta que los borres o desinstales la aplicación. No los eliminamos al cabo de un plazo ni conservamos copias. De los datos indicados en el apartado 3, los informes de fallos y los eventos de uso se conservan solo el tiempo necesario para corregir errores y, como máximo, 90 días. La información de compra y facturación se conserva, conforme a las condiciones de cada proveedor, durante el tiempo necesario para restaurar compras y cumplir las obligaciones contables. Las direcciones de correo recogidas para las pruebas se eliminan al finalizar estas, o en un plazo de 2 días hábiles desde una solicitud de supresión.</p>
   <p>Si activas la Protección de datos avanzada de iCloud, tu copia de seguridad queda protegida con cifrado de extremo a extremo que ni siquiera Apple puede descifrar. Considera activarla en los ajustes de tu dispositivo si quieres proteger mejor lo que contiene la copia.</p>
