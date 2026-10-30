@@ -171,6 +171,14 @@ h3{font-size:1.15rem;}
 .card p{color:var(--ink-dim);}
 .card .shot{margin-top:.25rem;}
 .card-wide .shot{max-width:520px;}
+/* 学ぶ（ja・en だけ。2026-10-30）。画面が縦に長いので幅を絞り、広い画面では左に文・右に画面を並べる */
+.card-learn .shot{max-width:300px;}
+@media (min-width:1020px){
+  .card-learn{display:grid; grid-template-columns:minmax(0,1fr) 300px; grid-template-rows:auto auto auto 1fr; column-gap:2.5rem; row-gap:.75rem;}
+  .card-learn > *{grid-column:1; align-self:start;}
+  .card-learn > .tag{justify-self:start;}
+  .card-learn > .shot{grid-column:2; grid-row:1 / span 4; margin-top:0;}
+}
 .card-full{grid-column:1 / -1;}
 .tag{align-self:flex-start; font-size:.78rem; font-weight:700; letter-spacing:.04em; padding:.2em .7em; border-radius:999px; background:var(--surface-2); color:var(--ink-dim); border:1px solid var(--line);}
 .tag-pro{background:var(--accent-dim); color:var(--accent); border-color:transparent;}
