@@ -21,3 +21,11 @@ window.addEventListener('hashchange', function(){
   if (location.hash === '#android') document.documentElement.classList.add('android');
 });
 
+
+// 他のサイトの iframe の中で表示させない（クリックジャッキング・なりすましページの対策。2026-11-04 セキュリティレビュー）。
+// GitHub Pages ではレスポンスヘッダ（X-Frame-Options / CSP frame-ancestors）を付けられず、
+// <meta> の CSP では frame-ancestors が効かないため、ここで外に出る。出られない（sandbox 等）ときは本文を隠す。
+if (window.top !== window.self) {
+  try { window.top.location.replace(window.self.location.href); }
+  catch (e) { document.documentElement.style.display = 'none'; }
+}
