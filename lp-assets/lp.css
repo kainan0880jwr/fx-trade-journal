@@ -42,7 +42,7 @@ a{color:var(--accent);}
 p,ul,ol,figure,h1,h2,h3{margin:0;}
 ul,ol{padding:0; list-style:none;}
 h1,h2,h3{color:var(--ink); font-weight:800; letter-spacing:-0.01em; line-height:1.25; text-wrap:balance; overflow-wrap:break-word; hyphens:auto;}
-:lang(ja) h1,:lang(ja) h2,:lang(ja) h3{font-feature-settings:"palt"; word-break:auto-phrase;}
+:lang(ja) h1,:lang(ja) h2,:lang(ja) h3{font-feature-settings:"palt"; word-break:keep-all;}
 :lang(hi) h1,:lang(hi) h2,:lang(hi) h3,:lang(vi) h1,:lang(vi) h2,:lang(vi) h3{line-height:1.4; letter-spacing:normal; font-weight:700;}
 :lang(hi),:lang(vi){letter-spacing:normal;}
 :lang(hi) body,:lang(vi) body{line-height:1.85;}
