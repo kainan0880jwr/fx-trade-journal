@@ -1,6 +1,6 @@
 # FXトレードログ (FX Trade Journal)
 
-> iOS向けのFXトレード日記・記録アプリ。最短3タップで取引を記録し、勝率・pips・プロフィットファクター（PF）を自動集計する。MT4/MT5の取引履歴（レポート・CSV）の取り込みに対応。データは端末内にSQLCipherで暗号化保存され、クラウド同期は行わない。
+> iOS向けのFXトレード日記・記録アプリ。最短3タップで取引を記録し、入力した内容から勝率・pips・プロフィットファクター（PF）を自動集計する。MT4/MT5の取引履歴（レポート・CSV）の取り込みに対応。データは端末内にSQLCipherで暗号化保存され、クラウド同期は行わない。
 
 ## 概要
 
@@ -16,7 +16,7 @@
 
 - 無料: トレードの記録（件数の上限なし）、カレンダー、月次の集計（勝率・pips・プロフィットファクター・損益）、通貨ペア別・トレードスタイル別の集計、MT4/MT5の取引履歴の取り込み、「学ぶ」タブ（日本語・英語）、バックアップと復元、ウィジェット、月の目標（pips・勝率・損益）、実績バッジ、ロット計算機、ブックマーク、チャート画像1枚の添付、月次インサイト1件、成績カードのシェア（透かし入り）、アプリロック。
 - PRO: 分析タブのうち「パフォーマンス」以外（時間帯・曜日別、タグ分析、RR分析、エクイティカーブ）、残りの月次インサイト、週次表示と年間タブ、今週のまとめ（無料は項目の数だけ）、日・週・年の目標とカレンダーの達成マーク、チャート画像3枚の添付、メンタル記録と複数時間足のメモ、透かしなしの成績カード。
-- プライバシー: アカウント登録不要。トレード記録そのものは端末外に送信されない（クラッシュ情報と匿名の利用イベントのみ送信）。DBと暗号化キーは、iCloudバックアップを有効にしている場合はバックアップに含まれ、機種変更時に新しい端末へ引き継がれる。
+- プライバシー: アカウント登録不要。トレード記録そのものは運営者のサーバーに送信されない（送信するのはクラッシュ情報、ランダムな識別子付きの利用イベント、購入状態の確認など）。DBと暗号化キーは、iCloudバックアップを有効にしている場合はバックアップに含まれ、機種変更時に新しい端末へ引き継がれる。
 
 ## 主要ページ
 
@@ -42,7 +42,7 @@
 
 ## English summary
 
-FX Trade Journal is a forex trading journal app for iPhone and iPad (iOS 15.1+). Log a trade in as few as three taps; pips, P/L, win rate and profit factor are calculated automatically. Import your MT4/MT5 trade history from a desktop report (HTML) or CSV. A Learn tab offers short lessons with diagrams on reading charts (English and Japanese; not shown in some regions; general education, not investment advice). No account is needed: trades stay on the device in an SQLCipher-encrypted database, with no cloud sync. Available in 11 languages and in 143 countries and regions (not in the EU/EEA, the UK, Türkiye or mainland China). An Android version is in closed testing on Google Play.
+FX Trade Journal is a forex trading journal app for iPhone and iPad (iOS 15.1+). Log a trade in as few as three taps; pips, P/L, win rate and profit factor are calculated from what you enter. Import your MT4/MT5 trade history from a desktop report (HTML) or CSV. A Learn tab offers short lessons with diagrams on reading charts (English and Japanese; not shown in some regions; general education, not investment advice). No account is needed: trades stay on the device in an SQLCipher-encrypted database, with no cloud sync. Available in 11 languages and in 143 countries and regions (not in the EU/EEA, the UK, Türkiye or mainland China). An Android version is in closed testing on Google Play.
 
 - Free: unlimited trade logging, calendar, monthly dashboard (win rate, pips, profit factor, P/L), breakdowns by currency pair and trading style, MT4/MT5 report and CSV import, the Learn tab (English and Japanese), bookmarks, backup and restore, Home Screen and Lock Screen widgets, monthly goals, achievement badges, position size calculator, one chart image per trade, the first monthly insight, share cards (with a watermark), biometric App Lock, and 15 account currencies.
 - PRO (subscription): all analysis tabs other than "Performance" (time of day and weekday, tags, risk-reward, equity curve), the remaining monthly insights, weekly view and yearly tab, the weekly recap (free users see only how many items are available), daily/weekly/yearly goals with calendar marks, up to 3 chart images per trade, mental-state tracking and multi-timeframe notes, and watermark-free share cards.
