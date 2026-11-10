@@ -34,6 +34,7 @@
     <li><strong>Data catatan trade</strong>: pasangan mata uang, laba/rugi, rate, catatan, dan informasi trade lain yang Anda masukkan (disimpan di perangkat Anda)</li>
     <li><strong>Gambar chart</strong>: foto yang Anda lampirkan secara opsional (disimpan di perangkat Anda)</li>
     <li><strong>Pengaturan aplikasi</strong>: waktu notifikasi, unit ukuran lot, saldo akun, dan pengaturan lainnya (disimpan di perangkat Anda)</li>
+    <li><strong>Informasi akun</strong>: nama akun, mata uang, unit per lot, saldo, persentase risiko, dan nomor akun MT4/MT5 (opsional; Anda isi atau dibaca dari laporan yang diimpor; disimpan di perangkat Anda; versi 1.4.0 dan setelahnya)</li>
     <li><strong>Informasi pembelian dan penagihan</strong>: status pembelian langganan dan informasi paket (diproses melalui RevenueCat)</li>
     <li><strong>Pertanyaan dukungan</strong>: alamat email, isi pesan, serta versi aplikasi, OS, dan bahasa yang disertakan dalam pertanyaan (digunakan untuk menjawab Anda dan dihapus jika tidak lagi diperlukan)</li>
   </ul>
@@ -91,9 +92,10 @@
      Gambar yang dipilih disalin ke penyimpanan Aplikasi sendiri. Aplikasi tidak memindai seluruh pustaka Anda
      atau mengakses gambar apa pun selain yang Anda pilih. Saat Anda menyimpan kartu berbagi ke Foto, Aplikasi hanya menggunakan izin menambahkan ke pustaka foto (tidak membaca isinya).</p>
 
-  <h2>5. Akses File Riwayat Trade (Impor CSV MT4/MT5)</h2>
-  <p>Aplikasi meminta akses ke file yang Anda pilih untuk mengimpor file CSV riwayat trade MT4 atau MT5.
+  <h2>5. Akses File Riwayat Trade (Impor Laporan CSV dan HTML MT4/MT5)</h2>
+  <p>Aplikasi meminta akses ke file yang Anda pilih untuk mengimpor file riwayat trade MT4 atau MT5 (file CSV dan laporan HTML).
      Data yang diimpor hanya disimpan di perangkat Anda dan tidak pernah dikirim ke server eksternal.</p>
+  <p>Sejak versi 1.4.0, jika file yang diimpor berisi nomor akun, Aplikasi membacanya untuk mengetahui transaksi tersebut milik akun Anda yang mana. Agar impor berikutnya masuk ke akun yang sama, nomor akun ditautkan ke akun tempat Anda mengimpor dan disimpan di basis data terenkripsi di perangkat Anda (jika Anda hanya punya satu akun yang belum bernomor, nomor disimpan ke akun itu tanpa bertanya). Nomor yang Anda isi di layar akun juga disimpan dengan cara yang sama. Nomor akun tidak pernah dikirim kepada kami atau ke layanan pihak ketiga di Bagian 3. Namun, nomor ini disertakan dalam keadaan terenkripsi di file cadangan yang Anda buat dengan kata sandi. Cadangan yang dibuat tanpa kata sandi tidak menyertakannya. Cadangan iCloud diperlakukan sesuai Bagian 7. Anda dapat menghapus nomor akun di layar akun kapan saja, dan menghapus akun juga menghapus nomornya (dengan satu akun, mengimpor lagi setelah dihapus akan menyimpannya kembali). Dari laporan, Aplikasi hanya memakai nomor akun dan mata uang akun; informasi pribadi lain seperti nama Anda tidak disimpan maupun digunakan.</p>
 
   <h2>6. Notifikasi</h2>
   <p>Aplikasi menggunakan izin notifikasi untuk mengirim "pengingat pencatatan" pada waktu yang Anda tetapkan.

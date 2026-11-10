@@ -34,6 +34,7 @@
     <li><strong>Dados de registro de operações</strong>: pares de moedas, lucro/prejuízo, cotações, notas e outras informações de operações que você insere (armazenadas no seu dispositivo)</li>
     <li><strong>Imagens de gráficos</strong>: fotos que você anexa opcionalmente (armazenadas no seu dispositivo)</li>
     <li><strong>Configurações do aplicativo</strong>: horários de notificação, unidades de tamanho de lote, saldo da conta e outras configurações (armazenadas no seu dispositivo)</li>
+    <li><strong>Informações das contas</strong>: nome da conta, moeda, unidades por lote, saldo, percentual de risco e número da conta MT4/MT5 (opcional; inserido por você ou lido de um relatório importado; armazenado no seu dispositivo; versão 1.4.0 e posteriores)</li>
     <li><strong>Informações de compra e faturamento</strong>: status de compra de assinatura e informações do plano (processadas via RevenueCat)</li>
     <li><strong>Solicitações de suporte</strong>: seu endereço de e-mail, a mensagem e a versão do aplicativo, o sistema operacional e o idioma incluídos na solicitação (usados para responder a você e excluídos quando não forem mais necessários)</li>
   </ul>
@@ -91,9 +92,9 @@
      gráficos aos seus registros de operações. As imagens selecionadas são copiadas para o armazenamento próprio do
      Aplicativo. O Aplicativo não verifica toda a sua biblioteca nem acessa nenhuma imagem além das que você selecionar. Ao salvar um cartão de compartilhamento em Fotos, o Aplicativo usa apenas a permissão para adicionar à biblioteca (não lê o conteúdo dela).</p>
 
-  <h2>5. Acesso a Arquivos de Histórico de Operações (Importação de CSV do MT4/MT5)</h2>
-  <p>O Aplicativo solicita acesso aos arquivos que você escolher para importar arquivos CSV de histórico de operações
-     do MT4 ou MT5. Os dados importados são armazenados apenas no seu dispositivo e nunca são enviados a um servidor externo.</p>
+  <h2>5. Acesso a Arquivos de Histórico de Operações (Importação de Relatórios CSV e HTML do MT4/MT5)</h2>
+  <p>O Aplicativo solicita acesso aos arquivos que você escolher para importar arquivos de histórico de operações do MT4 ou MT5 (arquivos CSV e relatórios HTML). Os dados importados são armazenados apenas no seu dispositivo e nunca são enviados a um servidor externo.</p>
+  <p>A partir da versão 1.4.0, se um arquivo importado contiver um número de conta, o Aplicativo o lê para saber a qual das suas contas as operações pertencem. Para que as próximas importações vão para a mesma conta, o número é vinculado à conta em que você importa e salvo no banco de dados criptografado do seu dispositivo (se você tiver só uma conta ainda sem número, ele é salvo nela sem perguntar). Os números digitados na tela da conta são salvos da mesma forma. Os números de conta nunca são enviados para nós nem para os serviços de terceiros da seção 3. No entanto, eles são incluídos, criptografados, nos arquivos de backup que você cria com senha. Backups criados sem senha não os incluem. O backup do iCloud segue a seção 7. Você pode apagar o número na tela da conta a qualquer momento, e excluir uma conta também exclui o número dela (com uma só conta, importar de novo depois de apagar o salva novamente). De um relatório, o Aplicativo usa apenas o número e a moeda da conta; outras informações pessoais, como seu nome, não são salvas nem usadas.</p>
 
   <h2>6. Notificações</h2>
   <p>O Aplicativo usa permissões de notificação para enviar "lembretes de registro" no horário que você definir.

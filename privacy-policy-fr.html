@@ -35,6 +35,7 @@
     <li><strong>Données d'enregistrement des trades</strong> : paires de devises, profits/pertes, cours, notes et autres informations de trade que vous saisissez (stockées sur votre appareil)</li>
     <li><strong>Images de graphiques</strong> : photos que vous joignez éventuellement (stockées sur votre appareil)</li>
     <li><strong>Réglages de l'application</strong> : heures de notification, unités de taille de lot, solde du compte et autres réglages (stockés sur votre appareil)</li>
+    <li><strong>Informations des comptes</strong> : nom du compte, devise, unités par lot, solde, pourcentage de risque et numéro de compte MT4/MT5 (facultatif ; saisi par vous ou lu dans un rapport importé ; stocké sur votre appareil ; version 1.4.0 et ultérieures)</li>
     <li><strong>Informations d'achat et de facturation</strong> : statut d'achat de l'abonnement et informations sur le forfait (traitées via RevenueCat)</li>
     <li><strong>Demandes d'assistance</strong> : votre adresse e-mail, votre message ainsi que la version de l'application, l'OS et la langue indiqués dans la demande (utilisés pour vous répondre et supprimés lorsqu'ils ne sont plus nécessaires)</li>
   </ul>
@@ -93,10 +94,10 @@
      stockage propre de l'Application. L'Application n'analyse pas l'intégralité de votre photothèque et
      n'accède à aucune image autre que celles que vous sélectionnez. Lorsque vous enregistrez une carte de partage dans Photos, l'Application utilise uniquement l'autorisation d'ajout à la photothèque (elle n'en lit pas le contenu).</p>
 
-  <h2>5. Accès aux fichiers d'historique de trading (import CSV MT4/MT5)</h2>
-  <p>L'Application demande l'accès aux fichiers que vous choisissez afin d'importer des fichiers CSV
-     d'historique de trading MT4 ou MT5. Les données importées sont stockées uniquement sur votre
+  <h2>5. Accès aux fichiers d'historique de trading (import de rapports CSV et HTML MT4/MT5)</h2>
+  <p>L'Application demande l'accès aux fichiers que vous choisissez afin d'importer des fichiers d'historique de trading MT4 ou MT5 (fichiers CSV et rapports HTML). Les données importées sont stockées uniquement sur votre
      appareil et ne sont jamais envoyées à un serveur externe.</p>
+  <p>À partir de la version 1.4.0, si un fichier importé contient un numéro de compte, l'Application le lit pour savoir à quel compte appartiennent les trades. Pour que les prochains imports aillent dans le même compte, ce numéro est associé au compte dans lequel vous importez et enregistré dans la base de données chiffrée de votre appareil (si vous n'avez qu'un compte sans numéro, il y est enregistré sans vous le demander). Les numéros saisis sur l'écran du compte sont enregistrés de la même manière. Les numéros de compte ne sont jamais envoyés à nous ni aux services tiers de la section 3. Ils figurent toutefois, chiffrés, dans les fichiers de sauvegarde que vous créez avec un mot de passe. Les sauvegardes créées sans mot de passe ne les contiennent pas. La sauvegarde iCloud est traitée comme indiqué à la section 7. Vous pouvez supprimer un numéro à tout moment sur l'écran du compte ; supprimer un compte supprime aussi son numéro (avec un seul compte, un nouvel import après suppression l'enregistre de nouveau). D'un rapport, l'Application n'utilise que le numéro et la devise du compte ; les autres informations personnelles, comme votre nom, ne sont ni enregistrées ni utilisées.</p>
 
   <h2>6. Notifications</h2>
   <p>L'Application utilise les autorisations de notification pour envoyer des « rappels

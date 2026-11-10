@@ -34,6 +34,7 @@
     <li><strong>İşlem kayıt verileri</strong>: para birimi çiftleri, kâr/zarar, kurlar, notlar ve girdiğiniz diğer işlem bilgileri (cihazınızda saklanır)</li>
     <li><strong>Grafik görüntüleri</strong>: isteğe bağlı olarak eklediğiniz fotoğraflar (cihazınızda saklanır)</li>
     <li><strong>Uygulama ayarları</strong>: bildirim saatleri, lot büyüklüğü birimleri, hesap bakiyesi ve diğer ayarlar (cihazınızda saklanır)</li>
+    <li><strong>Hesap bilgileri</strong>: hesap adı, para birimi, lot başına birim, bakiye, risk yüzdesi ve MT4/MT5 hesap numarası (isteğe bağlı; sizin girdiğiniz veya içe aktarılan rapordan okunan; cihazınızda saklanır; sürüm 1.4.0 ve sonrası)</li>
     <li><strong>Satın alma ve faturalandırma bilgileri</strong>: abonelik satın alma durumu ve plan bilgileri (RevenueCat aracılığıyla işlenir)</li>
     <li><strong>Destek talepleri</strong>: e-posta adresiniz, mesajınız ve talebe eklenen uygulama sürümü, işletim sistemi ve dil (size yanıt vermek için kullanılır ve artık gerekli olmadığında silinir)</li>
   </ul>
@@ -91,9 +92,10 @@
      Seçilen görüntüler Uygulamanın kendi depolama alanına kopyalanır. Uygulama tüm kitaplığınızı taramaz
      veya seçtiğiniz görüntüler dışında herhangi bir görüntüye erişmez. Paylaşım kartını Fotoğraflar'a kaydettiğinizde Uygulama yalnızca kitaplığa ekleme iznini kullanır (kitaplığın içeriğini okumaz).</p>
 
-  <h2>5. İşlem Geçmişi Dosyası Erişimi (MT4/MT5 CSV İçe Aktarma)</h2>
-  <p>Uygulama, MT4 veya MT5 işlem geçmişi CSV dosyalarını içe aktarmak için seçtiğiniz dosyalara erişim talep eder.
+  <h2>5. İşlem Geçmişi Dosyası Erişimi (MT4/MT5 CSV ve HTML Rapor İçe Aktarma)</h2>
+  <p>Uygulama, MT4 veya MT5 işlem geçmişi dosyalarını (CSV dosyaları ve HTML raporları) içe aktarmak için seçtiğiniz dosyalara erişim talep eder.
      İçe aktarılan veriler yalnızca cihazınızda saklanır ve asla harici bir sunucuya gönderilmez.</p>
+  <p>Sürüm 1.4.0'dan itibaren, içe aktarılan dosyada hesap numarası varsa Uygulama, işlemlerin hangi hesabınıza ait olduğunu anlamak için onu okur. Sonraki içe aktarmaların aynı hesaba gitmesi için numara, içe aktardığınız hesapla eşleştirilir ve cihazınızdaki şifreli veritabanına kaydedilir (tek hesabınız varsa ve henüz numarası yoksa sormadan o hesaba kaydedilir). Hesap ekranında girdiğiniz numaralar da aynı şekilde kaydedilir. Hesap numaraları asla bize veya 3. bölümdeki üçüncü taraf hizmetlere gönderilmez. Ancak parolayla oluşturduğunuz yedek dosyalarına şifrelenmiş olarak dahil edilir. Parolasız oluşturulan yedeklere dahil edilmez. iCloud yedeklemesi 7. bölümde açıklandığı gibidir. Numarayı hesap ekranından istediğiniz zaman silebilirsiniz; bir hesabı silmek numarasını da siler (tek hesapta, sildikten sonra yeniden içe aktarırsanız tekrar kaydedilir). Uygulama bir rapordan yalnızca hesap numarasını ve hesap para birimini kullanır; adınız gibi diğer kişisel bilgiler ne kaydedilir ne de kullanılır.</p>
 
   <h2>6. Bildirimler</h2>
   <p>Uygulama, ayarladığınız saatte "kayıt hatırlatmaları" göndermek için bildirim izinlerini kullanır.

@@ -35,6 +35,7 @@
     <li><strong>Datos de registro de operaciones</strong>: pares de divisas, ganancias/pérdidas, cotizaciones, notas y demás información de operaciones que introduces (almacenada en tu dispositivo)</li>
     <li><strong>Imágenes de gráficos</strong>: fotos que adjuntas opcionalmente (almacenadas en tu dispositivo)</li>
     <li><strong>Ajustes de la aplicación</strong>: horarios de notificación, unidades de tamaño de lote, saldo de la cuenta y otros ajustes (almacenados en tu dispositivo)</li>
+    <li><strong>Información de las cuentas</strong>: nombre de la cuenta, divisa, unidades por lote, saldo, porcentaje de riesgo y número de cuenta de MT4/MT5 (opcional; introducido por ti o leído de un informe importado; almacenado en tu dispositivo; versión 1.4.0 y posteriores)</li>
     <li><strong>Información de compra y facturación</strong>: estado de compra de la suscripción e información del plan (procesada a través de RevenueCat)</li>
     <li><strong>Consultas de soporte</strong>: tu dirección de correo, el mensaje y la versión de la app, el SO y el idioma incluidos en la consulta (se usan para responderte y se eliminan cuando dejan de ser necesarios)</li>
   </ul>
@@ -93,10 +94,10 @@
      propio de la Aplicación. La Aplicación no escanea toda tu fototeca ni accede a ninguna imagen que
      no sea la que tú selecciones. Al guardar una tarjeta para compartir en Fotos, la Aplicación solo usa el permiso para añadir a la fototeca (no lee su contenido).</p>
 
-  <h2>5. Acceso a archivos de historial de operaciones (importación CSV de MT4/MT5)</h2>
-  <p>La Aplicación solicita acceso a los archivos que elijas para importar archivos CSV del historial de
-     operaciones de MT4 o MT5. Los datos importados se almacenan únicamente en tu dispositivo y nunca
+  <h2>5. Acceso a archivos de historial de operaciones (importación de informes CSV y HTML de MT4/MT5)</h2>
+  <p>La Aplicación solicita acceso a los archivos que elijas para importar archivos del historial de operaciones de MT4 o MT5 (archivos CSV e informes HTML). Los datos importados se almacenan únicamente en tu dispositivo y nunca
      se envían a un servidor externo.</p>
+  <p>Desde la versión 1.4.0, si un archivo importado contiene un número de cuenta, la Aplicación lo lee para saber a cuál de tus cuentas pertenecen las operaciones. Para que las próximas importaciones vayan a la misma cuenta, el número se vincula a la cuenta en la que importas y se guarda en la base de datos cifrada de tu dispositivo (si solo tienes una cuenta y aún no tiene número, se guarda en ella sin preguntar). Los números que escribas en la pantalla de la cuenta se guardan de la misma forma. Los números de cuenta nunca se envían a nosotros ni a los servicios de terceros de la sección 3. Sin embargo, las copias de seguridad que crees con contraseña los incluyen, cifrados. Las copias creadas sin contraseña no los incluyen. La copia de seguridad de iCloud se trata según la sección 7. Puedes borrar el número en la pantalla de la cuenta en cualquier momento, y al eliminar una cuenta también se elimina su número (con una sola cuenta, si vuelves a importar después de borrarlo, se guarda de nuevo). De un informe, la Aplicación solo usa el número y la divisa de la cuenta; otra información personal, como tu nombre, no se guarda ni se usa.</p>
 
   <h2>6. Notificaciones</h2>
   <p>La Aplicación utiliza permisos de notificación para enviar «recordatorios de registro» a la hora

@@ -35,6 +35,7 @@
     <li><strong>Dati di registrazione delle operazioni</strong>: coppie di valute, profitti/perdite, quotazioni, note e altre informazioni sulle operazioni che inserisci (salvate sul tuo dispositivo)</li>
     <li><strong>Immagini dei grafici</strong>: foto che alleghi facoltativamente (salvate sul tuo dispositivo)</li>
     <li><strong>Impostazioni dell'app</strong>: orari delle notifiche, unità di dimensione del lotto, saldo del conto e altre impostazioni (salvate sul tuo dispositivo)</li>
+    <li><strong>Informazioni sui conti</strong>: nome del conto, valuta, unità per lotto, saldo, percentuale di rischio e numero di conto MT4/MT5 (facoltativo; inserito da te o letto da un report importato; salvato sul tuo dispositivo; versione 1.4.0 e successive)</li>
     <li><strong>Informazioni di acquisto e fatturazione</strong>: stato di acquisto dell'abbonamento e informazioni sul piano (elaborate tramite RevenueCat)</li>
     <li><strong>Richieste di assistenza</strong>: indirizzo email, messaggio e versione dell'app, sistema operativo e lingua inclusi nella richiesta (usati per risponderti ed eliminati quando non più necessari)</li>
   </ul>
@@ -93,10 +94,10 @@
      nell'archivio proprio dell'App. L'App non analizza l'intera libreria e non accede a immagini
      diverse da quelle selezionate. Quando salvi una scheda di condivisione in Foto, l'App usa solo il permesso di aggiunta alla libreria (non ne legge il contenuto).</p>
 
-  <h2>5. Accesso ai file dello storico operazioni (importazione CSV MT4/MT5)</h2>
-  <p>L'App richiede l'accesso ai file che scegli per importare i file CSV dello storico operazioni MT4 o
-     MT5. I dati importati vengono salvati esclusivamente sul tuo dispositivo e non vengono mai inviati
+  <h2>5. Accesso ai file dello storico operazioni (importazione di report CSV e HTML MT4/MT5)</h2>
+  <p>L'App richiede l'accesso ai file che scegli per importare i file dello storico operazioni MT4 o MT5 (file CSV e report HTML). I dati importati vengono salvati esclusivamente sul tuo dispositivo e non vengono mai inviati
      a un server esterno.</p>
+  <p>Dalla versione 1.4.0, se un file importato contiene un numero di conto, l'App lo legge per capire a quale dei tuoi conti appartengono le operazioni. Affinché le importazioni successive finiscano nello stesso conto, il numero viene collegato al conto in cui importi e salvato nel database crittografato del dispositivo (se hai un solo conto senza numero, viene salvato lì senza chiedere). Anche i numeri inseriti nella schermata del conto vengono salvati allo stesso modo. I numeri di conto non vengono mai inviati a noi né ai servizi di terze parti della sezione 3. Sono però inclusi, crittografati, nei file di backup che crei con una password. I backup creati senza password non li includono. Il backup iCloud è trattato come indicato nella sezione 7. Puoi eliminare il numero in qualsiasi momento nella schermata del conto; eliminando un conto si elimina anche il suo numero (con un solo conto, una nuova importazione dopo l'eliminazione lo salva di nuovo). Da un report l'App usa solo il numero e la valuta del conto; altre informazioni personali, come il tuo nome, non vengono né salvate né usate.</p>
 
   <h2>6. Notifiche</h2>
   <p>L'App utilizza le autorizzazioni per le notifiche per inviare "promemoria di registrazione"

@@ -35,6 +35,7 @@
     <li><strong>Trade-Aufzeichnungsdaten</strong>: Währungspaare, Gewinn/Verlust, Kurse, Notizen und weitere von dir eingegebene Trade-Informationen (auf deinem Gerät gespeichert)</li>
     <li><strong>Chart-Bilder</strong>: von dir optional angehängte Fotos (auf deinem Gerät gespeichert)</li>
     <li><strong>App-Einstellungen</strong>: Benachrichtigungszeiten, Lotgrößen-Einheiten, Kontostand und weitere Einstellungen (auf deinem Gerät gespeichert)</li>
+    <li><strong>Kontoinformationen</strong>: Kontoname, Währung, Einheiten pro Lot, Kontostand, Risikoanteil und MT4/MT5-Kontonummer (optional; von dir eingegeben oder aus einem importierten Bericht gelesen; auf deinem Gerät gespeichert; ab Version 1.4.0)</li>
     <li><strong>Kauf- und Abrechnungsinformationen</strong>: Status des Abo-Kaufs und Plan-Informationen (verarbeitet über RevenueCat)</li>
     <li><strong>Anfragen an den Support</strong>: deine E-Mail-Adresse, deine Nachricht sowie die in der Anfrage enthaltene App-Version, das Betriebssystem und die Sprache (zur Beantwortung verwendet und gelöscht, sobald nicht mehr erforderlich)</li>
   </ul>
@@ -93,10 +94,11 @@
      kopiert. Die App durchsucht nicht deine gesamte Mediathek und greift ausschließlich auf die von
      dir ausgewählten Bilder zu. Wenn du eine Teilen-Karte in Fotos sicherst, nutzt die App nur die Berechtigung zum Hinzufügen (der Inhalt der Mediathek wird nicht gelesen).</p>
 
-  <h2>5. Zugriff auf Handelsverlauf-Dateien (MT4/MT5-CSV-Import)</h2>
-  <p>Die App fragt Zugriff auf die von dir ausgewählten Dateien an, um MT4- oder MT5-Handelsverlauf-CSV-Dateien
+  <h2>5. Zugriff auf Handelsverlauf-Dateien (Import von MT4/MT5-CSV- und HTML-Berichten)</h2>
+  <p>Die App fragt Zugriff auf die von dir ausgewählten Dateien an, um MT4- oder MT5-Handelsverlaufsdateien (CSV-Dateien und HTML-Berichte)
      zu importieren. Importierte Daten werden ausschließlich auf deinem Gerät gespeichert und niemals an
      einen externen Server gesendet.</p>
+  <p>Ab Version 1.4.0 liest die App eine Kontonummer aus einer importierten Datei, um zu erkennen, zu welchem deiner Konten die Trades gehören. Damit spätere Importe im selben Konto landen, wird die Kontonummer mit dem Konto verknüpft, in das du importierst, und in der verschlüsselten Datenbank auf deinem Gerät gespeichert (hast du nur ein Konto ohne Nummer, wird sie ohne Rückfrage dort gespeichert). Auf dem Kontobildschirm eingegebene Kontonummern werden genauso gespeichert. Kontonummern werden niemals an uns oder an die Drittanbieter in Abschnitt 3 gesendet. Mit Passwort erstellte Sicherungsdateien enthalten sie jedoch, und zwar verschlüsselt. In ohne Passwort erstellte Sicherungsdateien werden sie nicht aufgenommen. Für iCloud-Backups gilt Abschnitt 7. Du kannst eine Kontonummer jederzeit auf dem Kontobildschirm löschen; beim Löschen eines Kontos wird auch seine Nummer gelöscht (bei nur einem Konto wird sie bei einem erneuten Import wieder gespeichert). Aus einem Bericht verwendet die App nur die Kontonummer und die Kontowährung; andere personenbezogene Angaben wie dein Name werden weder gespeichert noch verwendet.</p>
 
   <h2>6. Benachrichtigungen</h2>
   <p>Die App nutzt Benachrichtigungsberechtigungen, um zur von dir festgelegten Zeit

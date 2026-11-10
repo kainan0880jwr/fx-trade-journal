@@ -34,6 +34,7 @@
     <li><strong>Trade record data</strong>: currency pairs, profit/loss, rates, notes, and other trade information you enter (stored on your device)</li>
     <li><strong>Chart images</strong>: photos you optionally attach (stored on your device)</li>
     <li><strong>App settings</strong>: notification times, lot size units, account balance, and other settings (stored on your device)</li>
+    <li><strong>Account information</strong>: account name, currency, units per lot, account balance, risk percentage, and MT4/MT5 account number (optional; entered by you or read from an imported report; stored on your device; version 1.4.0 and later)</li>
     <li><strong>Purchase and billing information</strong>: subscription purchase status and plan information (processed via RevenueCat)</li>
     <li><strong>Support inquiries</strong>: your email address, your message, and the app version, OS and language included in the inquiry (used to reply to you and deleted when no longer needed)</li>
   </ul>
@@ -91,9 +92,10 @@
      Selected images are copied into the App's own storage. The App does not scan your entire library
      or access any images other than the ones you select. When you save a share card to Photos, the App uses add-only permission for the photo library (it does not read the library's contents).</p>
 
-  <h2>5. Trade History File Access (MT4/MT5 CSV Import)</h2>
-  <p>The App requests access to files you choose in order to import MT4 or MT5 trade history CSV files.
+  <h2>5. Trade History File Access (MT4/MT5 CSV and HTML Report Import)</h2>
+  <p>The App requests access to files you choose in order to import MT4 or MT5 trade history files (CSV files and HTML reports).
      Imported data is stored only on your device and is never sent to an external server.</p>
+  <p>From version 1.4.0, if an imported file contains an account number, the App reads it to tell which of your accounts the trades belong to. So that future imports go into the same account, the account number is linked to the account you import into and saved in the encrypted database on your device (if you have only one account and it has no number yet, it is saved to that account without asking). Account numbers you enter on the account screen are saved the same way. Account numbers are never sent to us or to the third-party services in Section 3. However, backup files you create with a password include them, in encrypted form. Backup files created without a password do not include them. iCloud Backup is handled as described in Section 7. You can delete an account number on the account screen at any time, and deleting an account also deletes its number (with only one account, importing again after deleting saves it again). From a report, the App uses only the account number and the account currency; other personal information such as your name is neither stored nor used.</p>
 
   <h2>6. Notifications</h2>
   <p>The App uses notification permissions to send "recording reminders" at the time you set.

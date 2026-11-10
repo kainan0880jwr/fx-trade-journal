@@ -34,6 +34,7 @@
     <li><strong>Dữ liệu bản ghi giao dịch</strong>: cặp tiền tệ, lãi/lỗ, tỷ giá, ghi chú, và thông tin giao dịch khác bạn nhập (lưu trên thiết bị của bạn)</li>
     <li><strong>Ảnh biểu đồ</strong>: ảnh bạn đính kèm tùy chọn (lưu trên thiết bị của bạn)</li>
     <li><strong>Cài đặt ứng dụng</strong>: giờ thông báo, đơn vị kích thước lot, số dư tài khoản, và các cài đặt khác (lưu trên thiết bị của bạn)</li>
+    <li><strong>Thông tin tài khoản</strong>: tên tài khoản, tiền tệ, số đơn vị mỗi lot, số dư, tỷ lệ rủi ro và số tài khoản MT4/MT5 (tùy chọn; do bạn nhập hoặc đọc từ báo cáo đã nhập; lưu trên thiết bị của bạn; phiên bản 1.4.0 trở lên)</li>
     <li><strong>Thông tin mua hàng và thanh toán</strong>: trạng thái mua đăng ký và thông tin gói (xử lý qua RevenueCat)</li>
     <li><strong>Yêu cầu hỗ trợ</strong>: địa chỉ email, nội dung tin nhắn, cùng phiên bản ứng dụng, hệ điều hành và ngôn ngữ kèm trong yêu cầu (dùng để trả lời bạn và xóa khi không còn cần thiết)</li>
   </ul>
@@ -91,9 +92,10 @@
      bản ghi giao dịch của mình. Ảnh được chọn sẽ được sao chép vào bộ nhớ riêng của Ứng dụng. Ứng dụng không quét
      toàn bộ thư viện của bạn hoặc truy cập bất kỳ ảnh nào khác ngoài những ảnh bạn chọn. Khi bạn lưu thẻ chia sẻ vào Ảnh, Ứng dụng chỉ dùng quyền thêm vào thư viện ảnh (không đọc nội dung thư viện).</p>
 
-  <h2>5. Truy Cập File Lịch Sử Giao Dịch (Nhập CSV MT4/MT5)</h2>
-  <p>Ứng dụng yêu cầu quyền truy cập vào các file bạn chọn để nhập file CSV lịch sử giao dịch MT4 hoặc MT5.
+  <h2>5. Truy Cập File Lịch Sử Giao Dịch (Nhập Báo Cáo CSV và HTML MT4/MT5)</h2>
+  <p>Ứng dụng yêu cầu quyền truy cập vào các file bạn chọn để nhập file lịch sử giao dịch MT4 hoặc MT5 (file CSV và báo cáo HTML).
      Dữ liệu đã nhập chỉ được lưu trên thiết bị của bạn và không bao giờ được gửi đến máy chủ bên ngoài.</p>
+  <p>Từ phiên bản 1.4.0, nếu file đã nhập có số tài khoản, Ứng dụng sẽ đọc số đó để biết giao dịch thuộc tài khoản nào của bạn. Để những lần nhập sau vào đúng tài khoản đó, số tài khoản được liên kết với tài khoản bạn nhập vào và lưu trong cơ sở dữ liệu mã hóa trên thiết bị (nếu bạn chỉ có một tài khoản và chưa có số, số sẽ được lưu vào tài khoản đó mà không hỏi). Số tài khoản bạn nhập ở màn hình tài khoản cũng được lưu như vậy. Số tài khoản không bao giờ được gửi cho chúng tôi hay các dịch vụ bên thứ ba ở mục 3. Tuy nhiên, số này có trong file sao lưu bạn tạo có mật khẩu, ở dạng đã mã hóa. File sao lưu tạo không có mật khẩu thì không chứa số này. Sao lưu iCloud được xử lý như mục 7. Bạn có thể xóa số tài khoản ở màn hình tài khoản bất cứ lúc nào, và xóa tài khoản cũng xóa số của nó (khi chỉ có một tài khoản, nhập lại sau khi xóa sẽ lưu lại số). Từ báo cáo, Ứng dụng chỉ dùng số tài khoản và tiền tệ của tài khoản; các thông tin cá nhân khác như tên của bạn không được lưu hay sử dụng.</p>
 
   <h2>6. Thông Báo</h2>
   <p>Ứng dụng sử dụng quyền thông báo để gửi "nhắc nhở ghi chép" vào thời gian bạn đặt.
