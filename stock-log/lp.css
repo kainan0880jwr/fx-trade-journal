@@ -35,7 +35,7 @@ a{color:inherit}
   background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid color-mix(in srgb,var(--border) 70%,transparent)}
 .top-in{display:flex;align-items:center;gap:20px;height:60px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;text-decoration:none;letter-spacing:.02em}
-.mark{width:30px;height:30px;flex:none;border-radius:7px}
+.mark{width:30px;height:30px;flex:none;border-radius:7px;box-shadow:0 0 0 1px rgba(148,163,184,.35)}
 .top nav{display:flex;gap:22px;margin-left:auto;font-size:.92rem}
 .top nav a{text-decoration:none;color:var(--text2)}
 .top nav a:hover{color:var(--text)}
