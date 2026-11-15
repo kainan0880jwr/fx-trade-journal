@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 読み込めるものを自分のサイトの CSS と画像だけに絞る（スクリプトは一切使わない）。2026-11-15 セキュリティ監査 L-6。
+     GitHub Pages ではヘッダーを付けられないので meta で付ける（frame-ancestors は meta では効かない） -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Stock Log | Journal für Aktien-Trades, Dividenden und Aktionärsvorteile</title>
 <meta name="description" content="Erfassen Sie Ihre Aktien-Trades, Dividenden und Aktionärsvorteile und blicken Sie auf Ihren realisierten G/V und erhaltene Dividenden zurück. Ihre Einträge werden verschlüsselt und bleiben auf Ihrem Gerät. Kein Konto nötig.">
 <meta property="og:type" content="website">
@@ -23,7 +27,7 @@
 <link rel="alternate" hreflang="x-default" href="index-en.html">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=0452ca8abf">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=bd0aeb3711">
-<link rel="stylesheet" href="lp.css?v=af98970d7e">
+<link rel="stylesheet" href="lp.css?v=39ae9e498d">
 </head>
 <body>
 <a class="skip" href="#main">Zum Inhalt springen</a>
@@ -145,7 +149,7 @@
       <li>Ihre Broker-Zugangsdaten werden nie abgefragt oder gespeichert</li>
       <li>Sperren Sie die App mit Face ID, Fingerabdruck oder Code. Auch in der App-Übersicht bleiben die Inhalte verborgen</li>
       <li>Wechseln Sie das Smartphone mit einer passwortgeschützten, verschlüsselten Sicherung</li>
-      <li>Fehlerberichte enthalten nie Ihre Einträge wie Aktien, Beträge oder Notizen</li>
+      <li>Fehlerberichte sind so gestaltet, dass sie Ihre Einträge wie Aktien, Beträge oder Notizen nicht enthalten</li>
     </ul>
   </div>
 </section>
@@ -177,7 +181,7 @@
     <h2>Häufige Fragen</h2>
     <details><summary>Kann ich Aktienkurse oder nicht realisierte Gewinne sehen?</summary><p>Nein. Stock Log ruft keine Marktdaten wie Aktienkurse ab. Die App konzentriert sich auf den Rückblick auf Ihre Trades: realisierter G/V, Dividenden und Aktionärsvorteile.</p></details>
     <details><summary>Verbindet sich die App mit meinem Depotkonto?</summary><p>Nein. Ihre Broker-Zugangsdaten werden nie verwendet. Sie erfassen Trades von Hand oder importieren eine CSV, die Sie bei Ihrem Broker heruntergeladen haben.</p></details>
-    <details><summary>Berechnet die App Steuern?</summary><p>Nein. Steuerregeln hängen von Ihrem Land und Ihrer Kontoart ab, und Schätzungen je Trade weichen oft vom tatsächlichen Steuerabzug ab. Sie können den G/V vor Steuern und Dividenden nach Steuern erfassen.</p></details>
+    <details><summary>Berechnet die App Steuern?</summary><p>Steuern auf Verkäufe werden nicht automatisch berechnet: Die Quellensteuer wird oft über das Jahr verrechnet, daher stimmen Schätzungen pro Trade womöglich nicht. Bei Dividenden können Sie einen Steuer-Richtwert nach allgemeinen Sätzen eintragen; bitte korrigieren Sie ihn auf den Betrag in der Abrechnung Ihres Brokers.</p></details>
     <details><summary>Was passiert mit meinen Einträgen, wenn ich das Smartphone wechsle?</summary><p>Erstellen Sie in den Einstellungen eine passwortgeschützte, verschlüsselte Sicherung und stellen Sie sie auf dem neuen Smartphone wieder her. Ohne das Passwort lässt sich die Sicherung nicht wiederherstellen, bewahren Sie es also gut auf.</p></details>
     <details><summary>Kann ich steuerbegünstigte Konten erfassen?</summary><p>Ja. Legen Sie jedes Konto als steuerpflichtig oder steuerbegünstigt an (bei japanischen Brokern als Spezifisches Konto, Allgemeines Konto oder NISA). Der Ø Kaufkurs wird für jedes Konto getrennt berechnet.</p></details>
     <details><summary>Welche CSV-Dateien von Brokern kann ich importieren?</summary><p>Da Sie die Spalten selbst zuordnen, können CSV-Dateien vieler Broker funktionieren. Manche Formate können nicht gelesen werden; prüfen Sie daher bitte vor dem Import die Vorschau.</p></details>
@@ -187,7 +191,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="disc">Stock Log ist keine Anlageberatung. Für Ihre Anlageentscheidungen sind allein Sie verantwortlich.</p>
+    <p class="disc">Der Betreiber von Stock Log ist kein zugelassener Anlageberater. Bitte treffen Sie Ihre Anlageentscheidungen selbst.</p>
     <nav class="links" aria-label="Rechtliches und Kontakt">
       <a href="terms-de.html">Nutzungsbedingungen</a>
       <a href="privacy-policy-de.html">Datenschutzerklärung</a>

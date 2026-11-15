@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 読み込めるものを自分のサイトの CSS と画像だけに絞る（スクリプトは一切使わない）。2026-11-15 セキュリティ監査 L-6。
+     GitHub Pages ではヘッダーを付けられないので meta で付ける（frame-ancestors は meta では効かない） -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Stock Log | Journal de vos transactions, dividendes et avantages actionnaires</title>
 <meta name="description" content="Enregistrez vos transactions sur actions, dividendes et avantages actionnaires, et faites le bilan de vos plus/moins-values réalisées et des dividendes reçus. Vos enregistrements sont chiffrés et restent sur votre appareil. Aucun compte requis.">
 <meta property="og:type" content="website">
@@ -23,7 +27,7 @@
 <link rel="alternate" hreflang="x-default" href="index-en.html">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=0452ca8abf">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=bd0aeb3711">
-<link rel="stylesheet" href="lp.css?v=af98970d7e">
+<link rel="stylesheet" href="lp.css?v=39ae9e498d">
 </head>
 <body>
 <a class="skip" href="#main">Aller au contenu</a>
@@ -145,7 +149,7 @@
       <li>Vos identifiant et mot de passe de courtier ne sont jamais demandés ni stockés</li>
       <li>Verrouillez l&#x27;app avec Face ID, l&#x27;empreinte digitale ou un code. Le contenu est aussi masqué dans le sélecteur d&#x27;apps</li>
       <li>Changez de téléphone grâce à une sauvegarde chiffrée protégée par mot de passe</li>
-      <li>Les rapports d&#x27;erreur n&#x27;incluent jamais vos enregistrements, comme les actions, montants ou notes</li>
+      <li>Les rapports d’erreur sont conçus pour ne pas inclure vos données, comme les titres, les montants ou les notes</li>
     </ul>
   </div>
 </section>
@@ -177,7 +181,7 @@
     <h2>Questions fréquentes</h2>
     <details><summary>Puis-je voir les cours ou les plus-values latentes ?</summary><p>Non. Stock Log ne récupère pas de données de marché comme les cours des actions. Il se concentre sur le bilan des transactions que vous avez effectuées : plus/moins-values réalisées, dividendes et avantages.</p></details>
     <details><summary>L&#x27;app se connecte-t-elle à mon compte-titres ?</summary><p>Non. Elle n&#x27;utilise jamais vos identifiant et mot de passe de courtier. Vous saisissez les transactions à la main ou importez un CSV téléchargé chez votre courtier.</p></details>
-    <details><summary>L&#x27;app calcule-t-elle les impôts ?</summary><p>Non. Les règles fiscales dépendent de votre pays et du type de compte, et les estimations par transaction diffèrent souvent de ce qui est réellement prélevé. Vous pouvez enregistrer les plus/moins-values avant impôt et les dividendes après impôt.</p></details>
+    <details><summary>L&#x27;app calcule-t-elle les impôts ?</summary><p>L’impôt sur les ventes n’est pas calculé automatiquement : la retenue est souvent compensée sur l’année, si bien qu’une estimation par opération peut ne pas correspondre. Pour les dividendes, vous pouvez saisir une estimation de l’impôt selon des taux généraux ; corrigez-la ensuite avec le montant du relevé de votre courtier.</p></details>
     <details><summary>Que deviennent mes enregistrements si je change de téléphone ?</summary><p>Créez une sauvegarde chiffrée protégée par mot de passe dans les Réglages, puis restaurez-la sur votre nouveau téléphone. Sans le mot de passe, la sauvegarde ne peut pas être restaurée : conservez-le précieusement.</p></details>
     <details><summary>Puis-je enregistrer des comptes à fiscalité avantageuse ?</summary><p>Oui. Enregistrez chaque compte comme imposable ou à fiscalité avantageuse (ou, pour les courtiers japonais, compte spécifique, général ou NISA). Le prix moyen est calculé séparément pour chaque compte.</p></details>
     <details><summary>Quels fichiers CSV de courtiers puis-je importer ?</summary><p>Comme vous associez vous-même les colonnes, les CSV de nombreux courtiers peuvent fonctionner. Certains formats sont illisibles ; vérifiez donc l&#x27;aperçu avant d&#x27;importer.</p></details>
@@ -187,7 +191,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="disc">Stock Log n&#x27;est pas un conseiller en investissement. Vous êtes seul responsable de vos décisions d&#x27;investissement.</p>
+    <p class="disc">L’exploitant de Stock Log n’est pas un conseiller en investissement agréé. Prenez vos décisions d’investissement vous-même.</p>
     <nav class="links" aria-label="Mentions légales et contact">
       <a href="terms-fr.html">Conditions d&#x27;utilisation</a>
       <a href="privacy-policy-fr.html">Politique de confidentialité</a>

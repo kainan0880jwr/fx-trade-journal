@@ -1,0 +1,6 @@
+Trade Date,Symbol,Name,Action,Quantity,Price,Commission
+2026/01/06,XMPL,Example Holdings,Buy,10,120.50,1.00
+2026/02/10,XMPL,Example Holdings,Buy,5,118.00,1.00
+2026/03/16,DEMO,Demo Industries,Buy,20,45.25,1.00
+2026/05/20,XMPL,Example Holdings,Sell,8,131.75,1.00
+2026/06/24,DEMO,Demo Industries,Sell,20,41.10,1.00

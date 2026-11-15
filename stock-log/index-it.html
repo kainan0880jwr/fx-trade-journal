@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 読み込めるものを自分のサイトの CSS と画像だけに絞る（スクリプトは一切使わない）。2026-11-15 セキュリティ監査 L-6。
+     GitHub Pages ではヘッダーを付けられないので meta で付ける（frame-ancestors は meta では効かない） -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Stock Log | Diario di operazioni azionarie, dividendi e vantaggi per gli azionisti</title>
 <meta name="description" content="Registra le tue operazioni azionarie, i dividendi e i vantaggi per gli azionisti, e rivedi l&#x27;utile/perdita realizzati e i dividendi ricevuti. Le registrazioni sono crittografate e restano sul tuo dispositivo. Nessun account richiesto.">
 <meta property="og:type" content="website">
@@ -23,7 +27,7 @@
 <link rel="alternate" hreflang="x-default" href="index-en.html">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=0452ca8abf">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=bd0aeb3711">
-<link rel="stylesheet" href="lp.css?v=af98970d7e">
+<link rel="stylesheet" href="lp.css?v=39ae9e498d">
 </head>
 <body>
 <a class="skip" href="#main">Vai al contenuto</a>
@@ -145,7 +149,7 @@
       <li>Le credenziali del tuo broker non vengono mai richieste né salvate</li>
       <li>Blocca l&#x27;app con Face ID, impronta digitale o codice. I contenuti sono nascosti anche nel selettore delle app</li>
       <li>Passa a un nuovo telefono con un backup crittografato protetto da password</li>
-      <li>I report degli errori non includono mai le tue registrazioni, come titoli, importi o note</li>
+      <li>I report degli errori sono progettati per non includere i tuoi dati, come titoli, importi o note</li>
     </ul>
   </div>
 </section>
@@ -177,7 +181,7 @@
     <h2>Domande frequenti</h2>
     <details><summary>Posso vedere i prezzi delle azioni o gli utili non realizzati?</summary><p>No. Stock Log non scarica dati di mercato come i prezzi delle azioni. Si concentra sulla revisione delle operazioni che hai fatto: utile/perdita realizzati, dividendi e vantaggi.</p></details>
     <details><summary>Si collega al mio conto presso il broker?</summary><p>No. Non usa mai le credenziali del tuo broker. Registri le operazioni a mano o importi un CSV scaricato dal tuo broker.</p></details>
-    <details><summary>Calcola le imposte?</summary><p>No. Le regole fiscali dipendono dal paese e dal tipo di conto, e le stime per singola operazione spesso differiscono da quanto viene effettivamente trattenuto. Puoi registrare l&#x27;utile/perdita al lordo delle imposte e i dividendi al netto.</p></details>
+    <details><summary>Calcola le imposte?</summary><p>Le imposte sulle vendite non vengono calcolate automaticamente: la ritenuta è spesso compensata nell’arco dell’anno, quindi una stima per singola operazione può non corrispondere. Per i dividendi puoi inserire una stima dell’imposta in base alle aliquote generali; correggila poi con l’importo indicato nel rendiconto del tuo broker.</p></details>
     <details><summary>Cosa succede alle mie registrazioni quando cambio telefono?</summary><p>Crea un backup crittografato protetto da password in Impostazioni e ripristinalo sul nuovo telefono. Se dimentichi la password, il backup non può essere ripristinato, quindi conservala con cura.</p></details>
     <details><summary>Posso registrare conti esenti da imposte?</summary><p>Sì. Registra ogni conto come tassabile o esente (oppure, per i broker giapponesi, specifico, generale o NISA). Il prezzo medio viene calcolato separatamente per ogni conto.</p></details>
     <details><summary>Di quali broker posso importare i file CSV?</summary><p>Poiché le colonne le abbini tu, i file CSV di molti broker potrebbero funzionare. Alcuni formati non sono leggibili, quindi controlla l&#x27;anteprima prima di importare.</p></details>
@@ -187,7 +191,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="disc">Stock Log non è un consulente finanziario. Le decisioni di investimento sono solo tue e ne sei l&#x27;unico responsabile.</p>
+    <p class="disc">Il gestore di Stock Log non è un consulente finanziario autorizzato. Prendi tu le tue decisioni di investimento.</p>
     <nav class="links" aria-label="Note legali e contatti">
       <a href="terms-it.html">Termini di utilizzo</a>
       <a href="privacy-policy-it.html">Informativa sulla privacy</a>

@@ -40,12 +40,12 @@ a{color:inherit}
 .top nav a{text-decoration:none;color:var(--text2)}
 .top nav a:hover{color:var(--text)}
 .lang{position:relative;font-size:.85rem}
-.lang summary{list-style:none;cursor:pointer;border:1px solid var(--border);border-radius:999px;padding:4px 12px;white-space:nowrap}
+.lang summary{list-style:none;cursor:pointer;border:1px solid var(--border);border-radius:999px;padding:10px 14px;min-height:44px;box-sizing:border-box;white-space:nowrap}
 .lang summary::-webkit-details-marker{display:none}
 .lang summary::after{content:" ▾";color:var(--text2)}
 .lang ul{position:absolute;right:0;top:calc(100% + 6px);margin:0;padding:6px;list-style:none;min-width:160px;
   background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:30}
-.lang li a{display:block;padding:6px 10px;border-radius:8px;text-decoration:none}
+.lang li a{display:block;padding:12px 10px;border-radius:8px;text-decoration:none}
 .lang li a:hover,.lang li a[aria-current]{background:var(--surface2)}
 @media (max-width:720px){.top nav{display:none}.lang{margin-left:auto}}
 
@@ -136,7 +136,7 @@ h2{font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.3;margin:0 0 14px;font-wei
   background:var(--accent);color:var(--accent-ink);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.85rem}
 
 /* プライバシー（濃い背景） */
-.sec.dark{background:var(--dark-bg);color:var(--dark-text);position:relative;overflow:hidden}
+.sec.dark{background:var(--dark-bg);color:var(--dark-text);position:relative;overflow:hidden;border-block:1px solid var(--border)}
 .sec.dark::before{content:"";position:absolute;inset:auto -20% -60% 40%;height:120%;
   background:radial-gradient(closest-side,rgba(45,212,191,.22),transparent);pointer-events:none}
 .sec.dark .eyebrow{color:#5EEAD4}

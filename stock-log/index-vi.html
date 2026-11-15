@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 読み込めるものを自分のサイトの CSS と画像だけに絞る（スクリプトは一切使わない）。2026-11-15 セキュリティ監査 L-6。
+     GitHub Pages ではヘッダーを付けられないので meta で付ける（frame-ancestors は meta では効かない） -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Stock Log | Nhật ký giao dịch cổ phiếu, cổ tức và ưu đãi cổ đông</title>
 <meta name="description" content="Ghi chép giao dịch cổ phiếu, cổ tức và ưu đãi cổ đông, rồi xem lại lãi/lỗ đã thực hiện và cổ tức đã nhận. Ghi chép được mã hóa và chỉ nằm trên thiết bị của bạn. Không cần tạo tài khoản.">
 <meta property="og:type" content="website">
@@ -23,7 +27,7 @@
 <link rel="alternate" hreflang="x-default" href="index-en.html">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=0452ca8abf">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=bd0aeb3711">
-<link rel="stylesheet" href="lp.css?v=af98970d7e">
+<link rel="stylesheet" href="lp.css?v=39ae9e498d">
 </head>
 <body>
 <a class="skip" href="#main">Chuyển đến nội dung</a>
@@ -145,7 +149,7 @@
       <li>Không bao giờ hỏi hay lưu tên đăng nhập và mật khẩu chứng khoán của bạn</li>
       <li>Khóa ứng dụng bằng Face ID, vân tay hoặc mật mã. Nội dung cũng được ẩn trong trình chuyển ứng dụng</li>
       <li>Chuyển sang điện thoại mới bằng bản sao lưu mã hóa có mật khẩu</li>
-      <li>Báo cáo lỗi không bao giờ chứa ghi chép của bạn, như mã cổ phiếu, số tiền hay ghi chú</li>
+      <li>Báo cáo lỗi được thiết kế để không chứa dữ liệu của bạn, như mã cổ phiếu, số tiền hay ghi chú</li>
     </ul>
   </div>
 </section>
@@ -177,7 +181,7 @@
     <h2>Câu hỏi thường gặp</h2>
     <details><summary>Tôi có xem được giá cổ phiếu hoặc lãi/lỗ chưa thực hiện không?</summary><p>Không. Stock Log không lấy dữ liệu thị trường như giá cổ phiếu. Ứng dụng tập trung vào việc xem lại các giao dịch bạn đã thực hiện: lãi/lỗ đã thực hiện, cổ tức và ưu đãi.</p></details>
     <details><summary>Ứng dụng có kết nối với tài khoản chứng khoán của tôi không?</summary><p>Không. Ứng dụng không bao giờ dùng tên đăng nhập hay mật khẩu chứng khoán của bạn. Bạn tự ghi chép giao dịch hoặc nhập tệp CSV đã tải từ công ty chứng khoán.</p></details>
-    <details><summary>Ứng dụng có tính thuế không?</summary><p>Không. Quy định thuế tùy thuộc vào quốc gia và loại tài khoản, và ước tính theo từng giao dịch thường khác với số thuế thực tế bị khấu trừ. Bạn có thể ghi lãi/lỗ trước thuế và cổ tức sau thuế.</p></details>
+    <details><summary>Ứng dụng có tính thuế không?</summary><p>Thuế khi bán không được tính tự động: khoản khấu trừ thường được bù trừ trong cả năm, nên ước tính theo từng giao dịch có thể không khớp. Với cổ tức, bạn có thể điền ước tính thuế theo mức thuế suất chung; sau đó hãy sửa theo số tiền trong báo cáo của công ty chứng khoán.</p></details>
     <details><summary>Khi đổi điện thoại, ghi chép của tôi sẽ ra sao?</summary><p>Tạo bản sao lưu mã hóa có mật khẩu trong Cài đặt và khôi phục trên điện thoại mới. Nếu quên mật khẩu, bản sao lưu không thể khôi phục, vì vậy hãy giữ mật khẩu cẩn thận.</p></details>
     <details><summary>Tôi có ghi chép được tài khoản ưu đãi thuế không?</summary><p>Có. Đăng ký mỗi tài khoản là tài khoản chịu thuế hoặc ưu đãi thuế (với công ty chứng khoán Nhật: đặc định, thông thường hoặc NISA). Giá vốn bình quân được tính riêng cho từng tài khoản.</p></details>
     <details><summary>Tôi có thể nhập CSV của những công ty chứng khoán nào?</summary><p>Vì bạn tự gán các cột, tệp CSV của nhiều công ty chứng khoán có thể dùng được. Một số định dạng không đọc được, vì vậy vui lòng kiểm tra bản xem trước trước khi nhập.</p></details>
@@ -187,7 +191,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="disc">Stock Log không phải là nhà tư vấn đầu tư. Bạn hoàn toàn tự chịu trách nhiệm về các quyết định đầu tư của mình.</p>
+    <p class="disc">Đơn vị vận hành Stock Log không phải là cố vấn đầu tư được cấp phép. Hãy tự đưa ra quyết định đầu tư của bạn.</p>
     <nav class="links" aria-label="Pháp lý và liên hệ">
       <a href="terms-vi.html">Điều khoản sử dụng</a>
       <a href="privacy-policy-vi.html">Chính sách quyền riêng tư</a>

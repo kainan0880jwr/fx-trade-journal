@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 読み込めるものを自分のサイトの CSS と画像だけに絞る（スクリプトは一切使わない）。2026-11-15 セキュリティ監査 L-6。
+     GitHub Pages ではヘッダーを付けられないので meta で付ける（frame-ancestors は meta では効かない） -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>かぶログ｜株の売買・配当・株主優待の記録アプリ（日本株・米国株）</title>
 <meta name="description" content="日本株・米国株の売買、配当、株主優待を記録して、確定損益と受け取った配当を振り返る iPhone・Android アプリ。記録は端末の中で暗号化して保存し、会員登録は不要です。">
 <meta property="og:type" content="website">
@@ -23,7 +27,7 @@
 <link rel="alternate" hreflang="x-default" href="index-en.html">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=0452ca8abf">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=bd0aeb3711">
-<link rel="stylesheet" href="lp.css?v=af98970d7e">
+<link rel="stylesheet" href="lp.css?v=39ae9e498d">
 </head>
 <body>
 <a class="skip" href="#main">本文へスキップ</a>
@@ -145,7 +149,7 @@
       <li>証券会社の ID・パスワードは受け取らず、保存もしません</li>
       <li>Face ID・指紋・パスコードでアプリをロック。アプリ切り替えの画面でも中身を隠します</li>
       <li>機種変更には、パスワード付きの暗号化バックアップを使えます</li>
-      <li>エラー報告には、銘柄・金額・メモなど記録の中身を含めません</li>
+      <li>エラー報告に、銘柄・金額・メモなど記録の中身を含めない仕組みにしています</li>
     </ul>
   </div>
 </section>
@@ -177,7 +181,7 @@
     <h2>よくある質問</h2>
     <details><summary>株価や評価損益は見られますか？</summary><p>見られません。かぶログは株価などの市場データを取得せず、あなたが行った取引の記録（確定損益・配当・優待）の振り返りに絞っています。</p></details>
     <details><summary>証券口座と連携しますか？</summary><p>連携しません。証券会社の ID・パスワードは使いません。取引は手で記録するか、証券会社のサイトで書き出した CSV から取り込みます。</p></details>
-    <details><summary>税金は計算されますか？</summary><p>自動では計算しません。特定口座の源泉徴収は年間で通算されるため、取引ごとに計算した数字は実際と合わないことがあるからです。税引前の損益と、手取りの配当を記録できます。</p></details>
+    <details><summary>税金は計算されますか？</summary><p>売りの税金は自動では計算しません。特定口座の源泉徴収は年間で通算されるため、取引ごとの計算は実際と合わないことがあるからです。配当は、一般的な税率で税の参考値を入れられますが、実際の額は取引報告書の値に直してください。</p></details>
     <details><summary>機種変更したら記録はどうなりますか？</summary><p>設定から、パスワード付きの暗号化バックアップを作り、新しい端末で復元できます。パスワードを忘れると復元できないため、大切に保管してください。</p></details>
     <details><summary>NISA の口座も記録できますか？</summary><p>できます。特定口座・一般口座・NISA 成長投資枠・NISA つみたて投資枠を口座ごとに登録し、取得単価は口座ごとに計算します。</p></details>
     <details><summary>どの証券会社の CSV を取り込めますか？</summary><p>列の割り当て方式なので、取引履歴を CSV で書き出せる証券会社なら取り込める場合があります。形式によっては読み込めないこともあるため、プレビューで内容を確かめてから取り込んでください。</p></details>
@@ -187,7 +191,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="disc">かぶログは投資助言・代理業ではありません。投資に関する最終判断はご自身の責任で行ってください。</p>
+    <p class="disc">かぶログの運営者は投資助言・代理業者ではありません。投資に関する判断はご自身で行ってください。</p>
     <nav class="links" aria-label="規約と連絡先">
       <a href="terms.html">利用規約</a>
       <a href="privacy-policy.html">プライバシーポリシー</a>

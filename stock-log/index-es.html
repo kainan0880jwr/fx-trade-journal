@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 読み込めるものを自分のサイトの CSS と画像だけに絞る（スクリプトは一切使わない）。2026-11-15 セキュリティ監査 L-6。
+     GitHub Pages ではヘッダーを付けられないので meta で付ける（frame-ancestors は meta では効かない） -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Stock Log | Diario de operaciones con acciones, dividendos y beneficios para accionistas</title>
 <meta name="description" content="Registra tus operaciones con acciones, dividendos y beneficios para accionistas, y revisa tu ganancia/pérdida realizada y los dividendos recibidos. Tus registros se cifran y se quedan en tu dispositivo. Sin necesidad de cuenta.">
 <meta property="og:type" content="website">
@@ -23,7 +27,7 @@
 <link rel="alternate" hreflang="x-default" href="index-en.html">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=0452ca8abf">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=bd0aeb3711">
-<link rel="stylesheet" href="lp.css?v=af98970d7e">
+<link rel="stylesheet" href="lp.css?v=39ae9e498d">
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -145,7 +149,7 @@
       <li>Nunca se piden ni se guardan tu usuario y contraseña del bróker</li>
       <li>Bloquea la app con Face ID, huella o código. El contenido también se oculta en el selector de apps</li>
       <li>Cambia de móvil con una copia de seguridad cifrada y protegida con contraseña</li>
-      <li>Los informes de errores nunca incluyen tus registros, como acciones, importes o notas</li>
+      <li>Los informes de errores están diseñados para no incluir tus registros, como valores, importes o notas</li>
     </ul>
   </div>
 </section>
@@ -177,7 +181,7 @@
     <h2>Preguntas frecuentes</h2>
     <details><summary>¿Puedo ver cotizaciones o ganancias no realizadas?</summary><p>No. Stock Log no obtiene datos de mercado como las cotizaciones. Se centra en revisar las operaciones que hiciste: ganancia/pérdida realizada, dividendos y beneficios.</p></details>
     <details><summary>¿Se conecta con mi cuenta de valores?</summary><p>No. Nunca usa tu usuario ni tu contraseña del bróker. Registras las operaciones a mano o importas un CSV que descargaste de tu bróker.</p></details>
-    <details><summary>¿Calcula los impuestos?</summary><p>No. Las normas fiscales dependen de tu país y del tipo de cuenta, y las estimaciones por operación suelen diferir de lo que realmente se retiene. Puedes registrar la ganancia/pérdida antes de impuestos y los dividendos después de impuestos.</p></details>
+    <details><summary>¿Calcula los impuestos?</summary><p>El impuesto sobre las ventas no se calcula automáticamente: la retención suele compensarse a lo largo del año, por lo que una estimación por operación puede no coincidir. Para los dividendos, puedes introducir una estimación del impuesto con tipos generales; corrígela después con el importe del informe de tu bróker.</p></details>
     <details><summary>¿Qué pasa con mis registros si cambio de móvil?</summary><p>Crea en Ajustes una copia de seguridad cifrada y protegida con contraseña, y restáurala en tu nuevo móvil. Si olvidas la contraseña, no se puede restaurar la copia, así que guárdala bien.</p></details>
     <details><summary>¿Puedo registrar cuentas con ventajas fiscales?</summary><p>Sí. Registra cada cuenta como sujeta a impuestos o con ventajas fiscales (o, en brókeres japoneses, cuenta específica, general o NISA). El coste medio se calcula por separado para cada cuenta.</p></details>
     <details><summary>¿Qué archivos CSV de brókeres puedo importar?</summary><p>Como tú asignas las columnas, pueden funcionar los CSV de muchos brókeres. Algunos formatos no se pueden leer, así que comprueba la vista previa antes de importar.</p></details>
@@ -187,7 +191,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="disc">Stock Log no es un asesor de inversiones. Las decisiones de inversión son solo responsabilidad tuya.</p>
+    <p class="disc">El operador de Stock Log no es un asesor de inversiones registrado. Toma tus propias decisiones de inversión.</p>
     <nav class="links" aria-label="Información legal y contacto">
       <a href="terms-es.html">Condiciones de uso</a>
       <a href="privacy-policy-es.html">Política de privacidad</a>

@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 読み込めるものを自分のサイトの CSS と画像だけに絞る（スクリプトは一切使わない）。2026-11-15 セキュリティ監査 L-6。
+     GitHub Pages ではヘッダーを付けられないので meta で付ける（frame-ancestors は meta では効かない） -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Stock Log | Stock trade, dividend and shareholder benefit journal</title>
 <meta name="description" content="Record your stock trades, dividends and shareholder benefits, and review your realized gains and the dividends you received. Your records are encrypted and stay on your device. No account needed.">
 <meta property="og:type" content="website">
@@ -23,7 +27,7 @@
 <link rel="alternate" hreflang="x-default" href="index-en.html">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=0452ca8abf">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=bd0aeb3711">
-<link rel="stylesheet" href="lp.css?v=af98970d7e">
+<link rel="stylesheet" href="lp.css?v=39ae9e498d">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -145,7 +149,7 @@
       <li>Your broker login ID and password are never asked for or stored</li>
       <li>Lock the app with Face ID, fingerprint or passcode. Contents are hidden in the app switcher too</li>
       <li>Move to a new phone with a password-protected encrypted backup</li>
-      <li>Error reports never include your records, such as securities, amounts or notes</li>
+      <li>Error reports are designed not to include your records, such as securities, amounts or notes</li>
     </ul>
   </div>
 </section>
@@ -177,7 +181,7 @@
     <h2>Frequently asked questions</h2>
     <details><summary>Can I see stock prices or unrealized gains?</summary><p>No. Stock Log does not fetch market data such as stock prices. It focuses on reviewing the trades you made: realized gains, dividends and benefits.</p></details>
     <details><summary>Does it connect to my brokerage account?</summary><p>No. It never uses your broker login ID or password. You record trades by hand or import a CSV you downloaded from your broker.</p></details>
-    <details><summary>Does it calculate taxes?</summary><p>No. Tax rules depend on your country and account type, and per-trade estimates often differ from what is actually withheld. You can record pre-tax gains and net dividends.</p></details>
+    <details><summary>Does it calculate taxes?</summary><p>Tax on sales is not calculated automatically: withholding is often netted over the year, so per-trade estimates may not match. For dividends, you can fill in a tax estimate based on general rates, but please correct it to the amount on your broker&#x27;s report.</p></details>
     <details><summary>What happens to my records when I change phones?</summary><p>Create a password-protected encrypted backup in Settings and restore it on your new phone. If you forget the password, the backup cannot be restored, so keep it safe.</p></details>
     <details><summary>Can I record tax-free accounts?</summary><p>Yes. Register each account as taxable or tax-free (or, for Japanese brokers, specific, general or NISA). Average cost is calculated separately for each account.</p></details>
     <details><summary>Which brokers&#x27; CSV files can I import?</summary><p>Because you match the columns yourself, CSV files from many brokers may work. Some formats cannot be read, so please check the preview before importing.</p></details>
@@ -187,7 +191,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="disc">Stock Log is not an investment advisor. You are solely responsible for your investment decisions.</p>
+    <p class="disc">The operator of Stock Log is not a registered investment adviser. Please make your own investment decisions.</p>
     <nav class="links" aria-label="Legal and contact">
       <a href="terms-en.html">Terms of Use</a>
       <a href="privacy-policy-en.html">Privacy Policy</a>

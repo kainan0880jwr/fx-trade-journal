@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 読み込めるものを自分のサイトの CSS と画像だけに絞る（スクリプトは一切使わない）。2026-11-15 セキュリティ監査 L-6。
+     GitHub Pages ではヘッダーを付けられないので meta で付ける（frame-ancestors は meta では効かない） -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Stock Log | Diário de operações com ações, dividendos e benefícios ao acionista</title>
 <meta name="description" content="Registre suas operações com ações, dividendos e benefícios ao acionista, e revise seu lucro/prejuízo realizado e os dividendos recebidos. Seus registros são criptografados e ficam no seu aparelho. Não precisa criar conta.">
 <meta property="og:type" content="website">
@@ -23,7 +27,7 @@
 <link rel="alternate" hreflang="x-default" href="index-en.html">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=0452ca8abf">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=bd0aeb3711">
-<link rel="stylesheet" href="lp.css?v=af98970d7e">
+<link rel="stylesheet" href="lp.css?v=39ae9e498d">
 </head>
 <body>
 <a class="skip" href="#main">Pular para o conteúdo</a>
@@ -145,7 +149,7 @@
       <li>O login e a senha da sua corretora nunca são pedidos nem armazenados</li>
       <li>Bloqueie o app com Face ID, digital ou senha. O conteúdo também fica oculto no alternador de apps</li>
       <li>Troque de celular com um backup criptografado protegido por senha</li>
-      <li>Os relatórios de erro nunca incluem seus registros, como ativos, valores ou notas</li>
+      <li>Os relatórios de erro são projetados para não incluir seus registros, como ativos, valores ou notas</li>
     </ul>
   </div>
 </section>
@@ -177,7 +181,7 @@
     <h2>Perguntas frequentes</h2>
     <details><summary>Posso ver cotações ou lucro não realizado?</summary><p>Não. O Stock Log não busca dados de mercado, como cotações de ações. Ele se concentra na revisão das operações que você fez: lucro/prejuízo realizado, dividendos e benefícios.</p></details>
     <details><summary>Ele se conecta à minha conta na corretora?</summary><p>Não. Ele nunca usa o login ou a senha da sua corretora. Você registra as operações à mão ou importa um CSV baixado da sua corretora.</p></details>
-    <details><summary>Ele calcula impostos?</summary><p>Não. As regras fiscais dependem do seu país e do tipo de conta, e estimativas por operação muitas vezes diferem do que é de fato retido. Você pode registrar o lucro/prejuízo antes de impostos e os dividendos líquidos.</p></details>
+    <details><summary>Ele calcula impostos?</summary><p>O imposto sobre vendas não é calculado automaticamente: a retenção costuma ser compensada ao longo do ano, então uma estimativa por operação pode não bater. Para dividendos, você pode preencher uma estimativa do imposto com alíquotas gerais; depois corrija com o valor do informe da sua corretora.</p></details>
     <details><summary>O que acontece com meus registros quando troco de celular?</summary><p>Crie um backup criptografado protegido por senha em Ajustes e restaure-o no novo celular. Se esquecer a senha, o backup não poderá ser restaurado, então guarde-a com cuidado.</p></details>
     <details><summary>Posso registrar contas isentas de impostos?</summary><p>Sim. Cadastre cada conta como tributável ou isenta (ou, para corretoras japonesas, específica, geral ou NISA). O preço médio é calculado separadamente para cada conta.</p></details>
     <details><summary>De quais corretoras posso importar o CSV?</summary><p>Como é você quem associa as colunas, arquivos CSV de muitas corretoras podem funcionar. Alguns formatos não podem ser lidos, então confira a pré-visualização antes de importar.</p></details>
@@ -187,7 +191,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="disc">O Stock Log não é um consultor de investimentos. As decisões de investimento são de sua inteira responsabilidade.</p>
+    <p class="disc">O responsável pelo Stock Log não é um consultor de investimentos registrado. Tome suas próprias decisões de investimento.</p>
     <nav class="links" aria-label="Informações legais e contato">
       <a href="terms-pt.html">Termos de Uso</a>
       <a href="privacy-policy-pt.html">Política de Privacidade</a>

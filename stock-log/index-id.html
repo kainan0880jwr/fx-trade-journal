@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 読み込めるものを自分のサイトの CSS と画像だけに絞る（スクリプトは一切使わない）。2026-11-15 セキュリティ監査 L-6。
+     GitHub Pages ではヘッダーを付けられないので meta で付ける（frame-ancestors は meta では効かない） -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Stock Log | Jurnal transaksi saham, dividen, dan fasilitas pemegang saham</title>
 <meta name="description" content="Catat transaksi saham, dividen, dan fasilitas pemegang saham Anda, lalu tinjau laba/rugi terealisasi dan dividen yang Anda terima. Catatan Anda dienkripsi dan tetap di perangkat Anda. Tidak perlu membuat akun.">
 <meta property="og:type" content="website">
@@ -23,7 +27,7 @@
 <link rel="alternate" hreflang="x-default" href="index-en.html">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=0452ca8abf">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=bd0aeb3711">
-<link rel="stylesheet" href="lp.css?v=af98970d7e">
+<link rel="stylesheet" href="lp.css?v=39ae9e498d">
 </head>
 <body>
 <a class="skip" href="#main">Langsung ke konten</a>
@@ -145,7 +149,7 @@
       <li>ID login dan kata sandi broker Anda tidak pernah diminta atau disimpan</li>
       <li>Kunci aplikasi dengan Face ID, sidik jari, atau kode sandi. Isinya juga disembunyikan di layar pengalih aplikasi</li>
       <li>Pindah ke ponsel baru dengan cadangan terenkripsi yang dilindungi kata sandi</li>
-      <li>Laporan error tidak pernah memuat catatan Anda, seperti nama saham, jumlah, atau memo</li>
+      <li>Laporan kesalahan dirancang agar tidak menyertakan catatan Anda, seperti saham, jumlah, atau memo</li>
     </ul>
   </div>
 </section>
@@ -177,7 +181,7 @@
     <h2>Pertanyaan yang sering diajukan</h2>
     <details><summary>Apakah saya bisa melihat harga saham atau laba yang belum terealisasi?</summary><p>Tidak. Stock Log tidak mengambil data pasar seperti harga saham. Aplikasi ini berfokus pada peninjauan transaksi yang Anda lakukan: laba/rugi terealisasi, dividen, dan fasilitas.</p></details>
     <details><summary>Apakah aplikasi ini terhubung ke akun broker saya?</summary><p>Tidak. Aplikasi ini tidak pernah memakai ID login atau kata sandi broker Anda. Anda mencatat transaksi secara manual atau mengimpor CSV yang diunduh dari broker Anda.</p></details>
-    <details><summary>Apakah aplikasi ini menghitung pajak?</summary><p>Tidak. Aturan pajak bergantung pada negara dan jenis akun Anda, dan perkiraan per transaksi sering berbeda dari jumlah yang benar-benar dipotong. Anda dapat mencatat laba/rugi sebelum pajak dan dividen bersih.</p></details>
+    <details><summary>Apakah aplikasi ini menghitung pajak?</summary><p>Pajak atas penjualan tidak dihitung otomatis: pemotongan pajak sering diperhitungkan sepanjang tahun, sehingga perkiraan per transaksi bisa tidak cocok. Untuk dividen, Anda dapat mengisi perkiraan pajak berdasarkan tarif umum; lalu sesuaikan dengan jumlah di laporan broker Anda.</p></details>
     <details><summary>Apa yang terjadi pada catatan saya saat ganti ponsel?</summary><p>Buat cadangan terenkripsi yang dilindungi kata sandi di Pengaturan, lalu pulihkan di ponsel baru Anda. Jika kata sandi lupa, cadangan tidak dapat dipulihkan, jadi simpan baik-baik.</p></details>
     <details><summary>Apakah saya bisa mencatat akun bebas pajak?</summary><p>Bisa. Daftarkan setiap akun sebagai akun kena pajak atau bebas pajak (atau, untuk broker Jepang, akun khusus, umum, atau NISA). Harga rata-rata dihitung terpisah untuk setiap akun.</p></details>
     <details><summary>CSV dari broker mana saja yang bisa diimpor?</summary><p>Karena Anda sendiri yang mencocokkan kolomnya, file CSV dari banyak broker mungkin dapat dipakai. Beberapa format tidak dapat dibaca, jadi periksa pratinjau sebelum mengimpor.</p></details>
@@ -187,7 +191,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="disc">Stock Log bukan penasihat investasi. Keputusan investasi sepenuhnya menjadi tanggung jawab Anda.</p>
+    <p class="disc">Pengelola Stock Log bukan penasihat investasi terdaftar. Silakan ambil keputusan investasi Anda sendiri.</p>
     <nav class="links" aria-label="Informasi hukum dan kontak">
       <a href="terms-id.html">Ketentuan Penggunaan</a>
       <a href="privacy-policy-id.html">Kebijakan Privasi</a>
