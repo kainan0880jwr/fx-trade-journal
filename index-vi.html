@@ -20,7 +20,8 @@
 <link rel="alternate" hreflang="vi" href="https://kainan0880jwr.github.io/fx-trade-journal/index-vi.html">
 <link rel="alternate" hreflang="pt-BR" href="https://kainan0880jwr.github.io/fx-trade-journal/index-pt.html">
 <link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/">
-<meta name="theme-color" content="#05070C">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#05070C">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F6FB">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
@@ -30,7 +31,7 @@
 <meta property="og:site_name" content="FX Trade Journal">
 <meta property="og:locale" content="vi_VN">
 <meta property="og:title" content="FX Trade Journal | Ứng dụng nhật ký giao dịch forex (nhập MT4/MT5)">
-<meta property="og:description" content="Ghi một lệnh với tối thiểu 3 lần chạm. Tỷ lệ thắng, pips và PF được tính từ dữ liệu bạn nhập, nhật ký giao dịch nằm trên thiết bị của bạn.">
+<meta property="og:description" content="Ghi một lệnh với tối thiểu 3 lần chạm. Tỷ lệ thắng, pips và PF được tính từ dữ liệu bạn nhập, nhật ký giao dịch được lưu trên thiết bị của bạn.">
 <meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/index-vi.html">
 <meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
 <meta property="og:image:width" content="1200">
@@ -38,7 +39,7 @@
 <meta property="og:image:alt" content="FX Trade Journal — màn hình ghi lệnh và tự động tính tỷ lệ thắng, pips, PF">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="FX Trade Journal | Ứng dụng nhật ký giao dịch forex (nhập MT4/MT5)">
-<meta name="twitter:description" content="Ghi một lệnh với tối thiểu 3 lần chạm. Tỷ lệ thắng, pips và PF được tính từ dữ liệu bạn nhập, nhật ký giao dịch nằm trên thiết bị của bạn.">
+<meta name="twitter:description" content="Ghi một lệnh với tối thiểu 3 lần chạm. Tỷ lệ thắng, pips và PF được tính từ dữ liệu bạn nhập, nhật ký giao dịch được lưu trên thiết bị của bạn.">
 <meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
 <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -195,25 +196,10 @@
 
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap hero-grid">
-    <div class="hero-copy">
+
+    <div class="hero-copy hero-head">
       <h1 id="hero-title">Nhật ký giao dịch forex của bạn,<br><em>tối thiểu 3 lần chạm</em>.</h1>
       <p class="hero-sub">Ghi lệnh với tối thiểu 3 lần chạm ngay sau khi đóng (nếu chỉ chọn kết quả). Tỷ lệ thắng được tính tự động; pips và lãi/lỗ được tính khi bạn nhập.</p>
-      <div class="hero-actions">
-        <a class="badge-link ios-cta" data-cta="hero" href="https://apps.apple.com/app/id6786188634?pt=129108253&amp;ct=lp-intl&amp;mt=8"><img class="badge-appstore" src="lp-assets/badges/app-store-vi.svg" width="120" height="40" alt="Tải về trên App Store"></a>
-        <a class="btn btn-primary android-cta" data-cta="android-hero" href="#android">Trở thành người thử nghiệm Android (miễn phí)</a>
-        <figure class="hero-qr">
-          <img src="lp-assets/qr-app-store.svg" width="96" height="96" alt="Mã QR mở App Store">
-          <figcaption>Quét bằng camera iPhone để mở App Store (apps.apple.com)</figcaption>
-        </figure>
-      </div>
-      <p class="hero-note">Tải miễn phí · tính năng cơ bản miễn phí (PRO là gói đăng ký trả phí, tự động gia hạn)</p>
-
-      <ul class="hero-trust">
-        <li>Bắt đầu miễn phí</li>
-        <li>Không cần đăng ký</li>
-        <li><a href="#security">Nhật ký giao dịch nằm trên thiết bị</a></li>
-      </ul>
-      <p class="hero-android"><a href="#android">Bản Android: chúng tôi đang tìm người thử nghiệm →</a></p>
     </div>
     <figure class="hero-visual">
       <div class="hero-shots">
@@ -228,6 +214,24 @@
       </div>
       <figcaption class="sample-note">Màn hình mẫu. Không phải kết quả giao dịch thực tế.</figcaption>
     </figure>
+    <div class="hero-copy hero-cta">
+      <div class="hero-actions">
+        <a class="badge-link ios-cta" data-cta="hero" href="https://apps.apple.com/app/id6786188634?pt=129108253&amp;ct=lp-intl&amp;mt=8"><img class="badge-appstore" src="lp-assets/badges/app-store-vi.svg" width="120" height="40" alt="Tải về trên App Store"></a>
+        <a class="btn btn-primary android-cta" data-cta="android-hero" href="#android">Trở thành người thử nghiệm Android (miễn phí)</a>
+        <figure class="hero-qr">
+          <img src="lp-assets/qr-app-store.svg" width="96" height="96" alt="Mã QR mở App Store">
+          <figcaption>Quét bằng camera iPhone để mở App Store (apps.apple.com)</figcaption>
+        </figure>
+      </div>
+      <p class="hero-note">Tải miễn phí · tính năng cơ bản miễn phí (PRO là gói đăng ký trả phí, tự động gia hạn)</p>
+
+      <ul class="hero-trust">
+        <li>Bắt đầu miễn phí</li>
+        <li>Không cần đăng ký</li>
+        <li><a href="#security">Nhật ký giao dịch được lưu trên thiết bị</a></li>
+      </ul>
+      <p class="hero-android"><a href="#android">Bản Android: chúng tôi đang tìm người thử nghiệm →</a></p>
+    </div>
   </div>
 </section>
 
@@ -364,7 +368,7 @@
   <div class="wrap privacy-grid">
     <div>
       <p class="eyebrow">Quyền riêng tư và bảo mật</p>
-      <h2 id="privacy-title">Nhật ký giao dịch của bạn nằm trên thiết bị.</h2>
+      <h2 id="privacy-title">Nhật ký giao dịch của bạn được lưu trên thiết bị.</h2>
       <p class="lead">Không cần đăng ký. Nhật ký giao dịch được mã hóa trên thiết bị và không bao giờ được gửi đến máy chủ của chúng tôi.</p>
       <ul class="checks">
         <li>Cơ sở dữ liệu nhật ký giao dịch được mã hóa (SQLCipher, AES-256)</li>
