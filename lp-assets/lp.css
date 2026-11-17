@@ -94,15 +94,43 @@ h3{font-size:1.15rem;}
 .nav-row{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; column-gap:1rem; min-height:64px;}
 .brand{display:flex; align-items:center; gap:.55em; color:var(--ink); font-weight:800; text-decoration:none; white-space:nowrap;}
 .brand-mark{width:24px; height:24px; flex:none;}
-.nav-row > nav{order:3; flex:1 0 100%; min-width:0;}
+.nav-row > nav{min-width:0;}
 /* 狭い画面でも消さない（料金・FAQ への導線が無くなる）。2段目で横にスクロールさせる */
 .nav-links{display:flex; gap:1.25rem; margin:0; padding:0 0 .25rem; list-style:none; overflow-x:auto; white-space:nowrap; scrollbar-width:none;}
 .nav-links::-webkit-scrollbar{display:none;}
 .nav-links a{display:inline-block; color:var(--ink-dim); text-decoration:none; font-size:.92rem; padding:.45em 0;}
 .nav-links a:hover{color:var(--ink);}
+/* 2段目の右に続きがあることを示す（右端を薄くする。2026-11-16 Fable レビュー LP-7） */
+@media (max-width:899px){
+  .nav-links{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent); mask-image:linear-gradient(90deg,#000 85%,transparent); padding-right:2rem;}
+}
+/* 言語の切り替え（LP-4）。JS なしの details。開いた一覧はナビの下に重ねる。
+   FAQ 用の details の汎用スタイル（上の線・余白・「+/−」）を打ち消す（11/17 Fable レビュー） */
+.lang-menu{position:relative; font-size:.9rem; border-top:0; padding-top:0;}
+.lang-menu > summary{display:inline-flex; align-items:center; gap:.3em; min-height:0; list-style:none; cursor:pointer; color:var(--ink-dim); font-weight:400; font-size:inherit; padding:.45em .2em; white-space:nowrap;}
+.lang-menu > summary::-webkit-details-marker{display:none;}
+.lang-menu > summary::after{content:"▾"; margin-left:0; color:inherit; font-size:1em; font-weight:400;}
+.lang-menu[open] > summary::after{content:"▴";}
+.lang-menu > summary:hover{color:var(--ink);}
+.lang-menu .lang-code{display:none;}
+@media (max-width:599px){ .lang-menu .lang-full{display:none;} .lang-menu .lang-code{display:inline;} }
+/* 一覧が画面の高さを超えても下まで届くように（同意バナー・横向き）。幅があれば2列にして高さを半分に */
+.lang-menu ul{position:absolute; right:0; top:100%; z-index:60; margin:.25rem 0 0; padding:.4rem 0; list-style:none; min-width:10em; max-height:calc(100svh - 8rem); overflow-y:auto; overscroll-behavior:contain; background:var(--surface); border:1px solid var(--line-strong); border-radius:12px; box-shadow:0 12px 32px rgba(0,0,0,.35);}
+@media (min-width:420px){ .lang-menu ul{display:grid; grid-template-columns:repeat(2, max-content);} }
+.lang-menu li a{display:block; padding:.5em 1em; color:var(--ink); text-decoration:none; white-space:nowrap;}
+.lang-menu li a:hover,.lang-menu li a:focus-visible{background:var(--surface-2);}
+/* スマホ: 1段目 ブランド・ボタン、2段目 リンク（横スクロール）・言語。2段に収める（11/17 Fable レビュー 指摘1） */
+@media (max-width:899px){
+  .nav-row{display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"brand cta" "links lang"; align-items:center;}
+  .nav-row > .brand{grid-area:brand; min-width:0; overflow:hidden;}
+  .nav-row > .brand > span{overflow:hidden; text-overflow:ellipsis;}
+  .nav-row > .nav-cta{grid-area:cta;}
+  .nav-row > nav{grid-area:links;}
+  .nav-row > .lang-menu{grid-area:lang; justify-self:end;}
+}
 @media (min-width:900px){
   .nav-row{flex-wrap:nowrap;}
-  .nav-row > nav{order:0; flex:0 1 auto;}
+  .nav-row > nav{order:0; flex:0 1 auto; margin-left:auto;}
   .nav-links{gap:1.5rem; padding:0; overflow-x:visible;}
 }
 
@@ -252,6 +280,11 @@ details p{margin-top:.5rem; font-size:.92rem;}
 .cancel-line{margin-top:1rem; color:var(--ink); font-size:.95rem;}
 .fineprint{margin-top:.75rem; font-size:.85rem; color:var(--ink-faint); line-height:1.7;}
 .plan-actions{display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1.5rem;}
+/* 無料でも PRO でも使えるもの（表の下にまとめる。LP-5） */
+.same-rows{margin-top:1rem; border:1px solid var(--line); border-radius:var(--radius); padding:.25rem 1rem;}
+.same-rows > summary{cursor:pointer; padding:.75rem 0; color:var(--ink); font-weight:700;}
+.same-rows ul{margin:0 0 .75rem; padding-left:1.25em; list-style:disc; color:var(--ink-body); columns:2 14em; column-gap:2rem;}
+.same-rows li{padding:.2em 0; break-inside:avoid;}
 
 /* faq */
 .faq{background:var(--bg-alt);}
