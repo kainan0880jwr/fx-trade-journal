@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forex Lot Size Calculator: Position Size from Risk and Stop Loss</title>
+<meta name="description" content="Free forex lot size (position size) calculator. Enter your account balance, risk percentage, stop loss in pips and currency pair to estimate the lot size. Supports 100,000 / 10,000 / 1,000 units per lot and account currencies other than the quote currency. With formulas and worked examples.">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator-en.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator.html">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator-en.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FX Trade Journal">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Forex Lot Size Calculator: Position Size from Risk and Stop Loss">
+<meta property="og:description" content="Estimate your lot size from account balance, risk % and stop loss in pips. Choose units per lot and enter your own conversion rate.">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator-en.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FX Trade Journal — the trade log screen with win rate, pips and profit factor">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Forex Lot Size Calculator: Position Size from Risk and Stop Loss">
+<meta name="twitter:description" content="Estimate your lot size from account balance, risk % and stop loss in pips. Choose units per lot and enter your own conversion rate.">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Forex Lot Size Calculator: Position Size from Risk and Stop Loss",
+  "description": "Free forex lot size (position size) calculator. Enter your account balance, risk percentage, stop loss in pips and currency pair to estimate the lot size. Supports 100,000 / 10,000 / 1,000 units per lot and account currencies other than the quote currency. With formulas and worked examples.",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Daiki Ikebata"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FX Trade Journal",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png"
+    }
+  },
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator-en.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "FX Trade Journal",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/index-en.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Lot Size Calculator",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator-en.html"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many units are in one lot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the broker and account type. On MT4/MT5 one standard lot is usually 100,000 units, with mini (10,000) and micro (1,000) lots on some accounts, and some brokers define one lot as 10,000 units. Check your broker's contract specifications. This calculator lets you choose the units per lot."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What risk percentage should I use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no single right answer, and this calculator does not suggest a value. How much loss you can accept depends on your own situation and how often you trade. The calculator works out the lot size that keeps a stop-out within the percentage you enter."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is anything I enter sent anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The calculation runs in your browser, and nothing you enter is sent or stored. Conversion rates are not fetched automatically; you enter them yourself."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
+     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
+     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+<!-- 計算は lp-assets/calc.js（外部への送信なし。インラインスクリプトは CSP で使えない） -->
+<script src="lp-assets/calc.js" defer></script>
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="Consent for analytics" hidden>
+  <div class="wrap consent-inner">
+    <p>This site uses Google Analytics to understand traffic. See our <a href="privacy-policy-en.html">Privacy Policy</a> for details.</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">Decline</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">Accept</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index-en.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FX Trade Journal
+    </a>
+    <ul class="nav-links">
+      <li><a href="index-en.html#features">Features</a></li>
+      <li><a href="index-en.html#pricing">Pricing</a></li>
+      <li><a href="index-en.html#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="calc-nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-en-lot&mt=8">Get the app</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index-en.html">FX Trade Journal</a><span aria-hidden="true">/</span><span aria-current="page">Lot Size Calculator</span>
+      </nav>
+      <p class="eyebrow">Free calculator</p>
+      <h1>Forex Lot Size Calculator<br><span class="nobr">Position Size from Risk</span> <span class="nobr">and Stop Loss</span></h1>
+      <p class="article-meta">
+        <span>Published: November 19, 2026</span>
+        <span>Runs entirely in your browser</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">The calculator on this page gives an estimate from the numbers you enter. It is not investment advice or a recommendation to buy or sell anything. Results do not guarantee profits, and all trading decisions are your own responsibility. Trading conditions such as units per lot, margin requirements, spreads, commissions and swaps differ between brokers and account types, so check the actual conditions with your broker. Everything is calculated in your browser, and nothing you enter is sent anywhere.</p>
+
+      <p>Decide how much of your account you are prepared to lose if the stop is hit, and work backwards to the position size that keeps the loss within it. Enter your account balance, the risk as a percentage, the stop-loss distance in pips and the currency pair: the calculator shows an estimated lot size and the loss if the stop is hit at that size. If the quote currency (the right side of the pair) differs from your account currency, enter a conversion rate — it is not fetched automatically.</p>
+
+      <form class="calc" id="calc" data-calc="lot" aria-label="Lot size calculator" novalidate>
+        <div class="calc-grid">
+        <div class="calc-field">
+          <label for="lot-balance">Account balance</label>
+          <input type="text" id="lot-balance" name="balance" inputmode="decimal" autocomplete="off" value="10,000">
+        </div>
+        <div class="calc-field">
+          <label for="lot-risk">Risk (% of balance)</label>
+          <input type="text" id="lot-risk" name="riskPct" inputmode="decimal" autocomplete="off" value="1">
+        </div>
+        <div class="calc-field">
+          <label for="lot-sl">Stop loss (pips)</label>
+          <input type="text" id="lot-sl" name="slPips" inputmode="decimal" autocomplete="off" value="25">
+        </div>
+        <div class="calc-field">
+          <label for="lot-pair">Currency pair</label>
+          <select id="lot-pair" name="pair">
+            <option value="USD/JPY">USD/JPY</option>
+            <option value="EUR/USD" selected>EUR/USD</option>
+            <option value="EUR/JPY">EUR/JPY</option>
+            <option value="GBP/JPY">GBP/JPY</option>
+            <option value="AUD/JPY">AUD/JPY</option>
+            <option value="NZD/JPY">NZD/JPY</option>
+            <option value="CAD/JPY">CAD/JPY</option>
+            <option value="CHF/JPY">CHF/JPY</option>
+            <option value="GBP/USD">GBP/USD</option>
+            <option value="AUD/USD">AUD/USD</option>
+            <option value="NZD/USD">NZD/USD</option>
+            <option value="USD/CHF">USD/CHF</option>
+            <option value="USD/CAD">USD/CAD</option>
+            <option value="EUR/GBP">EUR/GBP</option>
+            <option value="EUR/AUD">EUR/AUD</option>
+            <option value="GBP/AUD">GBP/AUD</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label for="lot-account">Account currency</label>
+          <select id="lot-account" name="account">
+            <option value="JPY">JPY</option>
+            <option value="USD" selected>USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="AUD">AUD</option>
+            <option value="NZD">NZD</option>
+            <option value="CAD">CAD</option>
+            <option value="CHF">CHF</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label for="lot-units">Units per lot</label>
+          <select id="lot-units" aria-describedby="lot-units-hint" name="lotUnits">
+            <option value="100000" selected>100,000 (standard lot)</option>
+            <option value="10000">10,000 (mini lot)</option>
+            <option value="1000">1,000 (micro lot)</option>
+          </select>
+          <small id="lot-units-hint">Depends on your broker and account type. On MT4/MT5 one standard lot is usually 100,000 units.</small>
+        </div>
+        <div class="calc-field calc-wide" data-rate-field>
+          <label for="lot-rate" data-rate-label>Conversion rate</label>
+          <input type="text" id="lot-rate" name="rate" inputmode="decimal" autocomplete="off" placeholder="e.g. 1.2700" aria-describedby="lot-rate-hint">
+          <small id="lot-rate-hint" data-rate-hint>Only needed when the quote currency (the right side of the pair) differs from your account currency — e.g. for EUR/GBP in a USD account, the GBP/USD rate.</small>
+        </div>
+        </div>
+        <div class="calc-actions"><button type="submit" class="btn btn-primary">Calculate</button></div>
+        <div class="calc-result" aria-live="polite">
+          <p>Turn on JavaScript to see the result here. The formulas are explained in the "Formulas" section below.</p>
+        </div>
+      </form>
+
+      <div class="article-toc">
+        <p>Contents</p>
+        <ol>
+          <li><a href="#formula">Formulas</a></li>
+          <li><a href="#examples">Worked examples</a></li>
+          <li><a href="#notes">Things to keep in mind</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </div>
+
+      <h2 id="formula">Formulas</h2>
+      <p>The calculator uses three steps.</p>
+      <ol>
+        <li><strong>Amount at risk = account balance × risk % ÷ 100</strong></li>
+        <li><strong>Value of 1 pip per lot = pip size × units per lot (× conversion rate)</strong></li>
+        <li><strong>Lot size = amount at risk ÷ (stop loss in pips × value of 1 pip per lot)</strong></li>
+      </ol>
+      <p>The pip size is 0.01 for pairs quoted in Japanese yen (USD/JPY, EUR/JPY and so on) and 0.0001 for other pairs (EUR/USD, GBP/USD and so on). If the quote currency is the same as your account currency, no conversion is needed. Otherwise the pip value is converted with the rate between the quote currency and your account currency: for EUR/GBP in a USD account, P/L comes out in pounds and is multiplied by GBP/USD; for USD/JPY in a USD account, P/L comes out in yen and is divided by USD/JPY.</p>
+      <p>The result of step 3 is <strong>rounded down to 0.01 lots</strong>, so a stop-out at the size shown does not lose more than the amount at risk. If the calculated size is below the 0.01-lot minimum, 0.01 lots is shown together with a note that the loss would then exceed the amount at risk.</p>
+
+      <h2 id="examples">Worked examples</h2>
+      <p>All figures are made-up examples for illustration.</p>
+      <h3>Example 1: EUR/USD in a USD account</h3>
+      <ul>
+        <li>Balance 10,000 USD, risk 1%, stop loss 25 pips, 1 lot = 100,000 units</li>
+        <li>Amount at risk = 10,000 × 1 ÷ 100 = <strong>100 USD</strong></li>
+        <li>Value of 1 pip per lot = 0.0001 × 100,000 = <strong>10 USD</strong></li>
+        <li>Lot size = 100 ÷ (25 × 10) = <strong>0.40 lots (40,000 units)</strong></li>
+      </ul>
+      <h3>Example 2: USD/JPY in a USD account (with conversion)</h3>
+      <ul>
+        <li>Same balance, risk and stop; USD/JPY rate entered as 150.00</li>
+        <li>Value of 1 pip per lot = 0.01 × 100,000 ÷ 150 ≈ <strong>6.67 USD</strong> (1,000 yen)</li>
+        <li>Lot size = 100 ÷ (25 × 6.667) = <strong>0.60 lots (60,000 units)</strong></li>
+        <li>Loss if the stop is hit at this size = 0.60 × 25 × 6.667 ≈ 100 USD</li>
+      </ul>
+      <p>If your broker defines one lot as 10,000 units, the same risk gives 6 lots — the same 60,000 units. Always check what one lot means at your broker before placing an order.</p>
+
+      <h2 id="notes">Things to keep in mind</h2>
+      <ul>
+        <li><strong>Units per lot differ between brokers.</strong> On MT4/MT5 a standard lot is usually 100,000 units, but mini and micro accounts exist, and some brokers use 10,000 units per lot. Check your broker's contract specifications.</li>
+        <li><strong>Spreads, commissions and swaps are not included.</strong> In fast markets a stop order can also be filled at a worse price (slippage), so the actual loss can be larger than calculated.</li>
+        <li><strong>The conversion rate is a snapshot.</strong> If the rate is different when the loss is realised, the amount in your account currency changes too.</li>
+        <li><strong>Check margin separately.</strong> This calculator sizes the position from the loss you accept; it does not check the margin or leverage limits needed to open it.</li>
+        <li><strong>There is no single right risk percentage.</strong> This page does not suggest a value; it only shows what the numbers you enter work out to.</li>
+      </ul>
+
+      <div class="article-callout">
+        <h3>Keep a record of size, stop and result</h3>
+        <p>FX Trade Journal is a forex trading journal app for iOS that tallies monthly win rate, pips and profit factor automatically from the trades you log (monthly totals are available on the free plan). The app also has a position size calculator (free) that follows your account currency, and P/L for each trade is calculated from pips and lot size. It also imports MT4/MT5 trade history from a desktop report (HTML) or CSV (<a href="fx-mt4-mt5-import-guide-en.html">how to import</a>).</p>
+        <a class="btn btn-primary" data-cta="calc-body" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-en-lot&mt=8">Download free on the App Store</a>
+      </div>
+
+      <h2 id="related">Related articles and calculators</h2>
+      <ul>
+        <li><a href="fx-pips-calculator-en.html">Forex Pip and Profit/Loss Calculator</a> — pips and P/L from entry and exit prices.</li>
+        <li><a href="fx-breakeven-win-rate-calculator-en.html">Break-Even Win Rate and Risk-Reward Calculator</a> — break-even win rate from RR, and expectancy from win rate and RR.</li>
+        <li><a href="fx-win-rate-risk-reward-guide-en.html">Forex Win Rate and Risk-Reward: How to Find Your Break-Even Win Rate</a> — how stop distance and target distance (RR) relate to win rate.</li>
+        <li><a href="fx-trade-journal-guide-en.html">How to Keep a Forex Trading Journal</a> — recording size and stop placement and reviewing them.</li>
+      </ul>
+
+      <h2 id="faq">FAQ</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>How many units are in one lot?</summary>
+          <div class="faq-a">It depends on the broker and account type. On MT4/MT5 one standard lot is usually 100,000 units, with mini (10,000) and micro (1,000) lots on some accounts, and some brokers define one lot as 10,000 units. Check your broker's contract specifications. This calculator lets you choose the units per lot.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What risk percentage should I use?</summary>
+          <div class="faq-a">There is no single right answer, and this calculator does not suggest a value. How much loss you can accept depends on your own situation and how often you trade. The calculator works out the lot size that keeps a stop-out within the percentage you enter.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is anything I enter sent anywhere?</summary>
+          <div class="faq-a">No. The calculation runs in your browser, and nothing you enter is sent or stored. Conversion rates are not fetched automatically; you enter them yourself.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>Log the size, the stop and the result for every trade.</h2>
+      <p>FX Trade Journal tallies monthly win rate, pips and profit factor automatically from the trades you log.</p>
+      <a class="btn btn-primary" data-cta="calc-final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-en-lot&mt=8">Download free on the App Store</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FX Trade Journal
+        </div>
+        <p class="foot-tag">A trading journal that works entirely on your phone or tablet. Log it, analyze it, and see what your record shows.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index-en.html#features">Features</a></li>
+          <li><a href="index-en.html#pricing">Pricing</a></li>
+          <li><a href="index-en.html#faq">FAQ</a></li>
+          <li><a href="fx-trade-journal-guide-en.html">Guide</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Support &amp; Legal</h4>
+        <ul>
+          <li><a href="support-en.html">Contact us</a></li>
+          <li><a href="#" id="consentReset">Analytics settings</a></li>
+          <li><a href="privacy-policy-en.html">Privacy Policy</a></li>
+          <li><a href="terms-en.html">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      This app's analytics features are not intended to provide investment advice or solicit any specific financial product. Please make your own trading decisions at your own risk.<br>
+      Past records and performance do not guarantee future results.<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

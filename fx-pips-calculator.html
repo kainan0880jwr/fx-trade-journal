@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FXのpips・損益計算ツール｜エントリーと決済のレートから計算</title>
+<meta name="description" content="通貨ペア・売買の方向・エントリーと決済のレート・ロット数から、FXのpipsと損益を計算する無料ツール。円が絡むペア（0.01円＝1pip）と円以外のペア（0.0001＝1pip）の桁の違い、口座通貨への換算の考え方も解説。">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator.html">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator-en.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FXトレードログ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="FXのpips・損益計算ツール｜エントリーと決済のレートから計算">
+<meta property="og:description" content="エントリーと決済のレート・ロット数からpipsと損益を計算。円のペアと円以外のペアのpipsの桁の違いも解説。">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FXトレードログ — 記録画面と、勝率・pips・PFの自動集計">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FXのpips・損益計算ツール｜エントリーと決済のレートから計算">
+<meta name="twitter:description" content="エントリーと決済のレート・ロット数からpipsと損益を計算。円のペアと円以外のペアのpipsの桁の違いも解説。">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "FXのpips・損益計算ツール｜エントリーと決済のレートから計算",
+  "description": "通貨ペア・売買の方向・エントリーと決済のレート・ロット数から、FXのpipsと損益を計算する無料ツール。円が絡むペア（0.01円＝1pip）と円以外のペア（0.0001＝1pip）の桁の違い、口座通貨への換算の考え方も解説。",
+  "inLanguage": "ja",
+  "author": {
+    "@type": "Person",
+    "name": "Daiki Ikebata"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FXトレードログ",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png"
+    }
+  },
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "FXトレードログ",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "FXのpips・損益計算ツール",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator.html"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "1pipは何円ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "通貨ペアと取引数量によって変わります。USD/JPYなど円が右側のペアでは1pip＝0.01円の値動きなので、1万通貨なら1pipで100円、10万通貨なら1,000円です。EUR/USDなど円以外のペアでは1pip＝0.0001の値動きで、1万通貨なら1pipで1ドル（決済通貨）になり、円の口座ではそのときのUSD/JPYのレートで円に換算します。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "pipsとポイント（point）の違いは何ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "多くの業者は価格をpipより1桁細かく表示していて、その最小の刻みを「ポイント」と呼ぶことがあります。この場合、1pip＝10ポイントです。MT4/MT5で損切り幅などがポイントで表示されているときは、10で割るとpipsになります。業者によって呼び方が違うことがあるため、取引条件の説明を確認してください。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "入力した数値はどこかに送信されますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "いいえ。計算はお使いのブラウザの中だけで行い、入力した数値を送信・保存しません。換算レートも自動では取得せず、ご自身で入力する形です。"
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) を呼ばず、
+     gtag.js の読み込みもしない（consent.js が同意後に <script> を動的に作る）。
+     これにより「同意しない」場合はCookieなしの計測ピングも含めて一切送信されない。 -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+<!-- 計算は lp-assets/calc.js（外部への送信なし。インラインスクリプトは CSP で使えない） -->
+<script src="lp-assets/calc.js" defer></script>
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="アクセス解析への同意" hidden>
+  <div class="wrap consent-inner">
+    <p>本サイトでは、アクセス状況を把握するためGoogleアナリティクスを利用しています。詳細は<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">同意しない</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">同意する</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FXトレードログ
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#features">機能</a></li>
+      <li><a href="index.html#pricing">料金</a></li>
+      <li><a href="index.html#faq">よくある質問</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="calc-nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-ja-pips&mt=8">App Storeで入手</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="index.html">FXトレードログ</a><span aria-hidden="true">/</span><span aria-current="page">FXのpips・損益計算ツール</span>
+      </nav>
+      <p class="eyebrow">無料の計算ツール</p>
+      <h1>FXのpips・損益計算ツール<br><span class="nobr">エントリーと決済の</span><wbr><span class="nobr">レートから計算</span></h1>
+      <p class="article-meta">
+        <span>公開日: 2026年11月19日</span>
+        <span>計算はブラウザ内だけで行います</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">このページの計算ツールは、入力した数値から計算の目安を示すものであり、投資助言・売買推奨ではありません。計算結果は利益を保証するものではなく、投資判断はご自身の責任で行ってください。1ロットの通貨量・必要証拠金・スプレッド・手数料・スワップなどの取引条件は業者や口座によって異なるため、実際の条件はお使いの業者でご確認ください。計算はお使いのブラウザの中だけで行い、入力した数値はどこにも送信しません。</p>
+
+      <p>エントリーと決済のレートから、値動きが何pipsだったか、損益がいくらになるかを計算するツールです。通貨ペア・売買の方向・エントリーと決済のレート・ロット数を入れると、pipsと損益（決済通貨と口座通貨）を表示します。円が絡むペアとそれ以外のペアでは、1pipの桁が違う点に注意してください（下の「pipsの桁」で説明しています）。</p>
+
+      <form class="calc" id="calc" data-calc="pips" aria-label="pips・損益計算" novalidate>
+        <div class="calc-grid">
+        <div class="calc-field">
+          <label for="pips-pair">通貨ペア</label>
+          <select id="pips-pair" name="pair">
+            <option value="USD/JPY" selected>USD/JPY</option>
+            <option value="EUR/USD">EUR/USD</option>
+            <option value="EUR/JPY">EUR/JPY</option>
+            <option value="GBP/JPY">GBP/JPY</option>
+            <option value="AUD/JPY">AUD/JPY</option>
+            <option value="NZD/JPY">NZD/JPY</option>
+            <option value="CAD/JPY">CAD/JPY</option>
+            <option value="CHF/JPY">CHF/JPY</option>
+            <option value="GBP/USD">GBP/USD</option>
+            <option value="AUD/USD">AUD/USD</option>
+            <option value="NZD/USD">NZD/USD</option>
+            <option value="USD/CHF">USD/CHF</option>
+            <option value="USD/CAD">USD/CAD</option>
+            <option value="EUR/GBP">EUR/GBP</option>
+            <option value="EUR/AUD">EUR/AUD</option>
+            <option value="GBP/AUD">GBP/AUD</option>
+          </select>
+        </div>
+        <fieldset class="calc-field">
+          <legend>売買の方向</legend>
+          <div class="calc-radios">
+            <label><input type="radio" name="direction" value="buy" checked> 買い</label>
+            <label><input type="radio" name="direction" value="sell"> 売り</label>
+          </div>
+        </fieldset>
+        <div class="calc-field">
+          <label for="pips-entry">エントリーのレート</label>
+          <input type="text" id="pips-entry" name="entry" inputmode="decimal" autocomplete="off" value="150.00">
+        </div>
+        <div class="calc-field">
+          <label for="pips-exit">決済のレート</label>
+          <input type="text" id="pips-exit" name="exit" inputmode="decimal" autocomplete="off" value="150.50">
+        </div>
+        <div class="calc-field">
+          <label for="pips-lots">ロット数</label>
+          <input type="text" id="pips-lots" name="lots" inputmode="decimal" autocomplete="off" value="1">
+        </div>
+        <div class="calc-field">
+          <label for="pips-units">1ロットの通貨量</label>
+          <select id="pips-units" aria-describedby="pips-units-hint" name="lotUnits">
+            <option value="100000">10万通貨</option>
+            <option value="10000" selected>1万通貨</option>
+            <option value="1000">1,000通貨</option>
+          </select>
+          <small id="pips-units-hint">業者・口座の種類によって異なります（国内の業者は1万通貨、MT4/MT5は10万通貨のことが多い）。</small>
+        </div>
+        <div class="calc-field">
+          <label for="pips-account">口座通貨</label>
+          <select id="pips-account" name="account">
+            <option value="JPY" selected>JPY</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="AUD">AUD</option>
+            <option value="NZD">NZD</option>
+            <option value="CAD">CAD</option>
+            <option value="CHF">CHF</option>
+          </select>
+        </div>
+        <div class="calc-field calc-wide" data-rate-field>
+          <label for="pips-rate" data-rate-label>換算レート</label>
+          <input type="text" id="pips-rate" name="rate" inputmode="decimal" autocomplete="off" placeholder="例: 150.00" aria-describedby="pips-rate-hint">
+          <small id="pips-rate-hint" data-rate-hint>決済通貨（通貨ペアの右側）と口座通貨が違うときだけ使います。例: 円の口座で EUR/USD を計算するなら USD/JPY のレート。</small>
+        </div>
+        </div>
+        <div class="calc-actions"><button type="submit" class="btn btn-primary">計算する</button></div>
+        <div class="calc-result" aria-live="polite">
+          <p>JavaScriptを有効にすると、ここに計算結果が表示されます。計算の式は下の「計算式」の節で確認できます。</p>
+        </div>
+      </form>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#digits">pipsの桁（円のペアと円以外のペア）</a></li>
+          <li><a href="#formula">計算式</a></li>
+          <li><a href="#examples">計算の例</a></li>
+          <li><a href="#notes">計算するときの注意点</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+        </ol>
+      </div>
+
+      <h2 id="digits">pipsの桁（円のペアと円以外のペア）</h2>
+      <p>pips（ピップス）は、為替レートの値動きの大きさを通貨ペアをまたいで比べるための単位です。1pipがいくらの値動きにあたるかは、決済通貨（通貨ペアの右側）によって変わります。</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr><th>通貨ペア</th><th>1pipの値幅</th><th>例</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>円が右側（USD/JPY・EUR/JPYなど）</td><td>0.01円</td><td>150.00 → 150.50 は 50 pips</td></tr>
+            <tr><td>円以外（EUR/USD・GBP/USDなど）</td><td>0.0001</td><td>1.0850 → 1.0820 は 30 pips</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>多くの業者は、これより1桁多い桁（USD/JPYなら150.123、EUR/USDなら1.08505）まで表示しています。この最後の桁は0.1 pipで、「ポイント」と呼ばれることがあります（1 pip＝10ポイント）。MT4/MT5で損切り幅などがポイントで表示されているときは、10で割るとpipsになります。</p>
+
+      <h2 id="formula">計算式</h2>
+      <ol>
+        <li><strong>値幅</strong> ＝ 買いなら「決済 − エントリー」、売りなら「エントリー − 決済」</li>
+        <li><strong>pips ＝ 値幅 ÷ 1pipの値幅</strong>（0.1 pip単位に丸めます）</li>
+        <li><strong>損益（決済通貨）＝ 値幅 × ロット数 × 1ロットの通貨量</strong></li>
+        <li><strong>損益（口座通貨）</strong> ＝ 3 × 換算レート（決済通貨と口座通貨が同じなら換算しない）</li>
+      </ol>
+      <p>4の換算は、円の口座でEUR/USDを取引したならUSD/JPYのレートを掛け、米ドルの口座でUSD/JPYを取引したならUSD/JPYのレートで割ります。後者で換算レートを空欄にしたときは、決済レートで換算します。</p>
+
+      <h2 id="examples">計算の例</h2>
+      <p>数値はすべて説明のための架空の例です。</p>
+      <h3>例1: 円の口座でUSD/JPYを買い</h3>
+      <ul>
+        <li>エントリー150.00円、決済150.50円、1ロット（1ロット＝1万通貨）</li>
+        <li>pips ＝（150.50 − 150.00）÷ 0.01 ＝ <strong>＋50.0 pips</strong></li>
+        <li>損益 ＝ 0.50 × 1 × 10,000 ＝ <strong>＋5,000円</strong></li>
+      </ul>
+      <h3>例2: 円の口座でEUR/USDを売り（換算あり）</h3>
+      <ul>
+        <li>エントリー1.0850、決済1.0820、0.5ロット（1ロット＝10万通貨）、USD/JPYのレートを150.00と入力</li>
+        <li>pips ＝（1.0850 − 1.0820）÷ 0.0001 ＝ <strong>＋30.0 pips</strong></li>
+        <li>損益（ドル）＝ 0.0030 × 0.5 × 100,000 ＝ ＋150ドル</li>
+        <li>損益（円）＝ 150 × 150.00 ＝ <strong>＋22,500円</strong></li>
+      </ul>
+      <h3>例3: 米ドルの口座でUSD/JPYを売り</h3>
+      <ul>
+        <li>エントリー150.00、決済149.40、1ロット（1ロット＝10万通貨）、換算レートは空欄（決済レートで換算）</li>
+        <li>pips ＝（150.00 − 149.40）÷ 0.01 ＝ <strong>＋60.0 pips</strong></li>
+        <li>損益（円）＝ 0.60 × 1 × 100,000 ＝ ＋60,000円</li>
+        <li>損益（ドル）＝ 60,000 ÷ 149.40 ≒ <strong>＋401.61ドル</strong></li>
+      </ul>
+
+      <h2 id="notes">計算するときの注意点</h2>
+      <ul>
+        <li><strong>スプレッド・手数料・スワップは含みません。</strong>レートに買値と売値の差（スプレッド）がある場合、エントリーと決済に実際の約定レートを入れると、スプレッドの分は反映されます。取引ごとの手数料とスワップは別に差し引いてください。</li>
+        <li><strong>1ロットの通貨量は業者で違います。</strong>国内の業者は1万通貨、MT4/MT5を使う業者は10万通貨のことが多いですが、お使いの業者で確かめてください。</li>
+        <li><strong>換算レートの時点で金額が変わります。</strong>業者が口座通貨に換算するときのレートと、入力したレートが違えば、口座通貨の損益も少し変わります。</li>
+        <li><strong>pipsの数え方が違う業者もあります。</strong>上の表は一般的な数え方です。業者の取引条件の説明で、pips・ポイントの定義を確認してください。</li>
+      </ul>
+
+      <div class="article-callout">
+        <h3>pipsと損益は、記録すれば自動で計算</h3>
+        <p>「FXトレードログ」は、記録した取引から月次の勝率・pips・プロフィットファクターを自動集計するFXトレード日記アプリです（月次の集計は無料版から利用可能）。詳細入力ではエントリーと決済のレートからpipsを、pipsとロットから損益額を自動で計算します（損益の自動計算は、決済通貨が口座通貨のペア）。MT4/MT5の取引履歴（レポート・CSV）の取り込みにも対応しています（<a href="fx-mt4-mt5-import-guide.html">取り込みの手順</a>）。</p>
+        <a class="btn btn-primary" data-cta="calc-body" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-ja-pips&mt=8">App Storeで無料ダウンロード</a>
+      </div>
+
+      <h2 id="related">関連記事・計算ツール</h2>
+      <ul>
+        <li><a href="fx-lot-calculator.html">FXロット計算ツール</a> — 口座残高・許容損失・損切りpipsから、ロット数の目安を計算。</li>
+        <li><a href="fx-breakeven-win-rate-calculator.html">損益分岐勝率・リスクリワード計算ツール</a> — RRから損益分岐勝率、勝率とRRから期待値の目安を計算。</li>
+        <li><a href="fx-profit-factor-guide.html">プロフィットファクター（PF）とは｜FXでの計算方法と読み方</a> — pipsや損益を集計して、総利益÷総損失を読む方法。</li>
+        <li><a href="fx-trade-journal-guide.html">FXトレード日記の書き方完全ガイド｜続けるコツと7つの記録項目</a> — 取引ごとのpips・損益を記録して振り返る手順。</li>
+      </ul>
+
+      <h2 id="faq">よくある質問</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>1pipは何円ですか？</summary>
+          <div class="faq-a">通貨ペアと取引数量によって変わります。USD/JPYなど円が右側のペアでは1pip＝0.01円の値動きなので、1万通貨なら1pipで100円、10万通貨なら1,000円です。EUR/USDなど円以外のペアでは1pip＝0.0001の値動きで、1万通貨なら1pipで1ドル（決済通貨）になり、円の口座ではそのときのUSD/JPYのレートで円に換算します。</div>
+        </details>
+        <details class="faq-item">
+          <summary>pipsとポイント（point）の違いは何ですか？</summary>
+          <div class="faq-a">多くの業者は価格をpipより1桁細かく表示していて、その最小の刻みを「ポイント」と呼ぶことがあります。この場合、1pip＝10ポイントです。MT4/MT5で損切り幅などがポイントで表示されているときは、10で割るとpipsになります。業者によって呼び方が違うことがあるため、取引条件の説明を確認してください。</div>
+        </details>
+        <details class="faq-item">
+          <summary>入力した数値はどこかに送信されますか？</summary>
+          <div class="faq-a">いいえ。計算はお使いのブラウザの中だけで行い、入力した数値を送信・保存しません。換算レートも自動では取得せず、ご自身で入力する形です。</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>1件ずつのpipsと損益を、月ごとの集計に。</h2>
+      <p>「FXトレードログ」なら、記録した取引から月次の勝率・pips・プロフィットファクターが自動で集計されます。</p>
+      <a class="btn btn-primary" data-cta="calc-final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-ja-pips&mt=8">App Storeで無料ダウンロード</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FXトレードログ
+        </div>
+        <p class="foot-tag">スマホ・タブレットで完結するFXトレード日記。記録して、分析して、次の判断へ。</p>
+      </div>
+      <div class="foot-col">
+        <h4>プロダクト</h4>
+        <ul>
+          <li><a href="index.html#features">機能</a></li>
+          <li><a href="index.html#pricing">料金</a></li>
+          <li><a href="index.html#faq">よくある質問</a></li>
+          <li><a href="fx-trade-journal-guide.html">使い方ガイド</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>サポート・法的情報</h4>
+        <ul>
+          <li><a href="support.html">お問い合わせ</a></li>
+          <li><a href="#" id="consentReset">アクセス解析の設定</a></li>
+          <li><a href="privacy-policy.html">プライバシーポリシー</a></li>
+          <li><a href="terms.html">利用規約</a></li>
+          <li><a href="tokushoho.html">特定商取引法に基づく表記</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      本アプリの分析機能は投資助言・特定の金融商品の勧誘を目的とするものではありません。投資に関する最終判断はご自身の責任で行ってください。<br>
+      過去の記録・成績は将来の成果を保証するものではありません。<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

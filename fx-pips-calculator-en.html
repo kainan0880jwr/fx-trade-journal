@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forex Pip and Profit/Loss Calculator (JPY and Non-JPY Pairs)</title>
+<meta name="description" content="Free forex pip and profit/loss calculator. Enter the pair, direction, entry and exit prices and lot size to get the pips and P/L in the quote currency and your account currency. Explains why a pip is 0.01 on JPY pairs and 0.0001 on other pairs.">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator-en.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator.html">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator-en.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FX Trade Journal">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Forex Pip and Profit/Loss Calculator (JPY and Non-JPY Pairs)">
+<meta property="og:description" content="Pips and P/L from entry and exit prices and lot size, with the 0.01 vs 0.0001 pip difference between JPY and other pairs explained.">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator-en.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FX Trade Journal — the trade log screen with win rate, pips and profit factor">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Forex Pip and Profit/Loss Calculator (JPY and Non-JPY Pairs)">
+<meta name="twitter:description" content="Pips and P/L from entry and exit prices and lot size, with the 0.01 vs 0.0001 pip difference between JPY and other pairs explained.">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Forex Pip and Profit/Loss Calculator (JPY and Non-JPY Pairs)",
+  "description": "Free forex pip and profit/loss calculator. Enter the pair, direction, entry and exit prices and lot size to get the pips and P/L in the quote currency and your account currency. Explains why a pip is 0.01 on JPY pairs and 0.0001 on other pairs.",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Daiki Ikebata"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FX Trade Journal",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png"
+    }
+  },
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator-en.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "FX Trade Journal",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/index-en.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Pip and P/L Calculator",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator-en.html"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much is one pip worth?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the pair and the position size. On EUR/USD and other pairs quoted in dollars, one pip is 0.0001, so it is worth 10 USD on 100,000 units and 1 USD on 10,000 units. On USD/JPY one pip is 0.01 yen, which is 1,000 yen on 100,000 units; in a USD account that is converted at the USD/JPY rate (about 6.67 USD at 150.00)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between a pip and a point?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Many brokers quote prices one digit finer than a pip, and that smallest step is often called a point or pipette. In that case 1 pip = 10 points. If MT4/MT5 shows a stop distance in points, divide by 10 to get pips. Terminology varies, so check your broker's specifications."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is anything I enter sent anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The calculation runs in your browser, and nothing you enter is sent or stored. Conversion rates are not fetched automatically; you enter them yourself."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
+     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
+     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+<!-- 計算は lp-assets/calc.js（外部への送信なし。インラインスクリプトは CSP で使えない） -->
+<script src="lp-assets/calc.js" defer></script>
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="Consent for analytics" hidden>
+  <div class="wrap consent-inner">
+    <p>This site uses Google Analytics to understand traffic. See our <a href="privacy-policy-en.html">Privacy Policy</a> for details.</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">Decline</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">Accept</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index-en.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FX Trade Journal
+    </a>
+    <ul class="nav-links">
+      <li><a href="index-en.html#features">Features</a></li>
+      <li><a href="index-en.html#pricing">Pricing</a></li>
+      <li><a href="index-en.html#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="calc-nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-en-pips&mt=8">Get the app</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index-en.html">FX Trade Journal</a><span aria-hidden="true">/</span><span aria-current="page">Pip and P/L Calculator</span>
+      </nav>
+      <p class="eyebrow">Free calculator</p>
+      <h1>Forex Pip and Profit/Loss Calculator<br><span class="nobr">From Entry and Exit Prices</span></h1>
+      <p class="article-meta">
+        <span>Published: November 19, 2026</span>
+        <span>Runs entirely in your browser</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">The calculator on this page gives an estimate from the numbers you enter. It is not investment advice or a recommendation to buy or sell anything. Results do not guarantee profits, and all trading decisions are your own responsibility. Trading conditions such as units per lot, margin requirements, spreads, commissions and swaps differ between brokers and account types, so check the actual conditions with your broker. Everything is calculated in your browser, and nothing you enter is sent anywhere.</p>
+
+      <p>Work out how many pips a move was and what it comes to in money. Enter the currency pair, buy or sell, the entry and exit prices and the lot size: the calculator shows the pips and the P/L in the quote currency and in your account currency. Note that a pip is a different size on JPY pairs and on other pairs (see "Pip size" below).</p>
+
+      <form class="calc" id="calc" data-calc="pips" aria-label="Pip and profit/loss calculator" novalidate>
+        <div class="calc-grid">
+        <div class="calc-field">
+          <label for="pips-pair">Currency pair</label>
+          <select id="pips-pair" name="pair">
+            <option value="USD/JPY">USD/JPY</option>
+            <option value="EUR/USD" selected>EUR/USD</option>
+            <option value="EUR/JPY">EUR/JPY</option>
+            <option value="GBP/JPY">GBP/JPY</option>
+            <option value="AUD/JPY">AUD/JPY</option>
+            <option value="NZD/JPY">NZD/JPY</option>
+            <option value="CAD/JPY">CAD/JPY</option>
+            <option value="CHF/JPY">CHF/JPY</option>
+            <option value="GBP/USD">GBP/USD</option>
+            <option value="AUD/USD">AUD/USD</option>
+            <option value="NZD/USD">NZD/USD</option>
+            <option value="USD/CHF">USD/CHF</option>
+            <option value="USD/CAD">USD/CAD</option>
+            <option value="EUR/GBP">EUR/GBP</option>
+            <option value="EUR/AUD">EUR/AUD</option>
+            <option value="GBP/AUD">GBP/AUD</option>
+          </select>
+        </div>
+        <fieldset class="calc-field">
+          <legend>Direction</legend>
+          <div class="calc-radios">
+            <label><input type="radio" name="direction" value="buy" checked> Buy</label>
+            <label><input type="radio" name="direction" value="sell"> Sell</label>
+          </div>
+        </fieldset>
+        <div class="calc-field">
+          <label for="pips-entry">Entry price</label>
+          <input type="text" id="pips-entry" name="entry" inputmode="decimal" autocomplete="off" value="1.0850">
+        </div>
+        <div class="calc-field">
+          <label for="pips-exit">Exit price</label>
+          <input type="text" id="pips-exit" name="exit" inputmode="decimal" autocomplete="off" value="1.0880">
+        </div>
+        <div class="calc-field">
+          <label for="pips-lots">Lots</label>
+          <input type="text" id="pips-lots" name="lots" inputmode="decimal" autocomplete="off" value="1">
+        </div>
+        <div class="calc-field">
+          <label for="pips-units">Units per lot</label>
+          <select id="pips-units" aria-describedby="pips-units-hint" name="lotUnits">
+            <option value="100000" selected>100,000 (standard lot)</option>
+            <option value="10000">10,000 (mini lot)</option>
+            <option value="1000">1,000 (micro lot)</option>
+          </select>
+          <small id="pips-units-hint">Depends on your broker and account type. On MT4/MT5 one standard lot is usually 100,000 units.</small>
+        </div>
+        <div class="calc-field">
+          <label for="pips-account">Account currency</label>
+          <select id="pips-account" name="account">
+            <option value="JPY">JPY</option>
+            <option value="USD" selected>USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="AUD">AUD</option>
+            <option value="NZD">NZD</option>
+            <option value="CAD">CAD</option>
+            <option value="CHF">CHF</option>
+          </select>
+        </div>
+        <div class="calc-field calc-wide" data-rate-field>
+          <label for="pips-rate" data-rate-label>Conversion rate</label>
+          <input type="text" id="pips-rate" name="rate" inputmode="decimal" autocomplete="off" placeholder="e.g. 1.2700" aria-describedby="pips-rate-hint">
+          <small id="pips-rate-hint" data-rate-hint>Only needed when the quote currency (the right side of the pair) differs from your account currency — e.g. for EUR/GBP in a USD account, the GBP/USD rate.</small>
+        </div>
+        </div>
+        <div class="calc-actions"><button type="submit" class="btn btn-primary">Calculate</button></div>
+        <div class="calc-result" aria-live="polite">
+          <p>Turn on JavaScript to see the result here. The formulas are explained in the "Formulas" section below.</p>
+        </div>
+      </form>
+
+      <div class="article-toc">
+        <p>Contents</p>
+        <ol>
+          <li><a href="#digits">Pip size: JPY pairs vs other pairs</a></li>
+          <li><a href="#formula">Formulas</a></li>
+          <li><a href="#examples">Worked examples</a></li>
+          <li><a href="#notes">Things to keep in mind</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </div>
+
+      <h2 id="digits">Pip size: JPY pairs vs other pairs</h2>
+      <p>A pip is a unit for comparing price moves across currency pairs. How large one pip is depends on the quote currency (the right side of the pair).</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr><th>Pair</th><th>1 pip</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Quoted in yen (USD/JPY, EUR/JPY, …)</td><td>0.01</td><td>150.00 → 150.50 is 50 pips</td></tr>
+            <tr><td>Other pairs (EUR/USD, GBP/USD, …)</td><td>0.0001</td><td>1.0850 → 1.0880 is 30 pips</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Most brokers quote one extra digit (150.123 on USD/JPY, 1.08505 on EUR/USD). That last digit is a tenth of a pip, often called a point or pipette (1 pip = 10 points). If MT4/MT5 shows a stop distance in points, divide by 10 to get pips.</p>
+
+      <h2 id="formula">Formulas</h2>
+      <ol>
+        <li><strong>Price move</strong> = exit − entry for a buy, entry − exit for a sell</li>
+        <li><strong>Pips = price move ÷ pip size</strong> (rounded to 0.1 pip)</li>
+        <li><strong>P/L in the quote currency = price move × lots × units per lot</strong></li>
+        <li><strong>P/L in your account currency</strong> = step 3 converted with the rate between the quote currency and your account currency (no conversion if they are the same)</li>
+      </ol>
+      <p>For example, EUR/GBP in a USD account is multiplied by GBP/USD, and USD/JPY in a USD account is divided by USD/JPY. In the second case, if you leave the conversion rate blank, the exit price is used.</p>
+
+      <h2 id="examples">Worked examples</h2>
+      <p>All figures are made-up examples for illustration.</p>
+      <h3>Example 1: buying EUR/USD in a USD account</h3>
+      <ul>
+        <li>Entry 1.0850, exit 1.0880, 1 lot (1 lot = 100,000 units)</li>
+        <li>Pips = (1.0880 − 1.0850) ÷ 0.0001 = <strong>+30.0 pips</strong></li>
+        <li>P/L = 0.0030 × 1 × 100,000 = <strong>+300 USD</strong></li>
+      </ul>
+      <h3>Example 2: selling USD/JPY in a USD account</h3>
+      <ul>
+        <li>Entry 150.00, exit 149.40, 1 lot (100,000 units), conversion rate left blank (exit price used)</li>
+        <li>Pips = (150.00 − 149.40) ÷ 0.01 = <strong>+60.0 pips</strong></li>
+        <li>P/L in yen = 0.60 × 1 × 100,000 = +60,000 JPY</li>
+        <li>P/L in dollars = 60,000 ÷ 149.40 ≈ <strong>+401.61 USD</strong></li>
+      </ul>
+      <h3>Example 3: buying EUR/GBP in a USD account</h3>
+      <ul>
+        <li>Entry 0.8600, exit 0.8625, 0.5 lots (100,000 units per lot), GBP/USD rate entered as 1.2700</li>
+        <li>Pips = (0.8625 − 0.8600) ÷ 0.0001 = <strong>+25.0 pips</strong></li>
+        <li>P/L in pounds = 0.0025 × 0.5 × 100,000 = +125 GBP</li>
+        <li>P/L in dollars = 125 × 1.2700 ≈ <strong>+158.75 USD</strong></li>
+      </ul>
+
+      <h2 id="notes">Things to keep in mind</h2>
+      <ul>
+        <li><strong>Commissions and swaps are not included.</strong> If you enter the prices you were actually filled at, the spread is already reflected; subtract per-trade commissions and swaps separately.</li>
+        <li><strong>Units per lot differ between brokers.</strong> On MT4/MT5 a standard lot is usually 100,000 units, but check your broker's contract specifications.</li>
+        <li><strong>The conversion rate matters.</strong> If your broker converts at a different rate from the one you enter, the account-currency P/L will differ slightly.</li>
+        <li><strong>Some brokers count differently.</strong> The table above is the common convention; check how your broker defines pips and points.</li>
+      </ul>
+
+      <div class="article-callout">
+        <h3>Pips and P/L calculated as you log</h3>
+        <p>FX Trade Journal is a forex trading journal app for iOS that tallies monthly win rate, pips and profit factor automatically from the trades you log (monthly totals are available on the free plan). With detailed entry, pips are calculated from your entry and exit prices, and P/L from pips and lot size (automatic P/L works for pairs quoted in your account currency). It also imports MT4/MT5 trade history from a desktop report (HTML) or CSV (<a href="fx-mt4-mt5-import-guide-en.html">how to import</a>).</p>
+        <a class="btn btn-primary" data-cta="calc-body" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-en-pips&mt=8">Download free on the App Store</a>
+      </div>
+
+      <h2 id="related">Related articles and calculators</h2>
+      <ul>
+        <li><a href="fx-lot-calculator-en.html">Forex Lot Size Calculator</a> — estimate the lot size from balance, risk % and stop loss in pips.</li>
+        <li><a href="fx-breakeven-win-rate-calculator-en.html">Break-Even Win Rate and Risk-Reward Calculator</a> — break-even win rate from RR, and expectancy from win rate and RR.</li>
+        <li><a href="fx-profit-factor-guide-en.html">What Is Profit Factor in Forex? How to Calculate and Read It</a> — totalling pips or P/L and reading gross profit ÷ gross loss.</li>
+        <li><a href="fx-trade-journal-guide-en.html">How to Keep a Forex Trading Journal</a> — recording pips and P/L for each trade and reviewing them.</li>
+      </ul>
+
+      <h2 id="faq">FAQ</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>How much is one pip worth?</summary>
+          <div class="faq-a">It depends on the pair and the position size. On EUR/USD and other pairs quoted in dollars, one pip is 0.0001, so it is worth 10 USD on 100,000 units and 1 USD on 10,000 units. On USD/JPY one pip is 0.01 yen, which is 1,000 yen on 100,000 units; in a USD account that is converted at the USD/JPY rate (about 6.67 USD at 150.00).</div>
+        </details>
+        <details class="faq-item">
+          <summary>What is the difference between a pip and a point?</summary>
+          <div class="faq-a">Many brokers quote prices one digit finer than a pip, and that smallest step is often called a point or pipette. In that case 1 pip = 10 points. If MT4/MT5 shows a stop distance in points, divide by 10 to get pips. Terminology varies, so check your broker's specifications.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is anything I enter sent anywhere?</summary>
+          <div class="faq-a">No. The calculation runs in your browser, and nothing you enter is sent or stored. Conversion rates are not fetched automatically; you enter them yourself.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>Turn each trade's pips and P/L into monthly totals.</h2>
+      <p>FX Trade Journal tallies monthly win rate, pips and profit factor automatically from the trades you log.</p>
+      <a class="btn btn-primary" data-cta="calc-final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-en-pips&mt=8">Download free on the App Store</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FX Trade Journal
+        </div>
+        <p class="foot-tag">A trading journal that works entirely on your phone or tablet. Log it, analyze it, and see what your record shows.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index-en.html#features">Features</a></li>
+          <li><a href="index-en.html#pricing">Pricing</a></li>
+          <li><a href="index-en.html#faq">FAQ</a></li>
+          <li><a href="fx-trade-journal-guide-en.html">Guide</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Support &amp; Legal</h4>
+        <ul>
+          <li><a href="support-en.html">Contact us</a></li>
+          <li><a href="#" id="consentReset">Analytics settings</a></li>
+          <li><a href="privacy-policy-en.html">Privacy Policy</a></li>
+          <li><a href="terms-en.html">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      This app's analytics features are not intended to provide investment advice or solicit any specific financial product. Please make your own trading decisions at your own risk.<br>
+      Past records and performance do not guarantee future results.<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

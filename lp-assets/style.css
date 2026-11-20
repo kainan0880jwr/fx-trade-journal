@@ -74,7 +74,8 @@
 }
 
 *{box-sizing:border-box;}
-html{background:var(--bg);}
+html{background:var(--bg); scroll-padding-top:120px;} /* 目次・#faq で飛んだとき、2行の固定メニューに見出しが隠れていた（2026-11-19 実機。lp.css と同じ考え方） */
+@media (min-width:861px){ html{scroll-padding-top:84px;} }
 body{
   margin:0; background:var(--bg); color:var(--ink);
   font-family:var(--font-body); line-height:1.7; -webkit-font-smoothing:antialiased;
@@ -150,8 +151,9 @@ p{margin:0;}
     color:var(--ink-dim); font-size:.8rem; white-space:nowrap;
   }
 }
-@media (max-width:420px){
-  /* 極端に狭い端末ではブランド名を隠してマークだけにし、CTAを潰さない */
+@media (max-width:380px){
+  /* 極端に狭い端末ではブランド名を隠してマークだけにし、CTAを潰さない。
+     420px だと iPhone の多く（393〜420px）で名前が消えていた（2026-11-19 実機） */
   .brand{font-size:0; gap:0;}
   .brand-mark{width:24px; height:24px;}
 }
@@ -382,6 +384,8 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
   position:fixed; left:0; right:0; bottom:0; z-index:100;
   background:var(--surface); border-top:1px solid var(--line-strong);
   box-shadow:0 -12px 30px -20px rgba(0,0,0,0.5);
+  /* 記事のバナーは <section> なので、共通の section{padding} が上に 96px 付いて空白になっていた（2026-11-19 実機） */
+  padding-top:0;
   padding-bottom:env(safe-area-inset-bottom, 0px);
 }
 .consent-inner{
@@ -443,6 +447,12 @@ footer{border-top:1px solid var(--line); padding:var(--space-6) 0 var(--space-5)
 .compare-table th,.compare-table td{border:1px solid var(--line); padding:.8em 1em; text-align:left; color:var(--ink-dim);}
 .compare-table th{color:var(--ink); background:var(--surface); font-weight:700;}
 .compare-table td:first-child{color:var(--ink); font-weight:600; white-space:nowrap;}
+/* スマホでは1列目の折り返し禁止で右の2列が4〜5文字幅に潰れていた（2026-11-19 実機） */
+@media (max-width:560px){
+  .compare-table{font-size:.86rem;}
+  .compare-table th,.compare-table td{padding:.6em .7em;}
+  .compare-table td:first-child{white-space:normal; width:26%;}
+}
 .article-callout{background:var(--accent-dim); border:1px solid var(--line-strong); border-radius:var(--radius-m); padding:var(--space-5); margin:var(--space-6) 0; text-align:center;}
 .article-callout h3{margin-bottom:.5em;}
 .article-callout p{color:var(--ink-dim); margin-bottom:var(--space-4);}
@@ -533,3 +543,33 @@ img.shot{
   border-radius:24px; background:var(--bg);
 }
 .panel img.shot{border-radius:var(--radius-s); margin-top:var(--space-2);}
+
+/* ============ 計算機（fx-*-calculator(-en).html、2026-11-19） ============ */
+/* 計算は lp-assets/calc.js。JS が無いときは結果の欄に「JS を有効にすると表示」とだけ出し、説明と式は本文で読める。
+   入力欄は iOS Safari が拡大しないよう 16px 以上。列は minmax(0,1fr)（中身で横に広がらない）。 */
+.calc{background:var(--surface); border:1px solid var(--line-strong); border-radius:var(--radius-m); padding:var(--space-4); margin:0 0 var(--space-5);}
+.calc-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-3) var(--space-4);}
+@media (max-width:560px){ .calc{padding:var(--space-3);} .calc-grid{grid-template-columns:minmax(0,1fr);} }
+.calc-field{display:flex; flex-direction:column; gap:.35em; min-width:0;}
+.calc-field[hidden]{display:none;}
+.calc-field label,.calc-field legend{color:var(--ink); font-size:.9rem; font-weight:700;}
+.calc-field small{color:var(--ink-dim); font-size:.8rem; line-height:1.6;}
+.calc-wide{grid-column:1 / -1;}
+.calc input[type="text"],.calc select{
+  width:100%; min-width:0; font:inherit; font-size:16px; color:var(--ink);
+  background:var(--bg); border:1px solid var(--line-strong); border-radius:var(--radius-s); padding:.6em .75em;
+}
+.calc input[type="text"]:focus-visible,.calc select:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+.calc fieldset{border:0; margin:0; padding:0; min-width:0;}
+.calc-radios{display:flex; gap:var(--space-3); flex-wrap:wrap; color:var(--ink); font-size:1rem;}
+.calc-radios label{display:flex; align-items:center; gap:.4em; font-weight:400;}
+.calc-result{margin-top:var(--space-4); padding-top:var(--space-3); border-top:1px solid var(--line);}
+.calc-result p{margin:0 0 var(--space-2); font-size:.92rem;}
+.calc-dl{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,auto); gap:.5em var(--space-3); margin:0 0 var(--space-2);}
+.calc-dl dt{color:var(--ink-dim); font-size:.92rem;}
+.calc-dl dd{margin:0; color:var(--ink); font-family:var(--font-mono); font-size:.95rem; text-align:right; overflow-wrap:anywhere;}
+.calc-dl dd.calc-main{font-size:1.15rem; font-weight:700;}
+@media (max-width:420px){ .calc-dl{grid-template-columns:minmax(0,1fr);} .calc-dl dd{text-align:left; margin-bottom:.4em;} }
+.calc-error{color:var(--loss);}
+.calc-sub{color:var(--ink-dim);}
+.calc-actions{margin-top:var(--space-3);}

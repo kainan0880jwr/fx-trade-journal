@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Break-Even Win Rate and Risk-Reward Calculator for Forex</title>
+<meta name="description" content="Free calculator for the break-even win rate from risk-reward (RR), and an expectancy estimate from win rate and RR. Formulas: break-even win rate = 1 ÷ (1 + RR), expectancy = win rate × RR − (1 − win rate). With a quick-reference table and notes on using it with your own records.">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator-en.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator.html">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator-en.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FX Trade Journal">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Break-Even Win Rate and Risk-Reward Calculator for Forex">
+<meta property="og:description" content="Break-even win rate from RR, and expectancy from win rate and RR, using 1 ÷ (1 + RR). With a quick-reference table.">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator-en.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FX Trade Journal — the trade log screen with win rate, pips and profit factor">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Break-Even Win Rate and Risk-Reward Calculator for Forex">
+<meta name="twitter:description" content="Break-even win rate from RR, and expectancy from win rate and RR, using 1 ÷ (1 + RR). With a quick-reference table.">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Break-Even Win Rate and Risk-Reward Calculator for Forex",
+  "description": "Free calculator for the break-even win rate from risk-reward (RR), and an expectancy estimate from win rate and RR. Formulas: break-even win rate = 1 ÷ (1 + RR), expectancy = win rate × RR − (1 − win rate). With a quick-reference table and notes on using it with your own records.",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Daiki Ikebata"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FX Trade Journal",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png"
+    }
+  },
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator-en.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "FX Trade Journal",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/index-en.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Break-Even Win Rate Calculator",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator-en.html"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the formula for the break-even win rate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Break-even win rate = 1 ÷ (1 + risk-reward), where risk-reward is average win ÷ average loss and break-even trades are excluded. For example, a risk-reward of 2 gives about 33.3%, and 1 gives 50%."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does \"R\" mean in expectancy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "R is a unit where the average loss equals 1. An expectancy of +0.17R means that, in your record, each trade came out on average 0.17 times the average loss ahead. It is an estimate from past totals and does not predict future results."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is anything I enter sent anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The calculation runs in your browser, and nothing you enter is sent or stored."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
+     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
+     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+<!-- 計算は lp-assets/calc.js（外部への送信なし。インラインスクリプトは CSP で使えない） -->
+<script src="lp-assets/calc.js" defer></script>
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="Consent for analytics" hidden>
+  <div class="wrap consent-inner">
+    <p>This site uses Google Analytics to understand traffic. See our <a href="privacy-policy-en.html">Privacy Policy</a> for details.</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">Decline</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">Accept</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index-en.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FX Trade Journal
+    </a>
+    <ul class="nav-links">
+      <li><a href="index-en.html#features">Features</a></li>
+      <li><a href="index-en.html#pricing">Pricing</a></li>
+      <li><a href="index-en.html#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="calc-nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-en-breakeven&mt=8">Get the app</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index-en.html">FX Trade Journal</a><span aria-hidden="true">/</span><span aria-current="page">Break-Even Win Rate Calculator</span>
+      </nav>
+      <p class="eyebrow">Free calculator</p>
+      <h1>Break-Even Win Rate and <span class="nobr">Risk-Reward Calculator</span><br><span class="nobr">Expectancy from</span> <span class="nobr">Win Rate and RR</span></h1>
+      <p class="article-meta">
+        <span>Published: November 19, 2026</span>
+        <span>Runs entirely in your browser</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">The calculator on this page gives an estimate from the numbers you enter. It is not investment advice or a recommendation to buy or sell anything. Results do not guarantee profits, and all trading decisions are your own responsibility. Trading conditions such as units per lot, margin requirements, spreads, commissions and swaps differ between brokers and account types, so check the actual conditions with your broker. Everything is calculated in your browser, and nothing you enter is sent anywhere.</p>
+
+      <p>Enter a risk-reward ratio (RR, average win ÷ average loss) to get the win rate at which your total comes out exactly at zero — the break-even win rate. Add a win rate to see how far it is from break-even and an expectancy estimate per trade in R (with the average loss as 1). Add an average loss (in pips or money) to see the expectancy in that unit. The formulas are the same as in the article "<a href="fx-win-rate-risk-reward-guide-en.html">Forex Win Rate and Risk-Reward</a>".</p>
+
+      <form class="calc" id="calc" data-calc="breakeven" aria-label="Break-even win rate and expectancy calculator" novalidate>
+        <div class="calc-grid">
+        <div class="calc-field">
+          <label for="be-rr">Risk-reward (RR)</label>
+          <input type="text" id="be-rr" name="rr" inputmode="decimal" autocomplete="off" value="1.6" aria-describedby="be-rr-hint">
+          <small id="be-rr-hint">Average win ÷ average loss. 2 for 1:2</small>
+        </div>
+        <div class="calc-field">
+          <label for="be-win">Win rate (%, optional)</label>
+          <input type="text" id="be-win" name="winRate" inputmode="decimal" autocomplete="off" value="45" aria-describedby="be-win-hint">
+          <small id="be-win-hint">Excluding break-even trades</small>
+        </div>
+        <div class="calc-field calc-wide">
+          <label for="be-loss">Average loss (optional)</label>
+          <input type="text" id="be-loss" name="avgLoss" inputmode="decimal" autocomplete="off" value="15" aria-describedby="be-loss-hint">
+          <small id="be-loss-hint">Pips or money; expectancy is shown in the same unit</small>
+        </div>
+        </div>
+        <div class="calc-actions"><button type="submit" class="btn btn-primary">Calculate</button></div>
+        <div class="calc-result" aria-live="polite">
+          <p>Turn on JavaScript to see the result here. The formulas are explained in the "Formulas" section below.</p>
+        </div>
+      </form>
+
+      <div class="article-toc">
+        <p>Contents</p>
+        <ol>
+          <li><a href="#formula">Formulas</a></li>
+          <li><a href="#table">Break-even win rate table</a></li>
+          <li><a href="#examples">Worked example</a></li>
+          <li><a href="#notes">Using it with your own records</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </div>
+
+      <h2 id="formula">Formulas</h2>
+      <p>Excluding break-even trades, with an average loss of 1, an average win of RR and a win rate p:</p>
+      <ul>
+        <li><strong>Break-even win rate = 1 ÷ (1 + RR)</strong></li>
+        <li><strong>Break-even RR = (1 − win rate) ÷ win rate</strong> (the RR at which a given win rate totals zero)</li>
+        <li><strong>Expectancy per trade (R) = win rate × RR − (1 − win rate)</strong></li>
+        <li><strong>Expectancy in your unit = expectancy (R) × average loss</strong></li>
+      </ul>
+      <p>A positive expectancy means the win rate is above the break-even win rate; a negative one means it is below.</p>
+
+      <h2 id="table">Break-even win rate table</h2>
+      <p>For common RR values (rounded to one decimal place):</p>
+      <div class="table-scroll">
+        <table class="compare-table" id="breakeven-table">
+          <thead>
+            <tr><th>RR (average win ÷ average loss)</th><th>Notation</th><th>Break-even win rate</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0.5</td><td>1:0.5</td><td>66.7%</td></tr>
+            <tr><td>1</td><td>1:1</td><td>50.0%</td></tr>
+            <tr><td>1.5</td><td>1:1.5</td><td>40.0%</td></tr>
+            <tr><td>2</td><td>1:2</td><td>33.3%</td></tr>
+            <tr><td>3</td><td>1:3</td><td>25.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="examples">Worked example</h2>
+      <p>Suppose a month has 20 trades (no break-evens): 9 wins averaging 24 pips and 11 losses averaging 15 pips (a made-up example).</p>
+      <ul>
+        <li>Win rate = 9 ÷ 20 = <strong>45%</strong>, RR = 24 ÷ 15 = <strong>1.6</strong></li>
+        <li>Break-even win rate = 1 ÷ (1 + 1.6) ≈ <strong>38.5%</strong> (6.5 points below the win rate)</li>
+        <li>Expectancy (R) = 0.45 × 1.6 − 0.55 = <strong>+0.17R</strong></li>
+        <li>Expectancy (pips) = 0.17 × 15 = <strong>+2.55 pips</strong> (the same as the total, 9 × 24 − 11 × 15 = +51 pips, divided by 20 trades)</li>
+        <li>RR that breaks even at a 45% win rate = 0.55 ÷ 0.45 ≈ 1.22</li>
+      </ul>
+      <p>The calculator above starts with these numbers.</p>
+
+      <h2 id="notes">Using it with your own records</h2>
+      <ul>
+        <li><strong>Win rate and RR move together.</strong> Placing the target further away raises RR, but fewer trades may reach it, so the win rate can fall. A lower break-even win rate on paper changes nothing if the actual win rate falls further.</li>
+        <li><strong>Use actual RR, not planned RR.</strong> Average win ÷ average loss from closed trades (actual RR) reflects your record better than the target ÷ stop you planned at entry.</li>
+        <li><strong>Small samples swing.</strong> With 10 or 20 trades, one large win or loss moves the averages a lot.</li>
+        <li><strong>Treat commissions and swaps consistently.</strong> Including or excluding them changes the average win and loss.</li>
+        <li><strong>It describes past records.</strong> Expectancy is an estimate from past totals and does not predict future results.</li>
+      </ul>
+
+      <div class="article-callout">
+        <h3>Win rate totals and an RR review in one app</h3>
+        <p>FX Trade Journal is a forex trading journal app for iOS that tallies monthly win rate, pips and profit factor automatically from the trades you log (monthly totals are available on the free plan). For trades logged with a stop loss (SL) and take profit (TP), the risk-reward analysis tab (PRO) shows the gap between the risk-reward you planned and the actual result. It also imports MT4/MT5 trade history from a desktop report (HTML) or CSV (<a href="fx-mt4-mt5-import-guide-en.html">how to import</a>).</p>
+        <a class="btn btn-primary" data-cta="calc-body" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-en-breakeven&mt=8">Download free on the App Store</a>
+      </div>
+
+      <h2 id="related">Related articles and calculators</h2>
+      <ul>
+        <li><a href="fx-win-rate-risk-reward-guide-en.html">Forex Win Rate and Risk-Reward: How to Find Your Break-Even Win Rate</a> — where the formula comes from, planned vs actual RR, and tallying pitfalls.</li>
+        <li><a href="fx-profit-factor-guide-en.html">What Is Profit Factor in Forex? How to Calculate and Read It</a> — the metric that combines win rate and RR.</li>
+        <li><a href="fx-lot-calculator-en.html">Forex Lot Size Calculator</a> — estimate the lot size from balance, risk % and stop loss in pips.</li>
+        <li><a href="fx-pips-calculator-en.html">Forex Pip and Profit/Loss Calculator</a> — pips and P/L from entry and exit prices.</li>
+      </ul>
+
+      <h2 id="faq">FAQ</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>What is the formula for the break-even win rate?</summary>
+          <div class="faq-a">Break-even win rate = 1 ÷ (1 + risk-reward), where risk-reward is average win ÷ average loss and break-even trades are excluded. For example, a risk-reward of 2 gives about 33.3%, and 1 gives 50%.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What does "R" mean in expectancy?</summary>
+          <div class="faq-a">R is a unit where the average loss equals 1. An expectancy of +0.17R means that, in your record, each trade came out on average 0.17 times the average loss ahead. It is an estimate from past totals and does not predict future results.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is anything I enter sent anywhere?</summary>
+          <div class="faq-a">No. The calculation runs in your browser, and nothing you enter is sent or stored.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>Check your win rate and risk-reward against your own record.</h2>
+      <p>FX Trade Journal tallies monthly win rate, pips and profit factor automatically from the trades you log.</p>
+      <a class="btn btn-primary" data-cta="calc-final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-en-breakeven&mt=8">Download free on the App Store</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FX Trade Journal
+        </div>
+        <p class="foot-tag">A trading journal that works entirely on your phone or tablet. Log it, analyze it, and see what your record shows.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index-en.html#features">Features</a></li>
+          <li><a href="index-en.html#pricing">Pricing</a></li>
+          <li><a href="index-en.html#faq">FAQ</a></li>
+          <li><a href="fx-trade-journal-guide-en.html">Guide</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Support &amp; Legal</h4>
+        <ul>
+          <li><a href="support-en.html">Contact us</a></li>
+          <li><a href="#" id="consentReset">Analytics settings</a></li>
+          <li><a href="privacy-policy-en.html">Privacy Policy</a></li>
+          <li><a href="terms-en.html">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      This app's analytics features are not intended to provide investment advice or solicit any specific financial product. Please make your own trading decisions at your own risk.<br>
+      Past records and performance do not guarantee future results.<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

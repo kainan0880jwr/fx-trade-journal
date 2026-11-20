@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FXロット計算ツール｜口座残高・許容損失・損切りpipsから計算</title>
+<meta name="description" content="口座残高・許容損失（%）・損切り幅（pips）・通貨ペアから、FXのロット数の目安を計算する無料ツール。1ロット10万通貨／1万通貨の切り替え、円以外の口座通貨や決済通貨の換算にも対応。計算式と計算例つき。">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator.html">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator-en.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FXトレードログ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="FXロット計算ツール｜口座残高・許容損失・損切りpipsから計算">
+<meta property="og:description" content="口座残高・許容損失（%）・損切りpipsからロット数の目安を計算。1ロット10万通貨／1万通貨、換算レートにも対応。">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FXトレードログ — 記録画面と、勝率・pips・PFの自動集計">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FXロット計算ツール｜口座残高・許容損失・損切りpipsから計算">
+<meta name="twitter:description" content="口座残高・許容損失（%）・損切りpipsからロット数の目安を計算。1ロット10万通貨／1万通貨、換算レートにも対応。">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "FXロット計算ツール｜口座残高・許容損失・損切りpipsから計算",
+  "description": "口座残高・許容損失（%）・損切り幅（pips）・通貨ペアから、FXのロット数の目安を計算する無料ツール。1ロット10万通貨／1万通貨の切り替え、円以外の口座通貨や決済通貨の換算にも対応。計算式と計算例つき。",
+  "inLanguage": "ja",
+  "author": {
+    "@type": "Person",
+    "name": "Daiki Ikebata"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FXトレードログ",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png"
+    }
+  },
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "FXトレードログ",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "FXロット計算ツール",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator.html"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "1ロットは何通貨ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "業者や口座の種類によって異なります。国内のFX業者では1ロット＝1万通貨、MT4/MT5を使う業者では1ロット＝10万通貨のことが多いですが、必ずお使いの業者の取引条件で確かめてください。この計算ツールでは1ロットの通貨量を選んで計算できます。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "許容損失は口座残高の何%にすればよいですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "一律の正解はなく、このツールも特定の値をすすめるものではありません。資金の状況や取引の頻度によって、受け入れられる損失の大きさは人それぞれです。入力した%のもとで、損切りになったときの損失がその範囲に収まるロット数を計算します。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "入力した数値はどこかに送信されますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "いいえ。計算はお使いのブラウザの中だけで行い、入力した数値を送信・保存しません。換算レートも自動では取得せず、ご自身で入力する形です。"
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) を呼ばず、
+     gtag.js の読み込みもしない（consent.js が同意後に <script> を動的に作る）。
+     これにより「同意しない」場合はCookieなしの計測ピングも含めて一切送信されない。 -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+<!-- 計算は lp-assets/calc.js（外部への送信なし。インラインスクリプトは CSP で使えない） -->
+<script src="lp-assets/calc.js" defer></script>
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="アクセス解析への同意" hidden>
+  <div class="wrap consent-inner">
+    <p>本サイトでは、アクセス状況を把握するためGoogleアナリティクスを利用しています。詳細は<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">同意しない</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">同意する</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FXトレードログ
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#features">機能</a></li>
+      <li><a href="index.html#pricing">料金</a></li>
+      <li><a href="index.html#faq">よくある質問</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="calc-nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-ja-lot&mt=8">App Storeで入手</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="index.html">FXトレードログ</a><span aria-hidden="true">/</span><span aria-current="page">FXロット計算ツール</span>
+      </nav>
+      <p class="eyebrow">無料の計算ツール</p>
+      <h1>FXロット計算ツール<br><span class="nobr">口座残高・許容損失・</span><wbr><span class="nobr">損切りpipsから計算</span></h1>
+      <p class="article-meta">
+        <span>公開日: 2026年11月19日</span>
+        <span>計算はブラウザ内だけで行います</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">このページの計算ツールは、入力した数値から計算の目安を示すものであり、投資助言・売買推奨ではありません。計算結果は利益を保証するものではなく、投資判断はご自身の責任で行ってください。1ロットの通貨量・必要証拠金・スプレッド・手数料・スワップなどの取引条件は業者や口座によって異なるため、実際の条件はお使いの業者でご確認ください。計算はお使いのブラウザの中だけで行い、入力した数値はどこにも送信しません。</p>
+
+      <p>損切りになったときの損失を、口座残高の何%までに収めたいか——そこから逆算して、何ロットで取引すれば収まるかを計算するツールです。口座残高・許容損失（%）・損切りの幅（pips）・通貨ペアを入れると、ロット数の目安と、そのロットで損切りになったときの損失を表示します。決済通貨（通貨ペアの右側）が口座通貨と違うときは、換算レートを入力してください（自動では取得しません）。</p>
+
+      <form class="calc" id="calc" data-calc="lot" aria-label="ロット計算" novalidate>
+        <div class="calc-grid">
+        <div class="calc-field">
+          <label for="lot-balance">口座残高</label>
+          <input type="text" id="lot-balance" name="balance" inputmode="decimal" autocomplete="off" value="1,000,000">
+        </div>
+        <div class="calc-field">
+          <label for="lot-risk">許容損失（口座残高に対する%）</label>
+          <input type="text" id="lot-risk" name="riskPct" inputmode="decimal" autocomplete="off" value="2">
+        </div>
+        <div class="calc-field">
+          <label for="lot-sl">損切りの幅（pips）</label>
+          <input type="text" id="lot-sl" name="slPips" inputmode="decimal" autocomplete="off" value="50">
+        </div>
+        <div class="calc-field">
+          <label for="lot-pair">通貨ペア</label>
+          <select id="lot-pair" name="pair">
+            <option value="USD/JPY" selected>USD/JPY</option>
+            <option value="EUR/USD">EUR/USD</option>
+            <option value="EUR/JPY">EUR/JPY</option>
+            <option value="GBP/JPY">GBP/JPY</option>
+            <option value="AUD/JPY">AUD/JPY</option>
+            <option value="NZD/JPY">NZD/JPY</option>
+            <option value="CAD/JPY">CAD/JPY</option>
+            <option value="CHF/JPY">CHF/JPY</option>
+            <option value="GBP/USD">GBP/USD</option>
+            <option value="AUD/USD">AUD/USD</option>
+            <option value="NZD/USD">NZD/USD</option>
+            <option value="USD/CHF">USD/CHF</option>
+            <option value="USD/CAD">USD/CAD</option>
+            <option value="EUR/GBP">EUR/GBP</option>
+            <option value="EUR/AUD">EUR/AUD</option>
+            <option value="GBP/AUD">GBP/AUD</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label for="lot-account">口座通貨</label>
+          <select id="lot-account" name="account">
+            <option value="JPY" selected>JPY</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="AUD">AUD</option>
+            <option value="NZD">NZD</option>
+            <option value="CAD">CAD</option>
+            <option value="CHF">CHF</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label for="lot-units">1ロットの通貨量</label>
+          <select id="lot-units" aria-describedby="lot-units-hint" name="lotUnits">
+            <option value="100000">10万通貨</option>
+            <option value="10000" selected>1万通貨</option>
+            <option value="1000">1,000通貨</option>
+          </select>
+          <small id="lot-units-hint">業者・口座の種類によって異なります（国内の業者は1万通貨、MT4/MT5は10万通貨のことが多い）。</small>
+        </div>
+        <div class="calc-field calc-wide" data-rate-field>
+          <label for="lot-rate" data-rate-label>換算レート</label>
+          <input type="text" id="lot-rate" name="rate" inputmode="decimal" autocomplete="off" placeholder="例: 150.00" aria-describedby="lot-rate-hint">
+          <small id="lot-rate-hint" data-rate-hint>決済通貨（通貨ペアの右側）と口座通貨が違うときだけ使います。例: 円の口座で EUR/USD を計算するなら USD/JPY のレート。</small>
+        </div>
+        </div>
+        <div class="calc-actions"><button type="submit" class="btn btn-primary">計算する</button></div>
+        <div class="calc-result" aria-live="polite">
+          <p>JavaScriptを有効にすると、ここに計算結果が表示されます。計算の式は下の「計算式」の節で確認できます。</p>
+        </div>
+      </form>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#formula">計算式</a></li>
+          <li><a href="#examples">計算の例</a></li>
+          <li><a href="#notes">計算するときの注意点</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+        </ol>
+      </div>
+
+      <h2 id="formula">計算式</h2>
+      <p>このツールは、次の3つの式でロット数を求めています。</p>
+      <ol>
+        <li><strong>許容損失 ＝ 口座残高 × 許容損失（%）÷ 100</strong></li>
+        <li><strong>1ロット・1pipの価値 ＝ 1pipの値幅 × 1ロットの通貨量（× 換算レート）</strong></li>
+        <li><strong>ロット数 ＝ 許容損失 ÷（損切りpips × 1ロット・1pipの価値）</strong></li>
+      </ol>
+      <p>1pipの値幅は、決済通貨（通貨ペアの右側）が円のペア（USD/JPY・EUR/JPYなど）では0.01円、それ以外のペア（EUR/USD・GBP/USDなど）では0.0001です。決済通貨が口座通貨と同じなら換算は要りません。違うときは、決済通貨を口座通貨に直すレートを掛けます（たとえば円の口座でEUR/USDを取引するなら、損益はドルで出るのでUSD/JPYのレートを掛けます。米ドルの口座でUSD/JPYを取引するなら、損益は円で出るのでUSD/JPYのレートで割ります）。</p>
+      <p>3の結果は<strong>0.01ロット単位で切り捨て</strong>ています。切り捨てなので、表示したロットで損切りになったときの損失は許容損失を超えません。ただし、計算上のロットが最小の0.01ロットより小さいときは0.01ロットを表示し、その場合は許容損失を超える旨をあわせて表示します。</p>
+
+      <h2 id="examples">計算の例</h2>
+      <p>数値はすべて説明のための架空の例です。</p>
+      <h3>例1: 円の口座でUSD/JPY</h3>
+      <ul>
+        <li>口座残高100万円、許容損失2%、損切り50 pips、1ロット＝1万通貨</li>
+        <li>許容損失 ＝ 1,000,000 × 2 ÷ 100 ＝ <strong>20,000円</strong></li>
+        <li>1ロット・1pipの価値 ＝ 0.01 × 10,000 ＝ <strong>100円</strong></li>
+        <li>ロット数 ＝ 20,000 ÷（50 × 100）＝ <strong>4ロット（4万通貨）</strong></li>
+      </ul>
+      <p>1ロット＝10万通貨の業者なら、1ロット・1pipの価値は1,000円で、ロット数は0.4ロットです。通貨量はどちらも4万通貨で同じです。同じ「ロット」でも業者によって通貨量が10倍違うことがあるので、注文の前に必ず確かめてください。</p>
+      <h3>例2: 円の口座でEUR/USD（換算あり）</h3>
+      <ul>
+        <li>口座残高100万円、許容損失1%、損切り20 pips、1ロット＝10万通貨、USD/JPYのレートを150.00と入力</li>
+        <li>許容損失 ＝ 1,000,000 × 1 ÷ 100 ＝ <strong>10,000円</strong></li>
+        <li>1ロット・1pipの価値 ＝ 0.0001 × 100,000 × 150 ＝ <strong>1,500円</strong></li>
+        <li>ロット数 ＝ 10,000 ÷（20 × 1,500）≒ 0.333 → <strong>0.33ロット（3万3,000通貨）</strong></li>
+        <li>このロットで損切りになったときの損失 ＝ 0.33 × 20 × 1,500 ＝ 9,900円</li>
+      </ul>
+
+      <h2 id="notes">計算するときの注意点</h2>
+      <ul>
+        <li><strong>1ロットの通貨量は業者で違います。</strong>国内の業者は1万通貨、MT4/MT5を使う業者は10万通貨のことが多いですが、口座の種類によっても変わります。お使いの業者の取引条件で確かめてください。</li>
+        <li><strong>スプレッド・手数料・スワップは含みません。</strong>また、相場が急に動いたときは損切りの注文が想定より不利な価格で約定する（スリッページ）ことがあり、実際の損失は計算より大きくなりえます。</li>
+        <li><strong>換算レートは計算した時点の目安です。</strong>損失が確定する時点のレートが違えば、口座通貨での金額も変わります。</li>
+        <li><strong>必要証拠金は別に確かめてください。</strong>このツールは損失の大きさからロットを出すもので、そのロットを建てるのに必要な証拠金やレバレッジの上限は計算していません。</li>
+        <li><strong>許容損失の%に一律の正解はありません。</strong>このページは特定の値をすすめるものではなく、入力した条件のもとでの計算の例を示すだけです。</li>
+      </ul>
+
+      <div class="article-callout">
+        <h3>ロットと損益の記録をアプリで</h3>
+        <p>「FXトレードログ」は、記録した取引から月次の勝率・pips・プロフィットファクターを自動集計するFXトレード日記アプリです（月次の集計は無料版から利用可能）。アプリの中にも口座通貨に合わせたロット計算機（無料）があり、記録した取引の損益は、pipsとロットから自動で計算されます。MT4/MT5の取引履歴（レポート・CSV）の取り込みにも対応しています（<a href="fx-mt4-mt5-import-guide.html">取り込みの手順</a>）。</p>
+        <a class="btn btn-primary" data-cta="calc-body" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-ja-lot&mt=8">App Storeで無料ダウンロード</a>
+      </div>
+
+      <h2 id="related">関連記事・計算ツール</h2>
+      <ul>
+        <li><a href="fx-pips-calculator.html">FXのpips・損益計算ツール</a> — エントリーと決済のレートから、pipsと損益を計算。</li>
+        <li><a href="fx-breakeven-win-rate-calculator.html">損益分岐勝率・リスクリワード計算ツール</a> — RRから損益分岐勝率、勝率とRRから期待値の目安を計算。</li>
+        <li><a href="fx-win-rate-risk-reward-guide.html">FXの勝率とリスクリワードの関係｜損益分岐勝率の計算方法</a> — 損切り幅と利確幅の比（RR）の考え方。</li>
+        <li><a href="fx-trade-journal-guide.html">FXトレード日記の書き方完全ガイド｜続けるコツと7つの記録項目</a> — ロットや損切りの位置を記録して振り返る手順。</li>
+      </ul>
+
+      <h2 id="faq">よくある質問</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>1ロットは何通貨ですか？</summary>
+          <div class="faq-a">業者や口座の種類によって異なります。国内のFX業者では1ロット＝1万通貨、MT4/MT5を使う業者では1ロット＝10万通貨のことが多いですが、必ずお使いの業者の取引条件で確かめてください。この計算ツールでは1ロットの通貨量を選んで計算できます。</div>
+        </details>
+        <details class="faq-item">
+          <summary>許容損失は口座残高の何%にすればよいですか？</summary>
+          <div class="faq-a">一律の正解はなく、このツールも特定の値をすすめるものではありません。資金の状況や取引の頻度によって、受け入れられる損失の大きさは人それぞれです。入力した%のもとで、損切りになったときの損失がその範囲に収まるロット数を計算します。</div>
+        </details>
+        <details class="faq-item">
+          <summary>入力した数値はどこかに送信されますか？</summary>
+          <div class="faq-a">いいえ。計算はお使いのブラウザの中だけで行い、入力した数値を送信・保存しません。換算レートも自動では取得せず、ご自身で入力する形です。</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>ロット・損切り・結果を、1件ずつ記録に。</h2>
+      <p>「FXトレードログ」なら、記録した取引から月次の勝率・pips・プロフィットファクターが自動で集計されます。</p>
+      <a class="btn btn-primary" data-cta="calc-final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-ja-lot&mt=8">App Storeで無料ダウンロード</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FXトレードログ
+        </div>
+        <p class="foot-tag">スマホ・タブレットで完結するFXトレード日記。記録して、分析して、次の判断へ。</p>
+      </div>
+      <div class="foot-col">
+        <h4>プロダクト</h4>
+        <ul>
+          <li><a href="index.html#features">機能</a></li>
+          <li><a href="index.html#pricing">料金</a></li>
+          <li><a href="index.html#faq">よくある質問</a></li>
+          <li><a href="fx-trade-journal-guide.html">使い方ガイド</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>サポート・法的情報</h4>
+        <ul>
+          <li><a href="support.html">お問い合わせ</a></li>
+          <li><a href="#" id="consentReset">アクセス解析の設定</a></li>
+          <li><a href="privacy-policy.html">プライバシーポリシー</a></li>
+          <li><a href="terms.html">利用規約</a></li>
+          <li><a href="tokushoho.html">特定商取引法に基づく表記</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      本アプリの分析機能は投資助言・特定の金融商品の勧誘を目的とするものではありません。投資に関する最終判断はご自身の責任で行ってください。<br>
+      過去の記録・成績は将来の成果を保証するものではありません。<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

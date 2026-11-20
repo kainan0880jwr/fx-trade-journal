@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forex Win Rate and Risk-Reward: How to Find Your Break-Even Win Rate</title>
+<meta name="description" content="How win rate and risk-reward (RR) relate in forex, explained with the break-even win rate formula 1 ÷ (1 + RR) and a quick-reference table. How to calculate win rate and RR from your own trade records, and pitfalls such as planned vs. realized RR.">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide-en.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide.html">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide-en.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FX Trade Journal">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Forex Win Rate and Risk-Reward: How to Find Your Break-Even Win Rate">
+<meta property="og:description" content="The break-even win rate formula 1 ÷ (1 + RR) with a quick-reference table, how to calculate win rate and RR from your own records, and common pitfalls when tallying them.">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide-en.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FX Trade Journal — the trade log screen with win rate, pips and profit factor">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Forex Win Rate and Risk-Reward: How to Find Your Break-Even Win Rate">
+<meta name="twitter:description" content="The break-even win rate formula and quick-reference table, and how to calculate win rate and RR from your own records.">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Forex Win Rate and Risk-Reward: How to Find Your Break-Even Win Rate",
+  "description": "How win rate and risk-reward (RR) relate in forex, explained with the break-even win rate formula 1 ÷ (1 + RR) and a quick-reference table. How to calculate win rate and RR from your own trade records, and pitfalls such as planned vs. realized RR.",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Daiki Ikebata"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FX Trade Journal",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png"
+    }
+  },
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide-en.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "FX Trade Journal",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/index-en.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Win Rate and Risk-Reward",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide-en.html"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the break-even win rate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is the win rate at which your total P/L comes out at exactly zero for a given risk-reward (average win ÷ average loss). Leaving out breakeven trades, break-even win rate = 1 ÷ (1 + risk-reward). For example, with a risk-reward of 2 it is about 33.3%."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I aim for a risk-reward of 1:2 or higher?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no single right answer. Setting a larger risk-reward lowers the break-even win rate, but because the take-profit target is farther away, your actual win rate can change too. The only way to see which combination fits your own record is to log your planned risk-reward and your actual results."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why doesn't my own win rate match the one my tool shows?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most often it is because breakeven trades are handled differently. Win rate changes depending on whether breakeven trades are included in the denominator. Also check how the period is cut, whether only closed trades are counted, and how trades whose sign flips after commissions are treated."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
+     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
+     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="Consent for analytics" hidden>
+  <div class="wrap consent-inner">
+    <p>This site uses Google Analytics to understand traffic. See our <a href="privacy-policy-en.html">Privacy Policy</a> for details.</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">Decline</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">Accept</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index-en.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FX Trade Journal
+    </a>
+    <ul class="nav-links">
+      <li><a href="index-en.html#features">Features</a></li>
+      <li><a href="index-en.html#pricing">Pricing</a></li>
+      <li><a href="index-en.html#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="guide-nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-en-rr&mt=8">Get the app</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index-en.html">FX Trade Journal</a><span aria-hidden="true">/</span><span aria-current="page">Win Rate and Risk-Reward</span>
+      </nav>
+      <p class="eyebrow">Guide</p>
+      <h1>Forex Win Rate and Risk-Reward<br>How to Find Your Break-Even Win Rate</h1>
+      <p class="article-meta">
+        <span>Published: November 19, 2026</span>
+        <span>Reading time: 8 min</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">This article explains how to calculate and read metrics from your forex trade records. It is not investment advice or a recommendation to buy or sell anything. The methods and metrics described here are not a guarantee of profits or of a higher win rate, and all investment decisions are your own responsibility. All numbers in this article are fictional examples for illustration.</p>
+
+      <p>"My win rate is high, but my total is negative." "My win rate is low, but my total is positive." Look back over your trade records and you may run into results like these that seem not to add up. Looking at win rate alone, or risk-reward alone, will not explain them. The two numbers are linked by the break-even win rate, the line at which the total comes out at exactly zero. This article covers the definitions of win rate and risk-reward, the break-even win rate formula and a quick-reference table, how to calculate both from your own records, and the pitfalls that often come up when tallying them.</p>
+
+      <div class="article-toc">
+        <p>Contents</p>
+        <ol>
+          <li><a href="#definition">Definitions of win rate and risk-reward</a></li>
+          <li><a href="#breakeven">The break-even win rate formula and table</a></li>
+          <li><a href="#tradeoff">Win rate and risk-reward move together</a></li>
+          <li><a href="#calc">Calculating win rate and risk-reward from your records</a></li>
+          <li><a href="#pitfalls">Common pitfalls when tallying</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </div>
+
+      <h2 id="definition">Definitions of win rate and risk-reward</h2>
+      <h3>Win rate</h3>
+      <p>Win rate is the share of your closed trades that ended in profit.</p>
+      <p><strong>Win rate = number of wins ÷ number of trades</strong></p>
+      <p>It only counts how often, so it does not reflect whether each win was large or small. It also changes depending on whether trades closed at breakeven are counted in the number of trades (more on this below).</p>
+      <h3>Risk-reward (RR)</h3>
+      <p>Risk-reward (the risk-reward ratio, RR) is the size of the profit relative to the size of the loss. It is written like "1:2", meaning a profit of 2 for a loss of 1. In this article, RR means the number on the right of the ratio (the profit when the loss is 1). RR is used in two ways:</p>
+      <ul>
+        <li><strong>Planned RR</strong> — The take-profit distance ÷ stop-loss distance you set at entry. For example, a 20-pip stop and a 40-pip target give an RR of 2.</li>
+        <li><strong>Realized RR</strong> — Average win ÷ average loss, calculated from the trades you actually closed. If you close manually partway or move your stop, it drifts away from the planned RR.</li>
+      </ul>
+      <p>For the break-even win rate and for reviewing your records, you generally use <strong>realized RR</strong>. The gap between it and planned RR is a separate thing to review (see below).</p>
+
+      <h2 id="breakeven">The break-even win rate formula and table</h2>
+      <p>The break-even win rate is the win rate at which the total P/L comes out at exactly zero for a given RR. Leaving out breakeven trades, take the average loss per trade as 1 and the average win as RR. With a win rate of p, the total is zero where</p>
+      <p><strong>p × RR = (1 − p) × 1</strong></p>
+      <p>Solving for p gives:</p>
+      <p><strong>Break-even win rate = 1 ÷ (1 + RR)</strong></p>
+      <p>For common RR values, this works out as follows (rounded to one decimal place).</p>
+      <div class="table-scroll">
+        <table class="compare-table" id="breakeven-table">
+          <thead>
+            <tr><th>RR (average win ÷ average loss)</th><th>Ratio</th><th>Break-even win rate</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0.5</td><td>1:0.5</td><td>66.7%</td></tr>
+            <tr><td>1</td><td>1:1</td><td>50.0%</td></tr>
+            <tr><td>1.5</td><td>1:1.5</td><td>40.0%</td></tr>
+            <tr><td>2</td><td>1:2</td><td>33.3%</td></tr>
+            <tr><td>3</td><td>1:3</td><td>25.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>For example, in a record with an RR of 0.5 (wins half the size of losses), the total will not turn positive unless the win rate is above 66.7%. With an RR of 3, the line is at 25%. "High win rate but a negative total" happens when realized RR is small and the win rate falls short of the break-even win rate.</p>
+      <p>Using the same formula the other way round, you can also find the RR at which a given win rate breaks even.</p>
+      <p><strong>Break-even RR = (1 − win rate) ÷ win rate</strong></p>
+      <p>At a 40% win rate that is (1 − 0.4) ÷ 0.4 = 1.5; at 60% it is about 0.67. You can use it to check whether your realized RR sits above or below this value for your own win rate.</p>
+
+      <h2 id="tradeoff">Win rate and risk-reward move together</h2>
+      <p>Looking only at the table, it is tempting to conclude that a larger RR lowers the break-even win rate, so the larger the RR the better. But win rate and RR are not numbers you can set independently.</p>
+      <p>With the same entry, placing the take-profit target farther away can mean more trades hit the stop before the price gets there. Placing it closer can mean the target is reached more often, but each win is smaller. In other words, changing RR often moves win rate with it: even if the break-even win rate in the table goes down, the total does not change if your actual win rate drops by more than that.</p>
+      <p>Which combination fits your own trading cannot be decided in general terms. The way to find out is to keep recording planned RR, realized RR and win rate, and to compare trades made under the same conditions. Profit factor (PF) can also be used as a single metric that combines the two. Its relationship to win rate and RR is covered in "<a href="fx-profit-factor-guide-en.html">What Is Profit Factor in Forex?</a>".</p>
+
+      <h2 id="calc">Calculating win rate and risk-reward from your records</h2>
+      <p>List your closed trades one per row, with P/L (money or pips) entered as positive for profits and negative for losses, and you can calculate them in this order:</p>
+      <ol>
+        <li>Count the <strong>wins, losses and breakeven trades</strong>.</li>
+        <li><strong>Win rate</strong> = wins ÷ (wins + losses). Decide whether to include breakeven trades and stick to it.</li>
+        <li><strong>Average win</strong> = total of wins ÷ number of wins; <strong>average loss</strong> = absolute value of the total of losses ÷ number of losses.</li>
+        <li><strong>Realized RR</strong> = average win ÷ average loss.</li>
+        <li>Calculate the <strong>break-even win rate</strong> = 1 ÷ (1 + realized RR) and compare it with the win rate from step 2.</li>
+      </ol>
+      <p>Let's check with a fictional example. Say one month has 20 trades (no breakeven trades): 9 wins averaging 24 pips and 11 losses averaging 15 pips.</p>
+      <ul>
+        <li>Win rate = 9 ÷ 20 = <strong>45%</strong></li>
+        <li>Realized RR = 24 ÷ 15 = <strong>1.6</strong></li>
+        <li>Break-even win rate = 1 ÷ (1 + 1.6) ≈ <strong>38.5%</strong></li>
+        <li>Total = 9 × 24 − 11 × 15 = +51 pips (+2.55 pips per trade)</li>
+      </ul>
+      <p>The 45% win rate for this month is 6.5 percentage points above the 38.5% break-even win rate, which is consistent with the positive total. The per-trade average can also be found as win rate × average win − (1 − win rate) × average loss = 0.45 × 24 − 0.55 × 15 = 2.55 pips.</p>
+      <p>Putting the three numbers — win rate, realized RR and break-even win rate — side by side lets you see whether a positive or negative total came from the win rate side or the RR side. Line them up month by month and you can follow how each one moved. Keep in mind, though, that this is a way of reading past records; it does not tell you what next month's results will be.</p>
+
+      <h2 id="pitfalls">Common pitfalls when tallying</h2>
+      <h3>Confusing planned RR with realized RR</h3>
+      <p>Even if you "entered at 1:2", closing manually partway or widening your stop means the actual result will not be 1:2. Calculating the break-even win rate from planned RR can give a more optimistic number than reality. Record planned RR and realized RR separately, and review where the gap came from together with your notes on why you closed each trade.</p>
+      <h3>Inconsistent handling of breakeven trades</h3>
+      <p>Counting breakeven trades in the number of trades lowers the win rate; leaving them out raises it. The break-even win rate formula assumes breakeven trades are excluded, so when comparing, it is simplest to calculate the win rate without them too. Whichever you choose, handle them the same way across periods.</p>
+      <h3>Too few trades</h3>
+      <p>With 10 or 20 trades, a single large win or loss moves the average win or average loss a lot, and realized RR and break-even win rate swing with it. How many trades are enough depends on how often you trade and how much your results vary, so there is no single answer; a sensible approach is to record the number of trades alongside and, while it is still small, only watch the trend.</p>
+      <h3>How commissions and swaps are handled</h3>
+      <p>The spread is built into the price, but commission and swap per trade may be recorded separately. Including them makes the average win smaller and the average loss larger, lowering realized RR. A trade closed for a small gain can turn into a loss once commission is taken off, in which case the number of wins itself changes. Decide which way you calculate.</p>
+      <h3>Calculating different methods or currencies together</h3>
+      <p>Short trades repeated within a session and trades held for several days usually have very different win rates and RRs. Calculating them together makes the characteristics of both harder to see. The same goes for adding up amounts from accounts in different currencies without converting them. Calculating each method or account separately makes the numbers clearer.</p>
+
+      <div class="article-callout">
+        <h3>Win rate totals and an RR review in one app</h3>
+        <p>FX Trade Journal is a forex trading journal app for iOS that tallies monthly win rate, pips and profit factor automatically from the trades you log (monthly totals are available on the free plan). For trades logged with a stop loss (SL) and take profit (TP), the risk-reward analysis tab (PRO) shows the gap between the risk-reward you planned and the actual result. It also imports MT4/MT5 trade history from a desktop report (HTML) or CSV (<a href="fx-mt4-mt5-import-guide-en.html">how to import</a>). Records are stored encrypted on your device, and no account is needed.</p>
+        <a class="btn btn-primary" data-cta="guide-body" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-en-rr&mt=8">Download free on the App Store</a>
+      </div>
+
+      <h2 id="related">Related articles</h2>
+      <ul>
+        <li><a href="fx-trade-journal-guide-en.html">How to Keep a Forex Trading Journal</a> — how to record your trades and review them, the groundwork for calculating win rate and RR.</li>
+        <li><a href="fx-profit-factor-guide-en.html">What Is Profit Factor in Forex? How to Calculate and Read It</a> — the metric that combines win rate and RR, and how to calculate and read it.</li>
+        <li><a href="fx-breakeven-win-rate-calculator-en.html">Break-Even Win Rate and Risk-Reward Calculator</a> — a free calculator using this article's formulas: break-even win rate from RR, expectancy from win rate and RR.</li>
+      </ul>
+
+      <h2 id="faq">FAQ</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>What is the break-even win rate?</summary>
+          <div class="faq-a">It is the win rate at which your total P/L comes out at exactly zero for a given risk-reward (average win ÷ average loss). Leaving out breakeven trades, break-even win rate = 1 ÷ (1 + risk-reward). For example, with a risk-reward of 2 it is about 33.3%.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Should I aim for a risk-reward of 1:2 or higher?</summary>
+          <div class="faq-a">There is no single right answer. Setting a larger risk-reward lowers the break-even win rate, but because the take-profit target is farther away, your actual win rate can change too. The only way to see which combination fits your own record is to log your planned risk-reward and your actual results.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Why doesn't my own win rate match the one my tool shows?</summary>
+          <div class="faq-a">Most often it is because breakeven trades are handled differently. Win rate changes depending on whether breakeven trades are included in the denominator. Also check how the period is cut, whether only closed trades are counted, and how trades whose sign flips after commissions are treated.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>Check your win rate and risk-reward from your records.</h2>
+      <p>With FX Trade Journal, monthly win rate, pips and profit factor are tallied automatically from the trades you log.</p>
+      <a class="btn btn-primary" data-cta="guide-final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-en-rr&mt=8">Download free on the App Store</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FX Trade Journal
+        </div>
+        <p class="foot-tag">A trading journal that works entirely on your phone or tablet. Log it, analyze it, and see what your record shows.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index-en.html#features">Features</a></li>
+          <li><a href="index-en.html#pricing">Pricing</a></li>
+          <li><a href="index-en.html#faq">FAQ</a></li>
+          <li><a href="fx-trade-journal-guide-en.html">Guide</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Support &amp; Legal</h4>
+        <ul>
+          <li><a href="support-en.html">Contact us</a></li>
+          <li><a href="#" id="consentReset">Analytics settings</a></li>
+          <li><a href="privacy-policy-en.html">Privacy Policy</a></li>
+          <li><a href="terms-en.html">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      MetaTrader, MT4 and MT5 are trademarks of MetaQuotes Software Corp. This app is not affiliated with or endorsed by MetaQuotes.<br>
+      This app's analytics features are not intended to provide investment advice or solicit any specific financial product. Please make your own trading decisions at your own risk.<br>
+      Past records and performance do not guarantee future results.<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

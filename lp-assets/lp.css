@@ -100,12 +100,12 @@ h3{font-size:1.15rem;}
 .nav-links::-webkit-scrollbar{display:none;}
 .nav-links a{display:inline-block; color:var(--ink-dim); text-decoration:none; font-size:.92rem; padding:.45em 0;}
 .nav-links a:hover{color:var(--ink);}
-/* 2段目の右に続きがあることを示す（右端を薄くする。2026-11-16 Fable レビュー LP-7） */
+/* 2段目の右に続きがあることを示す（右端を薄くする） */
 @media (max-width:899px){
   .nav-links{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent); mask-image:linear-gradient(90deg,#000 85%,transparent); padding-right:2rem;}
 }
 /* 言語の切り替え（LP-4）。JS なしの details。開いた一覧はナビの下に重ねる。
-   FAQ 用の details の汎用スタイル（上の線・余白・「+/−」）を打ち消す（11/17 Fable レビュー） */
+   FAQ 用の details の汎用スタイル（上の線・余白・「+/−」）を打ち消す */
 .lang-menu{position:relative; font-size:.9rem; border-top:0; padding-top:0;}
 .lang-menu > summary{display:inline-flex; align-items:center; gap:.3em; min-height:0; list-style:none; cursor:pointer; color:var(--ink-dim); font-weight:400; font-size:inherit; padding:.45em .2em; white-space:nowrap;}
 .lang-menu > summary::-webkit-details-marker{display:none;}
@@ -119,7 +119,7 @@ h3{font-size:1.15rem;}
 @media (min-width:420px){ .lang-menu ul{display:grid; grid-template-columns:repeat(2, max-content);} }
 .lang-menu li a{display:block; padding:.5em 1em; color:var(--ink); text-decoration:none; white-space:nowrap;}
 .lang-menu li a:hover,.lang-menu li a:focus-visible{background:var(--surface-2);}
-/* スマホ: 1段目 ブランド・ボタン、2段目 リンク（横スクロール）・言語。2段に収める（11/17 Fable レビュー 指摘1） */
+/* スマホ: 1段目 ブランド・ボタン、2段目 リンク（横スクロール）・言語。2段に収める */
 @media (max-width:899px){
   .nav-row{display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"brand cta" "links lang"; align-items:center;}
   .nav-row > .brand{grid-area:brand; min-width:0; overflow:hidden;}
@@ -376,5 +376,5 @@ details p{margin-top:.5rem; font-size:.92rem;}
   }
 }
 
-/* 機能のカードの反応（PC だけ。派手な動きは足さない。2026-11-16 Fable レビュー LP-8） */
+/* 機能のカードの反応（PC だけ。派手な動きは足さない） */
 @media (hover:hover){ .card{transition:border-color .2s var(--ease);} .card:hover{border-color:var(--line-strong);} }

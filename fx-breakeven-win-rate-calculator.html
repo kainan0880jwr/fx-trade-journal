@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>損益分岐勝率・リスクリワード計算ツール｜FXの期待値の目安</title>
+<meta name="description" content="リスクリワード（RR）から損益分岐勝率を、勝率とRRから1回あたりの期待値の目安を計算する無料ツール。式は損益分岐勝率＝1÷(1＋RR)、期待値＝勝率×RR−(1−勝率)。早見表と、自分の記録で使うときの注意点つき。">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator.html">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator-en.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FXトレードログ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="損益分岐勝率・リスクリワード計算ツール｜FXの期待値の目安">
+<meta property="og:description" content="RRから損益分岐勝率、勝率とRRから期待値の目安を計算。式は 1÷(1＋RR)。早見表つき。">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FXトレードログ — 記録画面と、勝率・pips・PFの自動集計">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="損益分岐勝率・リスクリワード計算ツール｜FXの期待値の目安">
+<meta name="twitter:description" content="RRから損益分岐勝率、勝率とRRから期待値の目安を計算。式は 1÷(1＋RR)。早見表つき。">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "損益分岐勝率・リスクリワード計算ツール｜FXの期待値の目安",
+  "description": "リスクリワード（RR）から損益分岐勝率を、勝率とRRから1回あたりの期待値の目安を計算する無料ツール。式は損益分岐勝率＝1÷(1＋RR)、期待値＝勝率×RR−(1−勝率)。早見表と、自分の記録で使うときの注意点つき。",
+  "inLanguage": "ja",
+  "author": {
+    "@type": "Person",
+    "name": "Daiki Ikebata"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FXトレードログ",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png"
+    }
+  },
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "FXトレードログ",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "損益分岐勝率・リスクリワード計算ツール",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator.html"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "損益分岐勝率の計算式は？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "損益分岐勝率＝1÷（1＋リスクリワード）です。リスクリワードは平均利益÷平均損失で、引き分けを除いて考えます。たとえばリスクリワードが2なら約33.3%、1なら50%です。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "期待値の「R」とは何ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "1回の平均損失を1としたときの大きさの単位です。期待値が＋0.17Rなら、記録の上では1回あたり平均損失の0.17倍ぶんプラスだった、という意味になります。過去の記録の集計から出した目安であり、今後の結果を示すものではありません。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "入力した数値はどこかに送信されますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "いいえ。計算はお使いのブラウザの中だけで行い、入力した数値を送信・保存しません。"
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) を呼ばず、
+     gtag.js の読み込みもしない（consent.js が同意後に <script> を動的に作る）。
+     これにより「同意しない」場合はCookieなしの計測ピングも含めて一切送信されない。 -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+<!-- 計算は lp-assets/calc.js（外部への送信なし。インラインスクリプトは CSP で使えない） -->
+<script src="lp-assets/calc.js" defer></script>
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="アクセス解析への同意" hidden>
+  <div class="wrap consent-inner">
+    <p>本サイトでは、アクセス状況を把握するためGoogleアナリティクスを利用しています。詳細は<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">同意しない</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">同意する</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FXトレードログ
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#features">機能</a></li>
+      <li><a href="index.html#pricing">料金</a></li>
+      <li><a href="index.html#faq">よくある質問</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="calc-nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-ja-breakeven&mt=8">App Storeで入手</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="index.html">FXトレードログ</a><span aria-hidden="true">/</span><span aria-current="page">損益分岐勝率・リスクリワード計算ツール</span>
+      </nav>
+      <p class="eyebrow">無料の計算ツール</p>
+      <h1>損益分岐勝率・<wbr><span class="nobr">リスクリワード計算ツール</span><br><span class="nobr">勝率とRRから</span><wbr><span class="nobr">期待値の目安</span></h1>
+      <p class="article-meta">
+        <span>公開日: 2026年11月19日</span>
+        <span>計算はブラウザ内だけで行います</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">このページの計算ツールは、入力した数値から計算の目安を示すものであり、投資助言・売買推奨ではありません。計算結果は利益を保証するものではなく、投資判断はご自身の責任で行ってください。1ロットの通貨量・必要証拠金・スプレッド・手数料・スワップなどの取引条件は業者や口座によって異なるため、実際の条件はお使いの業者でご確認ください。計算はお使いのブラウザの中だけで行い、入力した数値はどこにも送信しません。</p>
+
+      <p>リスクリワード（RR、平均利益÷平均損失）を入れると、合計の損益がちょうどゼロになる勝率（損益分岐勝率）を計算します。勝率も入れると、損益分岐勝率との差と、1回あたりの期待値の目安（平均損失を1としたときの大きさ「R」）を表示します。1回の平均損失（pipsや金額）も入れると、期待値をその単位で表示します。式は解説記事「<a href="fx-win-rate-risk-reward-guide.html">FXの勝率とリスクリワードの関係</a>」と同じです。</p>
+
+      <form class="calc" id="calc" data-calc="breakeven" aria-label="損益分岐勝率・期待値の計算" novalidate>
+        <div class="calc-grid">
+        <div class="calc-field">
+          <label for="be-rr">リスクリワード（RR）</label>
+          <input type="text" id="be-rr" name="rr" inputmode="decimal" autocomplete="off" value="1.6" aria-describedby="be-rr-hint">
+          <small id="be-rr-hint">平均利益÷平均損失。1:2なら 2</small>
+        </div>
+        <div class="calc-field">
+          <label for="be-win">勝率（%、任意）</label>
+          <input type="text" id="be-win" name="winRate" inputmode="decimal" autocomplete="off" value="45" aria-describedby="be-win-hint">
+          <small id="be-win-hint">引き分けを除いた勝率</small>
+        </div>
+        <div class="calc-field calc-wide">
+          <label for="be-loss">1回の平均損失（任意）</label>
+          <input type="text" id="be-loss" name="avgLoss" inputmode="decimal" autocomplete="off" value="15" aria-describedby="be-loss-hint">
+          <small id="be-loss-hint">pipsでも金額でも可。期待値を同じ単位で表示</small>
+        </div>
+        </div>
+        <div class="calc-actions"><button type="submit" class="btn btn-primary">計算する</button></div>
+        <div class="calc-result" aria-live="polite">
+          <p>JavaScriptを有効にすると、ここに計算結果が表示されます。計算の式は下の「計算式」の節で確認できます。</p>
+        </div>
+      </form>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#formula">計算式</a></li>
+          <li><a href="#table">損益分岐勝率の早見表</a></li>
+          <li><a href="#examples">計算の例</a></li>
+          <li><a href="#notes">自分の記録で使うときの注意点</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+        </ol>
+      </div>
+
+      <h2 id="formula">計算式</h2>
+      <p>引き分けを除き、1回あたりの平均損失を1、平均利益をRRとしたとき、勝率をpとすると、次の式で計算できます。</p>
+      <ul>
+        <li><strong>損益分岐勝率 ＝ 1 ÷（1 ＋ RR）</strong></li>
+        <li><strong>損益分岐RR ＝（1 − 勝率）÷ 勝率</strong>（ある勝率で合計がゼロになるRR）</li>
+        <li><strong>1回あたりの期待値（R）＝ 勝率 × RR −（1 − 勝率）</strong></li>
+        <li><strong>期待値（入力した単位）＝ 期待値（R）× 1回の平均損失</strong></li>
+      </ul>
+      <p>期待値がプラスなら、勝率が損益分岐勝率を上回っている状態、マイナスなら下回っている状態です。</p>
+
+      <h2 id="table">損益分岐勝率の早見表</h2>
+      <p>主なRRについて計算すると、次のとおりです（小数第2位を四捨五入）。</p>
+      <div class="table-scroll">
+        <table class="compare-table" id="breakeven-table">
+          <thead>
+            <tr><th>RR（平均利益÷平均損失）</th><th>表記</th><th>損益分岐勝率</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0.5</td><td>1:0.5</td><td>66.7%</td></tr>
+            <tr><td>1</td><td>1:1</td><td>50.0%</td></tr>
+            <tr><td>1.5</td><td>1:1.5</td><td>40.0%</td></tr>
+            <tr><td>2</td><td>1:2</td><td>33.3%</td></tr>
+            <tr><td>3</td><td>1:3</td><td>25.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="examples">計算の例</h2>
+      <p>ある月の記録が20件（引き分けなし）で、勝ち9件の平均利益が24 pips、負け11件の平均損失が15 pipsだったとします（架空の例）。</p>
+      <ul>
+        <li>勝率 ＝ 9 ÷ 20 ＝ <strong>45%</strong>、RR ＝ 24 ÷ 15 ＝ <strong>1.6</strong></li>
+        <li>損益分岐勝率 ＝ 1 ÷（1 ＋ 1.6）≒ <strong>38.5%</strong>（勝率との差は＋6.5ポイント）</li>
+        <li>期待値（R）＝ 0.45 × 1.6 − 0.55 ＝ <strong>＋0.17R</strong></li>
+        <li>期待値（pips）＝ 0.17 × 15 ＝ <strong>＋2.55 pips</strong>（合計 9 × 24 − 11 × 15 ＝ ＋51 pips を20件で割った値と一致）</li>
+        <li>勝率45%で損益ゼロになるRR ＝ 0.55 ÷ 0.45 ≒ 1.22</li>
+      </ul>
+      <p>上の計算ツールの初期値はこの例の数値です。</p>
+
+      <h2 id="notes">自分の記録で使うときの注意点</h2>
+      <ul>
+        <li><strong>勝率とRRは一緒に動きます。</strong>利確の目標を遠くすればRRは大きくなりますが、利確に届く回数が減って勝率が下がることもあります。表の上で損益分岐勝率が下がっても、実際の勝率がそれ以上に下がれば結果は変わりません。</li>
+        <li><strong>計画RRではなく実績RRで。</strong>エントリー時の利確幅÷損切り幅（計画RR）ではなく、実際の平均利益÷平均損失（実績RR）で計算すると、記録の実態に近い数字になります。</li>
+        <li><strong>件数が少ないと数字が揺れます。</strong>10件や20件では、1件の大きな勝ち・負けで平均が大きく動きます。</li>
+        <li><strong>手数料・スワップの扱いをそろえる。</strong>含めるか除くかで平均利益・平均損失が変わります。</li>
+        <li><strong>過去の記録の読み方です。</strong>期待値は過去の集計から出した目安で、今後の結果を示すものではありません。</li>
+      </ul>
+
+      <div class="article-callout">
+        <h3>勝率・RRの集計をアプリで</h3>
+        <p>「FXトレードログ」は、記録した取引から月次の勝率・pips・プロフィットファクターを自動集計するFXトレード日記アプリです（月次の集計は無料版から利用可能）。損切り（SL）と利確（TP）を入力した記録は、RR分析タブ（PRO）で、計画したリスクリワードと実際の結果の差を確認できます。MT4/MT5の取引履歴（レポート・CSV）の取り込みにも対応しています（<a href="fx-mt4-mt5-import-guide.html">取り込みの手順</a>）。</p>
+        <a class="btn btn-primary" data-cta="calc-body" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-ja-breakeven&mt=8">App Storeで無料ダウンロード</a>
+      </div>
+
+      <h2 id="related">関連記事・計算ツール</h2>
+      <ul>
+        <li><a href="fx-win-rate-risk-reward-guide.html">FXの勝率とリスクリワードの関係｜損益分岐勝率の計算方法</a> — 式の導き方と、計画RR・実績RRの違い、集計の落とし穴。</li>
+        <li><a href="fx-profit-factor-guide.html">プロフィットファクター（PF）とは｜FXでの計算方法と読み方</a> — 勝率とRRをまとめて表す指標。</li>
+        <li><a href="fx-lot-calculator.html">FXロット計算ツール</a> — 口座残高・許容損失・損切りpipsから、ロット数の目安を計算。</li>
+        <li><a href="fx-pips-calculator.html">FXのpips・損益計算ツール</a> — エントリーと決済のレートから、pipsと損益を計算。</li>
+      </ul>
+
+      <h2 id="faq">よくある質問</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>損益分岐勝率の計算式は？</summary>
+          <div class="faq-a">損益分岐勝率＝1÷（1＋リスクリワード）です。リスクリワードは平均利益÷平均損失で、引き分けを除いて考えます。たとえばリスクリワードが2なら約33.3%、1なら50%です。</div>
+        </details>
+        <details class="faq-item">
+          <summary>期待値の「R」とは何ですか？</summary>
+          <div class="faq-a">1回の平均損失を1としたときの大きさの単位です。期待値が＋0.17Rなら、記録の上では1回あたり平均損失の0.17倍ぶんプラスだった、という意味になります。過去の記録の集計から出した目安であり、今後の結果を示すものではありません。</div>
+        </details>
+        <details class="faq-item">
+          <summary>入力した数値はどこかに送信されますか？</summary>
+          <div class="faq-a">いいえ。計算はお使いのブラウザの中だけで行い、入力した数値を送信・保存しません。</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>自分の勝率とリスクリワードを、記録から確かめましょう。</h2>
+      <p>「FXトレードログ」なら、記録した取引から月次の勝率・pips・プロフィットファクターが自動で集計されます。</p>
+      <a class="btn btn-primary" data-cta="calc-final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=calc-ja-breakeven&mt=8">App Storeで無料ダウンロード</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FXトレードログ
+        </div>
+        <p class="foot-tag">スマホ・タブレットで完結するFXトレード日記。記録して、分析して、次の判断へ。</p>
+      </div>
+      <div class="foot-col">
+        <h4>プロダクト</h4>
+        <ul>
+          <li><a href="index.html#features">機能</a></li>
+          <li><a href="index.html#pricing">料金</a></li>
+          <li><a href="index.html#faq">よくある質問</a></li>
+          <li><a href="fx-trade-journal-guide.html">使い方ガイド</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>サポート・法的情報</h4>
+        <ul>
+          <li><a href="support.html">お問い合わせ</a></li>
+          <li><a href="#" id="consentReset">アクセス解析の設定</a></li>
+          <li><a href="privacy-policy.html">プライバシーポリシー</a></li>
+          <li><a href="terms.html">利用規約</a></li>
+          <li><a href="tokushoho.html">特定商取引法に基づく表記</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      本アプリの分析機能は投資助言・特定の金融商品の勧誘を目的とするものではありません。投資に関する最終判断はご自身の責任で行ってください。<br>
+      過去の記録・成績は将来の成果を保証するものではありません。<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

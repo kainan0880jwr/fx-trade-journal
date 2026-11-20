@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Import MT4/MT5 Trade History to iPhone (HTML Report or CSV)</title>
+<meta name="description" content="Step-by-step: save your trade history as a report (HTML) in MT4 or MT5 on your computer, send it to your iPhone and import it into a forex trading journal app. Why the mobile apps can't export, why PDF and Excel files don't work, and how to fix time offsets and duplicates.">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide-en.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide.html">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide-en.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FX Trade Journal">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="How to Import MT4/MT5 Trade History to iPhone (HTML Report or CSV)">
+<meta property="og:description" content="Save your MT4/MT5 history as an HTML report on your computer, send it to your iPhone and import it — plus what to check when it doesn't work.">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide-en.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FX Trade Journal — the trade log screen with win rate, pips and profit factor">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Import MT4/MT5 Trade History to iPhone (HTML Report or CSV)">
+<meta name="twitter:description" content="Save your MT4/MT5 history as an HTML report on your computer, send it to your iPhone and import it — plus what to check when it doesn't work.">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Import MT4/MT5 Trade History to iPhone Save the Report, Send It, Import It",
+  "description": "Step-by-step: save your trade history as a report (HTML) in MT4 or MT5 on your computer, send it to your iPhone and import it into a forex trading journal app. Why the mobile apps can't export, why PDF and Excel files don't work, and how to fix time offsets and duplicates.",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Daiki Ikebata"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FX Trade Journal",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png"
+    }
+  },
+  "datePublished": "2026-11-18",
+  "dateModified": "2026-11-18",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide-en.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "FX Trade Journal",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/index-en.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Import MT4/MT5 Trade History",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide-en.html"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can I import trade history from the MT4/MT5 mobile app?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The MT4 and MT5 mobile apps cannot save trade history to a file, so use an HTML report saved from the desktop version, or a CSV from your broker's website."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is importing free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. MT4/MT5 import is available on the free plan. Importing into a second account or beyond, and detailed analysis such as by session and weekday, are PRO (paid, auto-renewing)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my trade data sent anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The file is read and saved on your iPhone only, and your trades are not sent to our servers. Records are stored encrypted on your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there an Android version?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Android version is in closed testing on Google Play. For now the app runs on iPhone and iPad (iOS 16.4 or later)."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
+     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
+     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="Consent for analytics" hidden>
+  <div class="wrap consent-inner">
+    <p>This site uses Google Analytics to understand traffic. See our <a href="privacy-policy-en.html">Privacy Policy</a> for details.</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">Decline</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">Accept</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index-en.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FX Trade Journal
+    </a>
+    <ul class="nav-links">
+      <li><a href="index-en.html#features">Features</a></li>
+      <li><a href="index-en.html#pricing">Pricing</a></li>
+      <li><a href="index-en.html#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="guide-nav" href="https://apps.apple.com/app/id6786188634?ppid=a6a9a706-02b0-4e6d-9589-cf275924c11b&pt=129108253&ct=guide-en-import&mt=8">Get the app</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index-en.html">FX Trade Journal</a><span aria-hidden="true">/</span><span aria-current="page">Import MT4/MT5 Trade History</span>
+      </nav>
+      <p class="eyebrow">Guide</p>
+      <h1>How to Import MT4/MT5 Trade History to iPhone<br>Save the Report, Send It, Import It</h1>
+      <p class="article-meta">
+        <span>Published: November 18, 2026</span>
+        <span>Reading time: 6 min</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">This article explains how to import MT4/MT5 trade history into an app. It is not investment advice or a recommendation to buy or sell anything. Keeping and reviewing records does not guarantee profits, and all investment decisions are your own responsibility. Menu names in MT4/MT5 can differ slightly by version and language.</p>
+
+      <p>Re-typing past trades into a journal one by one is tedious. If you trade with MT4 or MT5, you can save your history to a file and import it in one go. This guide walks through saving your history in the desktop versions of MT4 and MT5, sending the file to your iPhone, and importing it into FX Trade Journal — and what to check if something goes wrong.</p>
+
+      <div class="article-toc">
+        <p>Contents</p>
+        <ol>
+          <li><a href="#first">Before you start</a></li>
+          <li><a href="#mt4">Saving your history in MT4 (desktop)</a></li>
+          <li><a href="#mt5">Saving your history in MT5 (desktop)</a></li>
+          <li><a href="#send">Sending the file to your iPhone</a></li>
+          <li><a href="#import">Importing it into the app</a></li>
+          <li><a href="#trouble">If it doesn't work</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </div>
+
+      <h2 id="first">Before you start</h2>
+      <ul>
+        <li><strong>Save the file on your computer.</strong> The MT4 and MT5 mobile apps cannot save your trade history to a file.</li>
+        <li><strong>Save it as a report (HTML).</strong> MT4 gives you an <code>.htm</code> file and MT5 an <code>.html</code> file. CSV trade histories from your broker's website work too.</li>
+        <li><strong>PDF and Excel (.xlsx) files can't be read.</strong> If MT5 offers Excel or PDF, choose HTML instead.</li>
+        <li><strong>Importing is free.</strong> The file is read on your iPhone only, and your trades are not sent anywhere.</li>
+      </ul>
+
+      <h2 id="mt4">Saving your history in MT4 (desktop)</h2>
+      <ol>
+        <li>Open the “Account History” tab in the Terminal window.</li>
+        <li>Right-click the list and choose “All History” (or just the period you want).</li>
+        <li>Right-click again and choose “Save as Report”. You get a file like <code>Statement.htm</code>.</li>
+      </ol>
+      <p>“Save as Report” gives a smaller file than “Save as Detailed Report”.</p>
+
+      <h2 id="mt5">Saving your history in MT5 (desktop)</h2>
+      <ol>
+        <li>Open the “History” tab in the Toolbox.</li>
+        <li>Right-click the list and choose “Report” → “HTML”.</li>
+        <li>You get a file like <code>ReportHistory-….html</code>.</li>
+      </ol>
+      <p>The “Open XML (Excel)” option in the same menu, and PDFs saved from the chart-style report window, can't be read. Save as HTML from the right-click menu of the History tab.</p>
+
+      <h2 id="send">Sending the file to your iPhone</h2>
+      <p>Send the file to yourself with one of these and keep it somewhere the Files app can open.</p>
+      <ul>
+        <li><strong>AirDrop</strong> (from a Mac) — save it to the Files app when it arrives.</li>
+        <li><strong>iCloud Drive or Google Drive</strong> — drop it in a folder on your computer and open it from the Files app on your iPhone.</li>
+        <li><strong>Email</strong> — attach it to an email to yourself and save the attachment to the Files app.</li>
+      </ul>
+
+      <div class="article-callout">
+        <h3>Use your imported history for your review</h3>
+        <p>FX Trade Journal is a forex trading journal app for iOS that imports MT4/MT5 reports (HTML) and broker CSVs. Monthly win rate, pips and profit factor are tallied automatically from your imported trades on the free plan; the session/weekday and tag analysis tabs are PRO. No account is required, and records are stored encrypted on your device.</p>
+        <a class="btn btn-primary" data-cta="guide-body" href="https://apps.apple.com/app/id6786188634?ppid=a6a9a706-02b0-4e6d-9589-cf275924c11b&pt=129108253&ct=guide-en-import&mt=8">Download free on the App Store</a>
+      </div>
+
+      <h2 id="import">Importing it into the app</h2>
+      <ol>
+        <li>In FX Trade Journal, open Settings and tap “MT4/MT5 Trade History Import” (on first launch you can also choose “Import MT4/MT5 history” on the welcome screen).</li>
+        <li>Choose the file you sent.</li>
+        <li>The app shows how many trades were imported. Closed trades are added with pair, direction, lot size, prices and P/L.</li>
+      </ol>
+      <p>Importing the same file twice won't create duplicates — trades already imported are skipped. If you import the wrong file, “Undo last import” in Settings removes it. If you use more than one account, the app uses the account number in the report to pick the account (a second account and beyond is PRO).</p>
+
+      <h2 id="trouble">If it doesn't work</h2>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr><th>Message or symptom</th><th>Common cause</th><th>What to do</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>“Please select a CSV or TXT file, or an MT4/MT5 report (HTML)”</td><td>A PDF, Excel file or image was chosen</td><td>Save an HTML report from MT4/MT5 again</td></tr>
+            <tr><td>“No closed-trade table was found in this report”</td><td>The report only has open positions or orders</td><td>Save from Account History (MT4) or the History tab (MT5)</td></tr>
+            <tr><td>“Could not read the file encoding”</td><td>The CSV was saved in an encoding other than UTF-8</td><td>In Excel, save as “CSV UTF-8”</td></tr>
+            <tr><td>Trade times are off by a few hours</td><td>MT4/MT5 times are your broker's server time</td><td>Set “Import time adjustment” in Settings to “Auto (follows DST)” or a fixed number of hours</td></tr>
+            <tr><td>Fewer trades than expected</td><td>Open positions are not imported</td><td>Import again after closing them (trades already imported are skipped)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Each import can be up to 10 MB and 20,000 trades. For larger histories, save the report in shorter periods.</p>
+
+      <h2 id="faq">FAQ</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Can I import trade history from the MT4/MT5 mobile app?</summary>
+          <div class="faq-a">The MT4 and MT5 mobile apps cannot save trade history to a file, so use an HTML report saved from the desktop version, or a CSV from your broker's website.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is importing free?</summary>
+          <div class="faq-a">Yes. MT4/MT5 import is available on the free plan. Importing into a second account or beyond, and detailed analysis such as by session and weekday, are PRO (paid, auto-renewing).</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is my trade data sent anywhere?</summary>
+          <div class="faq-a">The file is read and saved on your iPhone only, and your trades are not sent to our servers. Records are stored encrypted on your device.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is there an Android version?</summary>
+          <div class="faq-a">The Android version is in closed testing on Google Play. For now the app runs on iPhone and iPad (iOS 16.4 or later).</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>Bring your past trades into your journal.</h2>
+      <p>Import an MT4/MT5 report and FX Trade Journal tallies monthly win rate, pips and profit factor from the trades you already have.</p>
+      <a class="btn btn-primary" data-cta="guide-final" href="https://apps.apple.com/app/id6786188634?ppid=a6a9a706-02b0-4e6d-9589-cf275924c11b&pt=129108253&ct=guide-en-import&mt=8">Download free on the App Store</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FX Trade Journal
+        </div>
+        <p class="foot-tag">A trading journal that works entirely on your phone or tablet. Log it, analyze it, and see what your record shows.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index-en.html#features">Features</a></li>
+          <li><a href="index-en.html#pricing">Pricing</a></li>
+          <li><a href="index-en.html#faq">FAQ</a></li>
+          <li><a href="fx-trade-journal-guide-en.html">Guide</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Support &amp; Legal</h4>
+        <ul>
+          <li><a href="support-en.html">Contact us</a></li>
+          <li><a href="#" id="consentReset">Analytics settings</a></li>
+          <li><a href="privacy-policy-en.html">Privacy Policy</a></li>
+          <li><a href="terms-en.html">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      MetaTrader, MT4 and MT5 are trademarks of MetaQuotes Software Corp. This app is not affiliated with or endorsed by MetaQuotes.<br>
+      This app's analytics features are not intended to provide investment advice or solicit any specific financial product. Please make your own trading decisions at your own risk.<br>
+      Past records and performance do not guarantee future results.<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

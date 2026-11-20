@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Is Profit Factor in Forex? How to Calculate and Read It</title>
+<meta name="description" content="What profit factor (PF) means in forex and how to calculate it, with a worked example in pips. How PF relates to win rate and risk-reward, why it swings with only a few trades, and common pitfalls such as swaps and commissions.">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide-en.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide.html">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide-en.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FX Trade Journal">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="What Is Profit Factor in Forex? How to Calculate and Read It">
+<meta property="og:description" content="The definition of profit factor and how to calculate it, with a worked example in pips — plus how it relates to win rate and risk-reward, and common pitfalls when tallying it.">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide-en.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FX Trade Journal — the trade log screen with win rate, pips and profit factor">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What Is Profit Factor in Forex? How to Calculate and Read It">
+<meta name="twitter:description" content="How to calculate profit factor, with a worked example in pips, and how to read it alongside win rate and risk-reward.">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What Is Profit Factor in Forex? How to Calculate and Read It",
+  "description": "What profit factor (PF) means in forex and how to calculate it, with a worked example in pips. How PF relates to win rate and risk-reward, why it swings with only a few trades, and common pitfalls such as swaps and commissions.",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Daiki Ikebata"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FX Trade Journal",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png"
+    }
+  },
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide-en.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image-en.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "FX Trade Journal",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/index-en.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "What Is Profit Factor?",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide-en.html"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a good profit factor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no single threshold. A profit factor above 1.0 means the period ended with a positive total, but any line above that depends on your trading style, how many trades the figure is based on, and whether swaps and commissions are included. A profit factor calculated from past records does not indicate future results."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I look at profit factor or win rate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Neither one tells you enough on its own. Profit factor is determined by your win rate together with the ratio of your average win to your average loss (risk-reward), so putting all three side by side makes it easier to see where the number comes from."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the profit factor when there are no losing trades?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If gross loss is zero, the division is undefined and profit factor cannot be calculated. Depending on the tool it may be shown as ∞, a dash or \"no losses\". This is common while you only have a few records, and it becomes a regular number as soon as one losing trade is recorded."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - gtag('config', ...) is never called, and gtag.js is never
+     loaded, until consent is confirmed (consent.js injects the <script> afterwards).
+     This means that if the user declines, not even a cookieless measurement ping is ever sent. -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="Consent for analytics" hidden>
+  <div class="wrap consent-inner">
+    <p>This site uses Google Analytics to understand traffic. See our <a href="privacy-policy-en.html">Privacy Policy</a> for details.</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">Decline</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">Accept</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index-en.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FX Trade Journal
+    </a>
+    <ul class="nav-links">
+      <li><a href="index-en.html#features">Features</a></li>
+      <li><a href="index-en.html#pricing">Pricing</a></li>
+      <li><a href="index-en.html#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="guide-nav" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-en-pf&mt=8">Get the app</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index-en.html">FX Trade Journal</a><span aria-hidden="true">/</span><span aria-current="page">What Is Profit Factor?</span>
+      </nav>
+      <p class="eyebrow">Guide</p>
+      <h1>What Is Profit Factor in Forex?<br>How to Calculate and Read It</h1>
+      <p class="article-meta">
+        <span>Published: November 19, 2026</span>
+        <span>Reading time: 8 min</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">This article explains how to calculate and read metrics from your forex trade records. It is not investment advice or a recommendation to buy or sell anything. The methods and metrics described here are not a guarantee of profits or of a higher win rate, and all investment decisions are your own responsibility. All numbers in this article are fictional examples for illustration.</p>
+
+      <p>When you review your trade records, profit factor (PF) is one of the numbers that sits next to win rate and total pips. The name sounds technical, but it takes a single division to work out. At the same time, what you put in the numerator and denominator, and how many trades you calculate it from, can change the result a lot even for the same records. This article walks through the definition and the calculation with a fictional example, then covers how PF relates to win rate and risk-reward, why it swings when you have only a few trades, and the pitfalls that often come up when tallying it.</p>
+
+      <div class="article-toc">
+        <p>Contents</p>
+        <ol>
+          <li><a href="#definition">What is profit factor (PF)?</a></li>
+          <li><a href="#formula">How to calculate profit factor, with an example</a></li>
+          <li><a href="#reading">Reading profit factor: 1.0 is the dividing line</a></li>
+          <li><a href="#with-winrate">Reading it with win rate and risk-reward</a></li>
+          <li><a href="#sample">With few trades, profit factor swings widely</a></li>
+          <li><a href="#pitfalls">Common pitfalls when tallying</a></li>
+          <li><a href="#steps">How to calculate PF from your own records</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </div>
+
+      <h2 id="definition">What is profit factor (PF)?</h2>
+      <p>Profit factor (PF) is the <strong>sum of all trades closed in profit (gross profit)</strong> for a period divided by the <strong>sum of all trades closed at a loss (gross loss)</strong>. It expresses, in a single number, how much profit there was for every 1 unit of loss.</p>
+      <p>Win rate counts how many times you won; profit factor also takes the size of wins and losses into account, measured in money or pips. Two records with the same 50% win rate can have completely different profit factors if one has large wins and small losses and the other the reverse. Because it captures both how often and how much, PF is a common metric when reviewing a trading journal.</p>
+
+      <h2 id="formula">How to calculate profit factor, with an example</h2>
+      <p>The formula is:</p>
+      <p><strong>PF = gross profit ÷ gross loss (absolute value)</strong></p>
+      <p>Gross loss is a sum of negative values, so you divide by its absolute value. Suppose you have the following 10 trades (a fictional example for illustration).</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr><th>Group</th><th>Pips per trade</th><th>Total</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Trades closed in profit (4)</td><td>+40, +55, +30, +35</td><td>+160 pips</td></tr>
+            <tr><td>Trades closed at a loss (6)</td><td>−20, −15, −25, −10, −20, −10</td><td>−100 pips</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Gross profit is 160 pips and gross loss is 100 pips, so <strong>PF = 160 ÷ 100 = 1.60</strong>. The win rate is 4 out of 10, or 40%, and the total is +60 pips. Even though fewer than half the trades were winners, each win was larger than each loss on average, so PF is above 1.0.</p>
+      <p>You can calculate PF in money or in pips. If your lot size varies from trade to trade, however, the PF in money and the PF in pips will not match even for the same records. Writing down which one you used alongside the number makes later comparisons easier.</p>
+
+      <h2 id="reading">Reading profit factor: 1.0 is the dividing line</h2>
+      <p>The reference point for reading PF is 1.0.</p>
+      <ul>
+        <li><strong>Above 1.0</strong> — Gross profit exceeded gross loss for the period, so the total was positive.</li>
+        <li><strong>Exactly 1.0</strong> — Gross profit and gross loss were equal, so the total was zero.</li>
+        <li><strong>Below 1.0</strong> — Gross loss exceeded gross profit, so the total was negative.</li>
+      </ul>
+      <p>The line at 1.0 has a clear meaning, but there is no universal basis for rules like "1.5 or higher is good enough". A PF of 1.3 means something different for a style that trades often than for one that trades rarely, and for a calculation that includes commissions than for one that does not. PF is easiest to read when you compare <strong>your own past records, calculated under the same conditions</strong>, rather than comparing yourself with other people.</p>
+      <p>Also keep in mind that PF summarizes what happened in a period; it does not tell you what the next period will look like. A high PF calculated from past records does not mean it will continue.</p>
+
+      <h2 id="with-winrate">Reading it with win rate and risk-reward</h2>
+      <p>PF is determined by two things: win rate and average win ÷ average loss (realized risk-reward, or RR below). Leaving out breakeven trades, the following relationship holds:</p>
+      <p><strong>PF = win rate ÷ (1 − win rate) × RR</strong></p>
+      <p>Applying this to the example above: win rate 40%, average win 40 pips (160 ÷ 4), average loss about 16.7 pips (100 ÷ 6), so RR is 2.4. 0.4 ÷ 0.6 × 2.4 = 1.60, which matches the direct calculation.</p>
+      <p>What the formula shows is that <strong>the same PF can come from very different records</strong>. Every combination of win rate and RR in the table below gives a PF of 1.5.</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr><th>Win rate</th><th>RR (average win ÷ average loss)</th><th>PF</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>60%</td><td>1.0</td><td>1.5</td></tr>
+            <tr><td>50%</td><td>1.5</td><td>1.5</td></tr>
+            <tr><td>40%</td><td>2.25</td><td>1.5</td></tr>
+            <tr><td>30%</td><td>3.5</td><td>1.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A record with a 60% win rate and an RR of 1.0 and one with a 30% win rate and an RR of 3.5 differ in how likely losing streaks are and in how much a single win weighs in the total. Looking at PF alone hides that difference. When you review, it helps to <strong>put PF, win rate and RR side by side</strong> and check which of them the number is coming from. The relationship between win rate and RR is covered in more detail in "<a href="fx-win-rate-risk-reward-guide-en.html">Forex Win Rate and Risk-Reward</a>".</p>
+
+      <h2 id="sample">With few trades, profit factor swings widely</h2>
+      <p>Because PF is a division, a single trade can move it a lot while the denominator (gross loss) is still small. Suppose you have these 5 trades (a fictional example).</p>
+      <ul>
+        <li>+30, −10, −10, +5, −10 pips → gross profit 35, gross loss 30, so <strong>PF ≈ 1.17</strong></li>
+      </ul>
+      <p>Add one trade of −20 pips and gross loss becomes 50, dropping <strong>PF to 0.70</strong>. Add one trade of +40 pips instead and gross profit becomes 75, giving <strong>PF 2.50</strong>. A single trade is enough to push it above or below 1.0.</p>
+      <p>How many trades are enough depends on how often you trade and how much your results vary from trade to trade, so there is no single answer. At the very least, treat PF from a period with few trades as "still likely to swing": line up the monthly values to see the trend and record the number of trades next to each one. Reading it that way makes it less likely that one large win or loss will skew your view.</p>
+
+      <h2 id="pitfalls">Common pitfalls when tallying</h2>
+      <h3>Counting only closed trades</h3>
+      <p>PF is normally calculated from trades that have been closed. A position you are still holding at a loss is not included, however large that loss has grown. The longer you put off cutting a loss, the better PF can look compared with reality. If you have open positions at the end of a period, writing down their unrealized P/L separately helps avoid misreading the number.</p>
+      <h3>Mixing currencies or units</h3>
+      <p>If you add up records from accounts in different currencies without converting them, PF becomes a meaningless number. Likewise, if some trades are recorded in money and others in pips, gross profit and gross loss are not in the same unit. Calculate each account separately, or convert everything to one unit first. Note that the value of 1 pip differs by currency pair, so PF in pips and PF in money normally do not match.</p>
+      <h3>Not deciding whether to include swaps and commissions</h3>
+      <p>MT4/MT5 trade histories can record commission and swap separately from the trading P/L. Whether you calculate from net P/L including these or from trading P/L excluding them changes PF. Especially for styles that trade often, commission per trade may be small, but added up it can become a noticeable share of gross profit and gross loss. Decide which one you use and keep it the same across periods.</p>
+      <h3>How breakeven trades are handled</h3>
+      <p>A trade closed at breakeven adds to neither gross profit nor gross loss, so it does not affect PF. In the win rate calculation, however, the result changes depending on whether you include it in the denominator. When you read PF and win rate together, handle breakeven trades the same way in both.</p>
+
+      <h2 id="steps">How to calculate PF from your own records</h2>
+      <p>If you keep your records in a spreadsheet, you can calculate it with these steps.</p>
+      <ol>
+        <li>Pick a period and list the closed trades one per row (enter P/L with profits as positive and losses as negative).</li>
+        <li>Decide on the unit (money or pips) and whether to include commissions and swaps, and make every row consistent.</li>
+        <li>Calculate gross profit as the sum of the positive values only (for example, <strong>=SUMIF(C:C,"&gt;0")</strong>).</li>
+        <li>Calculate gross loss as the absolute value of the sum of the negative values only (for example, <strong>=ABS(SUMIF(C:C,"&lt;0"))</strong>).</li>
+        <li>Divide gross profit by gross loss. If gross loss is 0, it cannot be calculated, so leave the cell blank or put a dash.</li>
+        <li>Write the number of trades you used next to the PF.</li>
+      </ol>
+      <p>If you line up these values month by month, you can later compare, under the same conditions, how PF moved in each month and what the win rate and RR were in that month.</p>
+
+      <div class="article-callout">
+        <h3>Let an app tally win rate, pips and PF</h3>
+        <p>FX Trade Journal is a forex trading journal app for iOS that tallies monthly win rate, pips and profit factor automatically from the trades you log (monthly totals are available on the free plan). It imports MT4/MT5 trade history from a desktop report (HTML) or CSV (<a href="fx-mt4-mt5-import-guide-en.html">how to import</a>), and the session/weekday, tag and risk-reward analysis tabs are PRO. Records are stored encrypted on your device, and no account is needed.</p>
+        <a class="btn btn-primary" data-cta="guide-body" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-en-pf&mt=8">Download free on the App Store</a>
+      </div>
+
+      <h2 id="related">Related articles</h2>
+      <ul>
+        <li><a href="fx-trade-journal-guide-en.html">How to Keep a Forex Trading Journal</a> — how to record your trades and review them, the groundwork for calculating PF.</li>
+        <li><a href="fx-win-rate-risk-reward-guide-en.html">Forex Win Rate and Risk-Reward: How to Find Your Break-Even Win Rate</a> — how win rate and RR, the two parts of PF, relate, and how to find the break-even win rate.</li>
+        <li><a href="fx-breakeven-win-rate-calculator-en.html">Break-Even Win Rate and Risk-Reward Calculator</a> — a free calculator for the break-even win rate and expectancy from your win rate and RR.</li>
+      </ul>
+
+      <h2 id="faq">FAQ</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>What is a good profit factor?</summary>
+          <div class="faq-a">There is no single threshold. A profit factor above 1.0 means the period ended with a positive total, but any line above that depends on your trading style, how many trades the figure is based on, and whether swaps and commissions are included. A profit factor calculated from past records does not indicate future results.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Should I look at profit factor or win rate?</summary>
+          <div class="faq-a">Neither one tells you enough on its own. Profit factor is determined by your win rate together with the ratio of your average win to your average loss (risk-reward), so putting all three side by side makes it easier to see where the number comes from.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What is the profit factor when there are no losing trades?</summary>
+          <div class="faq-a">If gross loss is zero, the division is undefined and profit factor cannot be calculated. Depending on the tool it may be shown as ∞, a dash or "no losses". This is common while you only have a few records, and it becomes a regular number as soon as one losing trade is recorded.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>Check your own profit factor from your records.</h2>
+      <p>With FX Trade Journal, monthly win rate, pips and profit factor are tallied automatically from the trades you log.</p>
+      <a class="btn btn-primary" data-cta="guide-final" href="https://apps.apple.com/app/id6786188634?pt=129108253&ct=guide-en-pf&mt=8">Download free on the App Store</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FX Trade Journal
+        </div>
+        <p class="foot-tag">A trading journal that works entirely on your phone or tablet. Log it, analyze it, and see what your record shows.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index-en.html#features">Features</a></li>
+          <li><a href="index-en.html#pricing">Pricing</a></li>
+          <li><a href="index-en.html#faq">FAQ</a></li>
+          <li><a href="fx-trade-journal-guide-en.html">Guide</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Support &amp; Legal</h4>
+        <ul>
+          <li><a href="support-en.html">Contact us</a></li>
+          <li><a href="#" id="consentReset">Analytics settings</a></li>
+          <li><a href="privacy-policy-en.html">Privacy Policy</a></li>
+          <li><a href="terms-en.html">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      MetaTrader, MT4 and MT5 are trademarks of MetaQuotes Software Corp. This app is not affiliated with or endorsed by MetaQuotes.<br>
+      This app's analytics features are not intended to provide investment advice or solicit any specific financial product. Please make your own trading decisions at your own risk.<br>
+      Past records and performance do not guarantee future results.<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

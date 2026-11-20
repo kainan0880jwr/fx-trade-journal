@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.analytics.google.com https://*.google-analytics.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MT4/MT5の取引履歴をiPhoneに取り込む方法｜レポートの保存から読み込みまで</title>
+<meta name="description" content="パソコン版のMT4・MT5で取引履歴をレポート（HTML）として保存し、iPhoneに送ってFXトレード日記アプリに取り込む手順を解説。スマホ版で保存できない理由、PDF・Excelが読めないときの対処、時刻のずれや二重取り込みへの対処までまとめました。">
+<link rel="canonical" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide.html">
+<link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide.html">
+<link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide-en.html">
+<link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide.html">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070C">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="icon" type="image/png" sizes="32x32" href="lp-assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="lp-assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="lp-assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FXトレードログ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="MT4/MT5の取引履歴をiPhoneに取り込む方法｜レポートの保存から読み込みまで">
+<meta property="og:description" content="パソコン版MT4・MT5で取引履歴を保存し、iPhoneに送って取り込むまでの手順と、うまくいかないときの対処。">
+<meta property="og:url" content="https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide.html">
+<meta property="og:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FXトレードログ — 記録画面と、勝率・pips・PFの自動集計">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MT4/MT5の取引履歴をiPhoneに取り込む方法｜レポートの保存から読み込みまで">
+<meta name="twitter:description" content="パソコン版MT4・MT5で取引履歴を保存し、iPhoneに送って取り込むまでの手順と、うまくいかないときの対処。">
+<meta name="twitter:image" content="https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "MT4/MT5の取引履歴をiPhoneに取り込む方法 レポートの保存から読み込みまで",
+  "description": "パソコン版のMT4・MT5で取引履歴をレポート（HTML）として保存し、iPhoneに送ってFXトレード日記アプリに取り込む手順を解説。スマホ版で保存できない理由、PDF・Excelが読めないときの対処、時刻のずれや二重取り込みへの対処までまとめました。",
+  "inLanguage": "ja",
+  "author": {
+    "@type": "Person",
+    "name": "Daiki Ikebata"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FXトレードログ",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/icon-512.png"
+    }
+  },
+  "datePublished": "2026-11-18",
+  "dateModified": "2026-11-18",
+  "mainEntityOfPage": "https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide.html",
+  "image": "https://kainan0880jwr.github.io/fx-trade-journal/lp-assets/og-image.png"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "FXトレードログ",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "MT4/MT5の取引履歴を取り込む方法",
+      "item": "https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide.html"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "スマホ版のMT4・MT5から取引履歴を取り込めますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "スマホ版のMT4・MT5アプリには取引履歴をファイルに保存する機能がないため、パソコン版で保存したレポート（HTML）か、証券会社のサイトから取れるCSVを使ってください。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "取り込みは無料ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい。MT4/MT5の取り込みは無料プランで使えます。2つ目以降の口座に取り込む場合や、時間帯・曜日などの詳しい分析はPRO（有料・自動更新）です。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "取引のデータはどこかに送られますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ファイルの読み取りと保存はiPhoneの中だけで行い、取引の内容は運営者のサーバーに送りません。記録は端末の中に暗号化して保存します。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Androidでも使えますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Android版はGoogle Playでクローズドテスト中です。今はiPhone・iPad（iOS 16.4以上）で使えます。"
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) - 同意が確定するまで gtag('config', ...) を呼ばず、
+     gtag.js の読み込みもしない（consent.js が同意後に <script> を動的に作る）。
+     これにより「同意しない」場合はCookieなしの計測ピングも含めて一切送信されない。 -->
+<script src="lp-assets/ga-init.js"></script>
+
+<!-- iOS Safari のインストールバナー。未インストールなら「表示」、インストール済みなら「開く」。 -->
+<meta name="apple-itunes-app" content="app-id=6786188634, app-argument=https://kainan0880jwr.github.io/fx-trade-journal/">
+
+<script src="lp-assets/boot.js"></script>
+<link rel="stylesheet" href="lp-assets/style.css">
+</head>
+<body>
+
+<section class="consent-banner" id="consentBanner" aria-label="アクセス解析への同意" hidden>
+  <div class="wrap consent-inner">
+    <p>本サイトでは、アクセス状況を把握するためGoogleアナリティクスを利用しています。詳細は<a href="privacy-policy.html">プライバシーポリシー</a>をご確認ください。</p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-neutral" id="consentDecline">同意しない</button>
+      <button type="button" class="btn btn-neutral" id="consentAccept">同意する</button>
+    </div>
+  </div>
+</section>
+<script src="lp-assets/consent.js"></script>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand brand-link" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+        <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+        <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+        <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+        <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+      </svg>
+      FXトレードログ
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#features">機能</a></li>
+      <li><a href="index.html#pricing">料金</a></li>
+      <li><a href="index.html#faq">よくある質問</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" data-cta="guide-nav" href="https://apps.apple.com/app/id6786188634?ppid=a6a9a706-02b0-4e6d-9589-cf275924c11b&pt=129108253&ct=guide-ja-import&mt=8">App Storeで入手</a>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="article-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="index.html">FXトレードログ</a><span aria-hidden="true">/</span><span aria-current="page">MT4/MT5の取引履歴を取り込む方法</span>
+      </nav>
+      <p class="eyebrow">使い方ガイド</p>
+      <h1>MT4/MT5の取引履歴をiPhoneに取り込む方法<br><span class="nobr">レポートの保存から</span><wbr><span class="nobr">読み込みまで</span></h1>
+      <p class="article-meta">
+        <span>公開日: 2026年11月18日</span>
+        <span>想定読了時間: 6分</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <div class="wrap">
+      <p class="article-note">本記事は、MT4/MT5の取引履歴をアプリに取り込む操作の手順を紹介するものであり、投資助言・売買推奨ではありません。記録や分析が利益を保証するものではなく、投資判断はご自身の責任で行ってください。MT4/MT5の画面の名前は、版や言語の設定によって少し違うことがあります。</p>
+
+      <p>過去の取引をトレード日記に1件ずつ打ち直すのは大変です。MT4/MT5を使っているなら、取引履歴をファイルに保存してまとめて取り込めます。この記事では、パソコン版のMT4・MT5で履歴を保存し、iPhoneに送って「FXトレードログ」に取り込むまでの手順と、うまくいかないときの確かめ方をまとめます。</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#first">まず知っておきたいこと</a></li>
+          <li><a href="#mt4">MT4（パソコン版）で保存する手順</a></li>
+          <li><a href="#mt5">MT5（パソコン版）で保存する手順</a></li>
+          <li><a href="#send">ファイルをiPhoneに送る</a></li>
+          <li><a href="#import">アプリで取り込む</a></li>
+          <li><a href="#trouble">うまくいかないとき</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+        </ol>
+      </div>
+
+      <h2 id="first">まず知っておきたいこと</h2>
+      <ul>
+        <li><strong>保存はパソコン版で行います。</strong>スマホ版のMT4・MT5アプリには、取引履歴をファイルに保存する機能がありません。</li>
+        <li><strong>保存する形式はレポート（HTML）です。</strong>MT4は <code>.htm</code>、MT5は <code>.html</code> のファイルになります。証券会社のサイトから取れる取引履歴のCSVも読み込めます。</li>
+        <li><strong>PDF・Excel（.xlsx）は読み込めません。</strong>MT5で「Excel」やPDFを選ぶと読み込めないので、HTMLで保存してください。</li>
+        <li><strong>取り込みは無料です。</strong>ファイルの読み取りはiPhoneの中だけで行い、取引の内容を外に送りません。</li>
+      </ul>
+
+      <h2 id="mt4">MT4（パソコン版）で保存する手順</h2>
+      <ol>
+        <li>「ターミナル」の「口座履歴」タブを開きます。</li>
+        <li>一覧の上で右クリックし、「全期間」を選びます（取り込みたい期間だけでもかまいません）。</li>
+        <li>もう一度右クリックし、「レポートの保存」を選びます。<code>Statement.htm</code> のようなファイルができます。</li>
+      </ol>
+      <p>「詳細レポートの保存」ではなく「レポートの保存」を選ぶと、ファイルが小さくなります。</p>
+
+      <h2 id="mt5">MT5（パソコン版）で保存する手順</h2>
+      <ol>
+        <li>「ツールボックス」の「履歴」タブを開きます。</li>
+        <li>一覧の上で右クリックし、「レポート」→「HTML」を選びます。</li>
+        <li><code>ReportHistory-…html</code> のようなファイルができます。</li>
+      </ol>
+      <p>同じメニューにある「Open XML（Excel）」や、グラフの入ったレポート画面から保存したPDFは読み込めません。「履歴」タブの右クリックからHTMLで保存してください。</p>
+
+      <h2 id="send">ファイルをiPhoneに送る</h2>
+      <p>保存したファイルを、次のどれかで自分のiPhoneに送り、「ファイル」アプリから開ける場所に置きます。</p>
+      <ul>
+        <li><strong>AirDrop</strong>（Macから）— 受け取ると「ファイル」アプリに保存できます。</li>
+        <li><strong>iCloud Drive・Google ドライブ</strong>— パソコンでフォルダに入れ、iPhoneの「ファイル」アプリから開きます。</li>
+        <li><strong>メール</strong>— 自分あてに添付して送り、添付ファイルを「ファイル」アプリに保存します。</li>
+      </ul>
+
+      <div class="article-callout">
+        <h3>取り込んだ履歴を、そのまま振り返りに使う</h3>
+        <p>「FXトレードログ」は、MT4/MT5のレポート（HTML）と証券会社のCSVを取り込めるFXトレード日記アプリです。取り込んだ取引から、月次の勝率・pips・プロフィットファクターを自動で集計します（無料）。時間帯・曜日／タグ分析などの分析タブはPROで使えます。会員登録は不要で、記録は端末の中に暗号化して保存します。</p>
+        <a class="btn btn-primary" data-cta="guide-body" href="https://apps.apple.com/app/id6786188634?ppid=a6a9a706-02b0-4e6d-9589-cf275924c11b&pt=129108253&ct=guide-ja-import&mt=8">App Storeで無料ダウンロード</a>
+      </div>
+
+      <h2 id="import">アプリで取り込む</h2>
+      <ol>
+        <li>「FXトレードログ」の設定で「MT4/MT5 取引履歴インポート」を押します（はじめて使うときは、最初の画面の「MT4/MT5の履歴を取り込む」からも進めます）。</li>
+        <li>送ったファイルを選びます。</li>
+        <li>取り込んだ件数が表示されます。決済済みの取引が、通貨ペア・売買・ロット・レート・損益つきで記録に入ります。</li>
+      </ol>
+      <p>同じファイルを2回取り込んでも、取り込み済みの取引は自動で飛ばすので二重になりません。間違えたときは、設定の「直前の取り込みを取り消す」で元に戻せます。口座を複数使っている場合は、レポートの口座番号で取り込む口座を選びます（2つ目以降の口座はPRO）。</p>
+
+      <h2 id="trouble">うまくいかないとき</h2>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr><th>表示・症状</th><th>よくある原因</th><th>対処</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>「CSV・TXT、またはMT4/MT5のレポート（HTML）を選択してください」</td><td>PDF・Excel・画像を選んだ</td><td>MT4/MT5でHTMLのレポートを保存し直す</td></tr>
+            <tr><td>「決済済みの取引の表が見つかりませんでした」</td><td>未決済のポジションや注文だけのレポート</td><td>MT4は「口座履歴」、MT5は「履歴」タブから保存する</td></tr>
+            <tr><td>「ファイルの文字コードを読み取れませんでした」</td><td>CSVがUTF-8以外（Shift-JISなど）で保存されている</td><td>Excelなら「CSV UTF-8」で保存し直す</td></tr>
+            <tr><td>取引の時刻が数時間ずれる</td><td>MT4/MT5の時刻はブローカーのサーバー時刻</td><td>設定の「取り込み時刻の補正」で「自動（夏時間に追従）」か時間を指定する</td></tr>
+            <tr><td>件数が少ない</td><td>決済していないポジションは取り込まない</td><td>決済したあとにもう一度取り込む（取り込み済みの分は飛ばされる）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>1回に取り込めるのは、10MB・20,000件までです。それより大きいときは、期間を分けて保存してください。</p>
+
+      <h2 id="faq">よくある質問</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>スマホ版のMT4・MT5から取引履歴を取り込めますか？</summary>
+          <div class="faq-a">スマホ版のMT4・MT5アプリには取引履歴をファイルに保存する機能がないため、パソコン版で保存したレポート（HTML）か、証券会社のサイトから取れるCSVを使ってください。</div>
+        </details>
+        <details class="faq-item">
+          <summary>取り込みは無料ですか？</summary>
+          <div class="faq-a">はい。MT4/MT5の取り込みは無料プランで使えます。2つ目以降の口座に取り込む場合や、時間帯・曜日などの詳しい分析はPRO（有料・自動更新）です。</div>
+        </details>
+        <details class="faq-item">
+          <summary>取引のデータはどこかに送られますか？</summary>
+          <div class="faq-a">ファイルの読み取りと保存はiPhoneの中だけで行い、取引の内容は運営者のサーバーに送りません。記録は端末の中に暗号化して保存します。</div>
+        </details>
+        <details class="faq-item">
+          <summary>Androidでも使えますか？</summary>
+          <div class="faq-a">Android版はGoogle Playでクローズドテスト中です。今はiPhone・iPad（iOS 16.4以上）で使えます。</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-cta-final">
+    <div class="wrap">
+      <h2>過去の取引を、まとめて記録に。</h2>
+      <p>MT4/MT5のレポートを取り込めば、これまでの取引から月次の勝率・pips・プロフィットファクターがすぐに集計されます。</p>
+      <a class="btn btn-primary" data-cta="guide-final" href="https://apps.apple.com/app/id6786188634?ppid=a6a9a706-02b0-4e6d-9589-cf275924c11b&pt=129108253&ct=guide-ja-import&mt=8">App Storeで無料ダウンロード</a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6.4" y="12" width="1.2" height="6" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="4" y="17" width="6" height="10" rx="1.5" fill="var(--profit-large)"/>
+            <rect x="15.4" y="6.5" width="1.2" height="5" rx="0.6" fill="var(--loss-large)"/>
+            <rect x="13" y="11" width="6" height="16" rx="1.5" fill="var(--loss-large)"/>
+            <rect x="24.4" y="1" width="1.2" height="4" rx="0.6" fill="var(--profit-large)"/>
+            <rect x="22" y="4" width="6" height="23" rx="1.5" fill="var(--profit-large)"/>
+          </svg>
+          FXトレードログ
+        </div>
+        <p class="foot-tag">スマホ・タブレットで完結するFXトレード日記。記録して、分析して、次の判断へ。</p>
+      </div>
+      <div class="foot-col">
+        <h4>プロダクト</h4>
+        <ul>
+          <li><a href="index.html#features">機能</a></li>
+          <li><a href="index.html#pricing">料金</a></li>
+          <li><a href="index.html#faq">よくある質問</a></li>
+          <li><a href="fx-trade-journal-guide.html">使い方ガイド</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>サポート・法的情報</h4>
+        <ul>
+          <li><a href="support.html">お問い合わせ</a></li>
+          <li><a href="#" id="consentReset">アクセス解析の設定</a></li>
+          <li><a href="privacy-policy.html">プライバシーポリシー</a></li>
+          <li><a href="terms.html">利用規約</a></li>
+          <li><a href="tokushoho.html">特定商取引法に基づく表記</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      本アプリの分析機能は投資助言・特定の金融商品の勧誘を目的とするものではありません。投資に関する最終判断はご自身の責任で行ってください。<br>
+      過去の記録・成績は将来の成果を保証するものではありません。<br>
+      © 2026 Daiki Ikebata
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

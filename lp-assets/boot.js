@@ -22,7 +22,7 @@ window.addEventListener('hashchange', function(){
 });
 
 
-// 他のサイトの iframe の中で表示させない（クリックジャッキング・なりすましページの対策。2026-11-04 セキュリティレビュー）。
+// 他のサイトの iframe の中で表示させない（クリックジャッキング・なりすましページの対策）。
 // GitHub Pages ではレスポンスヘッダ（X-Frame-Options / CSP frame-ancestors）を付けられず、
 // <meta> の CSP では frame-ancestors が効かないため、ここで外に出る。出られない（sandbox 等）ときは本文を隠す。
 if (window.top !== window.self) {
