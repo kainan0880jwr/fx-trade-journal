@@ -8,7 +8,7 @@
 - プラットフォーム: iOS（App Store, id6786188634）。Android版はGoogle Playでクローズドテスト中。
 - 配信地域: 日本・米国・カナダ・スイス・オーストラリア・インドなど143の国と地域。EU・EEA・英国・トルコ・中国本土では配信していない。
 - 対応言語: 日本語・英語・ドイツ語・フランス語・スペイン語・イタリア語・インドネシア語・トルコ語・ヒンディー語・ベトナム語・ポルトガル語（11言語）
-- 料金: 無料プランあり。有料版（PRO）は日本で月額¥500 / 年額¥3,980（税込。月額・年額とも7日間の無料トライアルあり、いずれか一方のプランで1回限り）。価格は国・地域により異なる。
+- 料金: 無料プランあり。有料版（PRO）は日本で月額¥500 / 年額¥3,980（税込。月額・年額とも14日間の無料トライアルあり、いずれか一方のプランで1回限り）。価格は国・地域により異なる。
 - 対応端末: iPhone・iPad（iOS 16.4以上）。ホーム画面・ロック画面のウィジェットあり。
 - 主な機能: トレード記録（クイック記録は最短3タップ。pipsはエントリー・決済レートから、損益額はpipsとロットから自動計算。口座通貨は15通貨から選択）、MT4/MT5の取引履歴の取り込み（パソコン版で保存したレポート（HTML）・CSV）、「学ぶ」タブ（ローソク足・トレンド・損切りと利確・移動平均線・RSI・チャートパターンなどの短い解説と図。日本語・英語のみ、一部の地域では表示しない。一般的な学習用で、投資助言ではない）、月次・週次・年間の成績分析（時間帯・曜日別、タグ分析、RR分析、エクイティカーブ、メンタル記録）、成績のシェア（テキスト／カード出力）、ロット計算機、実績バッジ、生体認証によるアプリロック。
 
@@ -56,7 +56,7 @@ FX Trade Journal is a forex trading journal app for iPhone and iPad (iOS 16.4+).
 
 - Free: unlimited trade logging, calendar, monthly dashboard (win rate, pips, profit factor, P/L), breakdowns by currency pair and trading style, MT4/MT5 report and CSV import, the Learn tab (English and Japanese), bookmarks, backup and restore, Home Screen and Lock Screen widgets, monthly goals, achievement badges, position size calculator, one chart image per trade, the first monthly insight, share cards (with a watermark), biometric App Lock, and 15 account currencies.
 - PRO (subscription): all analysis tabs other than "Performance" (time of day and weekday, tags, risk-reward, equity curve), the remaining monthly insights, weekly view and yearly tab, the weekly recap (free users see only how many items are available), second and further trading accounts in the App (up to 10), daily/weekly/yearly goals with calendar marks, up to 3 chart images per trade, mental-state tracking and multi-timeframe notes, and watermark-free share cards.
-- Price: in Japan ¥500/month or ¥3,980/year (tax included), each with a 7-day free trial (one trial per person, on either plan). Prices vary by country and region.
+- Price: in Japan ¥500/month or ¥3,980/year (tax included), each with a 14-day free trial (one trial per person, on either plan). Prices vary by country and region.
 - English page: https://kainan0880jwr.github.io/fx-trade-journal/index-en.html
 - English guide: https://kainan0880jwr.github.io/fx-trade-journal/fx-trade-journal-guide-en.html
 - MT4/MT5 import guide: https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide-en.html
