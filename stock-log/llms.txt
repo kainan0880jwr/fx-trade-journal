@@ -1,0 +1,128 @@
+# Stock Trade Diary（株トレードログ）
+
+> An iPhone and Android app to record trades, dividends and shareholder benefits for each brokerage account, and review your realized gains and received dividends year by year. Stock Trade Diary does not show market prices. It only shows the trades you actually made. The operator of Stock Trade Diary is not a registered investment adviser. Please make your own investment decisions.
+
+## Pages (11 languages)
+- [日本語](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index.html): 株トレードログ｜株の売買・配当・株主優待を記録するアプリ（日本株・米国株）
+- [English](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index-en.html): Stock Trade Diary | Stock trading journal and dividend tracker for iPhone and Android
+- [Deutsch](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index-de.html): Stock Trade Diary | Aktien-Tagebuch und Dividenden-Tracker für iPhone und Android
+- [Français](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index-fr.html): Stock Trade Diary | Journal d'actions et suivi des dividendes pour iPhone et Android
+- [Español](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index-es.html): Stock Trade Diary | Diario de acciones y control de dividendos para iPhone y Android
+- [Italiano](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index-it.html): Stock Trade Diary | Diario di azioni e monitoraggio dei dividendi per iPhone e Android
+- [Português](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index-pt.html): Stock Trade Diary | Diário de ações e controle de dividendos para iPhone e Android
+- [Bahasa Indonesia](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index-id.html): Stock Trade Diary | Jurnal saham dan pencatat dividen untuk iPhone dan Android
+- [Türkçe](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index-tr.html): Stock Trade Diary | iPhone ve Android için hisse günlüğü ve temettü takibi
+- [हिन्दी](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index-hi.html): Stock Trade Diary | iPhone और Android के लिए शेयर ट्रेड जर्नल और डिविडेंड ट्रैकर
+- [Tiếng Việt](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/index-vi.html): Stock Trade Diary | Nhật ký cổ phiếu và theo dõi cổ tức cho iPhone và Android
+
+## Features
+- **Trades, dividends and benefits together**: Record buys and sells, dividends received and shareholder benefits. Stock splits and reverse splits are supported, and your average cost is recalculated automatically.
+- **Holdings and average cost**: Shares held and average cost are calculated per account and security. Japanese accounts use the total average method by default; other accounts use FIFO.
+- **Review every sale**: See the realized gain or loss and holding period of each sale, and filter by this year, last year or all time, or by profit and loss.
+- **See your month on a calendar**: Check realized gains and losses by day, and the days you recorded dividends and shareholder benefits, on a calendar.
+- **Keep your reasons and notes, find them later**: Save your reason for each trade, how you felt, tags and notes. You can search your records by keyword.
+- **Foreign stocks and currencies**: Enter the exchange rate at the time of the trade, and the result is converted to your account currency. If your broker reported a gain or loss, that figure is shown first.
+- **Import your broker's CSV**: Import the trade history CSV you downloaded from your broker by matching its columns. The same trade is never imported twice, and you can undo an import. The preview is free; confirming the import requires Stock Trade Diary PRO. Margin trades are not imported. Some broker formats may not be readable.
+- Stock Trade Diary does not show market prices. It only shows the trades you actually made.
+
+## Pricing
+- Free (¥0): Record trades, dividends, benefits and splits / Holdings, average cost and realized gains / App lock and encrypted backup / Export your records as CSV / Calendar and record search
+- Stock Trade Diary PRO: ¥500/ month, ¥3,980/ year (Price in Japan, tax incl.): Import your broker's CSV / Summaries by reason, tag and mood, plus monthly summaries / Set your own trading rules and review whether you kept them / A one-page monthly review and a comparison with the previous year / Split realized P/L on foreign stocks into price and exchange-rate parts, and compare with your broker's annual trade report / Export your yearly review as CSV or PDF, save import formats, and show this year's totals on a home screen widget
+- Prices are tax-included prices on the Japanese App Store (Google Play is planned at the same price at launch). The price in your currency is shown in the store.
+- A free trial, if you are eligible, is shown on the purchase screen.
+
+## Privacy
+- There is no account to create. Your records are encrypted and stored on your device, and are not sent to our servers (iPhone backups include your encrypted records).
+- Your record database is encrypted (SQLCipher)
+- Your broker login ID and password are never asked for or stored
+- Lock the app with Face ID, fingerprint or passcode. Contents are hidden in the app switcher too
+- Move to a new phone with a password-protected encrypted backup
+- Error reports are designed not to include your records, such as securities, amounts or notes
+
+## FAQ
+- **Is there an app to record stock trades and dividends together?** Stock Trade Diary is an iPhone and Android app that records stock trades, dividends and shareholder benefits in one place. It supports Japanese and US stocks, and lets you review your realized gains and received dividends year by year.
+- **Can I record shareholder benefits (perks)?** Yes. You can record what you received and your own estimate of its value, and benefits are totaled by year alongside your dividends.
+- **Does it connect to my brokerage account?** No. It never uses your broker login ID or password. You record trades by hand or import a CSV you downloaded from your broker.
+- **Can I keep accounts at several brokers in one app?** Yes. Register an account for each broker and account type (such as taxable or tax-free), and record them all in one app. Holdings and average cost are calculated per account.
+- **Where is my data stored?** Your records are encrypted and stored on your device, and are not sent to our servers. iPhone device backups (such as iCloud) include your encrypted records. There is no account to create.
+- **What can I use for free?** Recording trades, dividends, shareholder benefits and splits, holdings and average cost, reviewing realized gains, the calendar, app lock, encrypted backup and CSV export are free. Confirming a broker CSV import, summaries by reason and tag, the monthly review and other extras are Stock Trade Diary PRO features (¥500 per month or ¥3,980 per year, tax-included prices on the Japanese App Store).
+- **Does it support US stocks and foreign withholding tax?** Yes. You can record US stocks, including fractional shares, and enter dividends as gross, foreign tax, domestic tax and net. Enter the exchange rate at the time of the trade, and the result is converted to your account currency.
+- **Can I record tax-free accounts?** Yes. Register each account as taxable or tax-free (or, for Japanese brokers, specific, general or NISA). Average cost is calculated separately for each account.
+- **Which brokers' CSV files can I import?** Because you match the columns yourself, CSV files from many brokers may work. Some formats cannot be read, so please check the preview before importing.
+- **Can I see stock prices or unrealized gains?** No. Stock Trade Diary does not fetch market data such as stock prices. It focuses on reviewing the trades you made: realized gains, dividends and benefits.
+- **Does it calculate taxes?** Tax on sales is not calculated automatically: withholding is often netted over the year, so per-trade estimates may not match. For dividends, you can fill in a tax estimate based on general rates, but please correct it to the amount on your broker's report.
+- **What happens to my records when I change phones?** Create a password-protected encrypted backup in Settings and restore it on your new phone. If you forget the password, the backup cannot be restored, so keep it safe.
+- **How are my records backed up?** In Settings, you can create a password-protected encrypted backup file and choose where to save it. Your iPhone's device backups (such as iCloud) also include your encrypted records. On Android, records are not included in device backups, so use the encrypted backup in Settings when you change phones.
+- **How do I cancel Stock Trade Diary PRO?** On iPhone, go to Settings → your name → Subscriptions. On Android, go to Payments & subscriptions in Google Play. If you cancel before the end of the period (at least 24 hours before on the App Store), you are not charged for the next period. Your records are not deleted, and the free features keep working.
+- **Which devices and languages are supported?** Stock Trade Diary is an app for iPhone and Android. It can be shown in 11 languages: Japanese, English, German, French, Spanish, Italian, Portuguese, Indonesian, Turkish, Hindi and Vietnamese.
+
+## Availability
+- Coming soon to the App Store and Google Play
+- iPhone and Android. The app can be shown in 11 languages: 日本語, English, Deutsch, Français, Español, Italiano, Português, Bahasa Indonesia, Türkçe, हिन्दी, Tiếng Việt.
+
+## Legal
+- [Terms of Use](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/terms-en.html)
+- [Privacy Policy](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/privacy-policy-en.html)
+- [Legal notice (Japan)](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/tokushoho.html)
+
+## Notice
+- Stock Trade Diary is for recording and reviewing your own trades. It does not provide investment advice or tell you which securities to buy or sell. Figures are calculated from the records you enter or import; for tax filing, please check the documents from your broker.
+- The operator of Stock Trade Diary is not a registered investment adviser. Please make your own investment decisions.
+
+# 株トレードログ（日本語）
+
+> 証券口座ごとの売買・配当・株主優待をまとめて記録し、確定損益と受け取った配当を年ごとに振り返れる iPhone・Android アプリです。株価は表示しません。見るのは、あなたが実際に行った取引だけです。株トレードログの運営者は投資助言・代理業者ではありません。投資に関する判断はご自身で行ってください。
+
+## 機能
+- **売買・配当・優待を、同じ場所に**: 買いと売り、受け取った配当、届いた株主優待を記録します。株式分割・併合にも対応し、取得単価を自動で計算し直します。
+- **保有株と取得単価**: 口座 × 銘柄ごとに、保有株数と取得単価を計算します。日本の口座は総平均法に準ずる方法、ほかの口座は FIFO が既定です。
+- **売りの振り返り**: 売りごとの確定損益と保有日数を一覧にし、今年・去年・全期間や、利益・損失で絞り込めます。
+- **カレンダーで、月を見渡す**: 日ごとの確定損益と、配当・株主優待を記録した日を、カレンダーで確かめられます。
+- **理由とメモを残して、あとで探す**: 売買の理由、そのときの気持ち、タグ、メモを残せます。記録は言葉で検索できます。
+- **外国株と為替**: 米国株などは、約定時の為替レートを入れると口座の通貨に直して集計します。証券会社が示した損益の値があれば、そちらを優先して表示します。
+- **証券会社の CSV を取り込む**: 証券会社のサイトで書き出した取引履歴の CSV を、列を割り当てて取り込めます。同じ取引は二重に取り込まず、取り込んだあとで元に戻すこともできます。 プレビューまでは無料で使え、取り込みの確定に 株トレードログ PRO が必要です。信用取引の行は取り込みません。証券会社の形式によっては読み込めない場合があります。
+- 株価は表示しません。見るのは、あなたが実際に行った取引だけです。
+
+## 料金
+- 無料 (0円): 売買・配当・株主優待・分割の記録 / 保有株・取得単価・確定損益の計算 / アプリロックと暗号化バックアップ / 記録の CSV 書き出し / カレンダーと記録の検索
+- 株トレードログ PRO: 500円/月, 3,980円/年 (税込み): 証券会社の CSV の取り込み / 理由・タグ・気持ちごとの集計と、月ごとのまとめ / 自分の売買ルールを登録し、守れたかを振り返り / 月のふりかえり（1か月を1ページに）と、前の年との比較 / 外国株の確定損益を株価の分と為替の分に分けて表示、年間取引報告書の額との突き合わせ / 年の振り返りを CSV・PDF で書き出し、取り込みの形式を保存、ホーム画面のウィジェットに今年の合計を表示
+- 価格は日本の App Store での税込み価格です（Google Play は公開時に同額の予定）。
+- 無料体験は、対象の方に購入画面で表示されます。
+
+## プライバシー
+- 会員登録はありません。記録はあなたの端末の中で暗号化して保存し、運営者のサーバーには送りません（iPhone の端末のバックアップには、暗号化した記録が含まれます）。
+- 記録のデータベースを暗号化して保存（SQLCipher）
+- 証券会社の ID・パスワードは受け取らず、保存もしません
+- Face ID・指紋・パスコードでアプリをロック。アプリ切り替えの画面でも中身を隠します
+- 機種変更には、パスワード付きの暗号化バックアップを使えます
+- エラー報告に、銘柄・金額・メモなど記録の中身を含めない仕組みにしています
+
+## よくある質問
+- **株の売買と配当をまとめて記録できるアプリはありますか？** 株トレードログは、株の売買・配当・株主優待を1つにまとめて記録できる iPhone・Android アプリです。日本株と米国株に対応し、確定損益と受け取った配当を年ごとに振り返れます。
+- **株主優待も記録できますか？** できます。届いた優待の内容と、ご自身で見積もった金額を記録でき、年ごとに配当と並べて集計します。
+- **証券口座と連携しますか？** 連携しません。証券会社の ID・パスワードは使いません。取引は手で記録するか、証券会社のサイトで書き出した CSV から取り込みます。
+- **複数の証券会社の口座をまとめて記録できますか？** できます。証券会社と口座の種類（特定口座・一般口座・NISA など）ごとに口座を登録し、1つのアプリで記録できます。保有株と取得単価は口座ごとに計算します。
+- **記録したデータはどこに保存されますか？** 記録はお使いの端末の中に暗号化して保存し、運営者のサーバーには送りません。iPhone の端末のバックアップ（iCloud など）には、暗号化した記録が含まれます。会員登録はありません。
+- **無料で使える範囲は？** 売買・配当・株主優待・分割の記録、保有株と取得単価、確定損益の振り返り、カレンダー、アプリのロック、暗号化バックアップ、記録の CSV 書き出しは無料です。証券会社の CSV の取り込みの確定や、理由・タグごとの集計、月のふりかえりなどは 株トレードログ PRO（月額500円・年額3,980円。日本の App Store での税込み価格）の機能です。
+- **米国株や外国税の記録にも対応していますか？** 対応しています。米国株（端数株を含む）を記録でき、配当は税引前・外国税・国内税・手取りに分けて入れられます。約定時の為替レートを入れると、口座の通貨に直して集計します。
+- **NISA の口座も記録できますか？** できます。特定口座・一般口座・NISA 成長投資枠・NISA つみたて投資枠を口座ごとに登録し、取得単価は口座ごとに計算します。
+- **どの証券会社の CSV を取り込めますか？** 列の割り当て方式なので、取引履歴を CSV で書き出せる証券会社なら取り込める場合があります。形式によっては読み込めないこともあるため、プレビューで内容を確かめてから取り込んでください。
+- **株価や評価損益は見られますか？** 見られません。株トレードログは株価などの市場データを取得せず、あなたが行った取引の記録（確定損益・配当・優待）の振り返りに絞っています。
+- **税金は計算されますか？** 売りの税金は自動では計算しません。特定口座の源泉徴収は年間で通算されるため、取引ごとの計算は実際と合わないことがあるからです。配当は、一般的な税率で税の参考値を入れられますが、実際の額は取引報告書の値に直してください。
+- **機種変更したら記録はどうなりますか？** 設定から、パスワード付きの暗号化バックアップを作り、新しい端末で復元できます。パスワードを忘れると復元できないため、大切に保管してください。
+- **記録のバックアップはどうなっていますか？** 設定から、パスワード付きの暗号化バックアップのファイルを作れます。保存先はあなたが選びます。また、iPhone の端末のバックアップ（iCloud など）には、暗号化した記録が含まれます。Android では端末のバックアップに記録を含めないため、機種変更には設定の暗号化バックアップを使ってください。
+- **株トレードログ PRO を解約するには？** iPhone は「設定」→ 自分の名前 →「サブスクリプション」、Android は Google Play の「お支払いと定期購入」から解約できます。期間が終わる前（App Store は終わる24時間前まで）に解約すると、次の期間の料金はかかりません。解約しても記録は消えず、無料の機能はそのまま使えます。
+- **どの端末・言語で使えますか？** iPhone と Android 向けのアプリです。日本語・英語・ドイツ語・フランス語・スペイン語・イタリア語・ポルトガル語・インドネシア語・トルコ語・ヒンディー語・ベトナム語の11言語で表示できます。
+
+## 入手
+- App Store・Google Play で近日公開
+- iPhone・Android 向け。表示は11言語（日本語、English、Deutsch、Français、Español、Italiano、Português、Bahasa Indonesia、Türkçe、हिन्दी、Tiếng Việt）。
+
+## 規約
+- [利用規約](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/terms.html)
+- [プライバシーポリシー](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/privacy-policy.html)
+- [特定商取引法に基づく表記](https://kainan0880jwr.github.io/fx-trade-journal/stock-log/tokushoho.html)
+
+## ご注意
+- 本アプリは自分の取引を記録して振り返るためのもので、投資助言や特定の銘柄の売買の推奨は行いません。表示する数字は入力・取り込みした記録から計算したもので、税金の申告には証券会社の取引報告書などをご確認ください。
+- 株トレードログの運営者は投資助言・代理業者ではありません。投資に関する判断はご自身で行ってください。
