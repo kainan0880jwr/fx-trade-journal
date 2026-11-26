@@ -39,6 +39,9 @@
 - [Forex win rate and risk-reward (English)](https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide-en.html): The break-even win rate formula 1 ÷ (1 + RR) with a quick-reference table, and how to calculate win rate and RR from your own records
 - [MT4/MT5の取引履歴をiPhoneに取り込む方法（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide.html): パソコン版MT4・MT5でレポート（HTML）を保存し、iPhoneに送って取り込む手順。スマホ版では保存できないこと、PDF・Excelは読めないこと、時刻のずれ・二重取り込みへの対処
 - [How to import MT4/MT5 trade history to iPhone (English)](https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide-en.html): Save an HTML report in desktop MT4/MT5, send it to your iPhone and import it; the mobile apps can't export, PDF/Excel can't be read, fixing time offsets and duplicates
+- [How to review your forex trades each week (English)](https://kainan0880jwr.github.io/fx-trade-journal/fx-weekly-trade-review-guide-en.html): A weekly review routine: what to prepare, an eight-question checklist, which numbers to read (win rate, risk-reward, profit factor, by pair and session) and how to pick one change for next week
+- [How to write forex trading rules you can check (English)](https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide-en.html): Turning a trading plan into yes-or-no rules, recording compliance on every trade, comparing results when rules were followed or broken, and when to revise them
+- [Forex trading journal app for iPhone: what to look for (English)](https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide-en.html): A checklist for choosing a journal app (logging speed, calculations, MT4/MT5 import, where data is stored, backups, analysis, pricing terms), a comparison with spreadsheets, and how FX Trade Journal handles each point
 - [FXロット計算ツール（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator.html): 口座残高・許容損失（%）・損切りpips・通貨ペアからロット数の目安を計算する無料ツール。1ロットの通貨量（10万・1万・1,000通貨）を選べ、換算レートは利用者が入力する。計算はブラウザ内だけ
 - [Forex lot size calculator (English)](https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator-en.html): Free position size calculator from account balance, risk %, stop loss in pips and currency pair; choose units per lot, enter your own conversion rate; runs in the browser
 - [FXのpips・損益計算ツール（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator.html): エントリーと決済のレート・ロット数からpipsと損益を計算する無料ツール。円のペアは0.01、円以外は0.0001が1pip
@@ -60,6 +63,9 @@ FX Trade Journal is a forex trading journal app for iPhone and iPad (iOS 16.4+).
 - English page: https://kainan0880jwr.github.io/fx-trade-journal/index-en.html
 - English guide: https://kainan0880jwr.github.io/fx-trade-journal/fx-trade-journal-guide-en.html
 - MT4/MT5 import guide: https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide-en.html
+- Weekly trade review checklist: https://kainan0880jwr.github.io/fx-trade-journal/fx-weekly-trade-review-guide-en.html
+- Trading rules guide: https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide-en.html
+- Choosing a journal app: https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide-en.html
 - Profit factor guide: https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide-en.html
 - Win rate and risk-reward guide: https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide-en.html
 - Free calculators (lot size, pips and P/L, break-even win rate): https://kainan0880jwr.github.io/fx-trade-journal/fx-lot-calculator-en.html, https://kainan0880jwr.github.io/fx-trade-journal/fx-pips-calculator-en.html, https://kainan0880jwr.github.io/fx-trade-journal/fx-breakeven-win-rate-calculator-en.html
