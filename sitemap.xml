@@ -334,17 +334,53 @@
     <lastmod>2026-11-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-weekly-trade-review-guide.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-weekly-trade-review-guide-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-weekly-trade-review-guide.html"/>
   </url>
   <url>
     <loc>https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide-en.html</loc>
     <lastmod>2026-11-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide.html"/>
   </url>
   <url>
     <loc>https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide-en.html</loc>
     <lastmod>2026-11-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide.html"/>
+  </url>
+  <url>
+    <loc>https://kainan0880jwr.github.io/fx-trade-journal/fx-weekly-trade-review-guide.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-weekly-trade-review-guide.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-weekly-trade-review-guide-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-weekly-trade-review-guide.html"/>
+  </url>
+  <url>
+    <loc>https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide.html"/>
+  </url>
+  <url>
+    <loc>https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide.html"/>
   </url>
 </urlset>

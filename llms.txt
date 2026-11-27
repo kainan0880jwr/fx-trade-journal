@@ -36,6 +36,9 @@
 - [プロフィットファクター（PF）とは（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide.html): PFの定義と計算方法、勝率・リスクリワードとの関係、集計の落とし穴
 - [What is profit factor in forex? (English)](https://kainan0880jwr.github.io/fx-trade-journal/fx-profit-factor-guide-en.html): Definition and calculation of profit factor, how it relates to win rate and risk-reward, and pitfalls when tallying it
 - [FXの勝率とリスクリワードの関係（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide.html): 損益分岐勝率の公式と早見表、自分の記録から勝率・RRを計算する手順
+- [FXトレードの振り返り方（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-weekly-trade-review-guide.html): 毎週の振り返りの手順。準備、8つの質問のチェックリスト、見る数字（勝率・リスクリワード・PF・通貨ペア別・時間帯別）、翌週に変えることを1つ決める方法
+- [FXのトレードルールの作り方（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-rules-guide.html): 計画を「はい／いいえ」で確かめられるルールにする方法、取引ごとに守れたかを記録する方法、守った取引と破った取引の比べ方、見直す時期
+- [FXトレード日記アプリの選び方（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-trading-journal-app-guide.html): アプリを選ぶときのチェックリスト（記録の速さ・計算・MT4/MT5の取り込み・データの保存先・バックアップ・分析・料金の条件）、表計算ソフトとの比較、FXトレードログの対応
 - [Forex win rate and risk-reward (English)](https://kainan0880jwr.github.io/fx-trade-journal/fx-win-rate-risk-reward-guide-en.html): The break-even win rate formula 1 ÷ (1 + RR) with a quick-reference table, and how to calculate win rate and RR from your own records
 - [MT4/MT5の取引履歴をiPhoneに取り込む方法（日本語）](https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide.html): パソコン版MT4・MT5でレポート（HTML）を保存し、iPhoneに送って取り込む手順。スマホ版では保存できないこと、PDF・Excelは読めないこと、時刻のずれ・二重取り込みへの対処
 - [How to import MT4/MT5 trade history to iPhone (English)](https://kainan0880jwr.github.io/fx-trade-journal/fx-mt4-mt5-import-guide-en.html): Save an HTML report in desktop MT4/MT5, send it to your iPhone and import it; the mobile apps can't export, PDF/Excel can't be read, fixing time offsets and duplicates
